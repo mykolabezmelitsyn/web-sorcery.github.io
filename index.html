@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A personal library of practical web development documentation, references, and code examples.">
+  <title>Dev Docs — Documentation Library</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f7f8fa;
+      --panel: #fff;
+      --ink: #17212d;
+      --muted: #566273;
+      --accent: #2563eb;
+      --accent-soft: #e8efff;
+      --accent-ink: #154ec0;
+      --line: #dce2e9;
+      --header: #101827;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    a { color: inherit; }
+    .container { width: min(1100px, calc(100% - 48px)); margin-inline: auto; }
+    .hero { background: var(--header); color: #fff; padding: 30px 0 66px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { text-decoration: none; font-size: 1rem; font-weight: 800; letter-spacing: -.02em; }
+    .brand span { color: #8db6ff; }
+    .topbar nav { display: flex; gap: 22px; }
+    .topbar nav a { text-decoration: none; color: #c5cedc; font-size: .9rem; }
+    .topbar nav a:hover { color: #fff; }
+    .hero-content { padding-top: 73px; max-width: 750px; }
+    .eyebrow { display: inline-block; color: #a7c5ff; font-size: .75rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; margin-bottom: 13px; }
+    h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.16; letter-spacing: -.045em; margin: 0 0 17px; }
+    .hero p { color: #d2d9e5; font-size: 1.05rem; margin: 0; max-width: 630px; }
+    main { padding-top: 42px; padding-bottom: 70px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 10px 24px; margin-bottom: 22px; }
+    h2 { font-size: 1.4rem; letter-spacing: -.025em; margin: 0; }
+    .section-heading p { color: var(--muted); margin: 4px 0 0; font-size: .94rem; }
+    .count { color: var(--muted); font-size: .85rem; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; }
+    .doc-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 23px; min-height: 216px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 2px 7px #15253b08; text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; }
+    a.doc-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 25px #15253b12; }
+    a.doc-card:focus-visible, .topbar a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .card-icon { width: 39px; height: 39px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-ink); font-size: 1.13rem; font-weight: 800; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .tag { border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); padding: 3px 9px; font-size: .73rem; font-weight: 700; white-space: nowrap; }
+    .tag.soon { background: #eef0f3; color: #667384; }
+    .doc-card h3 { font-size: 1.12rem; line-height: 1.3; margin: 3px 0 0; }
+    .doc-card p { color: var(--muted); font-size: .91rem; line-height: 1.55; margin: 0; flex: 1; }
+    .card-bottom { color: var(--accent); font-weight: 700; font-size: .84rem; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .placeholder .card-bottom { color: var(--muted); }
+    .note { margin-top: 29px; border-left: 4px solid var(--accent); padding: 12px 16px; background: var(--accent-soft); border-radius: 4px; font-size: .9rem; color: var(--ink); }
+    .note code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .9em; }
+    footer { border-top: 1px solid var(--line); padding: 22px 0 30px; color: var(--muted); font-size: .85rem; }
+    @media (max-width: 850px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .container { width: min(100% - 32px, 1100px); } .hero { padding-bottom: 48px; } .hero-content { padding-top: 52px; } .grid { grid-template-columns: 1fr; } .doc-card { min-height: 185px; } .topbar nav { gap: 14px; } }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0c1220; --panel: #172133; --ink: #e9eef7; --muted: #aab9cc; --line: #34435a; --accent-soft: #233756; --accent-ink: #bed4ff; }
+      .tag.soon { background: #2b3545; color: #b7c1d0; }
+      a.doc-card:hover { box-shadow: 0 10px 25px #0003; }
+      .note { color: var(--ink); }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .doc-card { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="topbar">
+        <a class="brand" href="index.html">Dev<span>Docs.</span></a>
+        <nav aria-label="Main navigation"><a href="#documentation">Documentation</a><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
+      </div>
+      <div class="hero-content">
+        <span class="eyebrow">Personal development library</span>
+        <h1>Everything worth keeping.<br>One place to find it.</h1>
+        <p>A growing collection of practical references, cheat sheets, and examples for modern web development.</p>
+      </div>
+    </div>
+  </header>
+  <main class="container" id="documentation">
+    <div class="section-heading">
+      <div><h2>Documentation</h2><p>Pick a topic to open its reference guide.</p></div>
+      <span class="count">1 available guide · More coming soon</span>
+    </div>
+    <div class="grid">
+      <!-- Change href to the relative path of your uploaded HTML file. -->
+      <a class="doc-card" href="javascript-functions-handbook-active-menu.html">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">JS</span><span class="tag">Available</span></div>
+        <h3>JavaScript Functions</h3>
+        <p>Useful JavaScript methods and APIs, with clear explanations and practical code examples.</p>
+        <span class="card-bottom">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+      <!-- To add a working guide, replace a placeholder <article> with <a class="doc-card" href="your-file.html"> ... </a>. -->
+      <article class="doc-card placeholder">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">Rx</span><span class="tag soon">Coming soon</span></div>
+        <h3>Regular Expressions</h3>
+        <p>Patterns, flags, groups, lookarounds, and useful examples for everyday text processing.</p>
+        <span class="card-bottom">Guide not added yet</span>
+      </article>
+      <article class="doc-card placeholder">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">CSS</span><span class="tag soon">Coming soon</span></div>
+        <h3>CSS &amp; SCSS</h3>
+        <p>Layouts, selectors, responsive techniques, mixins, and maintainable styling patterns.</p>
+        <span class="card-bottom">Guide not added yet</span>
+      </article>
+      <article class="doc-card placeholder">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">HTML</span><span class="tag soon">Coming soon</span></div>
+        <h3>HTML &amp; Accessibility</h3>
+        <p>Semantic markup, accessible components, ARIA, and frontend best practices.</p>
+        <span class="card-bottom">Guide not added yet</span>
+      </article>
+      <article class="doc-card placeholder">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">Git</span><span class="tag soon">Coming soon</span></div>
+        <h3>Git &amp; GitHub</h3>
+        <p>Daily commands, branching workflows, troubleshooting, and deployment notes.</p>
+        <span class="card-bottom">Guide not added yet</span>
+      </article>
+      <article class="doc-card placeholder">
+        <div class="card-top"><span class="card-icon" aria-hidden="true">+</span><span class="tag soon">Coming soon</span></div>
+        <h3>Your Next Guide</h3>
+        <p>A space for the next topic you want to document or reference.</p>
+        <span class="card-bottom">Guide not added yet</span>
+      </article>
+    </div>
+    <div class="note"><strong>Adding a new guide:</strong> Upload your HTML page to your GitHub Pages repository, then update the relevant card to an <code>&lt;a href="your-file.html"&gt;</code> link. Use paths relative to this index file.</div>
+  </main>
+  <footer><div class="container">DevDocs · Practical notes for everyday development.</div></footer>
+</body>
+</html>
