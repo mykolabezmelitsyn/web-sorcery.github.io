@@ -1,0 +1,595 @@
+const topics = [
+  [
+    "Arrays",
+    [
+      [
+        "map()",
+        "Transform every element into a new array.",
+        `const products = [{name: 'Keyboard', price: 80}, {name: 'Mouse', price: 25}];\nconst labels = products.map(p => \`${"${p.name}"} — $${"${p.price}"}\`);\nconsole.log(labels); // ['Keyboard — $80', 'Mouse — $25']`,
+      ],
+      [
+        "filter()",
+        "Keep elements that match a condition.",
+        `const orders = [{id: 1, paid: true}, {id: 2, paid: false}];\nconst paidOrders = orders.filter(order => order.paid);`,
+      ],
+      [
+        "find()",
+        "Get the first matching element, or undefined.",
+        `const users = [{id: 7, name: 'Anna'}, {id: 8, name: 'Max'}];\nconst user = users.find(u => u.id === 8);`,
+      ],
+      [
+        "findIndex()",
+        "Get the index of the first match, or -1.",
+        `const tasks = [{id: 4}, {id: 9}];\nconst index = tasks.findIndex(task => task.id === 9); // 1`,
+      ],
+      [
+        "some()",
+        "Check whether at least one element matches.",
+        `const cart = [{stock: 5}, {stock: 0}];\nconst hasOutOfStockItem = cart.some(item => item.stock === 0);`,
+      ],
+      [
+        "every()",
+        "Check whether all elements match (true for an empty array).",
+        `const fields = ['email', 'password'];\nconst form = {email: 'a@example.com', password: 'secret'};\nconst isComplete = fields.every(key => Boolean(form[key]));`,
+      ],
+      [
+        "reduce()",
+        "Accumulate elements into one result.",
+        `const cart = [{price: 15, qty: 2}, {price: 8, qty: 3}];\nconst total = cart.reduce((sum, item) => sum + item.price * item.qty, 0); // 54`,
+      ],
+      [
+        "forEach()",
+        "Run a side effect for each item; does not return a new array.",
+        `const notifications = ['Welcome', 'Payment received'];\nnotifications.forEach(message => console.log(message));`,
+      ],
+      [
+        "sort() / toSorted()",
+        "Sort values with a comparator; sort mutates, toSorted returns a copy.",
+        `const prices = [100, 9, 35];\nconst ascending = prices.toSorted((a, b) => a - b); // [9, 35, 100]\n// For older runtimes: [...prices].sort((a, b) => a - b)`,
+      ],
+      [
+        "includes()",
+        "Check whether an array contains a value.",
+        `const roles = ['editor', 'admin'];\nconst canEdit = roles.includes('editor');`,
+      ],
+      [
+        "indexOf()",
+        "Find a value’s first index; returns -1 if missing.",
+        `const tags = ['js', 'css', 'html'];\nconst cssIndex = tags.indexOf('css'); // 1`,
+      ],
+      [
+        "slice()",
+        "Copy a portion without mutating the original array.",
+        `const articles = ['A', 'B', 'C', 'D'];\nconst pageOne = articles.slice(0, 2); // ['A', 'B']`,
+      ],
+      [
+        "splice() / toSpliced()",
+        "Insert or remove items; splice mutates, toSpliced returns a copy.",
+        `const queue = ['Alice', 'Bob', 'Cara'];\nconst nextQueue = queue.toSpliced(1, 1); // ['Alice', 'Cara']`,
+      ],
+      [
+        "push() / pop()",
+        "Add or remove an item at the end; both mutate the array.",
+        `const history = ['home'];\nhistory.push('products');\nconst lastPage = history.pop(); // 'products'`,
+      ],
+      [
+        "shift() / unshift()",
+        "Remove or add elements at the beginning; both mutate.",
+        `const queue = ['second'];\nqueue.unshift('first');\nconst next = queue.shift(); // 'first'`,
+      ],
+      [
+        "flat() / flatMap()",
+        "Flatten nested arrays; flatMap maps and flattens one level.",
+        `const orders = [{items: ['pen', 'book']}, {items: ['lamp']}];\nconst items = orders.flatMap(order => order.items);`,
+      ],
+      [
+        "Array.from()",
+        "Convert iterables/array-like values into arrays, optionally mapping.",
+        `const pageNumbers = Array.from({length: 5}, (_, i) => i + 1); // [1,2,3,4,5]`,
+      ],
+      [
+        "Array.isArray()",
+        "Check that a value is an array.",
+        `const payload = JSON.parse('[1,2,3]');\nif (Array.isArray(payload)) console.log(payload.length);`,
+      ],
+      [
+        "at()",
+        "Read by index, including negative indices.",
+        `const events = ['created', 'updated', 'published'];\nconst latest = events.at(-1); // 'published'`,
+      ],
+      [
+        "join()",
+        "Join elements into a string.",
+        `const path = ['products', 'laptops', '42'];\nconst urlPath = '/' + path.join('/');`,
+      ],
+      [
+        "Set / new Set()",
+        "Deduplicate primitive values and maintain unique membership.",
+        `const categoryIds = [2, 3, 2, 5];\nconst uniqueIds = [...new Set(categoryIds)]; // [2,3,5]`,
+      ],
+    ],
+  ],
+  [
+    "Strings",
+    [
+      [
+        "trim() / trimStart() / trimEnd()",
+        "Remove surrounding whitespace.",
+        `const email = '  user@example.com  '.trim();`,
+      ],
+      [
+        "toLowerCase() / toUpperCase()",
+        "Normalize casing for display or basic comparisons.",
+        `const input = '  ADMIN '.trim().toLowerCase(); // 'admin'`,
+      ],
+      [
+        "includes()",
+        "Check whether a substring exists (case-sensitive).",
+        `const filename = 'invoice-2026.pdf';\nconst isInvoice = filename.includes('invoice');`,
+      ],
+      [
+        "startsWith() / endsWith()",
+        "Check prefixes and suffixes.",
+        `const file = 'report.csv';\nconst isCsv = file.toLowerCase().endsWith('.csv');`,
+      ],
+      [
+        "slice()",
+        "Extract a portion of a string.",
+        `const card = '1234567812345678';\nconst masked = '**** **** **** ' + card.slice(-4);`,
+      ],
+      [
+        "split()",
+        "Split a string into an array.",
+        `const csvLine = 'red,green,blue';\nconst colors = csvLine.split(','); // Simple input only, not full CSV parsing`,
+      ],
+      [
+        "replace() / replaceAll()",
+        "Replace the first match or all matches.",
+        `const slug = 'JavaScript Best Practices'.toLowerCase().replaceAll(' ', '-');`,
+      ],
+      [
+        "match() / matchAll()",
+        "Extract matches from a regular expression.",
+        `const text = 'Order #123 and #456';\nconst ids = [...text.matchAll(/#(\\d+)/g)].map(match => match[1]);`,
+      ],
+      [
+        "padStart() / padEnd()",
+        "Pad strings to a target length.",
+        `const invoiceNumber = String(42).padStart(6, '0'); // '000042'`,
+      ],
+      [
+        "substring()",
+        "Extract between nonnegative positions.",
+        `const trackingCode = 'ORD-84921';\nconst number = trackingCode.substring(4); // '84921'`,
+      ],
+      [
+        "localeCompare()",
+        "Compare text using locale-aware ordering.",
+        `const names = ['Žana', 'Anna', 'Émile'];\nconst sorted = names.toSorted((a, b) => a.localeCompare(b, 'en'));`,
+      ],
+      [
+        "String()",
+        "Convert values to text explicitly.",
+        `const orderId = 182;\nconst label = 'Order #' + String(orderId);`,
+      ],
+    ],
+  ],
+  [
+    "Objects",
+    [
+      [
+        "Object.keys()",
+        "Get an object’s own enumerable string keys.",
+        `const stock = {shirts: 12, hats: 4};\nconst categories = Object.keys(stock);`,
+      ],
+      [
+        "Object.values()",
+        "Get an object’s own enumerable values.",
+        `const scores = {html: 90, css: 85, js: 95};\nconst average = Object.values(scores).reduce((a,b) => a+b, 0) / 3;`,
+      ],
+      [
+        "Object.entries()",
+        "Get key-value pairs for iteration.",
+        `const filters = {category: 'books', page: 2};\nconst query = new URLSearchParams(Object.entries(filters)).toString();`,
+      ],
+      [
+        "Object.fromEntries()",
+        "Create an object from key-value pairs.",
+        `const formData = new FormData(document.querySelector('form'));\nconst values = Object.fromEntries(formData); // Repeated keys collapse`,
+      ],
+      [
+        "Object.assign()",
+        "Copy enumerable properties (shallow copy).",
+        `const defaults = {theme: 'light', pageSize: 20};\nconst settings = Object.assign({}, defaults, {theme: 'dark'});`,
+      ],
+      [
+        "Object.hasOwn()",
+        "Check whether an object owns a property.",
+        `const config = {timeout: 0};\nconst hasTimeout = Object.hasOwn(config, 'timeout'); // true`,
+      ],
+      [
+        "Object.freeze()",
+        "Prevent direct changes to an object (shallow only).",
+        `const constants = Object.freeze({API_VERSION: 'v2'});`,
+      ],
+      [
+        "structuredClone()",
+        "Deep-clone supported data types; not functions or DOM nodes.",
+        `const original = {customer: {name: 'Anna'}, dates: [new Date()]};\nconst copy = structuredClone(original);\ncopy.customer.name = 'Max';`,
+      ],
+      [
+        "Destructuring / spread",
+        "Extract properties and make shallow copies.",
+        `const user = {id: 1, name: 'Mila', role: 'viewer'};\nconst {name, ...rest} = user;\nconst updated = {...user, role: 'editor'};`,
+      ],
+      [
+        "Optional chaining / nullish coalescing",
+        "Read possibly missing properties and use defaults only for null/undefined.",
+        `const order = {customer: null, discount: 0};\nconst city = order.customer?.address?.city ?? 'Unknown';\nconst discount = order.discount ?? 10; // 0`,
+      ],
+    ],
+  ],
+  [
+    "Numbers & Math",
+    [
+      [
+        "Number() / Number.isNaN()",
+        "Convert input and detect invalid numeric results.",
+        `const quantity = Number('12');\nconst invalid = Number.isNaN(Number('twelve')); // true`,
+      ],
+      [
+        "Number.isFinite() / Number.isInteger()",
+        "Validate finite numbers and integers.",
+        `const page = Number('3');\nconst validPage = Number.isInteger(page) && page > 0;`,
+      ],
+      [
+        "parseInt() / parseFloat()",
+        "Parse numeric prefixes; specify radix for integers.",
+        `const px = parseInt('24px', 10); // 24\nconst rating = parseFloat('4.75 stars'); // 4.75`,
+      ],
+      [
+        "toFixed()",
+        "Format a number to fixed decimal places; returns a string.",
+        `const subtotal = 19.9;\nconst displayed = subtotal.toFixed(2); // '19.90'`,
+      ],
+      [
+        "Math.round() / floor() / ceil()",
+        "Round to nearest, down, or up.",
+        `const items = 23;\nconst pageCount = Math.ceil(items / 10); // 3`,
+      ],
+      [
+        "Math.min() / max()",
+        "Find bounds or clamp a value.",
+        `const requested = 140;\nconst percentage = Math.min(100, Math.max(0, requested)); // 100`,
+      ],
+      [
+        "Math.abs()",
+        "Get the absolute difference.",
+        `const expected = 100, actual = 92;\nconst deviation = Math.abs(expected - actual); // 8`,
+      ],
+      [
+        "Math.random()",
+        "Generate non-cryptographic random numbers.",
+        `const dice = Math.floor(Math.random() * 6) + 1; // 1–6\n// Do not use Math.random() for security tokens`,
+      ],
+      [
+        "Math.pow() / ** / sqrt()",
+        "Calculate powers and square roots.",
+        `const area = Math.PI * (5 ** 2);\nconst diagonal = Math.sqrt(3 ** 2 + 4 ** 2); // 5`,
+      ],
+      [
+        "Intl.NumberFormat",
+        "Format currencies and numbers for a locale.",
+        `const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});\nconsole.log(formatter.format(1234.5)); // '$1,234.50'`,
+      ],
+    ],
+  ],
+  [
+    "Dates & Time",
+    [
+      [
+        "new Date() / Date.now()",
+        "Create a date or get current milliseconds since Unix epoch.",
+        `const createdAt = new Date();\nconst startTime = Date.now();`,
+      ],
+      [
+        "getFullYear() / getMonth() / getDate()",
+        "Read local calendar components (month is zero-based).",
+        `const date = new Date(2026, 9, 8); // October 8, 2026\nconst monthNumber = date.getMonth() + 1; // 10`,
+      ],
+      [
+        "toISOString()",
+        "Serialize a Date in UTC ISO 8601 format.",
+        `const savedAt = new Date().toISOString();\n// Good for API timestamps; it is UTC, not local time`,
+      ],
+      [
+        "Intl.DateTimeFormat",
+        "Format dates for people in a locale/time zone.",
+        `const formatter = new Intl.DateTimeFormat('en-GB', {dateStyle: 'long', timeZone: 'Europe/Kyiv'});\nconsole.log(formatter.format(new Date('2026-10-08T10:00:00Z')));`,
+      ],
+      [
+        "setDate()",
+        "Move calendar dates forward or backward in local time.",
+        `const deadline = new Date(2026, 9, 8);\ndeadline.setDate(deadline.getDate() + 7); // October 15`,
+      ],
+      [
+        "setTimeout() / clearTimeout()",
+        "Schedule or cancel a one-off callback.",
+        `const timerId = setTimeout(() => console.log('Autosave reminder'), 2000);\n// clearTimeout(timerId) cancels it`,
+      ],
+      [
+        "setInterval() / clearInterval()",
+        "Repeat a callback until stopped.",
+        `let seconds = 0;\nconst timer = setInterval(() => {\n  seconds++;\n  if (seconds === 5) clearInterval(timer);\n}, 1000);`,
+      ],
+    ],
+  ],
+  [
+    "Promises & Async",
+    [
+      [
+        "Promise / async / await",
+        "Represent asynchronous work and write readable async workflows.",
+        `async function loadProfile(userId) {\n  const response = await fetch(\`/api/users/${"${userId}"}\`);\n  if (!response.ok) throw new Error(\`HTTP ${"${response.status}"}\`);\n  return response.json();\n}`,
+      ],
+      [
+        "Promise.all()",
+        "Run independent tasks concurrently; reject if any rejects.",
+        `async function loadDashboard() {\n  const [user, orders] = await Promise.all([\n    fetch('/api/me').then(checkJson),\n    fetch('/api/orders').then(checkJson)\n  ]);\n  return {user, orders};\n}\nasync function checkJson(r) {if (!r.ok) throw Error(\`HTTP ${"${r.status}"}\`); return r.json();}`,
+      ],
+      [
+        "Promise.allSettled()",
+        "Wait for all operations even if some fail.",
+        `const results = await Promise.allSettled([\n  fetch('/api/reviews'), fetch('/api/recommendations')\n]);\nconst successfulResponses = results.filter(r => r.status === 'fulfilled').map(r => r.value);`,
+      ],
+      [
+        "Promise.race()",
+        "Settle when the first input settles.",
+        `const delay = ms => new Promise(resolve => setTimeout(resolve, ms));\nconst result = await Promise.race([fetch('/api/status'), delay(3000).then(() => 'timeout')]);\n// This does NOT cancel the losing fetch`,
+      ],
+      [
+        "Promise.any()",
+        "Use the first fulfilled result; reject if all reject.",
+        `const fastestMirror = await Promise.any([\n  fetch('/mirror-a/data'), fetch('/mirror-b/data')\n]);\n// Check fastestMirror.ok before processing`,
+      ],
+      [
+        "try / catch / finally",
+        "Handle async failures and cleanup.",
+        `try {\n  const response = await fetch('/api/save', {method: 'POST'});\n  if (!response.ok) throw Error('Save failed');\n} catch (error) {\n  console.error('Could not save:', error);\n} finally {\n  console.log('Request finished');\n}`,
+      ],
+      [
+        "AbortController",
+        "Cancel fetch requests and avoid stale results.",
+        `const controller = new AbortController();\nconst request = fetch('/api/search?q=keyboard', {signal: controller.signal});\ncontroller.abort();\ntry { await request; } catch (e) { if (e.name !== 'AbortError') throw e; }`,
+      ],
+      [
+        "fetch()",
+        "Send HTTP requests using the browser Fetch API.",
+        `async function createOrder(items) {\n  const response = await fetch('/api/orders', {\n    method: 'POST', headers: {'Content-Type': 'application/json'},\n    body: JSON.stringify({items})\n  });\n  if (!response.ok) throw new Error('Order failed');\n  return response.json();\n}`,
+      ],
+    ],
+  ],
+  [
+    "JSON & Collections",
+    [
+      [
+        "JSON.stringify() / JSON.parse()",
+        "Serialize data for storage or transport; JSON drops unsupported values.",
+        `const preferences = {theme: 'dark', compact: true};\nlocalStorage.setItem('preferences', JSON.stringify(preferences));\nconst saved = JSON.parse(localStorage.getItem('preferences') ?? '{}');`,
+      ],
+      [
+        "Map",
+        "Store keyed data with keys of any type.",
+        `const visits = new Map();\nvisits.set('home', 3);\nvisits.set('products', 5);\nconsole.log(visits.get('home')); // 3`,
+      ],
+      [
+        "Set.add() / has() / delete()",
+        "Manage unique membership efficiently.",
+        `const selectedIds = new Set([12, 18]);\nselectedIds.add(24);\nif (selectedIds.has(18)) selectedIds.delete(18);`,
+      ],
+      [
+        "URL / URLSearchParams",
+        "Safely construct and read URLs and query parameters.",
+        `const url = new URL('https://example.com/products');\nurl.searchParams.set('q', 'wireless keyboard');\nurl.searchParams.set('page', '2');\nconsole.log(url.toString());`,
+      ],
+      [
+        "encodeURIComponent() / decodeURIComponent()",
+        "Encode/decode a URL component, not a whole URL.",
+        `const search = 'C++ & JavaScript';\nconst url = '/search?q=' + encodeURIComponent(search);`,
+      ],
+      [
+        "RegExp.test()",
+        "Check whether text matches a pattern.",
+        `const sku = 'ABC-1234';\nconst valid = /^[A-Z]{3}-\\d{4}$/.test(sku); // true`,
+      ],
+      [
+        "RegExp.exec()",
+        "Retrieve match groups and positions.",
+        `const match = /order-(\\d+)/.exec('order-4821');\nconst orderId = match?.[1]; // '4821'`,
+      ],
+    ],
+  ],
+  [
+    "DOM & Browser",
+    [
+      [
+        "querySelector() / querySelectorAll()",
+        "Find one element or a static list of elements.",
+        `const form = document.querySelector('#checkout-form');\nconst inputs = [...form.querySelectorAll('input[required]')];`,
+      ],
+      [
+        "addEventListener() / removeEventListener()",
+        "Subscribe to and unsubscribe from browser events.",
+        `function onResize() { console.log(window.innerWidth); }\nwindow.addEventListener('resize', onResize);\n// Later: window.removeEventListener('resize', onResize);`,
+      ],
+      [
+        "classList.add() / remove() / toggle()",
+        "Manage CSS classes without rewriting class strings.",
+        `const menu = document.querySelector('.menu');\ndocument.querySelector('.menu-button').addEventListener('click', () => {\n  menu.classList.toggle('is-open');\n});`,
+      ],
+      [
+        "closest() / matches()",
+        "Match an element or find a matching ancestor.",
+        `document.addEventListener('click', event => {\n  const button = event.target.closest('[data-action="delete"]');\n  if (!button) return;\n  console.log('Delete item:', button.dataset.id);\n});`,
+      ],
+      [
+        "createElement() / append() / replaceChildren()",
+        "Create safe text-based DOM content.",
+        `const list = document.querySelector('#results');\nconst li = document.createElement('li');\nli.textContent = 'New product'; // Safe for untrusted text\nlist.replaceChildren(li);`,
+      ],
+      [
+        "getAttribute() / setAttribute() / dataset",
+        "Read and update element attributes and data-* values.",
+        `const button = document.querySelector('[data-product-id]');\nconst productId = button.dataset.productId;\nbutton.setAttribute('aria-pressed', 'true');`,
+      ],
+      [
+        "preventDefault()",
+        "Prevent an event’s default browser behavior.",
+        `document.querySelector('form').addEventListener('submit', event => {\n  event.preventDefault();\n  const data = new FormData(event.currentTarget);\n  console.log(data.get('email'));\n});`,
+      ],
+      [
+        "FormData",
+        "Collect form fields for submission.",
+        `const form = document.querySelector('#profile-form');\nconst formData = new FormData(form);\nawait fetch('/api/profile', {method: 'POST', body: formData});\n// Do not manually set Content-Type for multipart FormData`,
+      ],
+      [
+        "localStorage.getItem() / setItem() / removeItem()",
+        "Persist small strings across browser sessions.",
+        `localStorage.setItem('theme', 'dark');\nconst theme = localStorage.getItem('theme') ?? 'light';\nlocalStorage.removeItem('theme');\n// Do not store secrets or access tokens here`,
+      ],
+      [
+        "requestAnimationFrame()",
+        "Run a visual update before the next repaint.",
+        `const progress = document.querySelector('.progress');\nrequestAnimationFrame(() => { progress.style.width = '75%'; });`,
+      ],
+      [
+        "IntersectionObserver",
+        "Observe when elements enter or leave a viewport.",
+        `const observer = new IntersectionObserver(entries => {\n  entries.forEach(entry => {\n    if (entry.isIntersecting) {\n      entry.target.classList.add('visible');\n      observer.unobserve(entry.target);\n    }\n  });\n});\ndocument.querySelectorAll('.reveal').forEach(el => observer.observe(el));`,
+      ],
+      [
+        "debounce() (utility)",
+        "Delay work until rapid calls stop; custom helper, not built-in.",
+        `function debounce(fn, delay = 300) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}\nconst search = debounce(query => console.log('Search:', query));`,
+      ],
+      [
+        "throttle() (utility)",
+        "Limit how frequently a handler runs; custom helper.",
+        `function throttle(fn, delay = 200) {\n  let last = 0;\n  return (...args) => {\n    const now = Date.now();\n    if (now - last >= delay) { last = now; fn(...args); }\n  };\n}\nwindow.addEventListener('scroll', throttle(() => console.log(scrollY)));`,
+      ],
+    ],
+  ],
+  [
+    "Function Patterns",
+    [
+      [
+        "Function declaration / expression",
+        "Declare reusable behavior; declarations are hoisted.",
+        `function calculateTax(price, rate = 0.2) { return price * rate; }\nconst calculateTotal = function(price, tax) { return price + tax; };`,
+      ],
+      [
+        "Arrow functions",
+        "Write concise callbacks; arrows capture lexical this.",
+        `const products = [{price: 10}, {price: 20}];\nconst pricesWithTax = products.map(p => p.price * 1.2);`,
+      ],
+      [
+        "Rest parameters / spread arguments",
+        "Accept any number of inputs or expand an iterable.",
+        `function sum(...numbers) { return numbers.reduce((a, b) => a + b, 0); }\nconst values = [10, 20, 30];\nconsole.log(sum(...values)); // 60`,
+      ],
+      [
+        "Default parameters",
+        "Provide fallback values for omitted/undefined arguments.",
+        `function greet(name = 'Guest') { return \`Hello, ${"${name}"}!\`; }\nconsole.log(greet()); // 'Hello, Guest!'`,
+      ],
+      [
+        "Closures",
+        "Keep private state between calls.",
+        `function createCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst nextId = createCounter();\nnextId(); // 1; nextId(); // 2`,
+      ],
+      [
+        "Higher-order functions",
+        "Pass functions to customize behavior.",
+        `function withLogging(fn) {\n  return (...args) => {\n    console.log('Calling with', args);\n    return fn(...args);\n  };\n}\nconst add = withLogging((a, b) => a + b);`,
+      ],
+      [
+        "call() / apply() / bind()",
+        "Control this for normal functions; bind returns a new function.",
+        `const user = {name: 'Anna'};\nfunction sayHello(prefix) { return prefix + this.name; }\nconst greeting = sayHello.call(user, 'Hi ');\nconst boundGreeting = sayHello.bind(user, 'Hello ');`,
+      ],
+      [
+        "Pure functions / immutability",
+        "Return predictable outputs without mutating inputs.",
+        `function addItem(cart, item) { return [...cart, item]; }\nconst cart = [{id: 1}];\nconst updated = addItem(cart, {id: 2}); // cart unchanged`,
+      ],
+      [
+        "Memoization (utility)",
+        "Cache results of expensive pure computations.",
+        `function memoize(fn) {\n  const cache = new Map();\n  return key => {\n    if (cache.has(key)) return cache.get(key);\n    const result = fn(key);\n    cache.set(key, result);\n    return result;\n  };\n}\nconst square = memoize(n => n * n); // Single primitive key`,
+      ],
+    ],
+  ],
+];
+const nav = document.querySelector("#nav");
+const content = document.querySelector("#content");
+function render(query = "") {
+  const q = query.trim().toLowerCase();
+  content.replaceChildren();
+  nav.replaceChildren();
+  let count = 0;
+  for (const [topic, entries] of topics) {
+    const matched = entries.filter(([name, desc, code]) =>
+      (topic + " " + name + " " + desc + " " + code).toLowerCase().includes(q),
+    );
+    if (!matched.length) continue;
+    const id = topic.toLowerCase().replace(/[^a-z]+/g, "-");
+    const link = document.createElement("a");
+    link.href = "#" + id;
+    link.textContent = topic + " (" + matched.length + ")";
+    nav.append(link);
+    const section = document.createElement("section");
+    section.id = id;
+    const heading = document.createElement("h2");
+    heading.textContent = topic;
+    section.append(heading);
+    for (const [name, desc, code] of matched) {
+      count++;
+      const article = document.createElement("article");
+      article.className = "entry";
+      const h = document.createElement("h3");
+      h.textContent = name;
+      const p = document.createElement("p");
+      p.textContent = desc;
+      const pre = document.createElement("pre");
+      const codeEl = document.createElement("code");
+      codeEl.textContent = code;
+      pre.append(codeEl);
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.textContent = "Copy example";
+      copy.setAttribute("aria-label", "Copy example for " + name);
+      copy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+          copy.textContent = "Copied!";
+          setTimeout(() => (copy.textContent = "Copy example"), 1500);
+        } catch {
+          copy.textContent = "Copy unavailable";
+        }
+      });
+      article.append(h, p, pre, copy);
+      section.append(article);
+    }
+    content.append(section);
+  }
+  document.querySelector("#count").textContent = count + " entries";
+  if (!count) {
+    const p = document.createElement("p");
+    p.textContent = "No matching functions. Try another search.";
+    content.append(p);
+  }
+}
+document
+  .querySelector("#search")
+  .addEventListener("input", (e) => render(e.target.value));
+render();
