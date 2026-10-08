@@ -229,12 +229,6 @@ footer {
   .container {
     width: min(100% - 32px, 1100px);
   }
-  .hero {
-    padding-bottom: 48px;
-  }
-  .hero-content {
-    padding-top: 52px;
-  }
   .grid {
     grid-template-columns: 1fr;
   }
