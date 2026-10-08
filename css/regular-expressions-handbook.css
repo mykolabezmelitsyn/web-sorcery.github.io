@@ -109,7 +109,7 @@ main {
 }
 aside {
   position: sticky;
-  top: 16px;
+  top: 84px;
   align-self: start;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
@@ -145,7 +145,7 @@ aside .nav-title {
   box-shadow: inset 3px 0 0 var(--accent);
 }
 section {
-  scroll-margin-top: 24px;
+  scroll-margin-top: 88px;
   margin-bottom: 35px;
 }
 h2 {

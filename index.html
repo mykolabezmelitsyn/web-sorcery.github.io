@@ -1,82 +1,161 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A personal library of practical web development documentation, references, and code examples.">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-  <link rel="shortcut icon" href="./favicon.ico">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A personal library of practical web development documentation, references, and code examples."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="./favicon.ico" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
 
-  <link rel="manifest" href="./site.webmanifest">
-  <meta name="theme-color" content="#092e2c">
-  <title>Dev Docs — Documentation Library</title>
-  <link rel="stylesheet" href="./css/index.css">
-</head>
-<body>
-  <header class="hero">
-    <div class="container">
-      <div class="topbar">
-        <a class="brand" href="index.html">Dev<span>Docs.</span></a>
-        <nav aria-label="Main navigation"><a href="#documentation">Documentation</a><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
+    <link rel="manifest" href="./site.webmanifest" />
+    <meta name="theme-color" content="#092e2c" />
+    <title>Dev Docs — Documentation Library</title>
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/navigation.css" />
+    <script src="./js/navigation.js" defer></script>
+  </head>
+  <body>
+    <div class="site-topbar">
+      <a class="site-brand" href="./index.html">Dev<span>Docs.</span></a>
+      <button
+        class="site-menu-toggle"
+        type="button"
+        aria-controls="site-menu"
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+      >
+        <span aria-hidden="true"></span><span aria-hidden="true"></span
+        ><span aria-hidden="true"></span>
+      </button>
+      <nav id="site-menu" class="site-menu" aria-label="Main navigation" hidden>
+        <a href="./index.html" aria-current="page">Home</a>
+        <a href="./docs/functions-handbook.html">JavaScript Functions</a>
+        <a href="./docs/regular-expressions-handbook.html"
+          >Regular Expressions</a
+        >
+      </nav>
+    </div>
+    <header class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <span class="eyebrow">Personal development library</span>
+          <h1>Everything worth keeping.<br />One place to find it.</h1>
+          <p>
+            A growing collection of practical references, cheat sheets, and
+            examples for modern web development.
+          </p>
+        </div>
       </div>
-      <div class="hero-content">
-        <span class="eyebrow">Personal development library</span>
-        <h1>Everything worth keeping.<br>One place to find it.</h1>
-        <p>A growing collection of practical references, cheat sheets, and examples for modern web development.</p>
+    </header>
+    <main class="container" id="documentation">
+      <div class="section-heading">
+        <div>
+          <h2>Documentation</h2>
+        </div>
       </div>
-    </div>
-  </header>
-  <main class="container" id="documentation">
-    <div class="section-heading">
-      <div><h2>Documentation</h2><p>Pick a topic to open its reference guide.</p></div>
-      <span class="count">1 available guide · More coming soon</span>
-    </div>
-    <div class="grid">
-      <!-- Change href to the relative path of your uploaded HTML file. -->
-      <a class="doc-card" href="./docs/functions-handbook.html">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">JS</span><span class="tag">Available</span></div>
-        <h3>JavaScript Functions</h3>
-        <p>Useful JavaScript methods and APIs, with clear explanations and practical code examples.</p>
-        <span class="card-bottom">Open guide <span aria-hidden="true">→</span></span>
-      </a>
-      <!-- To add a working guide, replace a placeholder <article> with <a class="doc-card" href="your-file.html"> ... </a>. -->
-      <a class="doc-card" href="./docs/regular-expressions-handbook.html">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">Rx</span><span class="tag soon">Coming soon</span></div>
-        <h3>Regular Expressions</h3>
-        <p>Patterns, flags, groups, lookarounds, and useful examples for everyday text processing.</p>
-        <span class="card-bottom">Open guide <span aria-hidden="true">→</span></span>
-      </a>
-      <article class="doc-card placeholder">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">CSS</span><span class="tag soon">Coming soon</span></div>
-        <h3>CSS &amp; SCSS</h3>
-        <p>Layouts, selectors, responsive techniques, mixins, and maintainable styling patterns.</p>
-        <span class="card-bottom">Guide not added yet</span>
-      </article>
-      <article class="doc-card placeholder">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">HTML</span><span class="tag soon">Coming soon</span></div>
-        <h3>HTML &amp; Accessibility</h3>
-        <p>Semantic markup, accessible components, ARIA, and frontend best practices.</p>
-        <span class="card-bottom">Guide not added yet</span>
-      </article>
-      <article class="doc-card placeholder">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">Git</span><span class="tag soon">Coming soon</span></div>
-        <h3>Git &amp; GitHub</h3>
-        <p>Daily commands, branching workflows, troubleshooting, and deployment notes.</p>
-        <span class="card-bottom">Guide not added yet</span>
-      </article>
-      <article class="doc-card placeholder">
-        <div class="card-top"><span class="card-icon" aria-hidden="true">+</span><span class="tag soon">Coming soon</span></div>
-        <h3>Your Next Guide</h3>
-        <p>A space for the next topic you want to document or reference.</p>
-        <span class="card-bottom">Guide not added yet</span>
-      </article>
-    </div>
-    <div class="note"><strong>Adding a new guide:</strong> Upload your HTML page to your GitHub Pages repository, then update the relevant card to an <code>&lt;a href="your-file.html"&gt;</code> link. Use paths relative to this index file.</div>
-  </main>
-  <footer><div class="container">DevDocs · Practical notes for everyday development.</div></footer>
-</body>
+      <div class="grid">
+        <!-- Change href to the relative path of your uploaded HTML file. -->
+        <a class="doc-card" href="./docs/functions-handbook.html">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">JS</span
+            ><span class="tag">Available</span>
+          </div>
+          <h3>JavaScript Functions</h3>
+          <p>
+            Useful JavaScript methods and APIs, with clear explanations and
+            practical code examples.
+          </p>
+          <span class="card-bottom"
+            >Open guide <span aria-hidden="true">→</span></span
+          >
+        </a>
+        <!-- To add a working guide, replace a placeholder <article> with <a class="doc-card" href="your-file.html"> ... </a>. -->
+        <a class="doc-card" href="./docs/regular-expressions-handbook.html">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">Rx</span
+            ><span class="tag soon">Coming soon</span>
+          </div>
+          <h3>Regular Expressions</h3>
+          <p>
+            Patterns, flags, groups, lookarounds, and useful examples for
+            everyday text processing.
+          </p>
+          <span class="card-bottom"
+            >Open guide <span aria-hidden="true">→</span></span
+          >
+        </a>
+        <article class="doc-card placeholder">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">CSS</span
+            ><span class="tag soon">Coming soon</span>
+          </div>
+          <h3>CSS &amp; SCSS</h3>
+          <p>
+            Layouts, selectors, responsive techniques, mixins, and maintainable
+            styling patterns.
+          </p>
+          <span class="card-bottom">Guide not added yet</span>
+        </article>
+        <article class="doc-card placeholder">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">HTML</span
+            ><span class="tag soon">Coming soon</span>
+          </div>
+          <h3>HTML &amp; Accessibility</h3>
+          <p>
+            Semantic markup, accessible components, ARIA, and frontend best
+            practices.
+          </p>
+          <span class="card-bottom">Guide not added yet</span>
+        </article>
+        <article class="doc-card placeholder">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">Git</span
+            ><span class="tag soon">Coming soon</span>
+          </div>
+          <h3>Git &amp; GitHub</h3>
+          <p>
+            Daily commands, branching workflows, troubleshooting, and deployment
+            notes.
+          </p>
+          <span class="card-bottom">Guide not added yet</span>
+        </article>
+        <article class="doc-card placeholder">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">+</span
+            ><span class="tag soon">Coming soon</span>
+          </div>
+          <h3>Your Next Guide</h3>
+          <p>A space for the next topic you want to document or reference.</p>
+          <span class="card-bottom">Guide not added yet</span>
+        </article>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        DevDocs · Practical notes for everyday development.
+      </div>
+    </footer>
+  </body>
 </html>

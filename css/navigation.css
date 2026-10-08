@@ -1,0 +1,107 @@
+.site-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  padding: 12px max(24px, calc((100% - 1100px) / 2));
+  background: #101827;
+  border-bottom: 1px solid #34435a;
+}
+
+.site-brand {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.site-brand span {
+  color: #8db6ff;
+}
+
+.site-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: max(24px, calc((100% - 1100px) / 2));
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: min(280px, calc(100% - 48px));
+  padding: 10px;
+  border: 1px solid #34435a;
+  border-radius: 10px;
+  background: #101827;
+  box-shadow: 0 12px 28px #0004;
+  gap: 4px;
+}
+
+.site-menu[hidden] {
+  display: none;
+}
+
+.site-menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 1px solid #34435a;
+  border-radius: 8px;
+  background: #101827;
+  color: #fff;
+  cursor: pointer;
+}
+
+.site-menu-toggle:hover {
+  background: #233756;
+}
+
+.site-menu-toggle span {
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+
+.site-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.site-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.site-menu a {
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #d2d9e5;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.site-menu a:hover,
+.site-menu a[aria-current="page"] {
+  background: #233756;
+  color: #fff;
+}
+
+.site-menu a[aria-current="page"] {
+  font-weight: 700;
+}
+
+.site-topbar a:focus-visible,
+.site-menu-toggle:focus-visible {
+  outline: 2px solid #8db6ff;
+  outline-offset: 3px;
+}

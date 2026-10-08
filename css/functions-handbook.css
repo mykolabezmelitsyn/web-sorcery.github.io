@@ -42,26 +42,26 @@ main {
   grid-template-columns: 230px minmax(0, 1fr);
   gap: 26px;
 }
-nav {
+#nav {
   position: sticky;
-  top: 16px;
+  top: 84px;
   align-self: start;
-  max-height: 90vh;
+  max-height: calc(100vh - 100px);
   overflow: auto;
 }
-nav a {
+#nav a {
   display: block;
   padding: 6px 10px;
   color: var(--muted);
   text-decoration: none;
   border-radius: 6px;
 }
-nav a:hover {
+#nav a:hover {
   background: #e8efff;
   color: #154ec0;
 }
 section {
-  scroll-margin-top: 20px;
+  scroll-margin-top: 88px;
   margin-bottom: 34px;
 }
 section h2 {
@@ -108,7 +108,7 @@ kbd {
   border: 1px solid #a7b5c8;
   border-radius: 9px;
   font: inherit;
-  margin-top: 16px;
+  margin-top: 24px;
 }
 .tag {
   font-size: 12px;
@@ -156,7 +156,7 @@ footer {
   main {
     display: block;
   }
-  nav {
+  #nav {
     position: static;
     max-height: none;
     display: flex;
@@ -164,7 +164,7 @@ footer {
     gap: 6px;
     margin-bottom: 20px;
   }
-  nav a {
+  #nav a {
     white-space: nowrap;
   }
   header {
@@ -179,7 +179,7 @@ footer {
     --muted: #aab9cc;
     --line: #34435a;
   }
-  nav a:hover {
+  #nav a:hover {
     background: #26395a;
     color: #d7e5ff;
   }
