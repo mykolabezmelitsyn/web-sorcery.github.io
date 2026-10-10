@@ -153,11 +153,12 @@ a.doc-card:focus-visible,
   gap: 12px;
 }
 .card-icon {
-  width: 39px;
+  min-width: 39px;
   height: 39px;
   border-radius: 10px;
   display: grid;
   place-items: center;
+  padding: 4px 8px;
   background: var(--accent-soft);
   color: var(--accent-ink);
   font-size: 1.13rem;

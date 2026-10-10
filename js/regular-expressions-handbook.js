@@ -375,17 +375,6 @@ function slug(title) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
-function updateNavActive() {
-  const links = [...nav.querySelectorAll("a")];
-  const target = decodeURIComponent(location.hash.slice(1));
-  const selected = links.find((a) => a.hash.slice(1) === target) || links[0];
-  links.forEach((a) => {
-    const active = a === selected;
-    a.classList.toggle("active", active);
-    if (active) a.setAttribute("aria-current", "location");
-    else a.removeAttribute("aria-current");
-  });
-}
 function render() {
   const q = search.value.trim().toLowerCase();
   content.replaceChildren();
@@ -450,8 +439,6 @@ function render() {
     p.textContent = "No matching patterns. Try another search.";
     content.append(p);
   }
-  updateNavActive();
 }
 search.addEventListener("input", render);
-window.addEventListener("hashchange", updateNavActive);
 render();

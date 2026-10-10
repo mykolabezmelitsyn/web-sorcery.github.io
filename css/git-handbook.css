@@ -1,0 +1,14 @@
+@import url("./regular-expressions-handbook.css");
+
+.entry .example-head { margin-top: 14px; }
+.entry .risk {
+  margin: 14px 0;
+  padding: 10px 13px;
+  border-left: 4px solid #b45309;
+  border-radius: 4px;
+  background: #fff4df;
+  color: #78350f;
+}
+@media (prefers-color-scheme: dark) {
+  .entry .risk { background: #382b1c; color: #fcd9a0; border-color: #fbbf24; }
+}

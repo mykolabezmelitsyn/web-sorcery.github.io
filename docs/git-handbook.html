@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A searchable, task-based Git command reference with practical examples and warnings for destructive operations."
+    />
+    <title>Git Reference — Practical Handbook</title>
+    <link rel="stylesheet" href="../css/git-handbook.css" />
+    <link rel="stylesheet" href="../css/navigation.css" />
+    <script src="../js/navigation.js" defer></script>
+  </head>
+  <body>
+    <div class="site-topbar">
+      <a class="site-brand" href="../index.html">Dev<span>Docs.</span></a>
+      <button
+        class="site-menu-toggle"
+        type="button"
+        aria-controls="site-menu"
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+      >
+        <span aria-hidden="true"></span><span aria-hidden="true"></span
+        ><span aria-hidden="true"></span>
+      </button>
+      <nav id="site-menu" class="site-menu" aria-label="Main navigation" hidden>
+        <a href="../index.html">Home</a>
+        <a href="../docs/functions-handbook.html">JavaScript Functions</a>
+        <a href="../docs/regular-expressions-handbook.html">Regular Expressions</a>
+        <a href="../docs/git-handbook.html" aria-current="page">Git Reference</a>
+      </nav>
+    </div>
+    <header class="hero">
+      <h1>Git Reference Handbook</h1>
+      <p>A practical command reference for everyday work: find a task, check the syntax, and copy an example.</p>
+      <a class="external" href="https://git-scm.com/docs" target="_blank" rel="noopener noreferrer">Official Git reference ↗</a>
+      <input id="search" type="search" placeholder="Search: unstage, undo, branch, stash, force…" aria-label="Search Git reference" />
+    </header>
+    <main>
+      <aside aria-label="Tasks">
+        <div class="nav-title">Tasks</div>
+        <nav id="nav" aria-label="Git tasks"></nav>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <strong>Git commands by task</strong><span id="count" role="status" aria-live="polite"></span>
+        </div>
+        <div class="tip">
+          Run commands inside your repository unless starting or cloning one.
+          Replace &lt;placeholders&gt; with your values; [brackets] mark optional arguments and | marks alternatives.
+          Examples are independent. HEAD is the current commit; origin is a remote name.
+          Check <code>git status</code> before changing work.
+          <code>switch</code> and <code>restore</code> require Git 2.23+;
+          <code>config set/list</code> require Git 2.46+ (older forms:
+          <code>git config --global key value</code> and <code>git config --list --show-origin</code>).
+        </div>
+        <noscript><p>Enable JavaScript to view and search the command reference.</p></noscript>
+        <div id="content"></div>
+      </div>
+    </main>
+    <footer>
+      Made for quick reference ·
+      <a href="../index.html">Documentation home</a> ·
+      <a href="https://git-scm.com/docs" target="_blank" rel="noopener noreferrer"
+        >Official Git documentation ↗</a
+      >
+    </footer>
+    <script src="../js/git-handbook.js"></script>
+    <script src="../js/handbook-navigation.js"></script>
+  </body>
+</html>

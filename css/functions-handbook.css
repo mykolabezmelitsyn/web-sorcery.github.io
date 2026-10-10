@@ -213,15 +213,7 @@ footer {
   outline-offset: 2px;
 }
 
-body:has(#arrays:target) #nav a[href="#arrays"],
-body:has(#strings:target) #nav a[href="#strings"],
-body:has(#objects:target) #nav a[href="#objects"],
-body:has(#numbers-math:target) #nav a[href="#numbers-math"],
-body:has(#dates-time:target) #nav a[href="#dates-time"],
-body:has(#promises-async:target) #nav a[href="#promises-async"],
-body:has(#json-collections:target) #nav a[href="#json-collections"],
-body:has(#dom-browser:target) #nav a[href="#dom-browser"],
-body:has(#function-patterns:target) #nav a[href="#function-patterns"] {
+#nav a.active {
   color: #154ec0;
   background: #dce9ff;
   font-weight: 700;
@@ -231,15 +223,7 @@ body:has(#function-patterns:target) #nav a[href="#function-patterns"] {
 /* Dark mode */
 
 @media (prefers-color-scheme: dark) {
-  body:has(#arrays:target) #nav a[href="#arrays"],
-  body:has(#strings:target) #nav a[href="#strings"],
-  body:has(#objects:target) #nav a[href="#objects"],
-  body:has(#numbers-math:target) #nav a[href="#numbers-math"],
-  body:has(#dates-time:target) #nav a[href="#dates-time"],
-  body:has(#promises-async:target) #nav a[href="#promises-async"],
-  body:has(#json-collections:target) #nav a[href="#json-collections"],
-  body:has(#dom-browser:target) #nav a[href="#dom-browser"],
-  body:has(#function-patterns:target) #nav a[href="#function-patterns"] {
+  #nav a.active {
     color: #e3edff;
     background: #304970;
   }
