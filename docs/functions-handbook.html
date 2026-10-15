@@ -44,20 +44,25 @@
       <p>
         A practical, searchable reference to the most useful built-in JavaScript
         methods, APIs, and function patterns. Every entry explains when to use
-        it and includes a realistic example.
+        it and includes two practical examples.
       </p>
-      <input
-        id="search"
-        type="search"
-        placeholder="Search: map, promises, dates, DOM, fetch…"
-        aria-label="Search functions"
-      />
+      <div class="search-control">
+        <input
+          id="search"
+          type="search"
+          placeholder="Search: map, promises, dates, DOM, fetch…"
+          aria-label="Search functions"
+          aria-controls="content"
+        />
+        <button id="clear-search" type="button" hidden>Clear search</button>
+      </div>
     </header>
     <main>
       <nav id="nav" aria-label="Topics"></nav>
       <div>
         <div class="toolbar">
-          <strong>Modern JavaScript reference</strong><span id="count"></span>
+          <strong>Modern JavaScript reference</strong>
+          <span id="count" role="status" aria-live="polite"></span>
         </div>
         <div class="tip">
           Examples use modern JavaScript (ES2022+). Browser APIs require a
