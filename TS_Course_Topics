@@ -1,0 +1,75 @@
+
+## 1. Setup
+- Why Use TypeScript
+- How To Initialize A TypeScript Project
+- Understanding The TSConfig
+
+## 2. Basic Types
+- Assigning Types And Type Inference
+- Array Type
+- Any Type
+- Object Basics
+- Types Vs Interfaces
+
+## 3. Function Types
+- Defining Functions
+- Void Type
+- Optional Parameters
+- Destructured And Rest Parameters
+- Typing Variables As Functions
+
+## 4. Type Modifiers
+- Unions
+- Intersections
+- readonly
+- keyof
+- typeof
+- Index Types
+
+## 5. Advanced Types
+- As Const And Enums
+- Tuples
+- Generics
+- Async Functions
+
+## 6. Built In Types
+- Pick And Omit
+- Partial And Required
+- ReturnType And Parameters
+- Record
+- Readonly
+- Awaited
+
+## 7. Type Narrowing
+- Basic Type Guards
+- Never Type
+- Unknown Type
+- As Casting
+- Satisfies
+- Discriminated Union
+- Function Overloads
+- Type Predicate Function
+- Assertion Function
+- Loose Autocomplete
+- Const Generics
+- Branded Types
+
+## 8. Type Programming
+- Conditional Types
+- infer
+- Conditional Types and infer Exercises
+- Template Literals
+- Mapped Types
+- Recursive Types
+
+## 9. Object Oriented Programming
+- Defining Properties
+- Implements and Abstract Classes
+- Generic Classes
+- InstanceType and ConstructorParameters
+
+## 10. Real World TypeScript
+- Debugging
+- Importing Types
+- Declaration Files
+- Advanced TSConfig Options

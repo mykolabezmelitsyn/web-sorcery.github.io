@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A beginner-to-expert GSAP handbook: core animation, timelines, ScrollTrigger, plugins, accessible motion, performance, debugging, and maintainable components."
+    />
+    <title>GSAP — Learning Handbook</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../apple-touch-icon.png"
+    />
+    <link rel="manifest" href="../site.webmanifest" />
+    <meta name="theme-color" content="#092e2c" />
+    <link rel="stylesheet" href="../css/gsap-handbook.css" />
+    <link rel="stylesheet" href="../css/navigation.css" />
+    <script src="../js/navigation.js" defer></script>
+  </head>
+  <body>
+    <div class="site-topbar">
+      <a class="site-brand" href="../index.html">Dev<span>Docs.</span></a>
+      <button
+        class="site-menu-toggle"
+        type="button"
+        aria-controls="site-menu"
+        aria-expanded="false"
+        aria-label="Open navigation menu"
+      >
+        <span aria-hidden="true"></span><span aria-hidden="true"></span
+        ><span aria-hidden="true"></span>
+      </button>
+      <nav id="site-menu" class="site-menu" aria-label="Main navigation" hidden>
+        <a href="../index.html">Home</a>
+        <a href="../docs/functions-handbook.html">JavaScript Functions</a>
+        <a href="../docs/regular-expressions-handbook.html"
+          >Regular Expressions</a
+        >
+        <a href="../docs/git-handbook.html">Git Reference</a>
+        <a href="../docs/typescript-handbook.html">TypeScript</a>
+        <a href="../docs/gsap-handbook.html" aria-current="page"
+          >GSAP Animation</a
+        >
+      </nav>
+    </div>
+    <header class="hero">
+      <h1>GSAP Learning Handbook</h1>
+      <p>
+        From your first tween to dependable animation systems. Learn the
+        essentials, practice real patterns, and explore advanced tools when you
+        need them.
+      </p>
+      <a
+        class="external"
+        href="https://gsap.com/docs/v3/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Official GSAP documentation ↗</a
+      >
+      <input
+        id="search"
+        type="search"
+        placeholder="Search: tween, timeline, ScrollTrigger, cleanup, reduced motion…"
+        aria-label="Search GSAP handbook"
+      />
+    </header>
+    <main>
+      <aside aria-label="Topics">
+        <div class="nav-title">Topics</div>
+        <nav id="nav" aria-label="GSAP learning chapters"></nav>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <strong>GSAP learning path</strong
+          ><span id="count" role="status" aria-live="polite"></span>
+        </div>
+        <div class="tip">
+          <strong>15 chapters · 57 lessons · GSAP 3.15.0.</strong>
+          Verified October 20, 2026. Basic HTML, CSS, and JavaScript are
+          helpful; no GSAP experience is assumed. Read in order, then return by
+          topic.
+          <strong>Essential</strong> lessons build the foundation;
+          <strong>Advanced</strong> lessons combine concepts;
+          <strong>Specialized</strong> lessons solve particular design problems.
+          <p>
+            Start with the complete HTML demo. Other browser examples are
+            independent body fragments: load the same GSAP core first, then add
+            the shown fragment. Plugin examples include their extra scripts;
+            module and React examples are labeled. Each chapter ends with a
+            practical checkpoint.
+          </p>
+        </div>
+        <div class="level-filter">
+          <label for="track">Learning level</label>
+          <select id="track">
+            <option value="all">All levels</option>
+            <option value="Essential">Essential</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Specialized">Specialized</option>
+          </select>
+        </div>
+        <details class="timeline-lab" id="timeline-lab">
+          <summary>Interactive lab: control a timeline’s playhead</summary>
+          <p>
+            Play, reverse, or seek the same sequence. Blue begins first; purple
+            overlaps it by starting 0.35 seconds later. Opening this lab loads
+            GSAP 3.15.0 from its CDN.
+          </p>
+          <p id="lab-status" role="status">
+            Open to load the interactive example.
+          </p>
+          <div class="lab-stage" aria-hidden="true">
+            <div class="lab-lane"><span class="lab-dot lab-first"></span></div>
+            <div class="lab-lane"><span class="lab-dot lab-second"></span></div>
+          </div>
+          <div class="lab-controls">
+            <button type="button" id="lab-play" disabled>Play</button>
+            <button type="button" id="lab-pause" disabled>Pause</button>
+            <button type="button" id="lab-reverse" disabled>Reverse</button>
+            <button type="button" id="lab-restart" disabled>Restart</button>
+          </div>
+          <label for="lab-progress"
+            >Seek the playhead <output id="lab-output">0%</output></label
+          >
+          <input
+            id="lab-progress"
+            type="range"
+            min="0"
+            max="100"
+            value="0"
+            disabled
+          />
+        </details>
+        <noscript
+          ><p>
+            Enable JavaScript to view and search the GSAP handbook.
+          </p></noscript
+        >
+        <div id="content"></div>
+      </div>
+    </main>
+    <footer>
+      Learn in order, return for reference ·
+      <a href="../index.html">Documentation home</a> ·
+      <a
+        href="https://gsap.com/docs/v3/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Official GSAP documentation ↗</a
+      >
+      ·
+      <a
+        href="https://gsap.com/community/standard-license/"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Standard license ↗</a
+      >
+    </footer>
+    <script src="../js/gsap-handbook.js"></script>
+    <script src="../js/handbook-navigation.js"></script>
+    <script src="../js/gsap-playground.js"></script>
+  </body>
+</html>

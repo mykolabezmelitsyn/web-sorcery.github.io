@@ -1,0 +1,35 @@
+@import url("./regular-expressions-handbook.css");
+
+.chapter-intro {
+  color: var(--muted);
+  margin: -6px 0 20px;
+}
+.entry h3 {
+  margin-bottom: 12px;
+}
+.entry .example-head {
+  margin-top: 18px;
+}
+.entry .syntax-summary {
+  overflow-wrap: anywhere;
+  margin: 16px 0 0;
+}
+.entry-reference {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 16px;
+}
+.exercise-solution {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.exercise-solution summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: var(--accent-ink);
+}
+summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}

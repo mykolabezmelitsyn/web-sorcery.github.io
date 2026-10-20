@@ -4,7 +4,7 @@
   --panel: #fff;
   --ink: #17212d;
   --muted: #566273;
-  --accent: #2563eb;
+  --accent: #8dabf4;
   --line: #dce2e9;
   --code: #111827;
 }
@@ -248,7 +248,7 @@ footer {
 #nav a.active {
   color: #154ec0;
   background: #dce9ff;
-  font-weight: 700;
+  font-weight: normal;
   box-shadow: inset 3px 0 0 var(--accent);
 }
 
