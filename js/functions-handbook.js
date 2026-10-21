@@ -988,6 +988,7 @@ function render(query = "") {
     p.textContent = "No matching functions. Try another search.";
     content.append(p);
   }
+  window.HandbookHighlight?.highlight(content);
 }
 search.addEventListener("input", () => render(search.value));
 clearSearch.addEventListener("click", () => {

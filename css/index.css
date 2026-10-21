@@ -21,7 +21,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font:
-    16px/1.6 system-ui,
+    18px/1.6 system-ui,
     -apple-system,
     "Segoe UI",
     sans-serif;

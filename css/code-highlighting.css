@@ -1,0 +1,83 @@
+/* IDE-style syntax colors on the handbook's existing dark code surface. */
+code[class*="language-"] .token.comment,
+code[class*="language-"] .token.prolog,
+code[class*="language-"] .token.doctype,
+code[class*="language-"] .token.cdata {
+  color: #94a3b8;
+}
+code[class*="language-"] .token.punctuation {
+  color: #cbd5e1;
+}
+code[class*="language-"] .token.property,
+code[class*="language-"] .token.attr-name,
+code[class*="language-"] .token.parameter {
+  color: #9cdcfe;
+}
+code[class*="language-"] .token.keyword,
+code[class*="language-"] .token.tag,
+code[class*="language-"] .token.atrule {
+  color: #c4a7ff;
+}
+code[class*="language-"] .token.string,
+code[class*="language-"] .token.attr-value,
+code[class*="language-"] .token.template-string > .token.string {
+  color: #f0b08b;
+}
+code[class*="language-"] .token.number,
+code[class*="language-"] .token.boolean,
+code[class*="language-"] .token.constant {
+  color: #b5cea8;
+}
+code[class*="language-"] .token.function,
+code[class*="language-"] .token.function-variable {
+  color: #dcdcaa;
+}
+code[class*="language-"] .token.class-name,
+code[class*="language-"] .token.builtin,
+code[class*="language-"] .token.namespace {
+  color: #4ec9b0;
+}
+code[class*="language-"] .token.operator,
+code[class*="language-"] .token.entity,
+code[class*="language-"] .token.url {
+  color: #d4d4d4;
+}
+code[class*="language-"] .token.regex,
+code[class*="language-"] .token.symbol,
+code[class*="language-"] .token.important {
+  color: #f5c879;
+}
+code[class*="language-"] .token.bold {
+  font-weight: 700;
+}
+code[class*="language-"] .token.italic {
+  font-style: italic;
+}
+
+/* Inline examples use the same dark surface so token contrast is consistent. */
+:not(pre) > code[class*="language-"] {
+  background: var(--code, #111827);
+  color: #e5f0ff;
+  border-radius: 4px;
+  padding: 0.12em 0.32em;
+}
+code[class*="language-"] .token.selector,
+code[class*="language-"] .token.anchor {
+  color: #c4a7ff;
+}
+code[class*="language-"] .token.variable,
+code[class*="language-"] .token.group-name {
+  color: #9cdcfe;
+}
+code[class*="language-"] .token.quantifier,
+code[class*="language-"] .token.alternation {
+  color: #f0b08b;
+}
+code[class*="language-"] .token.char-class,
+code[class*="language-"] .token.char-set {
+  color: #b5cea8;
+}
+code[class*="language-"] .token.escape,
+code[class*="language-"] .token.special-escape {
+  color: #f5c879;
+}

@@ -588,6 +588,7 @@ function render() {
     p.textContent = "No matching commands. Try a task, command, or filename.";
     content.append(p);
   }
+  window.HandbookHighlight?.highlight(content);
 }
 search.addEventListener("input", render);
 render();

@@ -3714,22 +3714,6 @@ const levels = [
   },
 ];
 (() => {
-  // Prism handles lexical syntax; these rules also distinguish property access
-  // and object/type keys in the TypeScript and JavaScript examples.
-  if (window.Prism) {
-    for (const language of ["javascript", "typescript", "tsx"]) {
-      Prism.languages.insertBefore(language, "operator", {
-        property: [
-          {
-            pattern: /(\.\s*)[A-Za-z_$][\w$]*(?![\w$]|\s*\()/,
-            lookbehind: true,
-          },
-          /\b[A-Za-z_$][\w$]*\??(?=\s*:)/,
-        ],
-      });
-    }
-    Prism.languages.shell = Prism.languages.bash;
-  }
   const content = document.querySelector("#content");
   const nav = document.querySelector("#nav");
   const search = document.querySelector("#search");
@@ -3775,7 +3759,7 @@ const levels = [
     code.className = "language-" + file.language;
     pre.append(code);
     parent.append(head, pre);
-    if (window.Prism) Prism.highlightElement(code);
+    window.HandbookHighlight?.highlight(code);
   }
   function project(level) {
     const data = level.project;

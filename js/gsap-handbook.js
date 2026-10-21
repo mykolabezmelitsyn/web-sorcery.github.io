@@ -1,908 +1,2188 @@
-const chapters = [
-  {
-    name: "1. Get oriented and set up",
-    intro:
-      "Essential · Start with basic HTML, CSS, and JavaScript. No animation-library experience is assumed. Build a mental model before choosing plugins.",
-    checkpoint:
-      "Create the first demo, change its distance and duration, and explain which part is the target and which part is animation configuration.",
-    lessons: [
-      {
-        name: "What GSAP does",
-        explanation:
-          "GSAP (GreenSock Animation Platform) changes JavaScript property values over time. A tween animates targets; a timeline arranges tweens and controls them together. CSS animation support is included in core. Plugins add tasks such as scroll triggers or SVG morphing. Start with this complete HTML file: its button moves and rotates the tile.\n\nA target is the thing being changed; a property is an attribute such as position or opacity. A tween interpolates between values, meaning it calculates intermediate values over time. A playhead is the current position in an animation’s time. A timeline coordinates child playheads; a plugin adds a capability to core. Nothing here requires a framework.\n\nChoose GSAP when sequencing, interruption, or coordinated state changes make a CSS transition awkward. CSS is still a good choice for simple hover transitions. Start by editing this standalone file, then learn the smaller fragments below.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/",
-        kind: "html",
-        code: '<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>My first GSAP animation</title>\n  <style>\n    body { padding: 32px; font: 16px system-ui; }\n    .box { width: 72px; height: 72px; background: #2563eb;\n            border-radius: 12px; margin: 24px 0; }\n  </style>\n</head>\n<body>\n  <button type="button" id="play">Animate</button>\n  <div class="box" aria-hidden="true"></div>\n  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n  <script>\n    document.querySelector("#play").addEventListener("click", () => {\n      gsap.fromTo(".box", { x: 0, rotation: 0 }, {\n        x: 160, rotation: 180, duration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 0.8,\n        ease: "power2.out", overwrite: "auto"\n      });\n    });\n  </script>\n</body>\n</html>',
-        syntax: "gsap → Tween → Timeline → optional plugins",
-      },
-      {
-        name: "Install with npm and register plugins",
-        explanation:
-          "For a bundled app, install gsap and import only the plugins you use. Register imported plugins before use. Keep core and plugins on the same version. GSAP 3.13+ distributes the formerly Club plugins through public npm; older private-registry instructions are obsolete. The rest of this guide uses browser fragments with core already loaded, except explicitly marked module and React examples.\n\nUse either script tags or module imports for a given setup, rather than loading core twice. A bundler resolves package imports such as gsap/ScrollTrigger; a plain browser script does not resolve them by itself. In a production project, pin a tested release, commit the lockfile, and include only the plugins you need. The CDN examples in this guide pin both core and plugins to 3.15.0.",
-        level: "Essential",
-        requires: "npm + a JavaScript bundler; ScrollTrigger",
-        source: "https://gsap.com/docs/v3/Installation/",
-        kind: "module",
-        code: '// Terminal: npm install gsap@3.15.0\n// app.js — process with a bundler such as Vite.\n// HTML: <div class="box">Hello GSAP</div>\nimport { gsap } from "gsap";\nimport { ScrollTrigger } from "gsap/ScrollTrigger";\n\ngsap.registerPlugin(ScrollTrigger);\ngsap.from(".box", {\n  y: 40, opacity: 0, duration: 0.6,\n  scrollTrigger: { trigger: ".box", start: "top 85%" }\n});\nconsole.log(gsap.version);',
-        practice:
-          "Replace the CDN setup with module imports in a small bundled app. Check gsap.version before adding an effect.",
-        syntax: "npm install gsap@3.15.0",
-      },
-      {
-        name: "Version and license boundaries",
-        explanation:
-          "This handbook targets GSAP 3.15.0, verified against the official package metadata and current docs on October 20, 2026. Use gsap rather than legacy GSAP 2 names such as TweenMax and TimelineMax. context() and matchMedia() need 3.11+; the SplitText autoSplit/onSplit examples need 3.13+; easeReverse needs 3.15+.\n\nGSAP and its formerly members-only plugins are available at no charge, including for permitted commercial projects, under the standard GSAP license. This is a custom license with restrictions, including certain competing visual animation builders; no-charge availability does not mean unrestricted redistribution or MIT licensing. Consult the linked license for the actual terms. Importing a plugin remains necessary even when it is available in the package.",
-        level: "Essential",
-        requires: "GSAP 3.15.0 reference; standard GSAP license",
-        source: "https://gsap.com/community/standard-license/",
-        kind: "html",
-      },
-      {
-        name: "Choose targets and understand the vars object",
-        explanation:
-          "Targets can be a CSS selector, element, array, NodeList, or plain object. A selector animates every match. The vars object mixes animated properties with settings such as duration and callbacks. Durations and delays use seconds. Run your code after its elements exist; a missing selector has nothing to animate.\n\nA vars object is just a JavaScript object holding animated values and special settings. When omitted, duration is 0.5 seconds and ease is power1.out. Use explicit values while learning. HTML fragments in this handbook assume the core script from the first lesson has loaded and that the shown elements exist before their script runs. Each fragment is a separate example, so repeated class names are intentional.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.to()/",
-        kind: "html",
-        code: '<p class="item">One</p>\n<p class="item">Two</p>\n\n<script>\nconst items = document.querySelectorAll(".item");\ngsap.to(items, {\n  x: 32, color: "#2563eb", duration: 0.7,\n  onComplete: () => console.log("Both items finished")\n});\n</script>',
-        syntax: "gsap.to(targets, { properties, duration, ease, ... })",
-      },
+/* Content follows gsap-mastery-roadmap.md; examples are displayed, never executed. */
+const handbook = {
+  stages: [
+    {
+      number: 1,
+      stage: "Beginner",
+      name: "GSAP Fundamentals",
+      projects: [
+        {
+          name: "Animated buttons with hover effects.",
+          brief:
+            "Pair pointer hover with keyboard focus and reverse the same tween on exit.",
+          acceptance:
+            "Rapid enter/leave does not stack tweens; reduced motion keeps a visible focus state.",
+        },
+        {
+          name: "A loading spinner.",
+          brief:
+            "Animate a decorative spinner with a linear repeat, plus explicit start/stop ownership.",
+          acceptance:
+            "The loading message remains readable; stopping removes the repeating tween; reduced motion uses a static indicator.",
+        },
+        {
+          name: "Cards appearing with stagger.",
+          brief: "Reveal a group of cards with one modest stagger.",
+          acceptance:
+            "The last card does not wait unnecessarily; disabling motion leaves every card visible.",
+        },
+        {
+          name: "A notification appearing and disappearing.",
+          brief:
+            "Show a notification immediately, animate its entrance, and provide a dismiss control.",
+          acceptance:
+            "The message is announced once; essential content is not removed before it can be read.",
+        },
+        {
+          name: "An animated mobile menu.",
+          brief:
+            "Start with an accessible disclosure button and controlled mobile navigation, then animate its panel.",
+          acceptance:
+            "aria-expanded, hidden/inert behavior, Escape, and focus all match the current state during rapid toggling.",
+        },
+        {
+          name: "A hero section with animated heading and buttons.",
+          brief:
+            "Choreograph a heading, description, and calls to action with a shared timing system.",
+          acceptance:
+            "Content and buttons remain usable without motion; the primary message receives attention first.",
+        },
+      ],
+      goal: "Understand GSAP's core API and confidently build simple animations.",
+      milestone:
+        "You can create simple animations without copying examples from tutorials.",
+      chapters: [1, 2, 3, 4, 5, 6],
+    },
+    {
+      number: 2,
+      stage: "Intermediate",
+      name: "Timelines, Interaction, and Scroll",
+      projects: [
+        {
+          name: "Animated navigation with dropdowns.",
+          brief:
+            "Create navigation disclosures with one controller per dropdown and a shared close policy.",
+          acceptance:
+            "Pointer, keyboard, touch, Escape, and switching between dropdowns all work without animation conflicts.",
+        },
+        {
+          name: "Scroll-reveal landing page.",
+          brief:
+            "Combine independent one-time reveals with stable trigger containers.",
+          acceptance:
+            "Images/fonts do not leave stale boundaries; content remains visible under reduced motion.",
+        },
+        {
+          name: "Sticky storytelling sections.",
+          brief:
+            "Give each narrative scene one pinned timeline and retain a natural-flow fallback.",
+          acceptance:
+            "No nested pin ownership conflicts; content remains readable at narrow widths and browser zoom.",
+        },
+        {
+          name: "Horizontal-scrolling gallery.",
+          brief:
+            "Adapt Chapter 11’s measured track and use media conditions to choose pinning only when useful.",
+          acceptance:
+            "Travel matches the actual track width; resizing clears old pin spacers and transforms.",
+        },
+        {
+          name: "Parallax product presentation.",
+          brief:
+            "Use restrained layer offsets to support the product story rather than move every element.",
+          acceptance:
+            "Reduced motion removes depth travel; layout dimensions are reserved before assets load.",
+        },
+        {
+          name: "Interactive accordion and tabs.",
+          brief:
+            "Keep accordion and tab state semantic, then add cancelable transitions.",
+          acceptance:
+            "Only the selected tab panel is active; rapid switching and keyboard operation preserve focus and visible content.",
+        },
+        {
+          name: "Complete responsive landing page with GSAP animations.",
+          brief:
+            "Assemble navigation, reveals, and a single scroll story through explicit mount/destroy functions.",
+          acceptance:
+            "No duplicate triggers after remount; mobile, reduced motion, and keyboard navigation pass a full review.",
+        },
+      ],
+      goal: "Build coordinated animations and interactive components that work reliably on real websites.",
+      milestone:
+        "You can independently animate a full landing page with coordinated interactions and scroll effects.",
+      chapters: [7, 8, 9, 10, 11, 12],
+    },
+    {
+      number: 3,
+      stage: "Advanced",
+      name: "Plugins and Complex Animations",
+      projects: [
+        {
+          name: "Animated portfolio with sophisticated page transitions.",
+          brief:
+            "Retain page content through an exit phase, coordinate router navigation, then animate entry.",
+          acceptance:
+            "Canceled navigation, focus restoration, history, and no-motion behavior are defined and tested.",
+        },
+        {
+          name: "SVG logo animation.",
+          brief:
+            "Combine a stroke reveal, a deliberate path morph, and a final stable logo state.",
+          acceptance:
+            "The SVG scales through its viewBox, has a meaningful accessible name if needed, and restores cleanly.",
+        },
+        {
+          name: "Product configurator with animated state changes.",
+          brief:
+            "Represent product choices as application state and use FLIP for layout changes.",
+          acceptance:
+            "Rapid changes preserve the latest selection; price and form state do not depend on animation completion.",
+        },
+        {
+          name: "Draggable carousel with inertia.",
+          brief:
+            "Use Draggable with InertiaPlugin as one input mechanism for a selected-item controller.",
+          acceptance:
+            "Buttons and keyboard offer equivalent navigation; bounds and snap targets recompute on resize.",
+        },
+        {
+          name: "Full-screen animated navigation.",
+          brief:
+            "Sequence panel, links, and backdrop while keeping disclosure and focus behavior explicit.",
+          acceptance:
+            "Escape closes immediately or through a guaranteed exit; background controls cannot receive focus while modal.",
+        },
+        {
+          name: "Animated text-based landing page.",
+          brief:
+            "Use responsive SplitText line/word reveals and a consistent typography rhythm.",
+          acceptance:
+            "Font loading and width changes re-split safely; accessible text and nested semantics remain correct.",
+        },
+        {
+          name: "Interactive product storytelling website.",
+          brief:
+            "Combine text, SVG, and a measured timeline into a product narrative.",
+          acceptance:
+            "The scene has a useful static version and one owner for each animated property.",
+        },
+        {
+          name: "Multi-section scroll experience with pinned content.",
+          brief:
+            "Coordinate pinned sections in document order and use labels for narrative beats.",
+          acceptance:
+            "Refresh after assets settle; avoid overlapping pin ownership; provide mobile and reduced-motion alternatives.",
+        },
+      ],
+      goal: "Build sophisticated animations such as those found on creative agency websites and interactive product experiences.",
+      milestone:
+        "You can reproduce complex animation references and combine multiple GSAP plugins confidently.",
+      chapters: [13, 14, 15, 16, 17, 18, 19, 20],
+    },
+    {
+      number: 4,
+      stage: "Expert",
+      name: "Animation Engineering and Architecture",
+      projects: [
+        {
+          name: "A reusable GSAP-powered animation library.",
+          brief:
+            "Extract tokens, typed factories, controllers, and ownership contracts into a reusable package.",
+          acceptance:
+            "Public APIs have tests, documentation, supported-version notes, and initialization/refresh/destroy guarantees.",
+        },
+        {
+          name: "A complete animated component collection.",
+          brief:
+            "Implement buttons, disclosures, dialogs, tabs, and carousels around semantic state first.",
+          acceptance:
+            "Two instances do not cross-target; focus, rapid input, cleanup, and no-motion behavior are tested.",
+        },
+        {
+          name: "A high-performance interactive portfolio.",
+          brief:
+            "Budget the rendering cost of each scene and remove effects that do not support the content.",
+          acceptance:
+            "Profile representative mobile hardware, reserve asset dimensions, and verify no leaked frame loops or triggers.",
+        },
+        {
+          name: "An animated e-commerce product experience.",
+          brief:
+            "Use product state to drive image changes, cart feedback, and a restrained configurator transition.",
+          acceptance:
+            "Price, selection, forms, focus, and error handling work with every animation disabled.",
+        },
+        {
+          name: "A sophisticated React application with coordinated transitions.",
+          brief:
+            "Use scoped useGSAP hooks, contextSafe events, and route-aware controllers.",
+          acceptance:
+            "Strict Mode, state changes, conditional removal, route cancellation, and reduced motion do not leak or strand content.",
+        },
+        {
+          name: "An interactive 3D product presentation.",
+          brief:
+            "Create an accessible HTML product story alongside a renderer-owned 3D scene.",
+          acceptance:
+            "One render loop, resource disposal, asset loading states, keyboard controls, and a lower-cost fallback are documented.",
+        },
+        {
+          name: "A production-ready website with advanced scroll effects, accessibility, and performance optimization.",
+          brief:
+            "Integrate responsive scroll scenes through typed controllers and test the whole site lifecycle.",
+          acceptance:
+            "Automated behavior checks, asset refresh, reduced motion, keyboard use, performance profiling, and remount tests pass.",
+        },
+      ],
+      goal: "Build maintainable, accessible, high-performance animation systems suitable for production applications.",
+      milestone:
+        "You can architect, implement, debug, and optimize complex animation systems independently.",
+      chapters: [21, 22, 23, 24, 25, 26, 27, 28, 29],
+    },
+  ],
+  chapters: [
+    {
+      number: 1,
+      name: "Introduction to GSAP",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "What GSAP is and how it works.",
+        "GSAP vs CSS transitions and keyframe animations.",
+        "GSAP vs the Web Animations API (WAAPI).",
+        "When to use GSAP and when CSS is sufficient.",
+        "Installing GSAP using npm.",
+        "Using GSAP through a CDN.",
+        "Importing GSAP with JavaScript ES modules.",
+        "Integrating GSAP with Vite.",
+        "Understanding the GSAP core and plugin architecture.",
+        "Registering plugins with `gsap.registerPlugin()`.",
+      ],
+      lessons: [
+        {
+          name: "Choose the right animation tool",
+          explanation:
+            "GSAP updates properties over time. A tween calculates intermediate values between a start and an end; a timeline arranges several tweens around one playhead. The playhead is the current time inside an animation. Core handles CSS animation and plain numeric JavaScript properties; plugins add specialized behavior.\n\nUse a CSS transition for a simple hover state. CSS keyframes suit a self-contained repeating effect. The Web Animations API (WAAPI) offers native JavaScript playback control. GSAP is useful when sequencing, reversing, interruption, dynamic values, or scroll integration becomes central. None of these choices replaces semantic HTML or good layout. This complete first file animates a decorative box only when its button is activated, and respects reduced motion.",
+          files: [
+            {
+              name: "index.html",
+              code: '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <title>First GSAP animation</title>\n    <style>\n      body {\n        padding: 24px;\n        font: 16px system-ui;\n      }\n      .box {\n        width: 72px;\n        height: 72px;\n        background: #2563eb;\n        margin-top: 24px;\n      }\n    </style>\n  </head>\n  <body>\n    <button id="play" type="button">Animate</button>\n    <div class="box" aria-hidden="true"></div>\n    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n    <script>\n      document.querySelector("#play").addEventListener("click", () => {\n        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;\n        gsap.to(".box", {\n          x: 160,\n          rotation: 90,\n          duration: reduce ? 0 : 0.8,\n          ease: "power2.out",\n          overwrite: "auto"\n        });\n      });\n    </script>\n  </body>\n</html>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/get-started/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Install once, then register the plugins you use",
+          explanation:
+            "For a Vite project, install GSAP from public npm and import its ES modules. Vite serves and bundles modules; it does not change GSAP’s animation model. For a plain HTML experiment, the previous example uses the pinned CDN distribution. Choose one installation approach per example, and keep core and plugin versions aligned.\n\nRegister imported plugins explicitly so bundlers retain them and GSAP knows their capabilities. CSSPlugin is included with the normal gsap import. Public npm includes the formerly paid plugins in GSAP 3.13 and later; older private-registry tutorials are outdated. Availability is subject to GSAP’s standard license, not an MIT license. The live license page redirected to the forums outage during verification; consult its current terms for licensing decisions.",
+          files: [
+            {
+              name: "commands.sh",
+              code: "npm create vite@latest motion-study -- --template vanilla\ncd motion-study\nnpm install\nnpm install gsap@3.15.0\nnpm run dev",
+              language: "shell",
+            },
+            {
+              name: "src/main.js",
+              code: 'import { gsap } from "gsap";\nimport { ScrollTrigger } from "gsap/ScrollTrigger";\ngsap.registerPlugin(ScrollTrigger);\n// In index.html: <div class="box">Hello</div>\ngsap.to(".box", { x: 80, duration: 0.6 });',
+              language: "js",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Installation/",
+          requires:
+            "Terminal + Node supported by your chosen Vite version; Vite vanilla project",
+          note: "GSAP 3.13+ uses public npm for all plugins. Reference examples pin 3.15.0; Vite’s template is intentionally selected at setup time.",
+        },
+      ],
+      checkpoint:
+        "Build the first file from a blank document, then switch between a CDN and a Vite installation without loading core twice.",
+      specialization: false,
+    },
+    {
+      number: 2,
+      name: "Tweens — The Foundation of GSAP",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "What a tween is.",
+        "`gsap.to()`",
+        "`gsap.from()`",
+        "`gsap.fromTo()`",
+        "`gsap.set()`",
+        "Understanding animation targets.",
+        "Animating single and multiple elements.",
+        "Animating numeric JavaScript object properties.",
+        "Using CSS selectors and DOM references.",
+        "Core tween properties:",
+        "`duration`",
+        "`delay`",
+        "`ease`",
+        "`repeat`",
+        "`repeatDelay`",
+        "`yoyo`",
+        "`paused`",
+        'Relative values such as `"+=100"` and `"-=50"`.',
+        "Function-based animation values.",
+        "Understanding `immediateRender`.",
+      ],
+      lessons: [
+        {
+          name: "Targets and the four core methods",
+          explanation:
+            "A target can be a selector, a DOM element, an array of targets, or a plain object. A selector may match several elements; it does not create missing elements. Query only after the DOM exists. to reads the current value and animates to the destination. from starts at the supplied value and ends at the original value. fromTo supplies both ends. set applies values immediately.\n\nThe example gives three independent boxes different paths. Using a DOM reference is useful when a component must own exactly one element; scoped selectors become important later. Avoid having CSS transitions and GSAP both animate the same transform at once.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box a">to</div>\n<div class="box b">from</div>\n<div class="box c">fromTo</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  gsap.set(".a", { x: 0 });\n  gsap.to(".a", { x: 140, duration: 1 });\n  gsap.from(".b", { x: -40, opacity: 0, duration: 1 });\n  const third = document.querySelector(".c");\n  gsap.fromTo(\n    third,\n    { x: 0, rotation: -15 },\n    { x: 140, rotation: 0, duration: 1 }\n  );\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.to()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Timing, repetition, and dynamic values",
+          explanation:
+            "duration, delay, and repeatDelay use seconds. ease changes how progress is distributed. repeat counts additional iterations; repeat: 1 plays twice, and -1 repeats indefinitely. yoyo alternates direction; paused creates an animation without starting it. Relative values such as +=100 are evaluated from the starting property value.\n\nA function-based value receives the target index, target, and targets array. It is evaluated when the tween initializes, not continuously on every frame. Here the paused group starts on click, travels different distances, repeats once, and returns because of yoyo. Repeated clicks restart the same tween instead of adding competing copies.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="start">Start</button>\n<div class="tile">One</div>\n<div class="tile">Two</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const tween = gsap.to(".tile", {\n    x: index => 80 + index * 40,\n    rotation: "+=20",\n    duration: 0.7,\n    delay: 0.15,\n    ease: "power2.out",\n    repeat: 1,\n    repeatDelay: 0.2,\n    yoyo: true,\n    paused: true\n  });\n  document.querySelector("#start").onclick = () => tween.restart(true);\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Tween/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Plain objects and immediate rendering",
+          explanation:
+            "GSAP can animate numeric object properties independently of the DOM. Use onUpdate when another renderer needs the changing value. The counter example writes text, but an object can also drive canvas or WebGL. Avoid expensive application rendering on every frame.\n\nfrom and fromTo normally apply their starting values immediately, even if scheduled for later. That can cause a flash or overwrite another animation’s starting state. For a delayed fromTo, immediateRender: false postpones that initial write. It does not make the tween’s future values reactive; use invalidate or a fresh tween when measurements change.",
+          files: [
+            {
+              name: "body.html",
+              code: '<output id="counter">0</output>\n<div class="box">Wait</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const state = { count: 0 };\n  const output = document.querySelector("#counter");\n  gsap.to(state, {\n    count: 100,\n    duration: 1,\n    ease: "none",\n    onUpdate: () => {\n      output.textContent = String(Math.round(state.count));\n    }\n  });\n  gsap.fromTo(\n    ".box",\n    { x: -80 },\n    {\n      x: 120,\n      delay: 1,\n      duration: 0.8,\n      immediateRender: false\n    }\n  );\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/immediateRender/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Explain to/from/fromTo/set; pause a repeating yoyo tween and predict its destination before running it.",
+      specialization: false,
+    },
+    {
+      number: 3,
+      name: "CSS Properties and Transformations",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "Animating `x` and `y`.",
+        "Animating `xPercent` and `yPercent`.",
+        "Animating `rotation`, `rotationX`, and `rotationY`.",
+        "Animating `scale`, `scaleX`, and `scaleY`.",
+        "Animating `skewX` and `skewY`.",
+        "Understanding `transformOrigin`.",
+        "Animating `opacity` and `autoAlpha`.",
+        "Animating colors and backgrounds.",
+        "Animating dimensions and CSS variables.",
+        "Understanding 2D vs 3D transformations.",
+        "Working with `perspective` and `transformPerspective`.",
+        "Understanding transform composition and avoiding CSS conflicts.",
+      ],
+      lessons: [
+        {
+          name: "Transforms, percentages, and origins",
+          explanation:
+            "x and y are translation distances, normally pixels for numeric values. xPercent and yPercent use the animated element’s own dimensions, so -50 centers an element around its positioning point. rotation is around the Z axis; rotationX and rotationY tilt in 3D. scale, scaleX, and scaleY resize visually, without changing layout dimensions. skewX and skewY slant an element.\n\ntransformOrigin chooses the pivot. GSAP composes these transform components; do not also replace transform through another animation system. A parent’s perspective affects its children’s 3D scene; transformPerspective sets perspective on the transformed element itself. Use subtle 3D motion and test text legibility.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="scene"><div class="box">Pivot</div></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .scene {\n    perspective: 800px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  gsap.set(".box", {\n    transformOrigin: "left center",\n    transformPerspective: 600\n  });\n  gsap.to(".box", {\n    x: 100,\n    y: 20,\n    xPercent: 10,\n    yPercent: 0,\n    rotation: 8,\n    rotationY: 25,\n    rotationX: 5,\n    scaleX: 1.1,\n    scaleY: 0.95,\n    skewX: 4,\n    skewY: 0,\n    duration: 1,\n    ease: "power2.out"\n  });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/CorePlugins/CSS/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Visibility, color, dimensions, and CSS custom properties",
+          explanation:
+            "opacity changes transparency but leaves an element able to receive focus and pointer input. autoAlpha combines opacity with visibility; neither property is a complete dialog or disclosure implementation. hidden, inert, focus, and aria-expanded belong to application state and need deliberate handling.\n\nGSAP can interpolate colors, widths, heights, and CSS custom properties. Width and height can cause layout on each frame; prefer transforms when only the visual appearance needs to change. The custom property below controls a decorative glow, while backgroundColor and opacity provide straightforward feedback. Reserve dimensions for cases where surrounding layout must actually move.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box">Color</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .box {\n    --glow: 0px;\n    box-shadow: 0 0 var(--glow) #7c3aed;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  gsap.fromTo(\n    ".box",\n    { autoAlpha: 0, "--glow": "0px" },\n    {\n      autoAlpha: 1,\n      backgroundColor: "#7c3aed",\n      "--glow": "18px",\n      duration: 0.8\n    }\n  );\n  // When a real layout change is required:\n  // gsap.to(".box", { width: 160, height: 100, duration: 0.4 });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/CorePlugins/CSS/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Use a different transform origin and percentage translation; verify the layout box has not changed.",
+      specialization: false,
+    },
+    {
+      number: 4,
+      name: "Easing Functions",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "What easing is and why it matters.",
+        "`none`",
+        "`power1` through `power4`",
+        "`back`",
+        "`bounce`",
+        "`elastic`",
+        "`circ`",
+        "`expo`",
+        "`sine`",
+        "`steps()`",
+        "Understanding `.in`, `.out`, and `.inOut`.",
+        "Choosing easing based on interaction and visual intent.",
+        "Using the GSAP Ease Visualizer.",
+      ],
+      lessons: [
+        {
+          name: "Understand the easing families",
+          explanation:
+            "Easing maps elapsed progress to animation progress. none is linear and useful for continuous rotation or scroll-scrubbed travel. power1 through power4 give increasingly pronounced acceleration or deceleration. .in accelerates, .out decelerates, and .inOut does both. A short power2.out is a useful first choice for direct UI feedback.\n\nback overshoots, bounce imitates rebounds, and elastic oscillates. circ, expo, and sine offer distinct smooth curves. steps(6) produces discrete jumps. These are visual curves, not physical collision simulations. Compare them in the official Ease Visualizer and choose an effect that supports the interface’s intent; strong overshoot is rarely appropriate for long text or large viewport movement.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="tile">Power</div>\n<div class="tile">Back</div>\n<div class="tile">Steps</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  ["power2.out", "back.out(1.4)", "steps(6)"].forEach((ease, index) => {\n    gsap.to(document.querySelectorAll(".tile")[index], {\n      x: 160,\n      duration: 1.2,\n      ease\n    });\n  });\n  // Other choices: "sine.inOut", "circ.out", "expo.out",\n  // "bounce.out", "elastic.out(1, 0.4)", "power4.inOut", "none".\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Eases/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Compare linear, power2.out, and back.out at the same distance and duration, then justify one for a button.",
+      specialization: false,
+    },
+    {
+      number: 5,
+      name: "Stagger Animations",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "What staggering means.",
+        "Basic `stagger` configuration.",
+        "Staggering with numeric values.",
+        "Using `each` and `amount`.",
+        '`from: "start"`, `"center"`, `"end"`, `"edges"`, `"random"`.',
+        "Grid-based stagger animations.",
+        "Custom stagger easing.",
+        "Function-based stagger values.",
+        "Creating cascading and wave-like effects.",
+      ],
+      lessons: [
+        {
+          name: "Stagger a group without creating a manual timer loop",
+          explanation:
+            "A stagger offsets the start times of targets in one tween. A numeric stagger is the gap between starts. each supplies that gap explicitly; amount distributes starts across a total span. from chooses the origin: start, center, end, edges, random, or a numeric index. A stagger ease changes how offsets are distributed, independently of the tween’s own ease.\n\nFor a grid, specify rows/columns or use grid: auto when GSAP can infer them from layout. A function-based stagger returns the start offset for each target. The example creates a wave from the center; modest distances and a small amount prevent the last item from feeling delayed.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="grid">\n  <div class="tile">1</div>\n  <div class="tile">2</div>\n  <div class="tile">3</div>\n  <div class="tile">4</div>\n  <div class="tile">5</div>\n  <div class="tile">6</div>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .grid {\n    display: grid;\n    grid-template-columns: repeat(3, 96px);\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  gsap.from(".tile", {\n    y: 24,\n    opacity: 0,\n    duration: 0.5,\n    ease: "power2.out",\n    stagger: { amount: 0.4, from: "center", grid: [2, 3], ease: "sine.inOut" }\n  });\n  // Alternatives: stagger: 0.08 or { each: 0.08, from: "edges" }.\n  // Function alternative: stagger: index => index * 0.08.\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Tween/vars#stagger",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Change the grid dimensions and stagger origin; predict which target starts last.",
+      specialization: false,
+    },
+    {
+      number: 6,
+      name: "Basic Animation Callbacks",
+      stage: "Beginner",
+      level: 1,
+      topics: [
+        "`onStart`",
+        "`onUpdate`",
+        "`onComplete`",
+        "`onRepeat`",
+        "`onReverseComplete`",
+        "Passing callback parameters.",
+        "Triggering JavaScript functions from animations.",
+        "Synchronizing animation with UI state.",
+      ],
+      lessons: [
+        {
+          name: "Callbacks connect motion to application behavior",
+          explanation:
+            "onStart runs when an animation begins, onUpdate on updates, onRepeat at repeat boundaries, onComplete at its forward end, and onReverseComplete at its reverse end. Callback parameters can be supplied through the corresponding Params option. A timeline call schedules an arbitrary function, which is covered in Chapter 7.\n\nKeep high-frequency callbacks small. Do not announce a screen-reader message on every update or use animation completion as the only way an essential action can succeed. Here a button reverses the same tween and a polite status reports only completed transitions. If animation is disabled, the application still needs to commit the same logical state.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="toggle">Move / return</button>\n<div class="box" aria-hidden="true"></div>\n<p id="status" role="status"></p>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const status = document.querySelector("#status");\n  const report = message => {\n    status.textContent = message;\n  };\n  const tween = gsap.to(".box", {\n    x: 140,\n    duration: 0.7,\n    paused: true,\n    onStart: () => console.log("Started"),\n    onUpdate: () => {}, // Keep per-frame work small.\n    onRepeat: () => console.log("Repeated"),\n    onComplete: report,\n    onCompleteParams: ["Moved"],\n    onReverseComplete: report,\n    onReverseCompleteParams: ["Returned"]\n  });\n  let moved = false;\n  document.querySelector("#toggle").onclick = () => {\n    moved = !moved;\n    moved ? tween.play() : tween.reverse();\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Tween/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Reverse a tween halfway through and verify completion messages describe the actual settled state.",
+      specialization: false,
+    },
+    {
+      number: 7,
+      name: "GSAP Timelines",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "`gsap.timeline()`",
+        "Adding tweens to timelines.",
+        "Chaining `.to()`, `.from()`, and `.fromTo()`.",
+        "Timeline defaults.",
+        "Understanding the position parameter:",
+        "Absolute positions.",
+        'Relative positions: `"+="`, `"-="`.',
+        'Overlapping animations with `"<"` and `">"`.',
+        'Offsets such as `"<0.2"` and `">-0.3"`.',
+        "Timeline labels.",
+        "`addLabel()`.",
+        "`add()`.",
+        "`call()`.",
+        "Nested timelines.",
+        "Reusable animation functions.",
+        "Controlling complex animation sequences.",
+        "Combining sequential and simultaneous animations.",
+      ],
+      lessons: [
+        {
+          name: "Sequence with positions and labels",
+          explanation:
+            "A timeline coordinates children under one playhead. Chained to, from, and fromTo calls append at the end unless you supply a position. A number is an absolute time in seconds. +=0.2 and -=0.2 are relative to the timeline’s end. < refers to the most recently added animation’s start; > refers to its end. <0.2 and >-0.3 add offsets to those anchors.\n\nLabels name meaningful points, so later edits do not require recalculating every timestamp. addLabel defines one, add inserts an animation or nested timeline, and call schedules a function. Timeline defaults supply shared child settings; explicit child values override them. Watch the overlapping starts in this example.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box a">A</div>\n<div class="box b">B</div>\n<div class="box c">C</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const tl = gsap.timeline({\n    defaults: { duration: 0.6, ease: "power2.out" }\n  });\n  tl.to(".a", { x: 140 }, 0)\n    .from(".b", { x: -40, opacity: 0 }, "<0.2")\n    .addLabel("finish", "+=0.2")\n    .fromTo(".c", { x: 0 }, { x: 140, immediateRender: false }, "finish")\n    .call(() => console.log("Sequence complete"), [], ">")\n    .to(".a", { rotation: 20 }, "finish+=0.1");\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/position-parameter/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Compose reusable sequences",
+          explanation:
+            "A timeline factory returns a timeline rather than starting unrelated tweens in several modules. This makes sequencing, reversal, and testing easier. Build child timelines paused only when they will be controlled independently; a paused child will remain paused when placed in a parent. Scope targets to the owning component.\n\nNested timelines provide separate internal timing while the parent controls the whole sequence. The factory below creates a two-part entrance. Both components can overlap, or the second can start after the first. Keep application state changes outside decorative factories unless that dependency is explicit.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="feature">\n  <div class="tile">Title</div>\n  <p>Supporting text.</p>\n</div>\n<div class="feature">\n  <div class="tile">Next</div>\n  <p>Another feature.</p>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  function entrance(root) {\n    const select = gsap.utils.selector(root);\n    return gsap\n      .timeline({ defaults: { duration: 0.5 } })\n      .from(select(".tile"), { y: 20, opacity: 0 })\n      .from(select("p"), { y: 10, opacity: 0 }, "<0.15");\n  }\n  const sections = document.querySelectorAll(".feature");\n  const master = gsap.timeline();\n  master.add(entrance(sections[0]), 0);\n  master.add(entrance(sections[1]), ">-0.2");\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Timeline/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Add a labeled nested timeline and move its label without rewriting its internal timings.",
+      specialization: false,
+    },
+    {
+      number: 8,
+      name: "Playback and Animation Control",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "`play()`",
+        "`pause()`",
+        "`resume()`",
+        "`reverse()`",
+        "`restart()`",
+        "`seek()`",
+        "`progress()`",
+        "`totalProgress()`",
+        "`timeScale()`",
+        "`reversed()`",
+        "`isActive()`",
+        "`kill()`",
+        "`invalidate()`",
+        "`revert()`",
+        "Understanding animation progress vs total progress.",
+        "Controlling animations with buttons, sliders, and events.",
+        "Handling interrupted animations.",
+      ],
+      lessons: [
+        {
+          name: "Control a single playhead",
+          explanation:
+            "play moves forward, pause stops time, resume continues in the current direction, reverse moves backward, and restart returns to the beginning and plays. seek moves to a time or label. progress is the current iteration’s normalized position from 0 to 1; totalProgress includes repeats and repeat delays. timeScale changes playback speed without rewriting durations. reversed queries or sets direction, and isActive reports whether the animation is currently playing on an active parent.\n\nFor a repeating tween, progress(1) is not equivalent to reaching its final repeated end. The slider below seeks a non-repeating timeline with callbacks suppressed; its output is a learning tool rather than application state.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="play">Play</button><button id="pause">Pause</button\n><button id="back">Reverse</button><button id="restart">Restart</button\n><label\n  >Progress\n  <input id="seek" type="range" min="0" max="1" step="0.01" value="0"\n/></label>\n<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const slider = document.querySelector("#seek");\n  const tl = gsap.timeline({\n    paused: true,\n    onUpdate: () => {\n      slider.value = String(tl.progress());\n    }\n  });\n  tl.to(".box", { x: 180, duration: 1, ease: "none" }).to(".box", {\n    rotation: 90,\n    duration: 0.5\n  });\n  document.querySelector("#play").onclick = () => tl.play();\n  document.querySelector("#pause").onclick = () => tl.pause();\n  document.querySelector("#back").onclick = () => tl.reverse();\n  document.querySelector("#restart").onclick = () => tl.restart();\n  slider.oninput = () => tl.pause().progress(Number(slider.value), true);\n  // Also: tl.resume(); tl.seek(0.5); tl.timeScale(0.5);\n  // Read: tl.totalProgress(), tl.reversed(), tl.isActive().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Timeline/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Stop, recalculate, or restore intentionally",
+          explanation:
+            "kill stops and removes an animation, leaving the current rendered values. revert restores the pre-animation inline styles and normally kills the animation. invalidate discards recorded initialization values so a later render can recalculate them; it is not a DOM cleanup operation. Choose the operation according to ownership and the desired visual result.\n\nWhen an interaction is interrupted, reuse or reverse a persistent timeline, or overwrite the conflicting properties with a fresh to tween. Do not queue a new from tween on every event: its starting values can cause jumps. This example changes the travel distance, invalidates the paused tween, restarts it, then allows a separate button to restore its original styles.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="again">Recalculate + restart</button\n><button id="restore">Restore</button>\n<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  let distance = 100;\n  const tween = gsap.to(".box", {\n    x: () => distance,\n    duration: 0.6,\n    paused: true\n  });\n  document.querySelector("#again").onclick = () => {\n    distance += 30;\n    tween.invalidate().restart();\n  };\n  document.querySelector("#restore").onclick = () => tween.revert();\n  // After revert(), create a fresh tween if this feature is mounted again.\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Tween/revert()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Seek a repeating tween and compare progress with totalProgress; demonstrate kill versus revert.",
+      specialization: false,
+    },
+    {
+      number: 9,
+      name: "Interactive Animations",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "Mouse hover animations.",
+        "Click-triggered animations.",
+        "Mouse-following elements.",
+        "Pointer-based movement.",
+        "Magnetic buttons.",
+        "Animated dropdown menus.",
+        "Accordion animations.",
+        "Modal opening and closing animations.",
+        "Animated tabs.",
+        "Sliders and carousels.",
+        "Page loading animations.",
+        "Form validation feedback.",
+        "Synchronizing animations with user interactions.",
+        "Avoiding animation conflicts during rapid interactions.",
+      ],
+      lessons: [
+        {
+          name: "Hover, focus, click, and rapid input",
+          explanation:
+            "Treat pointer hover and keyboard focus as equivalent ways to discover an effect. A persistent paused timeline can play toward its open state and reverse from any intermediate point, which avoids stacking animations during rapid input. Pointer movement can drive quickTo for a cursor follower or magnetic button; Chapter 13 covers that optimization.\n\nClick-triggered dropdowns and mobile navigation need semantic state such as aria-expanded, not just an opacity tween. Loading effects should stop when content is ready and should not block access. Validation feedback should accompany a readable error message; a shake alone conveys no useful information to many readers.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="action">Hover or focus</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const button = document.querySelector("#action");\n  const tween = gsap.to(button, {\n    scale: 1.06,\n    duration: 0.18,\n    paused: true\n  });\n  function sync() {\n    const active =\n      button.matches(":hover") || document.activeElement === button;\n    active ? tween.play() : tween.reverse();\n  }\n  ["pointerenter", "pointerleave", "focus", "blur"].forEach(event =>\n    button.addEventListener(event, sync)\n  );\n  // Component cleanup: remove those listeners, then tween.revert().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/conflict/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Animate an accordion without hiding its state",
+          explanation:
+            "An accordion changes document flow; animating height is appropriate because surrounding content must move. Measure the full content height, expose the panel before opening, and hide it only after closing. Keep the latest logical state independent of animation completion. overwrite: auto replaces competing height tweens when input arrives quickly.\n\nDropdowns, tabs, modals, and carousels share the need for an explicit state model but have different keyboard and focus requirements. Use native dialog for modals; tabs need tab selection and panel relationships; carousels need buttons and meaningful reading order. Use the same state-to-animation boundary rather than copying accordion semantics into every component.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="disclose" aria-expanded="false" aria-controls="panel">\n  Details\n</button>\n<div id="panel" hidden><p>Details stay available without animation.</p></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  #panel {\n    overflow: hidden;\n  }\n  #panel p {\n    padding: 16px;\n    margin: 0;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const button = document.querySelector("#disclose");\n  const panel = document.querySelector("#panel");\n  let open = false;\n  button.onclick = () => {\n    open = !open;\n    button.setAttribute("aria-expanded", String(open));\n    if (open && panel.hidden) {\n      panel.hidden = false;\n      gsap.set(panel, { height: 0 });\n    }\n    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;\n    gsap.to(panel, {\n      height: open ? panel.scrollHeight : 0,\n      duration: reduce ? 0 : 0.25,\n      overwrite: "auto",\n      onComplete: () => {\n        if (!open) panel.hidden = true;\n        gsap.set(panel, { clearProps: "height" });\n      }\n    });\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/accessibility/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Rapidly toggle the accordion and use keyboard focus on the hover demo; confirm the latest intent wins.",
+      specialization: false,
+    },
+    {
+      number: 10,
+      name: "ScrollTrigger Fundamentals",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "Installing and registering ScrollTrigger.",
+        "`scrollTrigger` configuration.",
+        "`ScrollTrigger.create()`",
+        "Understanding `trigger`.",
+        "Understanding `start` and `end`.",
+        "Using visual markers.",
+        "`toggleActions`",
+        "`scrub`",
+        "`pin`",
+        "`pinSpacing`",
+        "`once`",
+        "`toggleClass`",
+        "Scroll-based callbacks.",
+        "Scroll direction and progress.",
+        "Animating multiple elements on scroll.",
+        "Connecting timelines to ScrollTrigger.",
+        "Understanding how viewport position affects animations.",
+      ],
+      lessons: [
+        {
+          name: "Translate viewport positions into animation boundaries",
+          explanation:
+            'ScrollTrigger connects an animation to a scroll range. trigger is the element being measured. start: "top 85%" means its top meets a point 85% down the viewport. end defines the other boundary. markers reveal those positions during development and should be removed before release. A timeline can own one ScrollTrigger so its children share a single scroll playhead.\n\nWithout scrub, crossings trigger actions: toggleActions lists onEnter, onLeave, onEnterBack, and onLeaveBack actions in that order. once runs a one-time reveal; toggleClass toggles a class without requiring a tween. Separate triggers per independent element are useful for a list of scroll reveals.',
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="spacer">Scroll down</div>\n<div class="box">Reveal</div>\n<div class="spacer"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .spacer {\n    height: 100vh;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger);\n  gsap.from(".box", {\n    y: 40,\n    opacity: 0,\n    duration: 0.7,\n    scrollTrigger: {\n      trigger: ".box",\n      start: "top 85%",\n      end: "bottom 20%",\n      toggleActions: "play none none reverse",\n      markers: true\n      // For a one-time reveal, use once: true instead of reverse behavior.\n    }\n  });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Scrub, pin, and observe scroll state",
+          explanation:
+            "scrub: true links animation progress directly to scroll progress; a numeric scrub adds catch-up smoothing. pin holds an element while scrolling through a range. pinSpacing normally reserves space so the following content does not slide underneath; disable it only when that overlap is intentional. Animate a child inside a stable pinned container instead of moving the measurement target.\n\nScrollTrigger.create can observe crossings, toggle classes, or pin without creating a tween. onUpdate receives a trigger instance with progress and direction. Avoid announcing that progress on every frame. This example pins a scene and scrubs a horizontal child over 600 scroll pixels; the following standalone observer only updates a CSS class.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="spacer">Scroll down</div>\n<section class="scene"><div class="box"></div></section>\n<div class="spacer"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .spacer {\n    height: 100vh;\n  }\n  .scene {\n    min-height: 250px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger);\n  gsap\n    .timeline({\n      scrollTrigger: {\n        trigger: ".scene",\n        start: "top top",\n        end: "+=600",\n        scrub: true,\n        pin: true,\n        pinSpacing: true,\n        onUpdate: self => {\n          console.log(self.progress, self.direction);\n        }\n      }\n    })\n    .to(".box", { x: 180, rotation: 90, ease: "none" });\n  const observer = ScrollTrigger.create({\n    trigger: ".scene",\n    start: "top center",\n    end: "bottom center",\n    toggleClass: "in-view",\n    onEnter: () => console.log("Entered")\n  });\n  // Teardown: observer.kill(); revert the timeline/context too.\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Explain both sides of a start string, then compare toggleActions with scrub.",
+      specialization: false,
+    },
+    {
+      number: 11,
+      name: "Advanced ScrollTrigger Techniques",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "Scroll-linked animations with `scrub`.",
+        "Pinned sections.",
+        "Horizontal scrolling sections.",
+        "Parallax effects.",
+        "Scroll snapping.",
+        "Multi-section storytelling.",
+        "Scroll-based timeline synchronization.",
+        "Dynamic `start` and `end` calculations.",
+        "Working with custom scroll containers.",
+        "`ScrollTrigger.refresh()`",
+        "`ScrollTrigger.update()`",
+        "`ScrollTrigger.getAll()`",
+        "Handling content that changes after page load.",
+        "Working with images and fonts that affect layout.",
+        "Understanding common pinning and nested ScrollTrigger issues.",
+        "ScrollTrigger debugging.",
+      ],
+      lessons: [
+        {
+          name: "Build a horizontal scene with real measurements",
+          explanation:
+            "A horizontal-scrolling section usually converts vertical scroll progress into a translated track. Compute the travel from scrollWidth minus the viewport width. Use function-based values and invalidateOnRefresh so layout changes recalculate both tween travel and the scroll range. A zero-travel layout should stay in normal flow rather than pinning an empty animation.\n\nParallax uses different travel rates to suggest depth; keep distances restrained. Snapping can settle progress onto sections, but it should not fight ordinary navigation. Multi-section stories are easier to maintain when each scene has one authoritative timeline. Avoid attaching scrub triggers to children already controlled by a parent scrub timeline.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="spacer">Scroll down</div>\n<section class="gallery">\n  <div class="track">\n    <article>One</article>\n    <article>Two</article>\n    <article>Three</article>\n  </div>\n</section>\n<div class="spacer"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .spacer {\n    height: 100vh;\n  }\n  .gallery {\n    overflow: hidden;\n  }\n  .track {\n    display: flex;\n    width: max-content;\n  }\n  .track article {\n    width: 80vw;\n    height: 240px;\n    padding: 24px;\n    background: #dce9ff;\n    color: #17212d;\n    border: 1px solid #2563eb;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger);\n  const gallery = document.querySelector(".gallery");\n  const track = document.querySelector(".track");\n  const distance = () => Math.max(0, track.scrollWidth - gallery.clientWidth);\n  if (distance() > 0) {\n    gsap.to(track, {\n      x: () => -distance(),\n      ease: "none",\n      scrollTrigger: {\n        trigger: gallery,\n        pin: true,\n        scrub: 0.3,\n        start: "top top",\n        end: () => `+=${Math.max(1, distance())}`,\n        invalidateOnRefresh: true\n        // Optional, after usability testing: snap: 1 / 2\n      }\n    });\n  }\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Refresh layout, update progress, and debug ownership",
+          explanation:
+            "refresh remeasures start/end positions after layout changes; update reads the current scroll position and updates progress without performing that measurement pass. getAll lists active triggers, useful for detecting duplicates. Do not refresh in every scroll callback. Refresh after images, fonts, content insertion, or a route layout have settled, and batch repeated requests.\n\nA custom scroll container uses scroller. A third-party virtual scroller may need scrollerProxy and its own update/refresh integration; use its documented adapter rather than guessing. Pinning can fail when ancestors establish unexpected transform or overflow contexts. Check stable geometry, pin order, markers, and ownership before adding pin workarounds.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="scroller">\n  <div class="spacer"></div>\n  <div class="box"></div>\n  <div class="spacer"></div>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .scroller {\n    height: 320px;\n    overflow-y: auto;\n  }\n  .spacer {\n    height: 400px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger);\n  const tween = gsap.to(".box", {\n    x: 140,\n    scrollTrigger: {\n      trigger: ".box",\n      scroller: ".scroller",\n      start: "top 80%",\n      scrub: true\n    }\n  });\n  Promise.all([\n    document.fonts.ready,\n    ...Array.from(document.images, image => image.decode().catch(() => {}))\n  ]).then(() => {\n    if (tween.scrollTrigger) ScrollTrigger.refresh();\n  });\n  console.log("Owned trigger", tween.scrollTrigger);\n  console.log("All triggers", ScrollTrigger.getAll().length);\n  // ScrollTrigger.update(); // Only when a custom integration needs a progress update.\n</script>',
+              language: "html",
+            },
+          ],
+          source:
+            "https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.refresh()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Resize a horizontal track and refresh after inserting content; inspect resulting trigger boundaries.",
+      specialization: false,
+    },
+    {
+      number: 12,
+      name: "Responsive Animations",
+      stage: "Intermediate",
+      level: 2,
+      topics: [
+        "`gsap.matchMedia()`",
+        "Media query conditions.",
+        "Desktop-specific animations.",
+        "Mobile-specific animations.",
+        "Responsive ScrollTrigger setups.",
+        "Recalculating scroll positions.",
+        "Cleaning up animations when breakpoints change.",
+        "Respecting `prefers-reduced-motion`.",
+        "Supporting touch devices.",
+        "Handling orientation changes.",
+        "Avoiding responsive layout shifts.",
+      ],
+      lessons: [
+        {
+          name: "Media conditions own their animations",
+          explanation:
+            "gsap.matchMedia, added in 3.11, records animations in a context and reverts them when matching conditions change. Conditions can distinguish desktop, mobile, and reduced motion in one setup. Only add desktop pinning when it benefits that layout; mobile can keep content in natural flow. Conditions are about layout and user preference, not a guarantee about input hardware.\n\nReturn cleanup for listeners or other resources created inside the callback. Revert the matchMedia instance when the component is destroyed. Resize and orientation changes can alter geometry; ScrollTrigger normally refreshes on resize, while application-driven layout changes still need an explicit refresh. Size media in CSS before loading to avoid layout shifts.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="spacer">Scroll down</div>\n<section class="feature"><div class="box">Adapt</div></section>\n<div class="spacer"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .spacer {\n    height: 100vh;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger);\n  const mm = gsap.matchMedia();\n  mm.add(\n    {\n      desktop: "(min-width: 800px)",\n      mobile: "(max-width: 799px)",\n      reduce: "(prefers-reduced-motion: reduce)"\n    },\n    context => {\n      const { desktop, reduce } = context.conditions;\n      if (reduce) return; // Default CSS keeps the content visible.\n      gsap.from(".box", {\n        y: desktop ? 48 : 16,\n        opacity: 0,\n        duration: 0.6,\n        scrollTrigger: { trigger: ".feature", start: "top 85%", once: true }\n      });\n    }\n  );\n  // Component teardown: mm.revert().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Touch support and responsive ownership",
+          explanation:
+            "Do not make hover, mouse position, or wheel input the only route to content. Use pointer events for input that spans mice, pens, and touch, and test keyboard operation separately. A pointer:fine condition is useful for a decorative follower, while click and focus must continue to work everywhere.\n\nKeep mobile animation distances smaller, allow text to wrap naturally, and remove unnecessary pins. When a breakpoint rebuilds a sequence, let the old context revert before creating the next one. Test a live resize across each breakpoint and a reduced-motion preference change; duplicated triggers or leftover inline transforms indicate incomplete cleanup.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="target">Pointer, touch, or keyboard</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const target = document.querySelector("#target");\n  const mm = gsap.matchMedia();\n  mm.add(\n    "(pointer: fine) and (prefers-reduced-motion: no-preference)",\n    () => {\n      const enter = () =>\n        gsap.to(target, { scale: 1.05, duration: 0.15, overwrite: "auto" });\n      const leave = () =>\n        gsap.to(target, { scale: 1, duration: 0.15, overwrite: "auto" });\n      target.addEventListener("pointerenter", enter);\n      target.addEventListener("pointerleave", leave);\n      return () => {\n        target.removeEventListener("pointerenter", enter);\n        target.removeEventListener("pointerleave", leave);\n        gsap.killTweensOf(target);\n        gsap.set(target, { clearProps: "transform" });\n      };\n    }\n  );\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/accessibility/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Cross a breakpoint and change reduced-motion preference while the page is mounted; check for leftover styles and triggers.",
+      specialization: false,
+    },
+    {
+      number: 13,
+      name: "Advanced Tweening Techniques",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "GSAP keyframes.",
+        "Functional values and dynamic calculations.",
+        "`repeatRefresh`.",
+        "`modifiers`.",
+        "`snap` configurations.",
+        "`overwrite` behavior.",
+        "Advanced animation callbacks.",
+        "`gsap.getProperty()`.",
+        "`gsap.quickTo()`.",
+        "`gsap.quickSetter()`.",
+        "`gsap.defaults()`.",
+        "`gsap.config()`.",
+        "`gsap.registerEffect()`.",
+        "Reusable GSAP effects.",
+        "Synchronizing multiple independent timelines.",
+      ],
+      lessons: [
+        {
+          name: "Keyframes, fresh values, and competing tweens",
+          explanation:
+            "Keyframes describe several destinations within one tween; use an array for explicit steps. Function-based values can use current measurements when initialized. repeatRefresh invalidates recorded start/end values on full repeats so random or computed destinations can change; it does not run on every frame or every yoyo return.\n\nmodifiers transforms a computed value before application, useful for wrapping an endless track. snap rounds selected property values. overwrite: auto removes conflicting properties from active tweens when the new tween initializes; it does not indiscriminately destroy every animation on the target. Use onInterrupt to release animation-specific work when a tween is killed before completion. Coordinate independent timelines through one owner rather than both writing the same properties.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const move = gsap.to(".box", {\n    keyframes: [\n      { x: 80, duration: 0.3 },\n      { y: 30, rotation: 15, duration: 0.3 },\n      { x: 0, y: 0, rotation: 0, duration: 0.4 }\n    ],\n    repeat: 1,\n    repeatRefresh: true,\n    onInterrupt: () => console.log("Interrupted")\n  });\n  // Other independent recipes:\n  // gsap.to(".box", { x: () => Math.random() * 180, repeat: 3, repeatRefresh: true });\n  // gsap.to(".box", { x: 180, snap: { x: 10 }, overwrite: "auto" });\n  // gsap.to(".box", { x: 500, modifiers: { x: gsap.utils.unitize(gsap.utils.wrap(0, 200)) } });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/keyframes/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Fast setters and shared effects",
+          explanation:
+            "getProperty reads a GSAP-managed property, often more usefully than parsing a transform matrix. quickTo reuses a tween for frequent changes to one property; quickSetter writes a property directly with low overhead and no easing. Use these after measuring a high-frequency interaction, not as a substitute for a state model.\n\nGlobal defaults affect later animations; config changes engine settings. Prefer timeline-local defaults for reusable components so importing one module does not change every other feature. registerEffect names a reusable factory, optionally extending timelines. The pointer follower below is decorative, bounded to a small pad, and disabled when motion is reduced or the pointer is coarse.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="pad"><span class="dot" aria-hidden="true"></span></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .pad {\n    width: 280px;\n    height: 180px;\n    background: #dce9ff;\n    position: relative;\n  }\n  .dot {\n    position: absolute;\n    width: 12px;\n    height: 12px;\n    border-radius: 50%;\n    background: #2563eb;\n    pointer-events: none;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const pad = document.querySelector(".pad");\n  const dot = document.querySelector(".dot");\n  const mm = gsap.matchMedia();\n  mm.add(\n    "(pointer: fine) and (prefers-reduced-motion: no-preference)",\n    () => {\n      const xTo = gsap.quickTo(dot, "x", {\n        duration: 0.2,\n        ease: "power2.out"\n      });\n      const yTo = gsap.quickTo(dot, "y", {\n        duration: 0.2,\n        ease: "power2.out"\n      });\n      const move = event => {\n        const rect = pad.getBoundingClientRect();\n        xTo(event.clientX - rect.left);\n        yTo(event.clientY - rect.top);\n      };\n      pad.addEventListener("pointermove", move);\n      return () => pad.removeEventListener("pointermove", move);\n    }\n  );\n  console.log(gsap.getProperty(dot, "x"));\n  // Direct writes: const setX = gsap.quickSetter(dot, "x", "px"); setX(20);\n  // Global settings (application entry only): gsap.defaults({ duration: 0.5 });\n  // gsap.config({ autoSleep: 120 });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Register a composable effect",
+          explanation:
+            "An effect bundles a convention into a named factory. It receives normalized targets, merged configuration, and optionally a timeline. Return the tween or timeline so callers retain playback control. extendTimeline adds the effect as a timeline method. Register effects once at the application boundary, and give them names that are unlikely to collide with dependencies.\n\nSynchronize multiple sequences by adding them to one parent timeline, seeking a common progress value, or coordinating explicit controller commands. Avoid two independent clocks owning the same transform. Effects are useful for a shared reveal language; application state and focus management should stay with the component.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box">Effect</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  gsap.registerEffect({\n    name: "studyReveal",\n    extendTimeline: true,\n    defaults: { duration: 0.5, distance: 20 },\n    effect: (targets, config) =>\n      gsap.from(targets, {\n        y: config.distance,\n        opacity: 0,\n        duration: config.duration,\n        ease: "power2.out"\n      })\n  });\n  const tl = gsap.timeline();\n  tl.studyReveal(".box", { distance: 12 }, 0);\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.registerEffect()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Replace per-event tween creation with quickTo; compare the result under frequent pointer input.",
+      specialization: false,
+    },
+    {
+      number: 14,
+      name: "GSAP Utility Methods",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "`toArray()`",
+        "`selector()`",
+        "`clamp()`",
+        "`mapRange()`",
+        "`normalize()`",
+        "`interpolate()`",
+        "`snap()`",
+        "`random()`",
+        "`wrap()`",
+        "`wrapYoyo()`",
+        "`distribute()`",
+        "`pipe()`",
+        "`unitize()`",
+        "`getUnit()`",
+      ],
+      lessons: [
+        {
+          name: "Select, constrain, map, and interpolate",
+          explanation:
+            "toArray normalizes selectors or collections to an array. selector(root) creates a scoped query function for component-local targets. clamp bounds a number. normalize maps a source range to 0–1; mapRange maps between arbitrary ranges. interpolate blends numbers, colors, strings, or compatible objects.\n\nMany utilities can return reusable functions when you omit the final value. This makes an input-processing pipeline explicit. Always guard a zero-width input range in application calculations. The example maps a range input to a bounded translation and interpolated color without creating a new eased tween for every event.",
+          files: [
+            {
+              name: "body.html",
+              code: '<label\n  >Position <input id="position" type="range" min="0" max="100" value="0"\n/></label>\n<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const select = gsap.utils.selector(document.body);\n  const boxes = gsap.utils.toArray(select(".box"));\n  const clamp = gsap.utils.clamp(0, 100);\n  const toX = gsap.utils.mapRange(0, 100, 0, 180);\n  const toProgress = gsap.utils.normalize(0, 100);\n  const color = gsap.utils.interpolate("#2563eb", "#7c3aed");\n  document.querySelector("#position").oninput = event => {\n    const value = clamp(Number(event.target.value));\n    gsap.set(boxes, {\n      x: toX(value),\n      backgroundColor: color(toProgress(value))\n    });\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.utils/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Compose discrete and repeating value patterns",
+          explanation:
+            "snap rounds to an increment or a supplied set of values; unlike a tween’s snap option, the utility can process ordinary numbers outside animation. random can produce a value or a reusable generator. wrap cycles through a range or array; wrapYoyo moves back and forth across a numeric range. distribute returns a function that calculates target-dependent offsets, useful beyond stagger.\n\npipe combines functions left to right. unitize parses numeric input, applies a function, and appends a unit; getUnit extracts a string’s suffix. Keep units consistent rather than treating any numeric string as pixels. These helpers make mapping pointer or scroll input easier to explain and test.",
+          files: [
+            {
+              name: "utilities.js",
+              code: '// In a browser after GSAP core, or import { gsap } from "gsap" in Vite.\nconst { snap, random, wrap, wrapYoyo, distribute, pipe, unitize, getUnit } =\n  gsap.utils;\nconst boundedStep = pipe(gsap.utils.clamp(0, 100), snap(10));\nconsole.log(boundedStep(76)); // 80\nconst next = random(10, 20, 1, true);\nconsole.log(next()); // Integer in the configured range.\nconst palette = wrap(["blue", "purple", "teal"]);\nconsole.log(palette(4), wrapYoyo(0, 10, 14)); // purple, 6\nconsole.log(unitize(value => value * 2, "px")("12px"), getUnit("12px")); // 24px, px\nconst offset = distribute({ base: 0, amount: 100, from: "center" });\nconst targets = [{}, {}, {}];\nconsole.log(targets.map((target, index) => offset(index, target, targets)));',
+              language: "js",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.utils/",
+          requires:
+            "GSAP core available as gsap; independent browser script or Vite module",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Compose clamp, snap, and mapRange, then test boundary values without a browser event.",
+      specialization: false,
+    },
+    {
+      number: 15,
+      name: "Text Animation Plugins",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "SplitText.",
+        "Splitting text into characters.",
+        "Splitting text into words.",
+        "Splitting text into lines.",
+        "Text reveal animations.",
+        "Masked text transitions.",
+        "Staggered typography animations.",
+        "Responsive text splitting.",
+        "SplitText `autoSplit` and `onSplit`.",
+        "ScrambleText.",
+        "TextPlugin.",
+        "Typewriter-style effects.",
+        "Text animation accessibility.",
+        "Restoring original text with `revert()`.",
+      ],
+      lessons: [
+        {
+          name: "Split text responsively and restore it safely",
+          explanation:
+            "SplitText creates character, word, and line wrappers so text can animate as a group of targets. Split only what you need. Lines depend on fonts and container width; in 3.13+, autoSplit can re-split when relevant layout changes occur, while onSplit rebuilds the animation. Return that animation so SplitText can manage its cleanup and playhead continuity. mask: lines creates clipping wrappers for a reveal.\n\nThe default aria handling labels the original element and hides generated pieces from assistive technology. Nested links or other semantic content need additional accessibility review: a flattened label can conceal their structure. Use simple decorative headings first. revert restores the original markup; destroy the owning media/context scope on unmount.",
+          files: [
+            {
+              name: "body.html",
+              code: '<h2 class="headline">Build motion with a clear purpose.</h2>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .headline {\n    max-width: 420px;\n    font: 700 36px/1.2 system-ui;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>\n\n<script>\n  gsap.registerPlugin(SplitText);\n  const mm = gsap.matchMedia();\n  mm.add("(prefers-reduced-motion: no-preference)", () => {\n    const split = SplitText.create(".headline", {\n      type: "lines,words",\n      mask: "lines",\n      autoSplit: true,\n      onSplit(self) {\n        return gsap.from(self.words, {\n          yPercent: 110,\n          opacity: 0,\n          duration: 0.6,\n          stagger: 0.04,\n          ease: "power2.out"\n        });\n      }\n    });\n    return () => split.revert();\n  });\n  // On component removal: mm.revert().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/SplitText/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "autoSplit/onSplit and mask use the rewritten SplitText API from GSAP 3.13+. Older SplitText tutorials differ.",
+        },
+        {
+          name: "Text replacement and scrambled reveals",
+          explanation:
+            "TextPlugin replaces text over a tween and is useful for typewriter-like labels; it is not a rich-text editor. ScrambleTextPlugin adds temporary randomized characters while revealing the final message. SplitText animates wrappers rather than changing the underlying message, so choose the plugin according to the intended result.\n\nDo not repeatedly rewrite an aria-live region during an animation. Keep essential text available in a stable accessible label or announce only the final result. The example labels a decorative display separately from its animated text. For reduced motion, immediately use the final phrase. Typewriter effects should not delay access to important instructions.",
+          files: [
+            {
+              name: "body.html",
+              code: '<p aria-label="Ready to build"><span id="typed" aria-hidden="true"></span></p>\n<p aria-label="Motion with purpose">\n  <span id="scramble" aria-hidden="true">Motion with purpose</span>\n</p>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/TextPlugin.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(TextPlugin, ScrambleTextPlugin);\n  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {\n    document.querySelector("#typed").textContent = "Ready to build";\n  } else {\n    gsap.to("#typed", {\n      text: "Ready to build",\n      duration: 1.2,\n      ease: "none"\n    });\n    gsap.to("#scramble", {\n      duration: 1,\n      scrambleText: { text: "Motion with purpose", chars: "01", speed: 0.5 }\n    });\n  }\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/TextPlugin/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Resize a split heading after fonts load and restore its original markup on teardown.",
+      specialization: false,
+    },
+    {
+      number: 16,
+      name: "SVG Animations",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "SVG structure and coordinates.",
+        "SVG `viewBox` and coordinate systems.",
+        "Animating SVG attributes.",
+        "Animating SVG transforms.",
+        "SVG path fundamentals.",
+        "SVG stroke properties.",
+        "DrawSVGPlugin.",
+        "MorphSVGPlugin.",
+        "MotionPathPlugin.",
+        "MotionPathHelper.",
+        "SVG path morphing.",
+        "Animating icons and illustrations.",
+        "Animated logos.",
+        "SVG masks and clipping paths.",
+        "Animating objects along paths.",
+        "Coordinating SVG and HTML animations.",
+      ],
+      lessons: [
+        {
+          name: "SVG coordinates, attributes, strokes, and clipping",
+          explanation:
+            "An SVG viewBox defines an internal coordinate system independent of its CSS pixel size. A path’s d attribute describes commands and points. Core can animate numeric attributes through attr and transforms through CSSPlugin. Stroke width, dasharray, and dashoffset affect outlines; masks use luminance or alpha to reveal content, while clip paths define geometric visible regions.\n\nDrawSVGPlugin manages stroke reveal ranges and length calculations; it does not turn a filled shape into a line drawing. Animate suitable strokes for logo outlines or icons, then coordinate fills and HTML captions on one timeline. Check transform origins in SVG coordinates, and keep accessible titles for meaningful illustrations.",
+          files: [
+            {
+              name: "body.html",
+              code: '<svg viewBox="0 0 300 120" width="300" role="img" aria-labelledby="svg-title">\n  <title id="svg-title">A curved route being drawn</title>\n  <path\n    id="route"\n    d="M20 90 Q150 -20 280 90"\n    fill="none"\n    stroke="#2563eb"\n    stroke-width="6"\n  />\n  <circle id="point" cx="20" cy="90" r="8" fill="#7c3aed" />\n</svg>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(DrawSVGPlugin);\n  const tl = gsap.timeline();\n  tl.fromTo(\n    "#route",\n    { drawSVG: "0%" },\n    { drawSVG: "100%", duration: 1, ease: "none" }\n  ).to("#point", { attr: { r: 12 }, duration: 0.25 }, "<");\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/DrawSVGPlugin/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Morph outlines and follow a motion path",
+          explanation:
+            "MorphSVGPlugin converts and interpolates path shapes, handling differing point counts. Use deliberate endpoint artwork and tune shapeIndex when the correspondence twists. Morphs change geometry; they are different from scaling a whole SVG. MotionPathPlugin moves a target along a path or point array. align and alignOrigin help reconcile the target’s coordinates with the path, and autoRotate follows its tangent.\n\nMotionPathHelper is a development authoring tool for editing paths; remove its UI from production. SVG masks, clip paths, icons, and HTML captions can share a timeline, but DOM nesting and coordinate systems still matter. Start with one inline SVG before mixing independently transformed HTML and SVG layers.",
+          files: [
+            {
+              name: "body.html",
+              code: '<svg\n  viewBox="0 0 300 160"\n  width="300"\n  aria-label="A moving marker and morphing icon"\n  role="img"\n>\n  <path\n    id="travel"\n    d="M20 100 C80 0 220 0 280 100"\n    fill="none"\n    stroke="#94a3b8"\n  />\n  <circle id="marker" r="7" fill="#2563eb" />\n  <path id="shape" d="M120 110 L150 80 L180 110 Z" fill="#7c3aed" />\n  <path\n    id="destination"\n    d="M120 90 L180 90 L180 130 L120 130 Z"\n    fill="none"\n    visibility="hidden"\n  />\n</svg>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin);\n  const tl = gsap.timeline();\n  tl.to("#marker", {\n    duration: 1.5,\n    ease: "none",\n    motionPath: {\n      path: "#travel",\n      align: "#travel",\n      alignOrigin: [0.5, 0.5],\n      autoRotate: true\n    }\n  }).to("#shape", { morphSVG: "#destination", duration: 0.7 }, "<0.3");\n  // Authoring only, after loading/registering MotionPathHelper:\n  // const helper = MotionPathHelper.create("#travel");\n  // helper.kill();\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/MotionPathPlugin/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Draw one path, morph a different path, and explain why those are distinct operations.",
+      specialization: false,
+    },
+    {
+      number: 17,
+      name: "FLIP Animations",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "Understanding the FLIP animation technique.",
+        "First, Last, Invert, Play.",
+        "Capturing element states.",
+        "`Flip.getState()`.",
+        "`Flip.from()`.",
+        "`Flip.to()`.",
+        "Animating layout changes.",
+        "Animating element reordering.",
+        "Grid-to-list transitions.",
+        "Expanding cards.",
+        "Shared-element transitions.",
+        "Animating DOM restructuring.",
+        "Interrupting and restarting transitions.",
+      ],
+      lessons: [
+        {
+          name: "Animate a layout change with First, Last, Invert, Play",
+          explanation:
+            "FLIP means First, Last, Invert, Play: capture the first geometry, make the real layout change, invert the visual difference, then animate those offsets away. Flip.getState captures geometry; Flip.from animates from that capture to the current layout. This is useful for grid/list changes, reordered cards, expanding panels, and DOM reparenting.\n\nThe final DOM should already express the desired logical state. Animate only the visual transition. Flip.to has the opposite direction: animate the current layout toward a recorded state, useful when the captured geometry is the destination. Avoid absolute: true on every item by default; taking elements out of flow can change the layout you meant to preserve.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="layout">Toggle layout</button>\n<div class="grid">\n  <div class="tile">One</div>\n  <div class="tile">Two</div>\n  <div class="tile">Three</div>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .grid {\n    display: flex;\n    gap: 8px;\n  }\n  .grid.list {\n    flex-direction: column;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>\n\n<script>\n  gsap.registerPlugin(Flip);\n  const grid = document.querySelector(".grid");\n  const tiles = grid.querySelectorAll(".tile");\n  document.querySelector("#layout").onclick = () => {\n    const state = Flip.getState(tiles);\n    grid.classList.toggle("list");\n    Flip.from(state, {\n      duration: matchMedia("(prefers-reduced-motion: reduce)").matches\n        ? 0\n        : 0.5,\n      ease: "power2.inOut",\n      stagger: 0.04\n    });\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/Flip/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Shared elements and interrupted transitions",
+          explanation:
+            "A shared-element transition preserves the visual identity of an item between layouts. Reparent the same element, or give matching elements a stable data-flip-id when using different instances. Capture before DOM changes, then make the complete update before animating. Reordering the actual DOM also changes reading and keyboard order, which should match the final interface.\n\nFlip.getState normally completes relevant in-progress flips before recording the next state, helping repeated interaction produce a stable destination. Use Flip.isFlipping and Flip.killFlipsOf when coordinating a more explicit interruption policy. Framework commits are asynchronous: capture before a state change and animate only after the new layout has been committed. CSS transitions on the same transform can fight FLIP.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="move">Move card</button>\n<div class="slots">\n  <div id="left"><div class="tile" data-flip-id="product">Product</div></div>\n  <div id="right"></div>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .slots {\n    display: flex;\n    gap: 40px;\n  }\n  .slots > div {\n    width: 120px;\n    min-height: 130px;\n    border: 1px dashed #94a3b8;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>\n\n<script>\n  gsap.registerPlugin(Flip);\n  const tile = document.querySelector(".tile");\n  const left = document.querySelector("#left");\n  const right = document.querySelector("#right");\n  document.querySelector("#move").onclick = () => {\n    const state = Flip.getState(tile);\n    (tile.parentElement === left ? right : left).append(tile);\n    Flip.from(state, { duration: 0.5, ease: "power2.inOut" });\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/Flip/static.getState()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Toggle layout midway through a FLIP transition and check final DOM reading order.",
+      specialization: false,
+    },
+    {
+      number: 18,
+      name: "Draggable and Gesture Animations",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "DraggablePlugin.",
+        "`Draggable.create()`.",
+        "Dragging along the X/Y axes.",
+        "Rotation-based dragging.",
+        "Dragging boundaries.",
+        "Grid snapping.",
+        "Dragging with inertia.",
+        "InertiaPlugin.",
+        "Velocity-based effects.",
+        "Gesture-driven carousels.",
+        "Observer plugin.",
+        "Mouse wheel interactions.",
+        "Touch gestures.",
+        "Swipe interactions.",
+        "Pointer-based interactions.",
+        "Handling desktop and mobile input consistently.",
+      ],
+      lessons: [
+        {
+          name: "Draggable, bounds, snapping, and inertia",
+          explanation:
+            "The plugin’s exported name is Draggable, not DraggablePlugin. Draggable.create returns an array of instances. type: x, y, x,y, or rotation selects the drag behavior. Bounds constrain travel; snapping aligns the resting value to a grid. Keep ordinary buttons available for people who cannot drag.\n\nInertiaPlugin supplies velocity-based continuation after release when inertia: true is enabled. It is an extra dependency, not an automatic capability of core or Draggable alone. A carousel also needs selected-item state, keyboard navigation, readable labels, and resize handling; a draggable strip is only its movement layer. Destroy the Draggable instance when removing the component.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="bounds"><div class="box">Drag</div></div>\n<button id="reset">Reset position</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .bounds {\n    width: 300px;\n    height: 220px;\n    border: 1px solid #94a3b8;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(Draggable, InertiaPlugin);\n  const [drag] = Draggable.create(".box", {\n    type: "x,y",\n    bounds: ".bounds",\n    inertia: true,\n    snap: {\n      x: value => Math.round(value / 20) * 20,\n      y: value => Math.round(value / 20) * 20\n    }\n  });\n  document.querySelector("#reset").onclick = () => {\n    drag.tween?.kill();\n    gsap.set(".box", { x: 0, y: 0 });\n    drag.update();\n  };\n  // Rotation alternative: Draggable.create(knob, { type: "rotation" }).\n  // Component teardown: drag.kill().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/Draggable/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Normalize gestures without hijacking navigation",
+          explanation:
+            "Observer combines wheel, touch, and pointer input into movement callbacks. It can recognize direction, accumulate deltas, and expose velocities. It does not design your interaction or provide accessible carousel semantics. Pointer and swipe support should complement visible controls rather than replace them.\n\nScope observation to the component. preventDefault can block native scrolling and other browser behavior, so enable it only for a deliberately isolated gesture surface. The example listens to a horizontal swipe or wheel direction and also supplies Previous/Next buttons. It intentionally leaves default scrolling available. Kill the observer during teardown and avoid global wheel handlers for ordinary page navigation.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div id="gesture" tabindex="0" aria-label="Gesture demo">\n  <p id="slide">Item 1</p>\n</div>\n<button id="prev">Previous</button><button id="next">Next</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  #gesture {\n    width: 280px;\n    padding: 30px;\n    border: 1px solid #94a3b8;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Observer.min.js"></script>\n\n<script>\n  gsap.registerPlugin(Observer);\n  let index = 0;\n  const label = document.querySelector("#slide");\n  function step(delta) {\n    index = gsap.utils.wrap(0, 3, index + delta);\n    label.textContent = `Item ${index + 1}`;\n  }\n  const observer = Observer.create({\n    target: "#gesture",\n    type: "wheel,touch,pointer",\n    tolerance: 30,\n    onLeft: () => step(1),\n    onRight: () => step(-1)\n  });\n  document.querySelector("#prev").onclick = () => step(-1);\n  document.querySelector("#next").onclick = () => step(1);\n  // Component teardown: observer.kill().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/Observer/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Provide equivalent button navigation for a drag/swipe interaction and verify teardown removes gesture listeners.",
+      specialization: false,
+    },
+    {
+      number: 19,
+      name: "ScrollSmoother and Advanced Scrolling",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "ScrollSmoother setup.",
+        "How ScrollSmoother works with ScrollTrigger.",
+        "Configuring smooth scrolling.",
+        "`data-speed` parallax effects.",
+        "`data-lag` effects.",
+        "Smooth-scroll navigation.",
+        "ScrollSmoother methods.",
+        "ScrollToPlugin.",
+        "Programmatic scrolling.",
+        "Native scrolling considerations.",
+        "Integrating third-party smooth-scroll libraries when necessary.",
+        "Scroll accessibility.",
+        "Understanding when smooth scrolling should be avoided.",
+      ],
+      lessons: [
+        {
+          name: "ScrollSmoother is a page-level enhancement",
+          explanation:
+            "ScrollSmoother uses ScrollTrigger and transforms a content wrapper to soften its relationship to native scrolling. Create it before other page ScrollTriggers. A wrapper and content element define its ownership; fixed-position UI usually belongs outside that transformed content. effects enables data-speed parallax and data-lag follow effects. Use these sparingly.\n\nThe browser still has a native scroll position, but transformed content affects fixed positioning, focus scrolling, anchors, and measurements. Test all of them. Do not create several page smoothers or combine competing scroll engines. Prefer normal scrolling for reduced motion and often for touch. smoothTouch is opt-in; smooth scrolling is not a prerequisite for a polished site.",
+          files: [
+            {
+              name: "body.html",
+              code: '<header>Fixed UI belongs outside the content wrapper.</header>\n<div id="smooth-wrapper">\n  <div id="smooth-content">\n    <section>Intro</section>\n    <section><div data-speed="0.8" data-lag="0.1">Subtle depth</div></section>\n    <section id="end">End</section>\n  </div>\n</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  section {\n    min-height: 100vh;\n    padding: 40px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollSmoother.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);\n  const mm = gsap.matchMedia();\n  mm.add(\n    "(min-width: 900px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",\n    () => {\n      const smoother = ScrollSmoother.create({\n        wrapper: "#smooth-wrapper",\n        content: "#smooth-content",\n        smooth: 0.8,\n        effects: true\n      });\n      // Methods include smoother.scrollTo("#end", true, "top top") and smoother.paused().\n      return () => smoother.kill();\n    }\n  );\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/ScrollSmoother/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Programmatic scroll should preserve focus and user control",
+          explanation:
+            "ScrollToPlugin animates native window or container scroll positions. It is separate from ScrollTrigger, which observes scroll, and from ScrollSmoother, which manages a smoothed page. Avoid a simultaneous CSS scroll-behavior:smooth rule when GSAP owns scrolling. autoKill lets manual input interrupt the tween.\n\nScrolling a heading into view does not move keyboard focus to it. For deliberate navigation, preserve a real link, update the fragment, and focus the destination without causing another scroll jump. Reduced motion can use an immediate native jump. Third-party smooth scrolling is an integration choice requiring its own adapter and accessibility tests, not a default dependency.",
+          files: [
+            {
+              name: "body.html",
+              code: '<a id="jump" href="#destination">Go to destination</a>\n<div class="spacer"></div>\n<h2 id="destination" tabindex="-1">Destination</h2>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .spacer {\n    height: 120vh;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollToPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(ScrollToPlugin);\n  const link = document.querySelector("#jump");\n  const destination = document.querySelector("#destination");\n  link.onclick = event => {\n    event.preventDefault();\n    const finish = () => {\n      history.replaceState(null, "", "#destination");\n      destination.focus({ preventScroll: true });\n    };\n    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {\n      destination.scrollIntoView();\n      finish();\n      return;\n    }\n    gsap.to(window, {\n      duration: 0.7,\n      scrollTo: { y: destination, offsetY: 20, autoKill: true },\n      overwrite: "auto",\n      onComplete: finish\n    });\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/ScrollToPlugin/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Test anchors and focus with and without smoothing; choose native scrolling when the enhancement adds no value.",
+      specialization: false,
+    },
+    {
+      number: 20,
+      name: "Advanced Easing and Physics",
+      stage: "Advanced",
+      level: 3,
+      topics: [
+        "CustomEase.",
+        "Creating custom easing curves.",
+        "CustomBounce.",
+        "CustomWiggle.",
+        "RoughEase.",
+        "SlowMo.",
+        "ExpoScaleEase.",
+        "Physics2DPlugin.",
+        "PhysicsPropsPlugin.",
+        "Velocity and momentum.",
+        "Natural-looking elastic motion.",
+        "Overshooting and settling.",
+        "Simulating bouncing and gravity.",
+      ],
+      lessons: [
+        {
+          name: "Custom curves and specialized ease packs",
+          explanation:
+            "CustomEase creates a reusable easing curve from control points or SVG path data. CustomBounce and CustomWiggle generate bounce and oscillation curves and depend on CustomEase. RoughEase, SlowMo, and ExpoScaleEase come from EasePack: rough variation, slowed middle motion, and scale-aware progress serve different purposes. Load only the tools your scene uses.\n\nAn ease changes time mapping, not the endpoint contract. Natural-looking motion comes from appropriate distance, duration, overshoot, and settling together. A custom curve should solve a visual problem that built-in power or sine easing does not; otherwise it adds maintenance without a visible benefit.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box">Custom curve</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>\n\n<script>\n  gsap.registerPlugin(CustomEase);\n  CustomEase.create("studyCurve", "0.22,1,0.36,1");\n  gsap.to(".box", { x: 160, duration: 0.9, ease: "studyCurve" });\n  // Separate authoring recipes after loading the named plugins:\n  // CustomBounce.create("studyBounce", { strength: 0.6 });\n  // CustomWiggle.create("studyWiggle", { wiggles: 5 });\n  // RoughEase: ease: "rough({ strength: 1, points: 20, template: none.inOut })"\n  // SlowMo: ease: "slow(0.7, 0.7, false)"\n  // ExpoScaleEase: ease: "expoScale(1, 2, power2.inOut)"\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Eases/CustomEase/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Physics plugins describe trajectories, not a full simulation",
+          explanation:
+            "Physics2DPlugin derives x/y travel from velocity, angle, gravity, acceleration, and friction. PhysicsPropsPlugin applies velocity and acceleration to individual numeric properties. InertiaPlugin is useful when motion should continue from tracked velocity, such as dragging. These tools do not provide collision detection, constraints, or a rigid-body world.\n\nVelocity is change in position per unit time; momentum is the physical idea of continued motion, but a UI often only needs a convincing approximation. Use a bounce ease for a simple rebound and physics when the path should follow initial conditions. A ballistic arc may leave the viewport; choose a bounded decorative area and stop or revert on teardown.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="stage"><div class="box" aria-hidden="true"></div></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  .stage {\n    height: 300px;\n    overflow: hidden;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Physics2DPlugin.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/PhysicsPropsPlugin.min.js"></script>\n\n<script>\n  gsap.registerPlugin(Physics2DPlugin, PhysicsPropsPlugin);\n  gsap.to(".box", {\n    duration: 1.2,\n    physics2D: { velocity: 160, angle: -60, gravity: 240 }\n  });\n  const state = { value: 0 };\n  gsap.to(state, {\n    duration: 1,\n    physicsProps: { value: { velocity: 20, acceleration: -5 } },\n    onComplete: () => console.log(state.value)\n  });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/Physics2DPlugin/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Compare an easing curve with a physics trajectory; identify which one has an actual velocity/gravity model.",
+      specialization: false,
+    },
+    {
+      number: 21,
+      name: "Animation Performance Optimization",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Understanding the browser rendering pipeline.",
+        "Layout, paint, and compositing.",
+        "GPU-accelerated transformations.",
+        "Why `transform` and `opacity` are generally preferable for frequent animations.",
+        "Avoiding unnecessary layout recalculations.",
+        "Avoiding forced synchronous layouts.",
+        "Understanding layout thrashing.",
+        "Minimizing DOM reads and writes during animation.",
+        "Optimizing animations with many elements.",
+        "`will-change` and its appropriate usage.",
+        "`force3D` considerations.",
+        "Understanding animation frame rates.",
+        "`requestAnimationFrame`.",
+        "`gsap.ticker`.",
+        "Ticker lag smoothing.",
+        "Optimizing scroll-based animations.",
+        "Handling low-powered mobile devices.",
+        "Preventing animation-related layout shifts.",
+        "Profiling animations with Chrome DevTools.",
+        "Measuring FPS and rendering performance.",
+      ],
+      lessons: [
+        {
+          name: "Measure rendering work before optimizing it",
+          explanation:
+            "The browser resolves styles, calculates layout, paints pixels, and composites layers. Transforms and opacity often avoid layout, making them good choices for frequent animation; they do not guarantee free GPU rendering. Large blurred layers, heavy rasterization, and too many composited elements can still be expensive. force3D and will-change are tools to measure, not blanket performance switches.\n\nLayout thrashing happens when code repeatedly writes styles and then forces geometry reads in the same frame. Batch reads before writes. For many elements, reduce animated targets, stagger work, and avoid offscreen effects. Reserve media dimensions to prevent layout shifts. Profile a realistic scene in Chrome DevTools Performance and Rendering panels, including low-powered mobile conditions; FPS alone does not explain the bottleneck.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="tile">One</div>\n<div class="tile">Two</div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const items = gsap.utils.toArray(".tile");\n  // Read all geometry before creating animated writes.\n  const distances = items.map(item => item.getBoundingClientRect().width / 2);\n  gsap.to(items, {\n    x: index => distances[index],\n    opacity: 0.8,\n    duration: 0.5,\n    stagger: 0.05\n  });\n  // Avoid reading getBoundingClientRect() after every individual style write.\n  // Add/remove will-change only around measured hot paths; do not set it on everything.\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/mistakes/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "One rendering clock, with deliberate cleanup",
+          explanation:
+            "requestAnimationFrame schedules work before a browser repaint; GSAP’s ticker is tied to that rendering cycle and drives its engine. Add a ticker callback when your canvas or renderer needs to redraw from animated state. Do not run a second animation-frame loop that draws the same scene. deltaTime is milliseconds, while ticker time is seconds.\n\nLag smoothing adjusts the clock after long stalls to preserve coordinated animation; disabling it globally can change behavior throughout the app. Keep defaults unless an integration explicitly requires otherwise. Background tabs may throttle frames. Use elapsed time for custom movement, remove callbacks on teardown, and reduce expensive scroll work instead of merely lowering the reported frame rate.",
+          files: [
+            {
+              name: "body.html",
+              code: '<canvas\n  id="canvas"\n  width="300"\n  height="100"\n  aria-label="A decorative moving dot"\n></canvas\n><button id="stop">Stop and clean up</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const canvas = document.querySelector("#canvas");\n  const ctx = canvas.getContext("2d");\n  const state = { x: 20 };\n  const tween = gsap.to(state, { x: 280, duration: 2, ease: "none" });\n  function draw(time, deltaTime) {\n    ctx.clearRect(0, 0, canvas.width, canvas.height);\n    ctx.beginPath();\n    ctx.arc(state.x, 50, 10, 0, Math.PI * 2);\n    ctx.fillStyle = "#2563eb";\n    ctx.fill();\n  }\n  gsap.ticker.add(draw);\n  document.querySelector("#stop").onclick = () => {\n    tween.kill();\n    gsap.ticker.remove(draw);\n  };\n  // Advanced integration only: gsap.ticker.lagSmoothing(threshold, adjustedLag).\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.ticker/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Capture a performance trace and name the dominant layout, paint, or scripting cost before changing code.",
+      specialization: false,
+    },
+    {
+      number: 22,
+      name: "Animation Lifecycle and Cleanup",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "`gsap.context()`.",
+        "Scoping selectors to components.",
+        "`context.revert()`.",
+        "Cleaning up timelines.",
+        "Cleaning up ScrollTrigger instances.",
+        "Removing event listeners.",
+        "Avoiding duplicated animations.",
+        "Handling dynamically inserted and removed DOM elements.",
+        "Preventing memory leaks.",
+        "Managing animation state.",
+        "Handling interrupted or conflicting tweens.",
+        "Creating and destroying animations safely.",
+      ],
+      lessons: [
+        {
+          name: "A context defines animation ownership",
+          explanation:
+            "gsap.context records animations and ScrollTriggers created while its callback executes. A scope element makes selector strings component-local. context.revert restores recorded state and disposes those owned animations. It does not automatically remove arbitrary DOM event listeners, timers, observers, or ticker callbacks. Return cleanup for those resources.\n\nEvents happen after initial setup, so animations created inside them must explicitly re-enter the context through context.add. This prevents delayed work from escaping ownership. Destroy before removing or replacing the DOM. A mount/destroy contract also makes repeated initialization, route changes, and memory-leak investigation much more predictable.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div id="component">\n  <button>Animate child</button>\n  <div class="box"></div>\n</div>\n<button id="destroy">Destroy component animation</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  function mount(root) {\n    const button = root.querySelector("button");\n    const ctx = gsap.context(self => {\n      self.add("activate", () =>\n        gsap.to(".box", { x: 140, duration: 0.4, overwrite: "auto" })\n      );\n    }, root);\n    const activate = () => ctx.activate();\n    button.addEventListener("click", activate);\n    let destroyed = false;\n    return () => {\n      if (destroyed) return;\n      destroyed = true;\n      button.removeEventListener("click", activate);\n      ctx.revert();\n    };\n  }\n  const destroy = mount(document.querySelector("#component"));\n  document.querySelector("#destroy").onclick = destroy;\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "context and matchMedia require GSAP 3.11+. They handle recorded GSAP work, not arbitrary external resources.",
+        },
+        {
+          name: "Guard asynchronous work and interrupted state",
+          explanation:
+            "A font promise, fetch, timer, or observer can finish after a component has unmounted. Cancel what can be canceled and guard the rest with an alive flag or an abort signal. Enter the owning context when asynchronous code creates an animation. Clear the external resource as well as reverting the GSAP work.\n\nAn interrupted transition should leave a well-defined application state. Decide whether interruption commits the destination, reverses toward the previous state, or starts from the currently rendered value. Avoid killing every global tween to fix one component. Use local references, one property owner, and repeatable setup/teardown instead.",
+          files: [
+            {
+              name: "body.html",
+              code: '<section id="async"><h2>Ready when the font loads</h2></section>\n<button id="destroy">Destroy</button>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const root = document.querySelector("#async");\n  let alive = true;\n  const ctx = gsap.context(self => {\n    self.add("enter", () => {\n      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {\n        gsap.from("h2", { y: 16, opacity: 0, duration: 0.4 });\n      }\n    });\n  }, root);\n  document.fonts.ready.then(() => {\n    if (alive && root.isConnected) ctx.enter();\n  });\n  document.querySelector("#destroy").onclick = () => {\n    alive = false;\n    ctx.revert();\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Mount, activate, destroy, and remount a component; verify event and trigger counts return to their baseline.",
+      specialization: false,
+    },
+    {
+      number: 23,
+      name: "GSAP with TypeScript",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Installing GSAP in TypeScript projects.",
+        "Understanding GSAP's bundled type declarations.",
+        "Typing tweens and timelines.",
+        "`gsap.core.Tween`.",
+        "`gsap.core.Timeline`.",
+        "Typing DOM element references.",
+        "Handling potentially `null` elements.",
+        "Typing animation configuration objects.",
+        "Typing callback functions.",
+        "Typing reusable animation helpers.",
+        "Creating typed animation factories.",
+        "Creating GSAP-powered TypeScript classes.",
+        "Building reusable GSAP components.",
+        "Organizing animation modules in Vite projects.",
+      ],
+      lessons: [
+        {
+          name: "Use bundled types and guard DOM references",
+          explanation:
+            "GSAP includes its declarations; do not install an unrelated @types/gsap package to hide errors. Import core in your Vite TypeScript project and let inference work where possible. gsap.core.Tween and gsap.core.Timeline describe returned animation instances. gsap.TweenVars describes a configuration object. Types do not prove that a selector matches an element.\n\nNarrow DOM references before using them. Keep callbacks small and give reusable helpers explicit inputs and outputs. This example exports a typed factory, with a separate guarded call at the component boundary. Browser APIs require DOM declarations in tsconfig; the compiler does not make them available during server rendering.",
+          files: [
+            {
+              name: "reveal.ts",
+              code: 'import { gsap } from "gsap";\nexport function reveal(\n  element: HTMLElement,\n  duration = 0.5\n): gsap.core.Tween {\n  const vars = {\n    y: 20,\n    opacity: 0,\n    duration,\n    ease: "power2.out"\n  } satisfies gsap.TweenVars;\n  return gsap.from(element, vars);\n}\nconst element = document.querySelector(".card");\nif (element instanceof HTMLElement) {\n  const tween: gsap.core.Tween = reveal(element);\n  const timeline: gsap.core.Timeline = gsap.timeline({ paused: true });\n  timeline.add(tween);\n}',
+              language: "ts",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Installation/",
+          requires:
+            "Vite TypeScript; gsap@3.15.0; TypeScript 5.9.3 reference; strict + DOM lib",
+          note: "",
+        },
+        {
+          name: "Typed controllers and classes keep lifecycle explicit",
+          explanation:
+            "A component API can expose initialization, playback, refresh, and destruction while hiding selectors and timing. A factory is often enough; a class is useful when an instance has clear state and several public methods. Keep the returned controller smaller than the underlying GSAP timeline so application code does not casually rewrite its children.\n\nSeparate src/motion tokens and factories from src/components application logic. Inject DOM references and shared settings instead of querying global selectors inside every helper. The class below guards its destroyed state and restores styles on teardown. A real component also owns its listeners and accessibility state; the class is the animation layer.",
+          files: [
+            {
+              name: "MotionCard.ts",
+              code: 'import { gsap } from "gsap";\nexport class MotionCard {\n  private timeline: gsap.core.Timeline;\n  private destroyed = false;\n  constructor(element: HTMLElement) {\n    this.timeline = gsap\n      .timeline({ paused: true })\n      .to(element, { x: 100, duration: 0.4, ease: "power2.out" });\n  }\n  setActive(active: boolean): void {\n    if (this.destroyed) return;\n    if (active) this.timeline.play();\n    else this.timeline.reverse();\n  }\n  refresh(): void {\n    if (!this.destroyed) this.timeline.invalidate();\n  }\n  destroy(): void {\n    if (this.destroyed) return;\n    this.destroyed = true;\n    this.timeline.revert();\n  }\n}',
+              language: "ts",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Timeline/",
+          requires: "Vite TypeScript; gsap@3.15.0; strict + DOM lib",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Build a typed controller without assertions for missing DOM nodes; make destroy idempotent.",
+      specialization: false,
+    },
+    {
+      number: 24,
+      name: "GSAP with React and Next.js",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Integrating GSAP into React.",
+        "Using refs for animation targets.",
+        "Understanding `useGSAP()`.",
+        "Understanding the `@gsap/react` package.",
+        "Scoped selectors.",
+        "`contextSafe()`.",
+        "React component lifecycle.",
+        "Handling animation cleanup.",
+        "Animating state transitions.",
+        "Working with conditional rendering.",
+        "GSAP and React Strict Mode.",
+        "Timeline control through React state.",
+        "Building reusable animation hooks.",
+        "Implementing GSAP in Next.js Client Components.",
+        "Avoiding SSR and hydration issues.",
+        "Route and page transitions.",
+        "Responsive animations in component-based applications.",
+      ],
+      lessons: [
+        {
+          name: "React refs, useGSAP, and scoped cleanup",
+          explanation:
+            "React owns rendered structure; GSAP owns selected animated properties after the component commits. useGSAP from @gsap/react wraps GSAP setup in a context and handles cleanup. Scope selectors to a ref so two instances cannot animate each other. Strict Mode’s development setup/cleanup cycle is a useful lifecycle test, not a reason to disable cleanup.\n\nInstall @gsap/react separately. This component creates one paused timeline, stores it in a ref, and commands the same playhead from React state. Rapid changes reverse from the current position. Reduced motion seeks directly to the requested endpoint. When dependencies rebuild an animation instead, use revertOnUpdate when the old setup must be restored before rebuilding. Conditional removal needs an exit-state strategy rather than animating an already unmounted node.",
+          files: [
+            {
+              name: "MotionCard.tsx",
+              code: 'import { useRef, useState } from "react";\nimport { gsap } from "gsap";\nimport { useGSAP } from "@gsap/react";\ngsap.registerPlugin(useGSAP);\nexport default function MotionCard() {\n  const root = useRef<HTMLDivElement>(null);\n  const timeline = useRef<gsap.core.Timeline | null>(null);\n  const [active, setActive] = useState(false);\n  useGSAP(\n    () => {\n      timeline.current = gsap\n        .timeline({ paused: true })\n        .to(".card", { x: 100, duration: 0.4, ease: "power2.out" });\n      return () => {\n        timeline.current = null;\n      };\n    },\n    { scope: root }\n  );\n  useGSAP(\n    () => {\n      const animation = timeline.current;\n      if (!animation) return;\n      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {\n        animation.pause().progress(active ? 1 : 0);\n      } else if (active) animation.play();\n      else animation.reverse();\n    },\n    { dependencies: [active] }\n  );\n  return (\n    <div ref={root}>\n      <button\n        onClick={() => setActive(value => !value)}\n        aria-pressed={active}\n      >\n        Move card\n      </button>\n      <div className="card">Card</div>\n    </div>\n  );\n}',
+              language: "tsx",
+            },
+          ],
+          source: "https://gsap.com/resources/React/",
+          requires:
+            "React 19 + matching @types; gsap@3.15.0; @gsap/react 2.x; Vite React TypeScript",
+          note: "useGSAP is supplied by @gsap/react, not by the core gsap package.",
+        },
+        {
+          name: "Event animations need contextSafe",
+          explanation:
+            "An event handler runs after useGSAP’s setup callback. Wrap handlers that create new animations in contextSafe so their work is recorded for cleanup and selector scoping. This does not automatically remove listeners you attached manually; React event props handle that part in this example.\n\nFor timeline control from React state, keep a ref to a timeline and command it from the state transition rather than recreating many concurrent copies. Reusable animation hooks should expose a small controller and dispose their context. For conditional content, retain the exiting view until its exit completes, with an immediate reduced-motion path and a cancellation policy for rapid state changes.",
+          files: [
+            {
+              name: "InteractiveCard.tsx",
+              code: 'import { useRef } from "react";\nimport { gsap } from "gsap";\nimport { useGSAP } from "@gsap/react";\ngsap.registerPlugin(useGSAP);\nexport function InteractiveCard() {\n  const root = useRef<HTMLDivElement>(null);\n  const { contextSafe } = useGSAP({ scope: root });\n  const animate = contextSafe(() => {\n    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;\n    gsap.to(".card", {\n      rotation: "+=15",\n      duration: reduce ? 0 : 0.25,\n      overwrite: "auto"\n    });\n  });\n  return (\n    <div ref={root}>\n      <button onClick={animate}>Rotate</button>\n      <div className="card">Card</div>\n    </div>\n  );\n}',
+              language: "tsx",
+            },
+          ],
+          source: "https://gsap.com/resources/React/",
+          requires:
+            "React 19 + types; gsap@3.15.0; @gsap/react 2.x; JSX enabled",
+          note: "",
+        },
+        {
+          name: "Next.js and routes introduce another lifecycle",
+          explanation:
+            "In the Next.js App Router, a component using hooks or browser animation setup must be a Client Component. Put use client at its module boundary. Server-rendered HTML and the initial client render should agree; read window, matchMedia, dimensions, and DOM references inside the client effect rather than while rendering. Keep baseline content visible so hydration or script failure does not hide essential information.\n\nRoute transitions need coordination with your router and persistent layout boundaries. GSAP does not automatically delay navigation or retain an old route for an exit. Plan cancellation, focus restoration, scroll reset, and refreshed ScrollTriggers after a new route commits. Start with page-enter motion; shared exits across routes are an advanced architectural feature.",
+          files: [
+            {
+              name: "app/components/Intro.tsx",
+              code: '"use client";\nimport { useRef } from "react";\nimport { gsap } from "gsap";\nimport { useGSAP } from "@gsap/react";\ngsap.registerPlugin(useGSAP);\nexport default function Intro() {\n  const root = useRef<HTMLElement>(null);\n  useGSAP(\n    () => {\n      const mm = gsap.matchMedia();\n      mm.add("(prefers-reduced-motion: no-preference)", () => {\n        gsap.from("h1", { y: 16, opacity: 0, duration: 0.4 });\n      });\n      return () => mm.revert();\n    },\n    { scope: root }\n  );\n  return (\n    <section ref={root}>\n      <h1>Useful motion, visible content</h1>\n    </section>\n  );\n}',
+              language: "tsx",
+            },
+          ],
+          source: "https://gsap.com/resources/React/",
+          requires:
+            "Next.js App Router Client Component; React + types; gsap + @gsap/react; example checks component types, not a whole Next build",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Mount two React instances in Strict Mode, update state rapidly, and unmount both without leaving animation work.",
+      specialization: false,
+    },
+    {
+      number: 25,
+      name: "Reusable Animation Architecture",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Separating animation logic from application logic.",
+        "Organizing animations across multiple modules.",
+        "Creating animation helper functions.",
+        "Creating reusable timeline factories.",
+        "Creating animation presets.",
+        "Defining shared timing and easing constants.",
+        "Building a centralized animation configuration.",
+        "Using `gsap.registerEffect()`.",
+        "Designing class-based animation components.",
+        "Managing multiple timelines.",
+        "Designing animation state machines.",
+        "Creating reusable animation controllers.",
+        "Handling animation dependencies.",
+        "Supporting initialization, refresh, and destruction.",
+        "Integrating animations into existing UI component libraries.",
+      ],
+      lessons: [
+        {
+          name: "Tokens, factories, presets, and explicit dependencies",
+          explanation:
+            "Keep application state separate from animation construction. A central module can define timing and easing tokens; factories can create timelines using those presets. Prefer local defaults to broad gsap.defaults changes. Register shared effects at an explicit setup boundary, and import only the plugins a feature needs.\n\nAn animation controller should expose commands such as open, close, refresh, and destroy. It should not own unrelated networking or routing. Track multiple timelines by responsibility: a hover effect, panel transition, and page reveal should not silently compete for the same transform. Initialization should be safe to repeat only after the prior owner has been destroyed.",
+          files: [
+            {
+              name: "motion.ts",
+              code: 'import { gsap } from "gsap";\nexport const motion = {\n  short: 0.18,\n  standard: 0.4,\n  ease: "power2.out"\n} as const;\nexport function createPanelMotion(panel: HTMLElement) {\n  const timeline = gsap\n    .timeline({\n      paused: true,\n      defaults: { duration: motion.standard, ease: motion.ease }\n    })\n    .fromTo(\n      panel,\n      { opacity: 0, y: 12 },\n      { opacity: 1, y: 0, immediateRender: false }\n    );\n  let destroyed = false;\n  return {\n    open() {\n      if (!destroyed) timeline.play();\n    },\n    close() {\n      if (!destroyed) timeline.reverse();\n    },\n    refresh() {\n      if (!destroyed) timeline.invalidate();\n    },\n    destroy() {\n      if (!destroyed) {\n        destroyed = true;\n        timeline.revert();\n      }\n    }\n  };\n}',
+              language: "ts",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Timeline/",
+          requires:
+            "TypeScript + GSAP; application owns hidden/inert/focus state separately",
+          note: "",
+        },
+        {
+          name: "Use a state machine when transitions can race",
+          explanation:
+            "A state machine names allowed states and transitions. A panel might be closed, opening, open, or closing. Rapid input can change direction while motion is in progress, so current animation progress and logical open/closed intent are distinct values. Keep one authoritative intent and let completion handlers report the settled state only if that intent still applies.\n\nA class or controller can encapsulate that contract for an existing UI component library. Reversing one timeline is often simpler than coordinating many from tweens. Dependency injection makes controllers testable: accept an animation adapter with play/reverse methods rather than mocking GSAP’s entire engine. refresh should explain whether it invalidates values, remeasures scroll positions, or rebuilds the component.",
+          files: [
+            {
+              name: "panel-controller.ts",
+              code: 'type State = "closed" | "opening" | "open" | "closing";\ntype Playback = { play(): unknown; reverse(): unknown };\nexport function createController(animation: Playback) {\n  let state: State = "closed";\n  let wantsOpen = false;\n  return {\n    get state(): State {\n      return state;\n    },\n    setOpen(open: boolean): void {\n      wantsOpen = open;\n      state = open ? "opening" : "closing";\n      if (open) animation.play();\n      else animation.reverse();\n    },\n    settled(open: boolean): void {\n      if (open === wantsOpen) state = open ? "open" : "closed";\n    }\n  };\n}\n// Wire timeline onComplete to settled(true), onReverseComplete to settled(false).',
+              language: "ts",
+            },
+          ],
+          source: "https://gsap.com/resources/conflict/",
+          requires:
+            "Independent TypeScript controller; connect to a timeline at the component boundary",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Unit-test the controller’s interruption policy through a tiny playback adapter.",
+      specialization: false,
+    },
+    {
+      number: 26,
+      name: "Accessibility and UX",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Understanding `prefers-reduced-motion`.",
+        "Reducing or disabling nonessential motion.",
+        "Avoiding excessive parallax.",
+        "Preventing motion-induced discomfort.",
+        "Maintaining keyboard accessibility.",
+        "Keeping focus behavior correct during animated transitions.",
+        "Avoiding animation interference with screen readers.",
+        "Providing usable interfaces while animations are disabled.",
+        "Avoiding unnecessary delays in UI interactions.",
+        "Understanding animation as functional feedback.",
+        "Balancing visual polish with usability.",
+      ],
+      lessons: [
+        {
+          name: "Reduced motion is a usable alternative, not just a shorter duration",
+          explanation:
+            "prefers-reduced-motion expresses a preference to reduce potentially uncomfortable motion. Replace large movement, parallax, zoom, and oscillation with a direct state change or a restrained fade when appropriate. Do not leave elements at opacity zero or offscreen when animation is disabled. Every essential control must remain available.\n\nProvide immediate functional feedback before decorative motion completes. Focus should follow the interface action, not a visual effect’s arbitrary delay. Moving content must not disturb reading order or repeatedly announce changes. Keep keyboard operation, touch controls, and meaningful screen-reader text intact. A user-triggered pause or stop is valuable for persistent movement; avoid building a page that requires constant animation to understand.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="feedback">Save example</button>\n<p id="message" role="status">Ready</p>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const message = document.querySelector("#message");\n  document.querySelector("#feedback").onclick = () => {\n    message.textContent = "Saved"; // Functional feedback happens immediately.\n    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;\n    if (reduce) {\n      gsap.set(message, { opacity: 1, y: 0 });\n      return;\n    }\n    gsap.fromTo(\n      message,\n      { opacity: 0.5, y: 6 },\n      {\n        opacity: 1,\n        y: 0,\n        duration: 0.2,\n        overwrite: "auto"\n      }\n    );\n  };\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/accessibility/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Animate a native dialog while retaining its behavior",
+          explanation:
+            "A native dialog provides a modal foundation, including focus containment and Escape behavior. Animate its presentation without replacing that behavior. Move focus into the dialog when it opens and restore focus to the opener when it closes. Essential closing must still work when motion is disabled or interrupted.\n\nThe example animates only entry and uses immediate native closing, deliberately avoiding an exit phase that might delay Escape. A production exit animation needs a retained closing state, disabled duplicate actions, and a guaranteed final close even after interruption. Test tab order, focus restoration, screen-reader labels, and no-animation operation before judging the visual polish.",
+          files: [
+            {
+              name: "body.html",
+              code: '<button id="open">Open details</button>\n<dialog aria-labelledby="title">\n  <h2 id="title">Details</h2>\n  <p>A working modal first, animation second.</p>\n  <form method="dialog"><button autofocus>Close</button></form>\n</dialog>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n  dialog {\n    max-width: 320px;\n    border: 0;\n    border-radius: 12px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const opener = document.querySelector("#open");\n  const dialog = document.querySelector("dialog");\n  opener.onclick = () => {\n    dialog.showModal();\n    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {\n      gsap.fromTo(\n        dialog,\n        { opacity: 0, y: 12 },\n        { opacity: 1, y: 0, duration: 0.2, overwrite: "auto" }\n      );\n    }\n  };\n  dialog.addEventListener("close", () => {\n    gsap.killTweensOf(dialog);\n    gsap.set(dialog, { clearProps: "opacity,transform" });\n    opener.focus();\n  });\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/accessibility/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Complete every essential action with motion disabled, using only the keyboard, and check focus restoration.",
+      specialization: false,
+    },
+    {
+      number: 27,
+      name: "Debugging and Testing",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Debugging GSAP animations.",
+        "GSDevTools.",
+        "ScrollTrigger markers.",
+        "Debugging timeline positions.",
+        "Inspecting tween properties.",
+        "Debugging transform conflicts.",
+        "Identifying unexpected starting values.",
+        "Testing across responsive breakpoints.",
+        "Testing animations under rapid user input.",
+        "Testing cleanup and reinitialization.",
+        "Unit testing animation controllers.",
+        "Mocking GSAP in unit tests when appropriate.",
+        "Integration testing animated UI components.",
+        "End-to-end testing with Playwright.",
+        "Handling reduced-motion settings in automated tests.",
+        "Visual regression testing.",
+        "Testing behavior without relying on arbitrary animation delays.",
+      ],
+      lessons: [
+        {
+          name: "Debug from the smallest observable scene",
+          explanation:
+            "Check gsap.version, script loading, registration, selector matches, and the console before rewriting the timing. Mark timeline labels, inspect duration and startTime, and use getProperty for actual animated values. Unexpected starting values often come from immediateRender, competing transforms, or a from tween created too early.\n\nScrollTrigger markers reveal trigger ranges; refresh after confirmed geometry changes. GSDevTools is an optional development control panel for scrubbing and inspecting a timeline. Remove its UI and markers from production. A minimal reproduction with one target and one tween is easier to reason about than a full page with several independent owners.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/GSDevTools.min.js"></script>\n\n<script>\n  gsap.registerPlugin(GSDevTools);\n  const tl = gsap.timeline({ id: "debug-sequence" });\n  tl.addLabel("enter", 0).to(".box", { x: 160, duration: 1 }, "enter");\n  console.log(\n    "GSAP",\n    gsap.version,\n    "labels",\n    tl.labels,\n    "duration",\n    tl.duration()\n  );\n  console.log("x", gsap.getProperty(".box", "x"));\n  const tools = GSDevTools.create({ animation: tl });\n  // Development teardown: tools.kill(); tl.revert().\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/GSDevTools/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Test positions deterministically, then test the interface",
+          explanation:
+            "For a tween’s numeric contract, pause it and seek to a known progress instead of sleeping for an estimated duration. A linear tween from 0 to 120 should be 60 at progress 0.5. Unit-test application controllers through a small playback adapter; mock only that boundary when the engine is not the subject of the test.\n\nIntegration and end-to-end tests should cover rapid input, reduced motion, live breakpoint changes, repeated mount/destroy, and actual focus/hidden state. Visual regression snapshots should seek a stable position and wait for fonts/assets. A mock cannot prove rendering, ScrollTrigger geometry, or real cleanup; exercise those in a browser too.",
+          files: [
+            {
+              name: "body.html",
+              code: '<div class="box"></div>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const element = document.querySelector(".box");\n  const tween = gsap.fromTo(\n    element,\n    { x: 0 },\n    { x: 120, duration: 1, ease: "none", paused: true }\n  );\n  tween.progress(0.5, true);\n  console.assert(\n    Math.abs(Number(gsap.getProperty(element, "x")) - 60) < 0.01,\n    "Midpoint is 60px"\n  );\n  tween.progress(1, true);\n  console.assert(\n    Math.abs(Number(gsap.getProperty(element, "x")) - 120) < 0.01,\n    "Endpoint is 120px"\n  );\n  tween.revert();\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/Tween/progress()/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+        {
+          name: "Browser tests assert behavior rather than arbitrary delays",
+          explanation:
+            "Playwright can emulate reduced motion before navigation, exercise controls, and poll for state. The fixture-specific example below targets the accordion in Chapter 9 served as /accordion.html. Its reduced-motion path should complete immediately while preserving the same accessible state. Use locators and assertions rather than fixed waitForTimeout delays.\n\nAdd separate tests with normal motion and rapid toggles, two instances mounted together, and a destroy/remount cycle. Record ScrollTrigger counts before and after a feature to detect leaks, without killing unrelated instances. Cross-browser and real-device testing still matter for SVG geometry, touch behavior, fonts, and rendering costs.",
+          files: [
+            {
+              name: "accordion.spec.ts",
+              code: 'import { test, expect } from "@playwright/test";\ntest("accordion remains usable with reduced motion", async ({ page }) => {\n  await page.emulateMedia({ reducedMotion: "reduce" });\n  await page.goto("http://localhost:4173/accordion.html");\n  const button = page.getByRole("button", { name: "Details", exact: true });\n  await button.click();\n  await expect(button).toHaveAttribute("aria-expanded", "true");\n  await expect(page.locator("#panel")).toBeVisible();\n  await button.click();\n  await expect(button).toHaveAttribute("aria-expanded", "false");\n  await expect(page.locator("#panel")).toBeHidden();\n});',
+              language: "ts",
+            },
+          ],
+          source: "https://playwright.dev/docs/emulation",
+          requires:
+            "Playwright Test; serve the Chapter 9 accordion fixture at localhost:4173/accordion.html",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Seek a paused tween for numeric checks; test reduced-motion behavior without arbitrary delays.",
+      specialization: false,
+    },
+    {
+      number: 28,
+      name: "Advanced Browser and Rendering Integrations",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "GSAP with Canvas 2D.",
+        "GSAP with WebGL.",
+        "GSAP with Three.js.",
+        "Animating 3D object properties.",
+        "Camera animations.",
+        "GSAP with shaders and uniforms.",
+        "PixiPlugin.",
+        "Coordinating 2D DOM and 3D animations.",
+        "Synchronizing video and animations.",
+        "Building immersive, interactive experiences.",
+      ],
+      lessons: [
+        {
+          name: "Optional specialization: Canvas, WebGL, and Three.js",
+          explanation:
+            "GSAP animates numeric state; a renderer turns that state into pixels. Canvas 2D can read a plain animated object, as in Chapter 21. WebGL and Three.js can animate object.position, rotation, camera positions, or shader uniform.value fields. Avoid replacing a uniform wrapper when the renderer expects a stable object.\n\nKeep one rendering loop. If Three.js already owns a requestAnimationFrame or setAnimationLoop loop, let it render the updated GSAP state. A camera’s lookAt orientation may need updating while its position moves. DOM and 3D sequences can share a parent timeline, but graphics resources need separate disposal. This adapter is intentionally a contract sketch, not a complete Three.js scene or shader program.",
+          files: [
+            {
+              name: "scene-motion.ts",
+              code: 'import { gsap } from "gsap";\ntype Vector3Like = { x: number; y: number; z: number };\ntype SceneInputs = {\n  position: Vector3Like;\n  cameraPosition: Vector3Like;\n  revealUniform: { value: number };\n};\nexport function createSceneMotion(scene: SceneInputs): gsap.core.Timeline {\n  return gsap\n    .timeline({ paused: true })\n    .to(scene.position, { x: 2, duration: 1 })\n    .to(scene.cameraPosition, { z: 4, duration: 1 }, "<")\n    .to(scene.revealUniform, { value: 1, duration: 0.7 }, "<0.2");\n}\n// Supply mesh.position, camera.position, and material.uniforms.reveal.\n// Your existing renderer loop still calls renderer.render(scene, camera).',
+              language: "ts",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/GSAP/gsap.to()/",
+          requires:
+            "TypeScript + GSAP; renderer adapter sketch; supply the actual Three.js/WebGL scene and dispose its resources",
+          note: "",
+        },
+        {
+          name: "Pixi and video need their own integration contracts",
+          explanation:
+            "PixiPlugin maps GSAP properties to PixiJS display objects, including convenience handling for scale, rotation, tint, and filters. Register the Pixi namespace with PixiPlugin.registerPIXI and verify the Pixi major version and filter APIs supported by your integration. The plugin does not create a renderer or load textures.\n\nVideo can act as a clock through currentTime/duration, or GSAP can seek its time for a scrubbed scene. Seeking is asynchronous and codec-dependent; wait for metadata, throttle requests, and test real media. Do not play sound without user intent. Immersive experiences still need useful HTML content, accessible controls, cleanup, and a lower-cost fallback.",
+          files: [
+            {
+              name: "pixi-adapter.js",
+              code: 'import { gsap } from "gsap";\nimport { PixiPlugin } from "gsap/PixiPlugin";\ngsap.registerPlugin(PixiPlugin);\nexport function animateSprite(PIXI, sprite) {\n  PixiPlugin.registerPIXI(PIXI);\n  return gsap.to(sprite, {\n    pixi: { x: 100, scale: 1.1, rotation: 20 },\n    duration: 0.7\n  });\n}\n// Call with your initialized, compatible Pixi namespace and sprite.\n// Keep the Pixi application\'s existing rendering loop.',
+              language: "js",
+            },
+            {
+              name: "video-clock.js",
+              code: '// Integration function: call only after video metadata is available.\nexport function syncFromVideo(video, timeline) {\n  const update = () => {\n    if (Number.isFinite(video.duration) && video.duration > 0) {\n      timeline.pause().progress(video.currentTime / video.duration, true);\n    }\n  };\n  video.addEventListener("timeupdate", update);\n  update();\n  return () => video.removeEventListener("timeupdate", update);\n}\n// timeupdate is coarse; a production frame-accurate integration may use\n// requestVideoFrameCallback where supported, with explicit cancellation.',
+              language: "js",
+            },
+          ],
+          source: "https://gsap.com/docs/v3/Plugins/PixiPlugin/",
+          requires:
+            "Vite modules; gsap + compatible Pixi instance, or a loaded HTMLVideoElement and an existing timeline; adapters are not complete renderer apps",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Describe which system owns rendering, assets, animation state, and disposal in your optional graphics integration.",
+      specialization: true,
+    },
+    {
+      number: 29,
+      name: "Motion Design Principles",
+      stage: "Expert",
+      level: 4,
+      topics: [
+        "Timing and spacing.",
+        "Anticipation.",
+        "Follow-through and overlap.",
+        "Squash and stretch.",
+        "Acceleration and deceleration.",
+        "Motion hierarchy.",
+        "Visual rhythm.",
+        "Staging and choreography.",
+        "Continuity between interface states.",
+        "Meaningful transitions.",
+        "Attention guidance.",
+        "Microinteractions.",
+        "Motion consistency.",
+        "Storytelling through animation.",
+        "Balancing subtle and expressive motion.",
+      ],
+      lessons: [
+        {
+          name: "Design motion before choosing an effect",
+          explanation:
+            "Timing is duration; spacing is the distance covered between frames. Acceleration and deceleration shape that spacing. Anticipation prepares an action, follow-through lets secondary parts settle, and overlap gives related parts slightly different timing. Squash and stretch suggest weight, but should not distort important text or controls.\n\nMotion hierarchy directs attention to the primary action first. Rhythm, staging, and choreography organize the sequence; continuity helps a user recognize the same item across states. Use meaningful transitions and short microinteractions to explain cause and effect. Consistent timing tokens make a product feel coherent. Storytelling can justify expressive motion in a product scene, while routine forms usually benefit from subtle feedback. Evaluate the no-motion version as carefully as the animated one.",
+          files: [
+            {
+              name: "body.html",
+              code: '<section class="hero-demo">\n  <h2>A clear message</h2>\n  <p>Supporting detail comes next.</p>\n  <button>Primary action</button>\n</section>\n\n<style>\n  .box,\n  .tile {\n    width: 72px;\n    min-height: 72px;\n    padding: 12px;\n    background: #2563eb;\n    color: white;\n    border-radius: 10px;\n    margin: 12px;\n  }\n  button {\n    margin: 6px;\n    padding: 8px 14px;\n  }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>\n\n<script>\n  const mm = gsap.matchMedia();\n  mm.add("(prefers-reduced-motion: no-preference)", () => {\n    gsap\n      .timeline({ defaults: { ease: "power2.out", duration: 0.45 } })\n      .from(".hero-demo h2", { y: 20, opacity: 0 })\n      .from(".hero-demo p", { y: 12, opacity: 0 }, "<0.12")\n      .from(".hero-demo button", { y: 8, opacity: 0 }, "<0.1");\n  });\n  // Review: what should the viewer notice first? Can the action be used immediately?\n</script>',
+              language: "html",
+            },
+          ],
+          source: "https://gsap.com/resources/get-started/",
+          requires: "Browser; GSAP 3.15.0; run this example independently",
+          note: "",
+        },
+      ],
+      checkpoint:
+        "Reduce a sequence to its primary message, then explain how each remaining movement supports it.",
+      specialization: false,
+    },
+  ],
+  priorities: [
+    ["1", "GSAP Core and Tweens", "Essential"],
+    ["2", "Timelines", "Essential"],
+    ["3", "Easing and Staggers", "Essential"],
+    ["4", "ScrollTrigger", "Essential"],
+    ["5", "Responsive Animations", "Essential"],
+    ["6", "Text and SVG Animations", "Very high"],
+    ["7", "FLIP Animations", "Very high"],
+    ["8", "Performance and Accessibility", "Very high"],
+    ["9", "Lifecycle and Cleanup", "Very high"],
+    ["10", "GSAP with TypeScript", "High"],
+    ["11", "GSAP with React", "High"],
+    ["12", "Draggable and Observer", "Medium"],
+    ["13", "Canvas, WebGL, Three.js", "Optional specialization"],
+  ],
+  schedule: [
+    [
+      "Weeks 1–3",
+      "Core foundations",
+      "Tweens, CSS properties, easing, staggers, and callbacks",
     ],
-  },
-  {
-    name: "2. Build reliable tweens",
-    intro:
-      "Essential · Learn how an animation chooses its start, end, units, and current state. Keep the visual effect small while testing these mechanics.",
-    checkpoint:
-      "Create an entrance using from(), then rewrite it with fromTo(). Explain why set() is different from a visible transition.",
-    lessons: [
-      {
-        name: "to, from, and fromTo",
-        explanation:
-          "to moves from current values to supplied values. from starts at supplied values and ends at the existing state, which is useful for entrances. fromTo specifies both ends; put duration and ease in the second vars object. These independent paragraphs demonstrate all three approaches.\n\nThink about the authoring state first: CSS often describes the final visible layout, so from() is convenient for entrances. Use to() for interaction that should continue from the current appearance. Use fromTo() when both ends are deliberately fixed, such as replaying a demonstration. All three create Tween instances; calling them starts playback unless paused or delayed. Avoid replaying independent from tweens on a target already in motion without managing their starting state.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.fromTo()/",
-        kind: "html",
-        code: '<p class="to">Move to the right</p>\n<p class="from">Enter from below</p>\n<p class="from-to">Explicit start and end</p>\n\n<script>\ngsap.to(".to", { x: 80, duration: 1 });\ngsap.from(".from", { y: 24, opacity: 0, duration: 1 });\ngsap.fromTo(".from-to",\n  { x: -40, opacity: 0 },\n  { x: 40, opacity: 1, duration: 1, ease: "power2.out" }\n);\n</script>',
-        syntax:
-          "gsap.to(target, vars) · gsap.from(target, vars) · gsap.fromTo(target, fromVars, toVars)",
-      },
-      {
-        name: "Set a state without animating",
-        explanation:
-          "set applies values immediately, like a zero-duration tween. It is useful for initialization or a nonanimated state. autoAlpha combines opacity with visibility: at zero it hides the element with visibility: hidden. It does not manage focus or application state for you.\n\nOpacity alone leaves an element in the accessibility and focus model. visibility hides it visually, but neither option decides when your app should move focus or expose expanded content. Keep semantic state separate from animation settings. Prefer setting only properties your animation owns; broad transform or style resets can destroy layout styling supplied elsewhere.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.set()/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\ngsap.set(".box", { x: 20, rotation: -8, autoAlpha: 1 });\n</script>',
-        syntax: "gsap.set(target, vars)",
-      },
-      {
-        name: "Transforms, CSS values, and units",
-        explanation:
-          'x and y are transform translations, with numbers interpreted as pixels; rotation uses degrees. xPercent and yPercent are relative to the target’s own size. Use camelCase for CSS properties. This tile shifts half its own width, turns, and changes color without changing its document-flow position.\n\nA transform changes the rendered appearance without making neighboring elements reflow. Layout properties such as width do affect layout. Use x/y for translation and scale/rotation for their specific components rather than continually replacing the entire transform string. xPercent refers to the target, not its parent or viewport. Supply strings like "20vw" when a different unit is intentional; use CSS for the unanimated layout.',
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/CorePlugins/CSS/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\ngsap.to(".box", {\n  xPercent: 50, rotation: 12, scale: 1.1,\n  transformOrigin: "left center", backgroundColor: "#7c3aed",\n  duration: 0.8, ease: "power2.out"\n});\n</script>',
-        syntax: "x · y · xPercent · scale · rotation · transformOrigin",
-      },
-      {
-        name: "Relative and function-based values",
-        explanation:
-          "Relative strings add to or subtract from the starting value. Functions compute a value for each target when the tween initializes, rather than on every frame. This example moves three items by different distances and rotates each an additional quarter turn.\n\nRelative values are resolved from a tween’s starting state, so repeated interactions can accumulate them. Function-based values are useful when targets need different distances or responsive measurements. They are not continuously responsive: a value computed at initialization stays cached until you invalidate or recreate that animation. Keep measurement functions free of avoidable DOM writes.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.to()/",
-        kind: "html",
-        code: '<p class="item">First</p>\n<p class="item">Second</p>\n<p class="item">Third</p>\n\n<script>\ngsap.to(".item", {\n  x: index => 20 + index * 30,\n  rotation: "+=90", transformOrigin: "left center",\n  duration: 0.8\n});\n</script>',
-        syntax: 'x: "+=40" · x: (index, target, targets) => value',
-      },
-      {
-        name: "Animate an object and render a counter",
-        explanation:
-          "GSAP can animate numeric object properties without a DOM target. Render the changing value in onUpdate. This counter rounds the animated number and formats it for display; the final value is 2,400. Avoid announcing every frame to assistive technology.\n\nInterpolating an object separates animation timing from rendering. The same technique can update canvas coordinates, a chart renderer, or a shader parameter. onUpdate runs frequently, so keep its work cheap and update only what changed. If a counter conveys important information, expose a stable final description rather than asking a live region to announce every intermediate number.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.from()/",
-        kind: "html",
-        code: '<p>Visitors: <output id="count-demo">0</output></p>\n\n<script>\nconst counter = { value: 0 };\nconst output = document.querySelector("#count-demo");\ngsap.to(counter, {\n  value: 2400, duration: 1.5, ease: "power1.out",\n  onUpdate() {\n    output.textContent = Math.round(counter.value).toLocaleString();\n  }\n});\n</script>',
-        syntax: "gsap.to(object, { value, onUpdate })",
-      },
-      {
-        name: "Initialization, immediateRender, and cached values",
-        explanation:
-          "from() and fromTo() normally apply their starting values immediately. That can be surprising when a later tween on the same element changes what an earlier tween should display. immediateRender: false delays that initial write until the later tween actually starts.\n\nGSAP also caches resolved starting values for efficiency. invalidate() clears cached initialization data; it does not magically remeasure every frame. When layout or application state changes, decide whether to invalidate an existing animation or revert and rebuild it. This example deliberately waits before placing the tile at the second tween’s starting position.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.from()/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nconst tl = gsap.timeline();\ntl.to(".box", { x: 80, duration: 0.6 })\n  .fromTo(".box", { x: -80 }, {\n    x: 0, duration: 0.6, immediateRender: false\n  }, "+=0.3");\n// The second start state is not written until 0.9 seconds.\n</script>',
-      },
+    [
+      "Weeks 4–6",
+      "Animation coordination",
+      "Timelines, playback controls, reusable functions, and UI interactions",
     ],
-  },
-  {
-    name: "3. Shape time and coordinate groups",
-    intro:
-      "Essential · An ease controls pacing; a stagger offsets the starts of multiple targets. These tools often improve an animation more than adding extra movement.",
-    checkpoint:
-      "Make a three-item entrance with a small stagger. Change the ease without changing the duration, and compare the result.",
-    lessons: [
-      {
-        name: "Choose an ease",
-        explanation:
-          "An ease changes how motion progresses within a duration. out slows near the end; in speeds up; inOut does both. none keeps progress linear. Use restrained power eases for interface motion, and back or elastic when an overshoot is intentional. The two tiles travel the same distance with different pacing.\n\nEasing is a mapping from time progress to value progress. An out ease begins quickly and slows down; an in ease accelerates; inOut does both. Overshooting eases such as back and elastic can temporarily pass the final value, so allow room for them. Use none when the visual value should follow a scrubbed playhead directly, or when constant-speed travel is important. Compare effects using the official ease visualizer instead of guessing.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/getting-started/Easing/",
-        kind: "html",
-        code: '<div class="box linear">Linear</div>\n<div class="box eased">Ease out</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n.box { margin: 16px 0; }\n</style>\n\n<script>\ngsap.to(".linear", { x: 160, duration: 1.2, ease: "none" });\ngsap.to(".eased", { x: 160, duration: 1.2, ease: "power3.out" });\n</script>',
-        syntax: 'ease: "power2.out" · "power1.inOut" · "none"',
-      },
-      {
-        name: "Delay, repeat, yoyo, and reverse easing",
-        explanation:
-          "delay waits before starting. repeat counts extra cycles: repeat: 1 plays twice; -1 repeats indefinitely. yoyo alternates direction on repeats. The example runs forward then backward and stops. In GSAP 3.15+, easeReverse can preserve the chosen easing feel when reversing a tween; it is distinct from repeat-only yoyoEase.\n\nA repeat is an extra iteration, not a total play count. The initial delay is not normally replayed on each iteration; use repeatDelay for the gap between cycles. yoyo requires repeats to show alternating playback. For indefinite loops, provide a pause mechanism and reduced-motion behavior before shipping. Reverse easing is optional polish, not a prerequisite for creating a reversible animation.",
-        level: "Essential",
-        requires: "GSAP 3.15+ for easeReverse; otherwise omit that option",
-        source: "https://gsap.com/docs/v3/GSAP/Tween/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\ngsap.to(".box", {\n  x: 160, duration: 0.8, delay: 0.3,\n  repeat: 1, repeatDelay: 0.2, yoyo: true,\n  ease: "power2.out", easeReverse: true // GSAP 3.15+\n});\n</script>',
-        syntax: "delay · repeat · repeatDelay · yoyo · easeReverse",
-      },
-      {
-        name: "Stagger multiple targets",
-        explanation:
-          'A stagger offsets target start times. A number gives the gap in seconds. An object can start from the center or distribute across a grid. each is the gap per target; amount spreads starts across a total span. This list enters from the center outward.\n\nThe overall group duration includes the stagger span as well as the duration of a target’s tween. Changing stagger does not change how fast each item moves; it changes when each begins. Use grid: "auto" only when a measured grid matches your layout, and verify after responsive reflow. A small gap can clarify reading order; large delays can make an interface feel blocked.',
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/getting-started/Staggers/",
-        kind: "html",
-        code: '<ul><li class="item">Plan</li><li class="item">Build</li><li class="item">Ship</li></ul>\n\n<script>\ngsap.from(".item", {\n  y: 20, opacity: 0, duration: 0.5,\n  stagger: { each: 0.12, from: "center" },\n  ease: "power2.out"\n});\n</script>',
-        syntax: "stagger: 0.1 · stagger: { each, from, grid }",
-      },
-      {
-        name: "Use keyframes for a multi-step tween",
-        explanation:
-          "Array keyframes describe successive states of the same targets. Each frame can have its own duration and ease. A timeline is often clearer when several elements need different schedules. This tile rises, moves sideways, then settles.\n\nKeyframes are states within one tween; they are especially convenient when one object follows a short movement phrase. A timeline is easier to maintain when separate targets have meaningful overlap or labeled moments. Array keyframes work as sequential steps. GSAP also supports object/percentage keyframes, but their duration/easing composition deserves testing rather than treating them as interchangeable with CSS @keyframes.",
-        level: "Advanced",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/keyframes/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n.box { margin-top: 40px; }\n</style>\n\n<script>\ngsap.to(".box", {\n  keyframes: [\n    { y: -24, duration: 0.25, ease: "power2.out" },\n    { x: 120, duration: 0.5, ease: "power1.inOut" },\n    { y: 0, duration: 0.3, ease: "bounce.out" }\n  ]\n});\n</script>',
-        syntax: "keyframes: [{ properties, duration }, ...]",
-      },
+    [
+      "Weeks 7–10",
+      "Scroll animation",
+      "ScrollTrigger, pinning, scrubbing, responsive behavior, and parallax",
     ],
-  },
-  {
-    name: "4. Compose timelines and control playback",
-    intro:
-      "Essential · Replace chains of timeouts with a coordinated playhead. Learn insertion positions, then build small sequences that can be nested and reused.",
-    checkpoint:
-      "Build a hero entrance with overlapping title and body motion. Add a label, pause halfway, then reverse the whole sequence.",
-    lessons: [
-      {
-        name: "Build a sequence with defaults",
-        explanation:
-          "A timeline owns a sequence of child tweens. Without a position argument, new children start at the current end. Timeline defaults apply to children; a child can override them. This heading enters first, then its description, then its button. Store the timeline to control the whole sequence.\n\nChanging one child’s duration automatically changes the placement of children added at the end, which avoids manually recalculating delays. defaults provides child settings; options such as paused or repeat configure the parent’s own playback. Prefer timeline-local defaults over gsap.defaults() when a change should affect one component instead of unrelated animation code.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Timeline/",
-        kind: "html",
-        code: '<section class="hero-demo">\n  <h2>Hello, motion</h2>\n  <p>A short introduction.</p>\n  <button type="button">Explore</button>\n</section>\n\n<script>\nconst intro = gsap.timeline({ defaults: { duration: 0.5, ease: "power2.out" } });\nintro.from(".hero-demo h2", { y: 24, opacity: 0 })\n     .from(".hero-demo p", { y: 16, opacity: 0 })\n     .from(".hero-demo button", { scale: 0.9, opacity: 0, duration: 0.3 });\n</script>',
-        syntax: "gsap.timeline({ defaults: { duration, ease } })",
-      },
-      {
-        name: "Position parameters and labels",
-        explanation:
-          'The position argument places a child in its timeline. A number is an absolute second; < is the previous child’s start and > its end. -= overlaps the timeline’s current end. Labels name reusable moments. Here the first two paragraphs enter together, and the third begins 0.2 seconds after the end label.\n\nPositions are evaluated when a child is inserted. The end of the timeline and the end of the most recently inserted child may differ when animations overlap, so ">" and "+=0" are not always equivalent. Use labels such as "revealed" to communicate meaning rather than scattering fragile absolute times. You can inspect tl.labels while debugging an unexpected start.',
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/position-parameter/",
-        kind: "html",
-        code: '<p class="a">First</p><p class="b">Alongside</p><p class="c">Then this</p>\n\n<script>\nconst tl = gsap.timeline({ defaults: { duration: 0.6 } });\ntl.from(".a", { x: -24, opacity: 0 }, 0)\n  .from(".b", { x: 24, opacity: 0 }, "<")\n  .addLabel("entered")\n  .from(".c", { y: 20, opacity: 0 }, "entered+=0.2");\n// Alternatives: "-=0.2" overlaps the current end by 0.2 s;\n// ">" starts when the most recently added child ends.\n</script>',
-        syntax: '0 · "<" · ">" · "-=0.2" · "label+=0.1"',
-      },
-      {
-        name: "Nest reusable animation sequences",
-        explanation:
-          "Return a timeline from a helper to build reusable sequences. The parent coordinates child playheads and can move or reverse the entire composition. Keep child timelines under their parent’s control instead of assigning separate scroll-driven playheads to the same children.\n\nA parent timeline provides one timing owner. Build reusable functions around DOM elements or a scoped root rather than hard-coded global selectors. Each function can return a timeline, and a parent can add it at a label or relative position. Avoid independently seeking a child while its parent is also driving it; the next parent render will take control again.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Timeline/",
-        kind: "html",
-        code: '<p class="first">Welcome</p>\n<p class="second">Keep exploring</p>\n\n<script>\nfunction reveal(target) {\n  return gsap.timeline()\n    .from(target, { y: 20, opacity: 0, duration: 0.5 })\n    .to(target, { color: "#2563eb", duration: 0.25 });\n}\nconst master = gsap.timeline();\nmaster.add(reveal(".first"))\n      .add(reveal(".second"), "-=0.15");\n</script>',
-        syntax: "timeline.add(childTimeline, position)",
-      },
-      {
-        name: "Play, pause, restart, reverse, and seek",
-        explanation:
-          "Tweens and timelines share playback controls. progress ranges from 0 to 1 for one cycle; totalProgress includes repeats. seek uses seconds or a timeline label. timeScale changes playback rate: 2 is twice as fast. The buttons control one stored tween instead of creating duplicates.\n\nprogress is a normalized playhead value: 0 is the start, 1 the end of a cycle. time is measured in seconds; totalTime includes repeats. pause preserves the current position, restart returns to the beginning, and reverse changes direction from the current position. At the exact beginning there is nothing to reverse. Store the animation instead of querying and recreating it on every input.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Tween/",
-        kind: "html",
-        code: '<div class="box">Move</div>\n<button type="button" id="play-demo">Play</button>\n<button type="button" id="pause-demo">Pause</button>\n<button type="button" id="reverse-demo">Reverse</button>\n<button type="button" id="restart-demo">Restart</button>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nconst tween = gsap.to(".box", { x: 160, duration: 2, paused: true });\ndocument.querySelector("#play-demo").onclick = () => tween.play();\ndocument.querySelector("#pause-demo").onclick = () => tween.pause();\ndocument.querySelector("#reverse-demo").onclick = () => tween.reverse();\ndocument.querySelector("#restart-demo").onclick = () => tween.restart();\n// Other controls: tween.progress(0.5); tween.seek(1); tween.timeScale(2);\n</script>',
-        syntax:
-          "play() · pause() · restart() · reverse() · progress() · timeScale()",
-      },
-      {
-        name: "Callbacks and timeline calls",
-        explanation:
-          "Callbacks connect animation timing to application behavior. Pass a function reference, rather than calling it while building the tween. A timeline call schedules a function at a position. This status updates at sequence milestones; visual animation should complement application state rather than delay an essential action.\n\nPass onComplete: finish rather than onComplete: finish(), which would call finish during setup. Use onReverseComplete when a reversed transition reaches its starting state. Timeline calls are part of the playhead and can be reached again when replaying or seeking; choose idempotent callbacks where repetition is possible. Keep irreversible business actions such as submitting a payment outside animation completion logic.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Timeline/",
-        kind: "html",
-        code: '<p class="message">Hello!</p>\n<p id="status-demo" role="status">Ready</p>\n\n<script>\nconst status = document.querySelector("#status-demo");\nconst tl = gsap.timeline({\n  onStart: () => { status.textContent = "Starting"; },\n  onComplete: () => { status.textContent = "Finished"; }\n});\ntl.from(".message", { opacity: 0, duration: 0.5 })\n  .call(() => console.log("The message is visible"))\n  .to(".message", { x: 40, duration: 0.5 });\n</script>',
-        syntax:
-          "onStart · onUpdate · onComplete · onReverseComplete · tl.call()",
-      },
+    [
+      "Weeks 11–15",
+      "Creative techniques",
+      "Text, SVG, FLIP, Draggable, and advanced plugins",
     ],
-  },
-  {
-    name: "5. Design interactions and handle interruption",
-    intro:
-      "Essential · Real users can click faster than an animation finishes. Use current state, semantic controls, and a clear policy for competing updates.",
-    checkpoint:
-      "Test an interaction with rapid alternating clicks, keyboard focus, pointer exit, and reduced motion. Its final semantic state should always agree with the visible state.",
-    lessons: [
-      {
-        name: "Hover and keyboard-focus feedback",
-        explanation:
-          "Create feedback once and reuse it on pointer and focus events. This button grows while hovered or focused. The current state combines both inputs so pointer exit does not remove keyboard-focus feedback. Use semantic buttons and retain a visible focus outline.\n\nA paused animation can respond instantly to a changed input without allocating a new tween each time. Keyboard users need comparable feedback, and pointer hover must not be the only way to discover content. This compact example reads the initial motion preference; use matchMedia from the next chapter when the preference must update during the page lifetime. Remove listeners and revert the tween if this button is mounted as a component.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Tween/",
-        kind: "html",
-        code: '<button type="button" class="cta">Save changes</button>\n\n<script>\nconst button = document.querySelector(".cta");\nconst reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;\nconst feedback = gsap.to(button, {\n  scale: reduced ? 1 : 1.06, duration: 0.18, paused: true, ease: "power2.out"\n});\nlet hovered = false;\nfunction update() {\n  if (hovered || document.activeElement === button) feedback.play();\n  else feedback.reverse();\n}\nbutton.addEventListener("pointerenter", () => { hovered = true; update(); });\nbutton.addEventListener("pointerleave", () => { hovered = false; update(); });\nbutton.addEventListener("focus", update);\nbutton.addEventListener("blur", update);\n</script>',
-        syntax: "paused tween + play() / reverse()",
-      },
-      {
-        name: "A reversible disclosure panel",
-        explanation:
-          "This disclosure keeps its semantic state in sync while fading and moving the panel. Closing moves focus back if needed, makes the panel inert immediately, and sets hidden after the reverse finishes. Opening unhides it first. Reduced motion makes the transition immediate. A modal dialog would additionally need dialog semantics, focus management, and Escape behavior.\n\nThis is a disclosure, not a modal: background content remains usable. For a modal, prefer the platform dialog behavior and deliberately manage focus and Escape. Rapid reopen/close actions reuse the same tween, so the playhead can change direction without fighting another tween. The panel’s hidden and inert states belong to the interaction, while GSAP only handles its visual interpolation.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Tween/",
-        kind: "html",
-        code: '<button type="button" id="toggle-demo" aria-expanded="false" aria-controls="panel-demo">Details</button>\n<div id="panel-demo" hidden inert><p>More information.</p><a href="#">Read more</a></div>\n\n<script>\nconst toggle = document.querySelector("#toggle-demo");\nconst panel = document.querySelector("#panel-demo");\nconst reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;\ngsap.set(panel, { opacity: 0, y: -8 });\nconst motion = gsap.to(panel, {\n  opacity: 1, y: 0, duration: 0.25, paused: true,\n  onReverseComplete: () => { panel.hidden = true; }\n});\ntoggle.addEventListener("click", () => {\n  const open = toggle.getAttribute("aria-expanded") !== "true";\n  toggle.setAttribute("aria-expanded", String(open));\n  if (open) {\n    panel.hidden = false;\n    panel.inert = false;\n    if (reduced) motion.progress(1).pause();\n    else motion.play();\n  } else {\n    if (panel.contains(document.activeElement)) toggle.focus();\n    panel.inert = true;\n    if (reduced) { motion.progress(0).pause(); panel.hidden = true; }\n    else motion.reverse();\n  }\n});\n</script>',
-        syntax: "aria-expanded + hidden/inert + a reversible tween",
-      },
-      {
-        name: "Avoid conflicting tweens and excessive work",
-        explanation:
-          'Prefer transforms and opacity when they suit the effect; width, height, filters, and shadows may cost more to render. Avoid CSS transitions on the same properties GSAP controls. overwrite: "auto" removes conflicting active tween properties when a new tween initializes. This button retargets a tile safely during rapid clicks. Profile real devices and use will-change only when needed.\n\nChoose a single owner for a property. One hover animation and one scroll animation both changing the same x can fight even if both are individually correct. Use nested wrappers for independent transformations, or compose them under one timeline. overwrite: "auto" handles active property conflicts; it is not a universal fix for inconsistent application state. Killing a tween leaves its current values; reversion is a separate operation.',
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/mistakes/",
-        kind: "html",
-        code: '<button type="button" id="retarget-demo">Retarget</button>\n<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nlet right = false;\ndocument.querySelector("#retarget-demo").onclick = () => {\n  right = !right;\n  gsap.to(".box", {\n    x: right ? 160 : 0, duration: 0.6, ease: "power2.out", overwrite: "auto"\n  });\n};\n// To cancel all tweens of this target: gsap.killTweensOf(".box");\n// To restore original styles, retain a context and call context.revert().\n</script>',
-        syntax: 'overwrite: "auto" · killTweensOf() · transform/opacity',
-      },
+    [
+      "Weeks 16–20",
+      "Production engineering",
+      "Performance, cleanup, accessibility, TypeScript, and React",
     ],
-  },
-  {
-    name: "6. Make motion responsive and accessible",
-    intro:
-      "Essential · Apply these decisions to every decorative demo before shipping. “Responsive” includes changes in layout, input device, and motion preference—not only screen width.",
-    checkpoint:
-      "Change the viewport across a breakpoint and toggle the OS motion preference while the page is open. Content must stay readable and controls must still work.",
-    lessons: [
-      {
-        name: "Adapt to breakpoints and reduced motion",
-        explanation:
-          "matchMedia (GSAP 3.11+) creates animations for matching conditions and reverts them when conditions change. This entrance uses a shorter travel distance on small screens and no animation when reduced motion is requested. Keep the unanimated content usable. For scroll effects, create ScrollTriggers only inside the no-preference branch when motion is decorative.\n\nmatchMedia owns the animations created synchronously inside its handler, reverting them before a relevant condition is rebuilt. This prevents stale inline transforms from surviving a breakpoint change. The callback runs when any supplied condition matches, so inspect conditions to choose a branch. An essential state change should still happen when motion is off; remove a decorative transition rather than leaving its target hidden.",
-        level: "Essential",
-        requires: "GSAP core 3.11+; native media queries",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/",
-        kind: "html",
-        code: '<h2 class="welcome">Welcome aboard</h2>\n\n<script>\nconst mm = gsap.matchMedia();\nmm.add({\n  desktop: "(min-width: 800px)",\n  mobile: "(max-width: 799px)",\n  reduced: "(prefers-reduced-motion: reduce)"\n}, context => {\n  const { desktop, reduced } = context.conditions;\n  if (!reduced) {\n    gsap.from(".welcome", {\n      y: desktop ? 40 : 16, opacity: 0, duration: 0.6\n    });\n  }\n});\n// On component teardown: mm.revert();\n</script>',
-        syntax: "gsap.matchMedia().add(conditions, callback)",
-      },
-      {
-        name: "Provide a pause control for ongoing motion",
-        explanation:
-          "Looping decorative movement should be optional. This finite-area illustration runs only when reduced motion is off, and offers a pause button. Avoid flashes, large unsolicited movements, and hiding essential content for an animation. A motion preference is part of the experience, not a performance setting.\n\nA system preference is a baseline, not the only control a user might need. A visible pause option helps readers stop distracting movement. Keep controls reachable without depending on motion, and avoid flashing content or surprise full-screen travel. Test the reduced-motion path as a first-class experience, not just a zero-duration fallback. Do not set hidden content to an invisible start state outside the motion-enabled branch.",
-        level: "Essential",
-        requires: "GSAP core 3.11+ for matchMedia",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/",
-        kind: "html",
-        code: '<div class="box" aria-hidden="true">✦</div>\n<button type="button" id="pause-loop" aria-pressed="false">Pause animation</button>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nconst button = document.querySelector("#pause-loop");\nconst mm = gsap.matchMedia();\nmm.add("(prefers-reduced-motion: no-preference)", () => {\n  button.setAttribute("aria-pressed", "false");\n  button.textContent = "Pause animation";\n  const loop = gsap.to(".box", {\n    x: 80, duration: 2, ease: "sine.inOut", repeat: -1, yoyo: true\n  });\n  const toggle = () => {\n    loop.paused(!loop.paused());\n    button.setAttribute("aria-pressed", String(loop.paused()));\n    button.textContent = loop.paused() ? "Resume animation" : "Pause animation";\n  };\n  button.hidden = false;\n  button.addEventListener("click", toggle);\n  return () => { button.removeEventListener("click", toggle); button.hidden = true; };\n});\nbutton.hidden = !matchMedia("(prefers-reduced-motion: no-preference)").matches;\n// Component teardown: mm.revert();\n</script>',
-        syntax: "pause() + a real button + prefers-reduced-motion",
-      },
-      {
-        name: "Progressive enhancement and entrance flashes",
-        explanation:
-          "Progressive enhancement means the unanimated page still provides its content and actions. A flash of unstyled content (FOUC) can occur if a visible element paints before a from() tween applies its start state. Hiding everything by default can solve the flash while creating a worse failure: permanently hidden content when a script fails.\n\nFor nonessential entrances, prefer a small transform-only enhancement or keep content visible until animation code successfully initializes. If a design truly requires pre-hiding, add a bounded recovery path and a no-JavaScript fallback. Test blocked scripts and slow connections. This heading stays visible even when GSAP is unavailable and only receives motion when the preference allows it.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/fouc/",
-        kind: "html",
-        code: '<h2 class="safe-heading">Your content comes first</h2>\n\n<script>\nif (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) {\n  gsap.from(".safe-heading", { y: 16, duration: 0.5, ease: "power2.out" });\n}\n</script>',
-      },
+    [
+      "Beyond week 20",
+      "Specialization and mastery",
+      "Complex portfolio projects, motion design, and advanced architecture",
     ],
-  },
-  {
-    name: "7. Understand ScrollTrigger",
-    intro:
-      "Essential when building scroll effects · Separate scroll position, trigger boundaries, and animation progress. A ScrollTrigger listens to scrolling; it is not a smooth-scrolling engine.",
-    checkpoint:
-      "Explain the two parts of a start string. Build one reveal and one scrubbed effect, then confirm both work when the page reloads partway down.",
-    lessons: [
-      {
-        name: "Reveal elements on entry",
-        explanation:
-          'ScrollTrigger watches scroll positions; it does not scroll the page for you. Load and register it separately. In start: "top 85%", the first value refers to the trigger and the second to the viewport. This card reveals once when its top reaches 85% of the viewport height. markers makes boundaries visible while developing.\n\nA trigger marks the element whose geometry determines the activation interval. A toggle action is a time-based animation command at a boundary; it is different from scrubbing. once: true is appropriate for a one-time entrance. Without it, toggleActions lists onEnter, onLeave, onEnterBack, and onLeaveBack in that order. Leave enough document length for the start position to be reachable, and remove markers in the finished UI.',
-        level: "Essential",
-        requires: "ScrollTrigger plugin; load after core",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
-        kind: "html",
-        code: '<div style="height: 100vh">Scroll down</div>\n<article class="card">A revealed card</article>\n<div style="height: 100vh">Continue scrolling</div>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\ngsap.from(".card", {\n  y: 40, opacity: 0, duration: 0.7,\n  scrollTrigger: {\n    trigger: ".card", start: "top 85%", once: true, markers: true\n  }\n});\n// For replay behavior instead of once, choose toggleActions:\n// "play none none reverse" = enter, leave, enter-back, leave-back.\n</script>',
-        syntax: "scrollTrigger: { trigger, start, toggleActions }",
-      },
-      {
-        name: "Scrub a timeline with scrolling",
-        explanation:
-          'Scrubbing ties animation progress to the scroll distance between start and end. A numeric scrub adds catch-up smoothing. Use ease: "none" for a direct mapping of animated values. One ScrollTrigger should control the parent timeline, rather than competing with its children. Here the bar fills while the reader crosses the article.\n\nA scrubbed animation’s duration determines how it divides the scroll interval, not a fixed number of wall-clock seconds. The start-to-end distance supplies the time-like input. With scrub: 0.5, the animation can keep catching up after scrolling stops; attach visual-progress work to the animation’s onUpdate when that distinction matters. One parent ScrollTrigger should drive the sequence.',
-        level: "Essential",
-        requires: "ScrollTrigger plugin",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
-        kind: "html",
-        code: '<article class="story"><div class="reading-bar" aria-hidden="true"></div>\n  <h2>A long story</h2><p>Scroll through this section.</p></article>\n\n<style>\n.story { min-height: 220vh; }\n.reading-bar { position: sticky; top: 0; height: 6px; background: #2563eb; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nconst tl = gsap.timeline({\n  scrollTrigger: {\n    trigger: ".story", start: "top top", end: "bottom bottom", scrub: 0.5\n  }\n});\ntl.fromTo(".reading-bar", { scaleX: 0 }, {\n  scaleX: 1, transformOrigin: "left center", ease: "none", duration: 1\n});\n</script>',
-        syntax: "scrub: true | seconds · start · end",
-      },
-      {
-        name: "Pin a section",
-        explanation:
-          "Pinning holds a section while the document continues scrolling. ScrollTrigger normally reserves space to avoid a jump. Animate a child of the pinned element so its measurements remain stable. This section stays in place for 600 pixels of scrolling while its title moves. Test pinned content on small screens and with keyboard navigation.\n\nPin spacing normally creates room for the pinned duration. Disabling it can cause later content to overlap. Pin the container and animate a child; moving the measured trigger itself changes the geometry you are relying on. A transformed ancestor can change fixed-position behavior. Avoid nested pinning and test text zoom, mobile browser UI changes, and keyboard focus through the pinned area.",
-        level: "Essential",
-        requires: "ScrollTrigger plugin",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
-        kind: "html",
-        code: '<section class="pinned"><h2>Stay a moment</h2></section>\n<section style="min-height:100vh">Continue reading</section>\n\n<style>\n.pinned { min-height: 100vh; display: grid; place-items: center; background: #dce9ff; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\ngsap.to(".pinned h2", {\n  x: 120, ease: "none",\n  scrollTrigger: {\n    trigger: ".pinned", start: "top top", end: "+=600", pin: true, scrub: true\n  }\n});\n</script>',
-        syntax: 'pin: true · end: "+=600"',
-      },
-      {
-        name: "Refresh after layout changes",
-        explanation:
-          "Refresh recalculates trigger positions after layout changes, such as loaded images or expanded content. update only checks current scroll state. Function-based values can read fresh dimensions when invalidateOnRefresh is enabled. This tile travels within its track; the button widens the track and refreshes the measurements.\n\nScrollTrigger does not recalculate every boundary on every scroll event. refresh remeasures layout; update responds to scroll position using the current measurements. Images, webfonts, accordions, or route changes can shift those measurements. Refresh after meaningful layout work settles, not inside every pointermove or animation frame. Use function values with invalidateOnRefresh when the tween itself also depends on the new dimensions.",
-        level: "Essential",
-        requires: "ScrollTrigger plugin",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
-        kind: "html",
-        code: '<button type="button" id="resize-track">Widen track</button>\n<div class="track"><div class="box">Travel</div></div>\n<div style="height:120vh"></div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n.track { width: 60%; border: 1px solid #999; margin-top: 40vh; }\n.box { box-sizing: border-box; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nconst track = document.querySelector(".track");\nconst box = track.querySelector(".box");\ngsap.to(box, {\n  x: () => Math.max(0, track.clientWidth - box.offsetWidth), ease: "none",\n  scrollTrigger: {\n    trigger: track, start: "top 80%", end: "+=500", scrub: true,\n    invalidateOnRefresh: true\n  }\n});\ndocument.querySelector("#resize-track").onclick = () => {\n  track.style.width = "90%";\n  ScrollTrigger.refresh();\n};\n</script>',
-        syntax: "ScrollTrigger.refresh() · invalidateOnRefresh: true",
-      },
-    ],
-  },
-  {
-    name: "8. Build advanced scroll experiences",
-    intro:
-      "Advanced · Use these patterns only when they improve the content. Begin with a functional document flow and add scroll choreography that can be disabled cleanly.",
-    checkpoint:
-      "Build a horizontal gallery with a normal stacked fallback. Resize it, navigate by keyboard, and verify that removing its animations restores ordinary flow.",
-    lessons: [
-      {
-        name: "Horizontal galleries with a vertical scrollbar",
-        explanation:
-          "A horizontal visual sequence can still be driven by vertical document scrolling. Measure the track’s overflow distance, translate it left, and pin its viewport while that distance is traversed. Use a function for measurements that can change and rebuild at responsive breakpoints.\n\nThis is not the same as a native horizontally scrolling container. The example keeps a stacked baseline for small screens and reduced motion, using matchMedia to enhance larger screens. Interactive content inside a translated gallery needs extra focus/reveal testing; do not let focused links move outside the visible frame. containerAnimation is a more specialized option for triggers inside a translated track, and requires a linear parent animation with documented pin/snap restrictions.",
-        level: "Advanced",
-        requires: "ScrollTrigger + core matchMedia (3.11+)",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
-        kind: "html",
-        code: '<div class="gallery"><div class="gallery-track">\n  <section class="gallery-panel">One</section><section class="gallery-panel">Two</section><section class="gallery-panel">Three</section>\n</div></div><div style="min-height:100vh">After the gallery</div>\n\n<style>\n.gallery-panel { box-sizing: border-box; min-height: 70vh; padding: 32px; background: #dce9ff; }\n.gallery-track { display: block; }\n@media (min-width: 800px) { .gallery-panel { flex: 0 0 100%; } }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nconst gallery = document.querySelector(".gallery");\nconst track = gallery.querySelector(".gallery-track");\nconst mm = gsap.matchMedia();\nmm.add("(min-width: 800px) and (prefers-reduced-motion: no-preference)", () => {\n  gsap.set(gallery, { overflow: "hidden" });\n  gsap.set(track, { display: "flex" });\n  const distance = () => Math.max(0, track.scrollWidth - gallery.clientWidth);\n  gsap.to(track, {\n    x: () => -distance(), ease: "none",\n    scrollTrigger: {\n      trigger: gallery, start: "top top", end: () => "+=" + Math.max(1, distance()),\n      pin: true, scrub: true, invalidateOnRefresh: true\n    }\n  });\n});\n// Component teardown: mm.revert();\n</script>',
-      },
-      {
-        name: "Batch reveals without one giant trigger",
-        explanation:
-          "batch collects callbacks from multiple ScrollTriggers over a short interval, so items that enter together can share a stagger. It still creates a trigger per target; it does not make a whole page one trigger or virtualize offscreen DOM. Use it for repeated cards with independent entry positions.\n\nCreate the setup inside a context or matchMedia handler so both triggers and callback-created tweens are owned and reverted. Set an initial state only in the enabled branch, and always verify the no-motion baseline. This small grid fades in cards as they enter, then remains readable.",
-        level: "Advanced",
-        requires: "ScrollTrigger + core context/matchMedia",
-        source:
-          "https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.batch()/",
-        kind: "html",
-        code: '<div style="height:100vh">Scroll to the cards</div>\n<div class="batch-grid"><article class="batch-card">One</article><article class="batch-card">Two</article><article class="batch-card">Three</article></div>\n<div style="height:100vh"></div>\n\n<style>\n.batch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }\n.batch-card { padding: 30px; background: #dce9ff; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nconst mm = gsap.matchMedia();\nmm.add("(prefers-reduced-motion: no-preference)", context => {\n  context.add("revealBatch", items => {\n    gsap.to(items, { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, overwrite: "auto" });\n  });\n  gsap.set(".batch-card", { opacity: 0, y: 20 });\n  ScrollTrigger.batch(".batch-card", {\n    start: "top 85%", once: true, onEnter: context.revealBatch\n  });\n});\n// Component teardown: mm.revert();\n</script>',
-      },
-      {
-        name: "Snapping, custom scrollers, and timing ownership",
-        explanation:
-          "Snapping moves the scroll position toward chosen progress points after the user pauses. Use it sparingly: it changes navigation, and aggressive snapping can make reading or keyboard use difficult. A custom overflow container needs scroller; a third-party virtual scroller may require scrollerProxy plus lifecycle coordination. Do not add that machinery to an ordinary document scroll.\n\nMost hard-to-debug scroll setups have two owners: a parent timeline and child ScrollTriggers driving the same tweens, or a CSS transition and GSAP updating one property. Choose one playhead owner. This example puts a single ScrollTrigger on the timeline and uses labels as optional snap points; reduced-motion users keep normal content flow.",
-        level: "Advanced",
-        requires: "ScrollTrigger plugin",
-        source: "https://gsap.com/resources/st-mistakes/",
-        kind: "html",
-        code: '<section class="snap-story"><div class="box">Story beat</div></section>\n<div style="height:100vh">Continue</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n.snap-story { min-height: 180vh; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nconst mm = gsap.matchMedia();\nmm.add("(prefers-reduced-motion: no-preference)", () => {\n  const tl = gsap.timeline({\n    scrollTrigger: {\n      trigger: ".snap-story", start: "top top", end: "+=800", scrub: true,\n      snap: { snapTo: "labels", delay: 0.3, duration: { min: 0.1, max: 0.3 } }\n    }\n  });\n  tl.addLabel("start")\n    .to(".box", { x: 100, duration: 1, ease: "none" })\n    .addLabel("middle")\n    .to(".box", { rotation: 90, duration: 1, ease: "none" })\n    .addLabel("end");\n});\n// Component teardown: mm.revert();\n</script>',
-      },
-    ],
-  },
-  {
-    name: "9. Animate SVG intentionally",
-    intro:
-      "Specialized · SVG uses a viewBox coordinate system, and its shapes can expose attributes as well as CSS properties. Pick a plugin according to whether you need travel, a drawn stroke, or changed geometry.",
-    checkpoint:
-      "Explain the difference between moving along a path, drawing its stroke, and morphing its shape. Build one effect without loading the other plugins.",
-    lessons: [
-      {
-        name: "Animate SVG attributes",
-        explanation:
-          "Core can animate numeric SVG attributes using attr, as well as CSS transforms. Use an inline SVG so its nodes are available as targets. Here the circle grows and moves across its viewBox. For rotation, set an appropriate transformOrigin or svgOrigin rather than relying on HTML defaults.\n\nThe viewBox defines SVG coordinates; the displayed width can scale those coordinates on screen. attr animates attributes such as cx and r. CSS transforms are a separate layer and can be combined deliberately. External SVG shown through an img tag is not a set of directly selectable nodes in the parent document. Inline the SVG when you need access to its shapes.",
-        level: "Specialized",
-        requires: "Core AttrPlugin and CSSPlugin (included)",
-        source: "https://gsap.com/docs/v3/GSAP/CorePlugins/Attributes/",
-        kind: "html",
-        code: '<svg viewBox="0 0 300 100" width="300" role="img" aria-label="An expanding circle">\n  <circle id="orb" cx="30" cy="50" r="12" fill="#2563eb" />\n</svg>\n\n<script>\ngsap.to("#orb", { attr: { cx: 240, r: 30 }, duration: 1, ease: "power2.inOut" });\n</script>',
-        syntax: "attr: { attribute: value }",
-      },
-      {
-        name: "Follow a motion path",
-        explanation:
-          "MotionPathPlugin moves a target along an SVG path or an array of points. align maps the target into the path’s coordinate space; alignOrigin chooses its anchor. autoRotate follows the tangent. This arrow follows a curved route with a linear playhead.\n\nA path is the route, not the target being drawn. align is useful when the path and target live in different coordinate spaces; alignOrigin chooses the part of the target placed on that route. autoRotate changes orientation to match the path tangent. Because a rotating target may need an initial orientation adjustment, inspect a simple arrow before applying the effect to a detailed illustration.",
-        level: "Specialized",
-        requires: "MotionPathPlugin; separate import/script",
-        source: "https://gsap.com/docs/v3/Plugins/MotionPathPlugin/",
-        kind: "html",
-        code: '<svg viewBox="0 0 320 160" width="320" role="img" aria-label="An arrow follows a curve">\n  <path id="route" d="M20,120 C90,10 220,10 300,120" fill="none" stroke="#999" />\n  <path id="arrow" d="M-8,-5 L8,0 L-8,5 Z" fill="#2563eb" />\n</svg>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MotionPathPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(MotionPathPlugin);\ngsap.to("#arrow", {\n  motionPath: { path: "#route", align: "#route", alignOrigin: [0.5, 0.5], autoRotate: true },\n  duration: 2, ease: "none"\n});\n</script>',
-        syntax: "motionPath: { path, align, alignOrigin, autoRotate }",
-      },
-      {
-        name: "Draw an SVG stroke",
-        explanation:
-          "DrawSVGPlugin reveals the stroke of an SVG shape; it does not fill a shape as if it were painted. Give the path a visible stroke and no fill. This curve draws from zero to its full length. Values with two percentages describe the start and end of the visible stroke segment.\n\nA filled silhouette does not gain a visible drawn outline merely by setting drawSVG; the stroke needs to exist. Give illustrations descriptive labels when they communicate content, or mark them decorative when appropriate. Keep stroke paths simple while debugging, and inspect stroke width and visibility before assuming the plugin failed.",
-        level: "Specialized",
-        requires: "DrawSVGPlugin; available in public package 3.13+",
-        source: "https://gsap.com/docs/v3/Plugins/DrawSVGPlugin/",
-        kind: "html",
-        code: '<svg viewBox="0 0 320 160" width="320" role="img" aria-label="A curve is drawn">\n  <path id="line" d="M20,120 C90,10 220,10 300,120"\n        fill="none" stroke="#2563eb" stroke-width="5" />\n</svg>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(DrawSVGPlugin);\ngsap.fromTo("#line", { drawSVG: "0% 0%" }, {\n  drawSVG: "0% 100%", duration: 1.5, ease: "power1.inOut"\n});\n</script>',
-        syntax: 'drawSVG: "0% 100%"',
-      },
-      {
-        name: "Morph one SVG shape into another",
-        explanation:
-          "MorphSVGPlugin interpolates path geometry, including shapes with different point counts. This triangle becomes a rounded shape. The destination path is hidden but remains in the SVG for geometry lookup. Convert non-path SVG shapes with MorphSVGPlugin.convertToPath when necessary.\n\nMorphing is geometry interpolation rather than crossfading two images. The source must be an editable SVG path or convertible shape; raster images cannot be morphed this way. Check path direction and the visual correspondence of points when a transition twists unexpectedly. Converting shapes or tuning shapeIndex is specialized work, so first prove the simple source/destination pair.",
-        level: "Specialized",
-        requires: "MorphSVGPlugin; available in public package 3.13+",
-        source: "https://gsap.com/docs/v3/Plugins/MorphSVGPlugin/",
-        kind: "html",
-        code: '<svg viewBox="0 0 160 160" width="240" role="img" aria-label="A triangle becomes a rounded shape">\n  <path id="shape" d="M80,15 L145,140 L15,140 Z" fill="#2563eb" />\n  <path id="destination" visibility="hidden"\n        d="M30,30 Q80,0 130,30 Q160,80 130,130 Q80,160 30,130 Q0,80 30,30 Z" />\n</svg>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(MorphSVGPlugin);\ngsap.to("#shape", { morphSVG: "#destination", duration: 1.2, ease: "power2.inOut" });\n</script>',
-        syntax: 'morphSVG: "#destination"',
-      },
-    ],
-  },
-  {
-    name: "10. Change layout and animate text",
-    intro:
-      "Advanced and specialized · Use Flip for layout changes and text plugins for their distinct jobs. Preserve the content’s reading order and restore temporary wrappers on teardown.",
-    checkpoint:
-      "Change a grid layout, then create a text entrance. Verify resize/font loading, accessible text, and the no-motion version.",
-    lessons: [
-      {
-        name: "Animate layout changes with Flip",
-        explanation:
-          "Flip records geometry, lets you change the real layout, then animates from the recorded state to the new one. It is useful for reordering cards or changing grid arrangements. Capture before the change. Here a button switches the grid between three columns and one; reduced motion applies the layout change immediately.\n\nFLIP names the technique: First record the geometry, then apply the Last layout, Invert the apparent change with transforms, and Play those transforms away. The DOM already owns the new final layout while the animation interpolates the appearance. Capture before mutating; capturing afterward removes the difference you wanted to animate. For rapid repeated layout changes, decide how ongoing Flip animations are completed or interrupted before starting another capture.",
-        level: "Advanced",
-        requires: "Flip plugin (3.9+); separate import/script",
-        source: "https://gsap.com/docs/v3/Plugins/Flip/",
-        kind: "html",
-        code: '<button type="button" id="layout-toggle" aria-pressed="false">Single column</button>\n<div class="cards"><div class="card">One</div><div class="card">Two</div><div class="card">Three</div></div>\n\n<style>\n.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }\n.cards.single { grid-template-columns: 1fr; }\n.card { padding: 24px; background: #dce9ff; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Flip.min.js"></script>\n\n<script>\ngsap.registerPlugin(Flip);\nconst grid = document.querySelector(".cards");\nconst toggle = document.querySelector("#layout-toggle");\ntoggle.addEventListener("click", () => {\n  const state = Flip.getState(".cards .card");\n  const single = grid.classList.toggle("single");\n  toggle.setAttribute("aria-pressed", String(single));\n  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {\n    Flip.from(state, { duration: 0.5, ease: "power2.inOut" });\n  }\n});\n</script>',
-        syntax:
-          "Flip.getState(targets) → change layout → Flip.from(state, vars)",
-      },
-      {
-        name: "Split text into animated lines",
-        explanation:
-          "SplitText creates wrappers for lines, words, or characters. The 3.13+ API supports autoSplit and onSplit for font loading and line reflow. Return the tween from onSplit so re-splits can clean it up and preserve its time. This heading reveals by line; reduced motion leaves the original text intact. Check accessible reading order, especially with nested links.\n\nWrapping changes the DOM, so avoid splitting text containing interactive descendants without checking focus and accessibility. SplitText’s automatic accessible naming is helpful for simple text, but does not preserve the semantics of every nested link. autoSplit can rebuild line wrappers when fonts or width change; the returned onSplit animation is the owned resource that gets cleaned up and time-synchronized. The example’s cleanup restores the original text.",
-        level: "Specialized",
-        requires: "SplitText 3.13+ for this API; core matchMedia 3.11+",
-        source: "https://gsap.com/docs/v3/Plugins/SplitText/",
-        kind: "html",
-        code: '<h2 class="headline">Make your next idea move.</h2>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>\n\n<script>\ngsap.registerPlugin(SplitText);\nconst mm = gsap.matchMedia();\nmm.add("(prefers-reduced-motion: no-preference)", () => {\n  const split = SplitText.create(".headline", {\n    type: "lines", mask: "lines", autoSplit: true,\n    onSplit(self) {\n      return gsap.from(self.lines, {\n        yPercent: 100, duration: 0.6, stagger: 0.1, ease: "power2.out"\n      });\n    }\n  });\n  return () => split.revert();\n});\n// Component teardown: mm.revert();\n</script>',
-        syntax: "SplitText.create(target, { type, autoSplit, onSplit })",
-      },
-      {
-        name: "Replace text with TextPlugin",
-        explanation:
-          "TextPlugin changes text content progressively; SplitText instead animates wrappers around existing text. Keep frequently changing decorative text out of live regions. This example types a new phrase, or replaces it immediately when reduced motion is requested.\n\nUse replacement when the wording itself changes. Use SplitText when the wording stays and its pieces move. ScrambleTextPlugin is a different, specialized decorative text effect; load it only if that is the intended design. Keep essential status messages stable and understandable without a typing or scrambling animation.",
-        level: "Specialized",
-        requires: "TextPlugin; separate import/script",
-        source: "https://gsap.com/docs/v3/Plugins/TextPlugin/",
-        kind: "html",
-        code: '<p id="phrase">Ready.</p>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/TextPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(TextPlugin);\nconst phrase = document.querySelector("#phrase");\nif (matchMedia("(prefers-reduced-motion: reduce)").matches) {\n  phrase.textContent = "Ready to create.";\n} else {\n  gsap.to(phrase, { text: { value: "Ready to create." }, duration: 1.2, ease: "none" });\n}\n</script>',
-        syntax: 'text: { value: "New text" }',
-      },
-    ],
-  },
-  {
-    name: "11. Input, dragging, and scrolling tools",
-    intro:
-      "Specialized · These plugins solve different problems. Draggable moves an element, Observer interprets input, ScrollTo moves a scroll position, and ScrollSmoother adds optional scroll smoothing.",
-    checkpoint:
-      "Provide a non-dragging way to complete a drag action, and explain why ScrollTrigger and ScrollTo are not interchangeable.",
-    lessons: [
-      {
-        name: "Drag within bounds, with a keyboard alternative",
-        explanation:
-          "Draggable adds pointer/touch dragging. InertiaPlugin is an optional addition for momentum; it is not supplied by inertia: true alone. This tile stays within its container, while arrow buttons offer an alternative to dragging. In a component, retain the returned instances and kill them on teardown.\n\nPointer interaction does not replace keyboard access. The button alternative here updates the same position state and then synchronizes Draggable’s measurements. A production drag-and-drop interface also needs a meaningful state model and appropriate announcements for completed actions. Use kill on retained Draggable instances and remove your own input handlers when the component is destroyed.",
-        level: "Specialized",
-        requires: "Draggable plugin; InertiaPlugin only for momentum",
-        source: "https://gsap.com/docs/v3/Plugins/Draggable/",
-        kind: "html",
-        code: '<div class="drag-area"><div class="drag-tile">Move me</div></div>\n<button type="button" id="left-demo" aria-label="Move tile left">←</button>\n<button type="button" id="right-demo" aria-label="Move tile right">→</button>\n\n<style>\n.drag-area { width: 300px; height: 180px; border: 1px solid #999; }\n.drag-tile { box-sizing: border-box; width: 96px; height: 64px; padding: 12px; background: #dce9ff; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>\n\n<script>\ngsap.registerPlugin(Draggable);\nconst tile = document.querySelector(".drag-tile");\nconst area = document.querySelector(".drag-area");\nconst [drag] = Draggable.create(tile, { type: "x,y", bounds: area });\nfunction moveBy(delta) {\n  const max = area.clientWidth - tile.offsetWidth;\n  const x = gsap.utils.clamp(0, max, Number(gsap.getProperty(tile, "x")) + delta);\n  gsap.set(tile, { x });\n  drag.update();\n}\ndocument.querySelector("#left-demo").onclick = () => moveBy(-24);\ndocument.querySelector("#right-demo").onclick = () => moveBy(24);\n// On teardown: drag.kill(); also remove your own event handlers.\n</script>',
-        syntax: "Draggable.create(target, { type, bounds })",
-      },
-      {
-        name: "Add momentum with InertiaPlugin",
-        explanation:
-          "Momentum continues a drag according to its release velocity and resistance. Draggable’s inertia option integrates with InertiaPlugin, but the plugin must be loaded and registered; setting inertia: true alone does not install it. Bounds and end-state decisions still belong to your interface.\n\nUse momentum for an intentionally physical interaction, not for a form control that needs precise placement. Disable the extra travel for reduced motion, and keep a simple reset or keyboard alternative. This tile demonstrates optional momentum and a reset that cancels its throw before updating the drag state.",
-        level: "Specialized",
-        requires: "Draggable + InertiaPlugin; public package 3.13+",
-        source: "https://gsap.com/docs/v3/Plugins/InertiaPlugin/",
-        kind: "html",
-        code: '<div class="throw-area"><div class="throw-tile">Drag</div></div>\n<button type="button" id="reset-throw">Reset position</button>\n\n<style>\n.throw-area { width: 300px; height: 180px; border: 1px solid #999; }\n.throw-tile { width: 64px; height: 64px; background: #dce9ff; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Draggable.min.js"></script>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/InertiaPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(Draggable, InertiaPlugin);\nconst tile = document.querySelector(".throw-tile");\nconst [drag] = Draggable.create(tile, {\n  type: "x,y", bounds: ".throw-area",\n  inertia: !matchMedia("(prefers-reduced-motion: reduce)").matches\n});\ndocument.querySelector("#reset-throw").onclick = () => {\n  drag.tween?.kill();\n  gsap.set(tile, { x: 0, y: 0 });\n  drag.update();\n};\n// Component teardown: drag.kill(); remove your own handlers too.\n</script>',
-      },
-      {
-        name: "Observe gestures without hijacking navigation",
-        explanation:
-          "Observer normalizes wheel, touch, pointer, and scroll input into callbacks such as onUp and onDown. It is useful for a deliberate gesture-driven widget, not a reason to replace normal document scrolling. It does not automatically provide semantics, keyboard controls, or an animation.\n\nTarget a small interaction area, avoid preventDefault unless you truly need to suppress native behavior, and include equivalent controls. This widget responds to a wheel gesture or buttons and updates one bounded state. It leaves page scrolling available and retains the Observer instance for cleanup.",
-        level: "Specialized",
-        requires: "Observer plugin (3.10+)",
-        source: "https://gsap.com/docs/v3/Plugins/Observer/",
-        kind: "html",
-        code: '<div class="gesture-area"><output id="gesture-value">0</output><p>Wheel here, or use the buttons.</p></div>\n<button type="button" id="gesture-prev">Previous</button><button type="button" id="gesture-next">Next</button>\n\n<style>\n.gesture-area { padding: 32px; border: 1px solid #999; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/Observer.min.js"></script>\n\n<script>\ngsap.registerPlugin(Observer);\nlet index = 0;\nconst output = document.querySelector("#gesture-value");\nfunction moveBy(delta) { index = gsap.utils.clamp(0, 4, index + delta); output.textContent = index; }\nconst observer = Observer.create({\n  target: ".gesture-area", type: "wheel", tolerance: 20,\n  onDown: () => moveBy(1), onUp: () => moveBy(-1)\n});\ndocument.querySelector("#gesture-prev").onclick = () => moveBy(-1);\ndocument.querySelector("#gesture-next").onclick = () => moveBy(1);\n// Component teardown: observer.kill(); remove your own handlers too.\n</script>',
-      },
-      {
-        name: "Scroll to a destination",
-        explanation:
-          "ScrollToPlugin animates the scroll position; ScrollTrigger reacts to it. Prefer native anchor links for navigation when animation is unnecessary. This explicit scroll action focuses its heading after arrival; autoKill allows user scrolling to interrupt it. Avoid a competing CSS scroll-behavior: smooth on the scrolling element.\n\nUse a native anchor when it already supplies the desired navigation. If animating a scroll position, consider user interruption and avoid making focus jump to a destination after an aborted animation. offsetY accounts for a fixed header visually; focus({ preventScroll: true }) prevents a second unexpected browser scroll after successful completion. Test the behavior with keyboard input and a motion preference.",
-        level: "Specialized",
-        requires: "ScrollToPlugin; separate import/script",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollToPlugin/",
-        kind: "html",
-        code: '<button type="button" id="jump-demo">Go to details</button>\n<div style="height:120vh"></div>\n<h2 id="details-demo" tabindex="-1">Details</h2>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollToPlugin.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollToPlugin);\nconst target = document.querySelector("#details-demo");\ndocument.querySelector("#jump-demo").onclick = () => {\n  gsap.to(window, {\n    scrollTo: { y: target, offsetY: 24, autoKill: true },\n    duration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 0.8,\n    ease: "power2.inOut",\n    onComplete: () => target.focus({ preventScroll: true })\n  });\n};\n</script>',
-        syntax: "scrollTo: { y: target, offsetY, autoKill }",
-      },
-      {
-        name: "When ScrollSmoother is appropriate",
-        explanation:
-          "ScrollSmoother adds smoothed scrolling on top of ScrollTrigger and requires it. Use a single instance with a wrapper around the content. Keep viewport-fixed UI outside the transformed content. This optional enhancement is disabled for reduced motion; ordinary document scrolling remains the baseline.\n\nSmoothing is optional visual behavior, not a fix for poorly performing rendering. Transformed scrolling content changes the containing block of fixed-position descendants, so keep fixed navigation outside it. Do not initialize a second smoother while one is active, and destroy it when leaving the owning view. Test native scrolling and touch behavior before deciding to add the effect.",
-        level: "Specialized",
-        requires: "ScrollSmoother + ScrollTrigger; public package 3.13+",
-        source: "https://gsap.com/docs/v3/Plugins/ScrollSmoother/",
-        kind: "html",
-        code: '<div id="smooth-wrapper"><main id="smooth-content">\n  <section style="min-height:100vh"><h2>First section</h2></section>\n  <section style="min-height:100vh"><h2>Second section</h2></section>\n</main></div>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollSmoother.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger, ScrollSmoother);\nconst mm = gsap.matchMedia();\nmm.add("(prefers-reduced-motion: no-preference)", () => {\n  const smoother = ScrollSmoother.create({\n    wrapper: "#smooth-wrapper", content: "#smooth-content", smooth: 0.8\n  });\n  return () => smoother.kill();\n});\n// Component teardown: mm.revert();\n</script>',
-        syntax: "ScrollSmoother.create({ wrapper, content, smooth })",
-      },
-    ],
-  },
-  {
-    name: "12. Own the lifecycle and integrate frameworks",
-    intro:
-      "Essential for components · A lifecycle is the period between setting up a component and destroying it. Every animation, observer, listener, or async task needs an owner and a cleanup policy.",
-    checkpoint:
-      "Mount and destroy a component twice. Confirm that it has no duplicate listeners, surviving ScrollTriggers, or inline transforms left after teardown.",
-    lessons: [
-      {
-        name: "Scope selectors and revert on teardown",
-        explanation:
-          "context (GSAP 3.11+) groups animations for cleanup and scopes selector strings to a container. revert kills recorded animations and restores their original inline styles. kill stops an animation but generally leaves its current appearance. This mount function returns a destroy function suitable for a component lifecycle.\n\nScoping prevents one component’s .item from selecting another’s. Context records GSAP objects created while its callback runs; it does not own arbitrary resources just because they were created nearby. Return cleanup functions for event listeners, observers, timeouts, and ticker callbacks. Prefer destroying a component’s own context over calling a global kill-all operation that can break unrelated views.",
-        level: "Essential",
-        requires: "GSAP core 3.11+",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
-        kind: "html",
-        code: '<section class="widget"><p class="item">Local item</p></section>\n\n<script>\nfunction mountWidget(root) {\n  const ctx = gsap.context(() => {\n    gsap.from(".item", { y: 20, opacity: 0, duration: 0.5 });\n  }, root);\n  return () => ctx.revert();\n}\nconst destroy = mountWidget(document.querySelector(".widget"));\n// Call destroy() before removing or remounting this widget.\n</script>',
-        syntax: "gsap.context(callback, scope) · context.revert()",
-      },
-      {
-        name: "Capture later event animations and remove listeners",
-        explanation:
-          "Animations created after the initial context callback, such as inside a click handler, need to run through a context-recorded function. Native event listeners and other external resources also need explicit cleanup. This widget tracks its click tweens and removes the listener on revert.\n\nRecording is tied to execution, not lexical placement: a handler defined inside setup but invoked later does not automatically record its new tweens. context.add creates a recorded function for those later calls. The same rule applies to timers and promise callbacks. Prevent async results from mutating an already destroyed view, and cancel or ignore pending work when leaving the component.",
-        level: "Essential",
-        requires: "GSAP core 3.11+",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
-        kind: "html",
-        code: '<section class="widget"><button type="button" class="spin">Turn</button></section>\n\n<script>\nconst root = document.querySelector(".widget");\nconst button = root.querySelector(".spin");\nconst ctx = gsap.context(self => {\n  self.add("turn", () => {\n    gsap.to(button, { rotation: "+=90", duration: 0.3, overwrite: "auto" });\n  });\n  button.addEventListener("click", self.turn);\n  return () => button.removeEventListener("click", self.turn);\n}, root);\n// On teardown: ctx.revert();\n</script>',
-        syntax: "context.add(name, callback) · return cleanup",
-      },
-      {
-        name: "React with useGSAP and contextSafe",
-        explanation:
-          "In React, animate after rendering with @gsap/react instead of during render. useGSAP handles context cleanup, including development remounts. contextSafe records animations created by later handlers. This complete component scopes its selector and rotates its button on click. For dependency-driven animations, specify dependencies and revertOnUpdate: true when rebuilding should revert the previous run.\n\nA re-render is not a reason to recreate every animation. Keep references to component roots, use dependencies only for data that actually changes the animation, and use revertOnUpdate when rebuilding should first undo the previous run. React development Strict Mode deliberately checks setup/cleanup behavior; duplicate motion usually exposes missing ownership. In server-rendered apps, avoid accessing window during module evaluation and create DOM-dependent work on the client.",
-        level: "Essential",
-        requires: "React + @gsap/react (separate package) + GSAP",
-        source: "https://gsap.com/resources/React/",
-        kind: "jsx",
-        code: '// Terminal: npm install gsap@3.15.0 @gsap/react\n// App.jsx — a React project with JSX support.\nimport { useRef } from "react";\nimport { gsap } from "gsap";\nimport { useGSAP } from "@gsap/react";\n\ngsap.registerPlugin(useGSAP);\n\nexport default function App() {\n  const root = useRef(null);\n  const { contextSafe } = useGSAP(() => {\n    gsap.from(".tile", { opacity: 0, duration: 0.5 });\n  }, { scope: root });\n\n  const turn = contextSafe(() => {\n    gsap.to(".tile", { rotation: "+=90", duration: 0.3, overwrite: "auto" });\n  });\n\n  return (\n    <section ref={root}>\n      <button type="button" className="tile" onClick={turn}>Turn me</button>\n    </section>\n  );\n}',
-        syntax: "useGSAP(callback, { scope, dependencies, revertOnUpdate })",
-      },
-    ],
-  },
-  {
-    name: "13. Structure maintainable animation code",
-    intro:
-      "Advanced project skills · Treat a motion feature as a component with a small public contract. Keep state decisions, visual transitions, and cleanup responsibilities clear.",
-    checkpoint:
-      "Create a component that returns play/reverse/destroy operations. Let an outer caller decide when it appears, and destroy it before replacing its DOM.",
-    lessons: [
-      {
-        name: "Build animation factories with local motion tokens",
-        explanation:
-          "A factory constructs and returns an animation for a specific root or target. Motion tokens are named values such as a standard duration or ease. Together they make changes local and keep timing consistent without changing global defaults.\n\nKeep factories focused on appearance. The caller can decide whether to attach a scroll trigger, respond to a click, or skip motion entirely. This example returns a paused entrance with no hidden shared state. Reverting it restores the fields the tween changed. For a larger component, put the factory invocation inside a context that also owns its triggers and event work.",
-        level: "Advanced",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.timeline()/",
-        kind: "html",
-        code: '<section class="feature"><h2>Build once</h2><p>Compose deliberately.</p></section>\n<button type="button" id="factory-play">Play entrance</button>\n\n<script>\nconst motion = { enter: 0.6, ease: "power2.out" };\nfunction createEntrance(root) {\n  return gsap.timeline({ paused: true, defaults: { duration: motion.enter, ease: motion.ease } })\n    .from(root.querySelectorAll("h2, p"), { y: 20, opacity: 0, stagger: 0.1 });\n}\nconst entrance = createEntrance(document.querySelector(".feature"));\ndocument.querySelector("#factory-play").onclick = () => {\n  if (matchMedia("(prefers-reduced-motion: reduce)").matches) entrance.progress(1).pause();\n  else entrance.restart();\n};\n// Component teardown: entrance.revert(); remove the click handler.\n</script>',
-      },
-      {
-        name: "Mount, unmount, and rebuild safely",
-        explanation:
-          "Keep a component’s destroy function next to its setup. Remove event listeners as well as reverting animations; otherwise the next mount can add a second handler to the same element. If external DOM mutations happen, restore the component’s logical baseline too.\n\nThis component explicitly owns its tween and input handler. Re-mounting first calls the old destroy function. The initial CSS is left as the rest state, so reduced motion can skip decorative scale while the button remains functional. Route transitions should follow the same order: destroy the old view’s resources, replace DOM, mount the new view, then refresh surviving scroll measurements if layout changed.",
-        level: "Advanced",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
-        kind: "html",
-        code: '<section id="mount-root"><button type="button">Interact</button></section>\n<button type="button" id="remount-demo">Remount component</button>\n\n<script>\nfunction mount(root) {\n  const button = root.querySelector("button");\n  const tween = gsap.to(button, { scale: 1.08, duration: 0.2, paused: true });\n  let active = false;\n  const click = () => {\n    active = !active;\n    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {\n      tween.progress(active ? 1 : 0).pause();\n    } else if (active) tween.play();\n    else tween.reverse();\n  };\n  button.addEventListener("click", click);\n  return () => { button.removeEventListener("click", click); tween.revert(); };\n}\nconst root = document.querySelector("#mount-root");\nlet destroy = mount(root);\ndocument.querySelector("#remount-demo").onclick = () => { destroy(); destroy = mount(root); };\n// Final teardown: destroy(); remove the outer remount listener.\n</script>',
-      },
-      {
-        name: "Separate async data from component lifetime",
-        explanation:
-          "Images, fonts, and fetched data can arrive after an animation component has been destroyed. A promise callback does not become safe merely because the request started inside setup. Guard against stale completion, cancel work when possible, and only refresh measurements for a still-mounted view.\n\nThis font-dependent entrance checks that its root is still connected and records the eventual tween through a context method. The destroy button demonstrates the cleanup contract. Use AbortController for cancellable fetches; for noncancellable readiness promises, an alive flag prevents a late result from recreating animation state.",
-        level: "Advanced",
-        requires: "Core 3.11+; browser FontFaceSet.ready",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.context()/",
-        kind: "html",
-        code: '<section class="async-feature"><h2>Ready when the font is</h2></section>\n<button type="button" id="destroy-async">Destroy feature</button>\n\n<script>\nconst root = document.querySelector(".async-feature");\nlet alive = true;\nconst ctx = gsap.context(self => {\n  self.add("enter", () => {\n    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {\n      gsap.from("h2", { y: 16, opacity: 0, duration: 0.5 });\n    }\n  });\n}, root);\ndocument.fonts.ready.then(() => {\n  if (alive && root.isConnected) ctx.enter();\n});\ndocument.querySelector("#destroy-async").onclick = () => {\n  alive = false; ctx.revert();\n};\n</script>',
-      },
-    ],
-  },
-  {
-    name: "14. Profile and optimize deliberately",
-    intro:
-      "Advanced · Separate JavaScript work from layout, painting, and compositing. Measure the actual bottleneck before adding optimization flags or changing architecture.",
-    checkpoint:
-      "Record a performance trace on a realistic device. Identify whether an expensive frame comes from your callback, layout, or painting, then change one cause and measure again.",
-    lessons: [
-      {
-        name: "Smooth pointer input with quickTo",
-        explanation:
-          "quickTo reuses a tween to steer one numeric property toward new values, avoiding a new tween per pointer event. This decorative dot follows the pointer on fine-pointer devices. It stays hidden for reduced motion. Keep this separate from functional cursor or focus feedback.\n\nA reusable quickTo function retargets one numeric property. quickSetter is the related low-level option that writes a value immediately instead of smoothing toward it. Both avoid repeated setup for hot input paths. Keep a decorative follower separate from the real pointer and never use it as the only indication of focus. The media-query scope in this example removes both listeners and animations when the enhancement stops matching.",
-        level: "Advanced",
-        requires: "Core quickTo (3.10+) + matchMedia (3.11+)",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
-        kind: "html",
-        code: '<div class="cursor-dot" aria-hidden="true"></div>\n\n<style>\n.cursor-dot { position: fixed; top: 0; left: 0; width: 16px; height: 16px;\n  border-radius: 50%; background: #2563eb; pointer-events: none; visibility: hidden; }\n</style>\n\n<script>\nconst mm = gsap.matchMedia();\nmm.add("(pointer: fine) and (prefers-reduced-motion: no-preference)", () => {\n  gsap.set(".cursor-dot", { visibility: "visible", xPercent: -50, yPercent: -50 });\n  const xTo = gsap.quickTo(".cursor-dot", "x", { duration: 0.25, ease: "power3.out" });\n  const yTo = gsap.quickTo(".cursor-dot", "y", { duration: 0.25, ease: "power3.out" });\n  const move = event => { xTo(event.clientX); yTo(event.clientY); };\n  window.addEventListener("pointermove", move);\n  return () => window.removeEventListener("pointermove", move);\n});\n// Component teardown: mm.revert();\n</script>',
-        syntax: "gsap.quickTo(target, property, vars)",
-      },
-      {
-        name: "Useful utilities and custom easing",
-        explanation:
-          "Utilities help turn input into animation values without writing your own math. Many return reusable functions when the value argument is omitted. CustomEase is a separate plugin for a designed easing curve. Here input is bounded and snapped, colors cycle, and a custom ease drives a simple tween.\n\nUtilities are building blocks, not automatically an animation: clamp bounds a number, mapRange converts an input interval to an output interval, snap rounds to a step, and wrap cycles through a range or list. This example uses those transforms before creating a tween. CustomEase must be registered separately; ordinary power/sine/back eases are already in core.",
-        level: "Advanced",
-        requires: "Core utilities + CustomEase plugin",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.utils/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>\n\n<script>\ngsap.registerPlugin(CustomEase);\nconst bounded = gsap.utils.clamp(0, 100);\nconst toPixels = gsap.utils.mapRange(0, 100, 0, 160);\nconst snap = gsap.utils.snap(10);\nconst nextColor = gsap.utils.wrap(["#2563eb", "#7c3aed"]);\nCustomEase.create("gentle", "0.25,0.1,0.25,1");\ngsap.to(".box", {\n  x: toPixels(snap(bounded(76))), // 80 maps to 128px\n  backgroundColor: nextColor(3), duration: 0.8, ease: "gentle"\n});\n</script>',
-        syntax:
-          "gsap.utils.clamp() · mapRange() · snap() · wrap() · CustomEase",
-      },
-      {
-        name: "Render canvas with GSAP’s ticker",
-        explanation:
-          "Use the ticker when a canvas or renderer needs a frame callback synchronized with GSAP. Animate a small state object and draw from it. Remove custom ticker listeners when a view is destroyed; context cleanup does not automatically remove arbitrary ticker callbacks. The stop button demonstrates explicit cleanup.\n\nThe ticker follows the browser’s animation-frame scheduling. Its deltaTime parameter is in milliseconds, while time is in seconds; use elapsed time rather than a fixed increment if a custom simulation needs frame-rate-independent motion. For this tween-driven drawing, state interpolation is already timed by GSAP. Browser tabs can throttle callbacks, so background time is not a reliable simulation clock. Avoid a second requestAnimationFrame loop for the same rendering work.",
-        level: "Specialized",
-        requires: "GSAP core; canvas 2D context",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.ticker/",
-        kind: "html",
-        code: '<canvas id="canvas-demo" width="300" height="100" aria-label="A moving blue circle"></canvas>\n<button type="button" id="stop-demo">Stop drawing</button>\n\n<script>\nconst canvas = document.querySelector("#canvas-demo");\nconst ctx = canvas.getContext("2d");\nconst state = { x: 20 };\nfunction draw() {\n  ctx.clearRect(0, 0, canvas.width, canvas.height);\n  ctx.fillStyle = "#2563eb";\n  ctx.beginPath(); ctx.arc(state.x, 50, 12, 0, Math.PI * 2); ctx.fill();\n}\nconst tween = gsap.to(state, { x: 280, duration: 2, ease: "none" });\ngsap.ticker.add(draw);\ndocument.querySelector("#stop-demo").onclick = () => {\n  tween.kill();\n  gsap.ticker.remove(draw);\n};\n</script>',
-        syntax: "gsap.ticker.add(callback) · gsap.ticker.remove(callback)",
-      },
-      {
-        name: "Read a performance trace and avoid layout thrashing",
-        explanation:
-          "The rendering pipeline includes style calculation, layout (positions and sizes), paint (pixels), and compositing (combining layers). Transform and opacity often avoid layout, but expensive rasterization or too many layers can still make them slow. GSAP cannot make an inherently expensive scene free to render.\n\nProfile with browser performance tools at realistic zoom, screen size, and CPU conditions. Avoid alternating geometry reads and style writes across many elements in one frame. Read dimensions together, compute values, then create or update animations. Do not add will-change to every element; reserve it for measured cases and remove it when no longer useful. This small pattern measures once before setting up the group.",
-        level: "Advanced",
-        requires: "GSAP core",
-        source: "https://gsap.com/resources/mistakes/",
-        kind: "html",
-        code: '<div class="measure-group"><div class="measure-item">One</div><div class="measure-item">Two</div></div>\n\n<style>\n.measure-item { width: 100px; padding: 16px; margin: 12px; background: #dce9ff; }\n</style>\n\n<script>\nconst items = gsap.utils.toArray(".measure-item");\nconst distances = items.map(item => item.getBoundingClientRect().width / 2);\n// All geometry reads above happen before animated writes below.\ngsap.to(items, { x: index => distances[index], duration: 0.6, stagger: 0.1 });\n</script>',
-      },
-    ],
-  },
-  {
-    name: "15. Debug, test, and practice the whole system",
-    intro:
-      "Essential maintenance skills · Diagnose one layer at a time, then test behavior under interruption and reinitialization. Expert work is predictable motion that survives real content and real users.",
-    checkpoint:
-      "Ship a small feature only after testing initial load, rapid input, reverse playback, resize, reduced motion, route teardown, and a slow/failed animation dependency.",
-    lessons: [
-      {
-        name: "Diagnose missing targets and early from states",
-        explanation:
-          "Check script order, selector matches, plugin registration, and the browser console first. from and fromTo normally apply their starting values immediately, even when scheduled later. Set immediateRender: false when a future tween must wait to apply its start. For scroll alignment, enable markers and refresh after layout changes. Old TweenMax/TimelineMax tutorials use legacy GSAP 2 syntax; use gsap in GSAP 3.\n\nReduce the problem to one visible target and one tween. Confirm the target exists at setup, log gsap.version, and inspect the actual computed properties. For a plugin warning, confirm both loading and registration before adjusting the animation. For scroll errors, enable markers and inspect start/end values after refresh; for a jump, look for multiple property owners or an early from state. Keep a minimal reproduction before layering the rest of the scene back in.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.from()/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nconsole.log("GSAP", gsap.version);\nconsole.assert(document.querySelector(".box"), "Expected .box in the DOM");\nconst tl = gsap.timeline();\ntl.to(".box", { x: 80, duration: 0.6 })\n  .fromTo(".box", { x: -80 }, {\n    x: 0, duration: 0.6, immediateRender: false\n  }, "+=0.3");\n// The second tween waits until 0.9s to apply its -80px starting position.\n</script>',
-        syntax: "gsap.version · immediateRender: false · markers: true",
-      },
-      {
-        name: "Test animation states without waiting for real time",
-        explanation:
-          "A deterministic test sets the playhead directly instead of sleeping until an animation “should” finish. Create a paused animation, seek to a chosen time or progress, then inspect values and state. Use suppressEvents when seeking should not repeat callbacks.\n\nPlayhead tests do not replace browser tests: verify layout, focus, scroll boundaries, fonts, and user interruptions in a browser too. Test both motion modes and mount/destroy cycles. The example asserts the exact midpoint and end of a linear tween, then reverts its style changes. It uses a real DOM target but avoids wall-clock timing.",
-        level: "Essential",
-        requires: "GSAP core",
-        source: "https://gsap.com/docs/v3/GSAP/Tween/progress()/",
-        kind: "html",
-        code: '<div class="box">Animate me</div>\n\n<style>\n.box { width: 100px; padding: 20px; background: #2563eb; color: white; border-radius: 12px; }\n</style>\n\n<script>\nconst element = document.querySelector(".box");\nconst tween = gsap.fromTo(element, { x: 0 }, {\n  x: 120, duration: 1, ease: "none", paused: true\n});\ntween.progress(0.5, true);\nconsole.assert(Math.abs(Number(gsap.getProperty(element, "x")) - 60) < 0.01, "Midpoint should be 60px");\ntween.progress(1, true);\nconsole.assert(Math.abs(Number(gsap.getProperty(element, "x")) - 120) < 0.01, "End should be 120px");\ntween.revert();\n</script>',
-      },
-      {
-        name: "Practice project: a production-minded reveal component",
-        explanation:
-          "Build this after you can explain tweens, timelines, media conditions, contexts, and scroll refresh. The feature should reveal its title and body with one ScrollTrigger, stay readable without motion, scope its selectors, and return a teardown function.\n\nThe worked version combines those decisions. Its factory owns the media-query scope, and the returned destroy function reverts only this feature. The trigger measures a stable container while the child text moves. In a routed app, call destroy before removing the section. Extend it with a layout change, refresh once that layout settles, and verify repeated mounting does not add duplicate triggers.",
-        level: "Advanced",
-        requires: "ScrollTrigger + GSAP core 3.11+",
-        source: "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/",
-        kind: "html",
-        code: '<div style="height:100vh">Scroll down</div>\n<section class="reveal-feature"><h2>A complete feature</h2><p>Small pieces, clear ownership.</p></section>\n<div style="height:100vh"></div>\n\n<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>\n\n<script>\ngsap.registerPlugin(ScrollTrigger);\nfunction mountReveal(root) {\n  const mm = gsap.matchMedia();\n  mm.add("(prefers-reduced-motion: no-preference)", () => {\n    const timeline = gsap.timeline({\n      defaults: { duration: 0.6, ease: "power2.out" },\n      scrollTrigger: { trigger: root, start: "top 85%", once: true }\n    });\n    timeline.from(root.querySelectorAll("h2, p"), { y: 24, opacity: 0, stagger: 0.1 });\n  }, root);\n  return () => mm.revert();\n}\nconst destroy = mountReveal(document.querySelector(".reveal-feature"));\n// Before removing the section: destroy();\n</script>',
-        practice:
-          "Acceptance checks: no-motion content is visible; scroll replay policy is intentional; a destroyed view has no surviving triggers; text zoom and changed fonts do not hide content.",
-      },
-    ],
-  },
-];
-const nav = document.querySelector("#nav");
-const content = document.querySelector("#content");
-const search = document.querySelector("#search");
-const track = document.querySelector("#track");
-const count = document.querySelector("#count");
-const totalLessons = chapters.reduce(
-  (total, chapter) => total + chapter.lessons.length,
-  0,
-);
-function slug(value) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-function paragraphs(parent, text, className) {
-  for (const paragraph of text.split("\n\n")) {
-    const p = document.createElement("p");
-    if (className) p.className = className;
-    p.textContent = paragraph;
-    parent.append(p);
+  ],
+  recommendations: [
+    "Master GSAP Core and Timelines using vanilla JavaScript.",
+    "Learn ScrollTrigger deeply and build two complete animated landing pages.",
+    "Add text, SVG, and FLIP animations to your projects.",
+    "Refactor your animations into reusable TypeScript modules.",
+    "Integrate GSAP into React once you're comfortable with React's component lifecycle.",
+    "Focus on production performance, accessibility, and animation architecture.",
+  ],
+  areas: [
+    "**GSAP Core** — Tweens, timelines, easing, staggers, and animation control.",
+    "**Scroll Animations** — ScrollTrigger, ScrollSmoother, and complex scrolling experiences.",
+    "**Advanced Animation** — SVG, text, FLIP, interactive effects, and plugins.",
+    "**Animation Engineering** — Performance, accessibility, responsive behavior, and architecture.",
+    "**Framework Integration** — Vanilla JavaScript, TypeScript, React, and Next.js.",
+    "**Motion Design** — Timing, choreography, storytelling, and creating polished experiences.",
+  ],
+};
+(() => {
+  const content = document.querySelector("#content");
+  const nav = document.querySelector("#nav");
+  const search = document.querySelector("#search");
+  const track = document.querySelector("#track");
+  const count = document.querySelector("#count");
+  function node(tag, text, className) {
+    const element = document.createElement(tag);
+    if (text !== undefined) element.textContent = text;
+    if (className) element.className = className;
+    return element;
   }
-}
-function codeExample(lesson) {
-  const container = document.createElement("div");
-  const head = document.createElement("div");
-  head.className = "example-head";
-  const label = document.createElement("span");
-  label.textContent = {
-    html: "HTML / CSS / JavaScript",
-    module: "Bundler JavaScript module",
-    jsx: "React JSX",
-  }[lesson.kind];
-  const button = document.createElement("button");
-  button.type = "button";
-  button.textContent = "Copy code";
-  button.setAttribute("aria-label", "Copy example for " + lesson.name);
-  button.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(lesson.code);
-      button.textContent = "Copied!";
-      setTimeout(() => {
-        button.textContent = "Copy code";
-      }, 1400);
-    } catch {
-      button.textContent = "Copy unavailable";
+  function paragraphs(parent, text) {
+    for (const paragraph of text.split(/\n\n/))
+      parent.append(node("p", paragraph));
+  }
+  function example(parent, file) {
+    const head = node("div", undefined, "example-head");
+    head.append(node("span", file.name));
+    const button = node("button", "Copy");
+    button.type = "button";
+    button.setAttribute("aria-label", "Copy " + file.name);
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(file.code);
+        button.textContent = "Copied!";
+      } catch {
+        button.textContent = "Select code to copy";
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      window.setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1800);
+    });
+    head.append(button);
+    const pre = node("pre");
+    pre.tabIndex = 0;
+    pre.setAttribute("aria-label", file.name + " example");
+    const code = node("code", file.code);
+    code.className = "language-" + file.language;
+    pre.append(code);
+    parent.append(head, pre);
+    window.HandbookHighlight?.highlight(code);
+  }
+  const totalLessons = handbook.chapters.reduce(
+    (sum, chapter) => sum + chapter.lessons.length,
+    0,
+  );
+  function plain(text) {
+    return text.replace(/`/g, "");
+  }
+  function projectPanel(stage) {
+    const details = node("details", undefined, "project");
+    details.id = "projects-" + stage.number;
+    details.append(
+      node(
+        "summary",
+        stage.stage + " practice — " + stage.projects.length + " projects",
+      ),
+    );
+    details.append(node("p", stage.goal));
+    for (const project of stage.projects) {
+      details.append(
+        node("h3", project.name),
+        node("p", project.brief),
+        node("p", "Acceptance: " + project.acceptance, "acceptance"),
+      );
     }
-  });
-  const pre = document.createElement("pre");
-  const code = document.createElement("code");
-  code.textContent = lesson.code;
-  pre.append(code);
-  head.append(label, button);
-  container.append(head, pre);
-  return container;
-}
-function render() {
-  const query = search.value.trim().toLowerCase();
-  nav.replaceChildren();
-  content.replaceChildren();
-  let total = 0;
-  for (const chapter of chapters) {
-    const matches = chapter.lessons.filter(
-      (lesson) =>
-        (track.value === "all" || lesson.level === track.value) &&
-        [
-          chapter.name,
-          lesson.name,
-          lesson.level,
-          lesson.requires,
-          lesson.explanation,
-          lesson.code ?? "",
-          lesson.practice ?? "",
-        ]
+    details.append(node("h3", "Stage milestone"), node("p", stage.milestone));
+    return details;
+  }
+  function render() {
+    const query = search.value.trim().toLowerCase();
+    const fragment = document.createDocumentFragment();
+    const menu = document.createDocumentFragment();
+    let shown = 0;
+    let menuStage;
+    for (const chapter of handbook.chapters) {
+      if (track.value !== "all" && chapter.stage !== track.value) continue;
+      const stage = handbook.stages[chapter.level - 1];
+      const lastInStage = chapter.number === stage.chapters.at(-1);
+      const chapterMatch =
+        query &&
+        [chapter.name, ...chapter.topics]
           .join(" ")
           .toLowerCase()
-          .includes(query),
-    );
-    if (!matches.length) continue;
-    const id = slug(chapter.name);
-    const link = document.createElement("a");
-    link.href = "#" + id;
-    link.textContent = chapter.name + " (" + matches.length + ")";
-    nav.append(link);
-    const section = document.createElement("section");
-    section.id = id;
-    const h2 = document.createElement("h2");
-    h2.textContent = chapter.name;
-    section.append(h2);
-    paragraphs(section, chapter.intro, "chapter-intro");
-    for (const lesson of matches) {
-      total++;
-      const article = document.createElement("article");
-      article.className = "entry";
-      article.id = "lesson-" + slug(lesson.name);
-      const h3 = document.createElement("h3");
-      h3.textContent = lesson.name;
-      const meta = document.createElement("p");
-      meta.className = "lesson-meta";
-      const level = document.createElement("span");
-      level.className = "lesson-level";
-      level.textContent = lesson.level;
-      meta.append(level, document.createTextNode(" · " + lesson.requires));
-      article.append(h3, meta);
-      paragraphs(article, lesson.explanation);
-      if (lesson.code) article.append(codeExample(lesson));
-      if (lesson.practice) {
-        const practice = document.createElement("p");
-        practice.className = "practice";
-        const strong = document.createElement("strong");
-        strong.textContent = "Try it: ";
-        practice.append(strong, document.createTextNode(lesson.practice));
-        article.append(practice);
+          .includes(query);
+      const lessons = chapter.lessons.filter(
+        (lesson) =>
+          !query ||
+          chapterMatch ||
+          [
+            lesson.name,
+            lesson.explanation,
+            lesson.requires,
+            ...lesson.files.map((file) => file.code),
+          ]
+            .join(" ")
+            .toLowerCase()
+            .includes(query),
+      );
+      const projectMatch =
+        lastInStage &&
+        (!query ||
+          JSON.stringify(stage.projects).toLowerCase().includes(query));
+      if (!lessons.length && !projectMatch) continue;
+      const section = node("section");
+      section.id = "chapter-" + chapter.number;
+      if (menuStage !== chapter.stage) {
+        menuStage = chapter.stage;
+        menu.append(
+          node(
+            "div",
+            "Level " + chapter.level + " · " + chapter.stage,
+            "nav-stage",
+          ),
+        );
       }
-      const reference = document.createElement("a");
-      reference.className = "entry-reference";
-      reference.href = lesson.source;
-      reference.target = "_blank";
-      reference.rel = "noopener noreferrer";
-      reference.textContent = lesson.source.includes("standard-license")
-        ? "GSAP standard license ↗"
-        : "Official GSAP reference ↗";
-      reference.setAttribute("aria-label", "Reference for " + lesson.name);
-      article.append(reference);
-      section.append(article);
+      const link = node("a", chapter.number + ". " + chapter.name);
+      link.href = "#" + section.id;
+      menu.append(link);
+      section.append(
+        node(
+          "span",
+          chapter.stage +
+            (chapter.specialization ? " · Optional specialization" : ""),
+          "stage",
+        ),
+      );
+      section.append(node("h2", chapter.number + ". " + chapter.name));
+      if (lessons.length) {
+        const topics = node("details", undefined, "roadmap-topics");
+        topics.append(
+          node(
+            "summary",
+            "Roadmap coverage — " + chapter.topics.length + " topics",
+          ),
+        );
+        const list = node("ul");
+        for (const topic of chapter.topics)
+          list.append(node("li", plain(topic)));
+        topics.append(list);
+        section.append(topics);
+      }
+      for (const lesson of lessons) {
+        const article = node("article", undefined, "entry");
+        article.append(node("h3", lesson.name));
+        paragraphs(article, lesson.explanation);
+        article.append(node("p", "Setup: " + lesson.requires, "requirements"));
+        if (lesson.note) article.append(node("p", lesson.note, "tip"));
+        for (const file of lesson.files) example(article, file);
+        const source = node("a", "Documentation ↗", "source");
+        source.href = lesson.source;
+        source.target = "_blank";
+        source.rel = "noopener noreferrer";
+        article.append(source);
+        section.append(article);
+      }
+      shown += lessons.length;
+      if (lessons.length) {
+        const checkpoint = node("div", undefined, "checkpoint");
+        checkpoint.append(
+          node("strong", "Try it before moving on"),
+          node("p", chapter.checkpoint),
+        );
+        section.append(checkpoint);
+      }
+      if (projectMatch) section.append(projectPanel(stage));
+      fragment.append(section);
     }
-    if (!query && track.value === "all") {
-      const checkpoint = document.createElement("div");
-      checkpoint.className = "chapter-checkpoint";
-      const strong = document.createElement("strong");
-      strong.textContent = "Before moving on";
-      checkpoint.append(strong);
-      paragraphs(checkpoint, chapter.checkpoint);
-      section.append(checkpoint);
-    }
-    content.append(section);
+    if (!fragment.childNodes.length)
+      fragment.append(
+        node(
+          "p",
+          "No matches. Try a different term or reset the filters.",
+          "empty",
+        ),
+      );
+    content.replaceChildren(fragment);
+    nav.replaceChildren(menu);
+    count.textContent = shown + " of " + totalLessons + " lessons";
   }
-  count.textContent = total + " of " + totalLessons + " lessons";
-  if (!total) {
-    const empty = document.createElement("p");
-    empty.className = "empty";
-    empty.textContent =
-      "No matching lessons. Try another topic or choose all levels.";
-    content.append(empty);
+  search.addEventListener("input", render);
+  track.addEventListener("change", render);
+  document.querySelector("#reset").addEventListener("click", () => {
+    search.value = "";
+    track.value = "all";
+    render();
+    search.focus();
+  });
+  render();
+  const target = document.getElementById(location.hash.slice(1));
+  if (target) {
+    if (target instanceof HTMLDetailsElement) target.open = true;
+    requestAnimationFrame(() => target.scrollIntoView());
   }
-}
-search.addEventListener("input", render);
-track.addEventListener("change", render);
-render();
+})();

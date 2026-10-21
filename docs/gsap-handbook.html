@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="A beginner-to-expert GSAP handbook: core animation, timelines, ScrollTrigger, plugins, accessible motion, performance, debugging, and maintainable components."
+      content="Learn GSAP through 29 roadmap chapters, 58 practical lessons, and 28 projects: tweens, timelines, scroll, plugins, accessibility, performance, TypeScript, and React."
     />
-    <title>GSAP — Learning Handbook</title>
+    <title>GSAP — Mastery Handbook</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <link
       rel="icon"
@@ -31,9 +31,10 @@
     <meta name="theme-color" content="#092e2c" />
     <link rel="stylesheet" href="../css/gsap-handbook.css" />
     <link rel="stylesheet" href="../css/navigation.css" />
+    <link rel="stylesheet" href="../css/code-highlighting.css" />
     <script src="../js/navigation.js" defer></script>
   </head>
-  <body>
+  <body data-code-language="javascript">
     <div class="site-topbar">
       <a class="site-brand" href="../index.html">Dev<span>Docs.</span></a>
       <button
@@ -53,18 +54,19 @@
           >Regular Expressions</a
         >
         <a href="../docs/git-handbook.html">Git Reference</a>
+        <a href="../docs/typescript-handbook.html">TypeScript</a>
+        <a href="../docs/gsap-handbook.html">GSAP Animation</a>
         <a href="../docs/gsap-handbook.html" aria-current="page"
           >GSAP Animation</a
         >
-        <a href="../docs/typescript-handbook.html">TypeScript</a>
       </nav>
     </div>
     <header class="hero">
-      <h1>GSAP Learning Handbook</h1>
+      <h1>GSAP Mastery Handbook</h1>
       <p>
         From your first tween to dependable animation systems. Learn the
-        essentials, practice real patterns, and explore advanced tools when you
-        need them.
+        concepts, build real interactions, and develop the judgment to make
+        motion useful.
       </p>
       <a
         class="external"
@@ -73,107 +75,330 @@
         rel="noopener noreferrer"
         >Official GSAP documentation ↗</a
       >
+      <a class="external" href="../gsap-mastery-roadmap.md"
+        >Read the source roadmap</a
+      >
       <input
         id="search"
         type="search"
-        placeholder="Search: tween, timeline, ScrollTrigger, cleanup, reduced motion…"
-        aria-label="Search GSAP handbook"
+        placeholder="Search: timelines, ScrollTrigger, SplitText, cleanup…"
+        aria-label="Search GSAP lessons, roadmap topics, and projects"
       />
     </header>
     <main>
-      <aside aria-label="Topics">
-        <div class="nav-title">Topics</div>
-        <nav id="nav" aria-label="GSAP learning chapters"></nav>
+      <aside aria-label="Roadmap chapters">
+        <div class="nav-title">Learning path</div>
+        <nav id="nav" aria-label="GSAP chapters"></nav>
       </aside>
-      <div>
+      <div class="guide-body">
         <div class="toolbar">
-          <strong>GSAP learning path</strong
+          <strong>4 stages · 29 chapters · 28 projects</strong
           ><span id="count" role="status" aria-live="polite"></span>
         </div>
         <div class="tip">
-          <strong>15 chapters · 57 lessons · GSAP 3.15.0.</strong>
-          Verified October 20, 2026. Basic HTML, CSS, and JavaScript are
-          helpful; no GSAP experience is assumed. Read in order, then return by
-          topic.
-          <strong>Essential</strong> lessons build the foundation;
-          <strong>Advanced</strong> lessons combine concepts;
-          <strong>Specialized</strong> lessons solve particular design problems.
-          <p>
-            Start with the complete HTML demo. Other browser examples are
-            independent body fragments: load the same GSAP core first, then add
-            the shown fragment. Plugin examples include their extra scripts;
-            module and React examples are labeled. Each chapter ends with a
-            practical checkpoint.
-          </p>
-        </div>
-        <div class="level-filter">
-          <label for="track">Learning level</label>
-          <select id="track">
-            <option value="all">All levels</option>
-            <option value="Essential">Essential</option>
-            <option value="Advanced">Advanced</option>
-            <option value="Specialized">Specialized</option>
-          </select>
-        </div>
-        <details class="timeline-lab" id="timeline-lab">
-          <summary>Interactive lab: control a timeline’s playhead</summary>
-          <p>
-            Play, reverse, or seek the same sequence. Blue begins first; purple
-            overlaps it by starting 0.35 seconds later. Opening this lab loads
-            GSAP 3.15.0 from its CDN.
-          </p>
-          <p id="lab-status" role="status">
-            Open to load the interactive example.
-          </p>
-          <div class="lab-stage" aria-hidden="true">
-            <div class="lab-lane"><span class="lab-dot lab-first"></span></div>
-            <div class="lab-lane"><span class="lab-dot lab-second"></span></div>
-          </div>
-          <div class="lab-controls">
-            <button type="button" id="lab-play" disabled>Play</button>
-            <button type="button" id="lab-pause" disabled>Pause</button>
-            <button type="button" id="lab-reverse" disabled>Reverse</button>
-            <button type="button" id="lab-restart" disabled>Restart</button>
-          </div>
-          <label for="lab-progress"
-            >Seek the playhead <output id="lab-output">0%</output></label
+          <strong
+            >Start here: HTML, CSS, and basic JavaScript are enough. No GSAP
+            experience is assumed.</strong
           >
-          <input
-            id="lab-progress"
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            disabled
-          />
+          <p>
+            This guide follows all 409 topic bullets in
+            <a href="../gsap-mastery-roadmap.md">gsap-mastery-roadmap.md</a>.
+            Read in order, adapt the examples, and use the chapter checkpoints
+            and stage projects to practice. Begin with core, timelines, scroll,
+            responsive behavior, and cleanup. Canvas/WebGL/Three.js is an
+            optional specialization.
+          </p>
+          <p>
+            <strong
+              >Reference: GSAP 3.15.0 · API review October 21, 2026.</strong
+            >
+            Examples pin this version for repeatability. SplitText’s rewritten
+            API requires 3.13+; context and matchMedia require 3.11+. Plugins
+            are separate imports/scripts; each example labels its dependencies.
+            <a href="https://gsap.com/docs/v3/Installation/"
+              >GSAP 3.13+ makes all plugins available through public npm</a
+            >, subject to the
+            <a href="https://gsap.com/standard-license/"
+              >GSAP standard license</a
+            >. The license page was temporarily unavailable during verification;
+            this handbook does not interpret its terms.
+          </p>
+          <p>
+            <strong>How to run the code:</strong> the first example is a
+            complete HTML document. Other body.html examples are independent
+            body fragments with their own styles, core script, and required
+            plugin scripts; place one in a basic HTML document and serve it
+            locally. Do not combine all examples on one page. Module,
+            TypeScript, React, and test fixtures have explicit setup labels.
+            Code is displayed and copied; it is never executed by this handbook.
+          </p>
+          <p>
+            Early demonstrations isolate an API and may animate on load. When
+            adapting them to production, apply the responsive, reduced-motion,
+            lifecycle, and accessible-state patterns from Chapters 12 and 21–27.
+            Content and essential actions must remain usable when motion is
+            disabled.
+          </p>
+        </div>
+        <details class="learning-plan">
+          <summary>Learning plan, priorities, and roadmap stages</summary>
+          <h2>Four learning stages</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Stage</th>
+                  <th scope="col">Level</th>
+                  <th scope="col">Focus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>01</td>
+                  <td>Beginner</td>
+                  <td>Core</td>
+                </tr>
+                <tr>
+                  <td>02</td>
+                  <td>Intermediate</td>
+                  <td>Scroll &amp; UI</td>
+                </tr>
+                <tr>
+                  <td>03</td>
+                  <td>Advanced</td>
+                  <td>Plugins</td>
+                </tr>
+                <tr>
+                  <td>04</td>
+                  <td>Expert</td>
+                  <td>Engineering</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            These are learning stages, not an assessment of your present
+            ability. You can be productive before mastering every plugin.
+          </p>
+          <h2>The six areas of mastery</h2>
+          <ul>
+            <li>
+              GSAP Core — Tweens, timelines, easing, staggers, and animation
+              control.
+            </li>
+            <li>
+              Scroll Animations — ScrollTrigger, ScrollSmoother, and complex
+              scrolling experiences.
+            </li>
+            <li>
+              Advanced Animation — SVG, text, FLIP, interactive effects, and
+              plugins.
+            </li>
+            <li>
+              Animation Engineering — Performance, accessibility, responsive
+              behavior, and architecture.
+            </li>
+            <li>
+              Framework Integration — Vanilla JavaScript, TypeScript, React, and
+              Next.js.
+            </li>
+            <li>
+              Motion Design — Timing, choreography, storytelling, and creating
+              polished experiences.
+            </li>
+          </ul>
+          <h2>Priorities for frontend work</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Topic</th>
+                  <th scope="col">Importance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>GSAP Core and Tweens</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Timelines</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Easing and Staggers</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>ScrollTrigger</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Responsive Animations</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Text and SVG Animations</td>
+                  <td>Very high</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>FLIP Animations</td>
+                  <td>Very high</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>Performance and Accessibility</td>
+                  <td>Very high</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>Lifecycle and Cleanup</td>
+                  <td>Very high</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>GSAP with TypeScript</td>
+                  <td>High</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>GSAP with React</td>
+                  <td>High</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td>Draggable and Observer</td>
+                  <td>Medium</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td>Canvas, WebGL, Three.js</td>
+                  <td>Optional specialization</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Suggested schedule</h2>
+          <p>
+            Allow roughly 5–7 focused hours per week, including projects. The
+            schedule is a study structure, not a promise of expertise.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Period</th>
+                  <th scope="col">Focus</th>
+                  <th scope="col">Topics</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Weeks 1–3</td>
+                  <td>Core foundations</td>
+                  <td>
+                    Tweens, CSS properties, easing, staggers, and callbacks
+                  </td>
+                </tr>
+                <tr>
+                  <td>Weeks 4–6</td>
+                  <td>Animation coordination</td>
+                  <td>
+                    Timelines, playback controls, reusable functions, and UI
+                    interactions
+                  </td>
+                </tr>
+                <tr>
+                  <td>Weeks 7–10</td>
+                  <td>Scroll animation</td>
+                  <td>
+                    ScrollTrigger, pinning, scrubbing, responsive behavior, and
+                    parallax
+                  </td>
+                </tr>
+                <tr>
+                  <td>Weeks 11–15</td>
+                  <td>Creative techniques</td>
+                  <td>Text, SVG, FLIP, Draggable, and advanced plugins</td>
+                </tr>
+                <tr>
+                  <td>Weeks 16–20</td>
+                  <td>Production engineering</td>
+                  <td>
+                    Performance, cleanup, accessibility, TypeScript, and React
+                  </td>
+                </tr>
+                <tr>
+                  <td>Beyond week 20</td>
+                  <td>Specialization and mastery</td>
+                  <td>
+                    Complex portfolio projects, motion design, and advanced
+                    architecture
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Recommended development path</h2>
+          <ol>
+            <li>Master GSAP Core and Timelines using vanilla JavaScript.</li>
+            <li>
+              Learn ScrollTrigger deeply and build two complete animated landing
+              pages.
+            </li>
+            <li>Add text, SVG, and FLIP animations to your projects.</li>
+            <li>Refactor your animations into reusable TypeScript modules.</li>
+            <li>
+              Integrate GSAP into React once you&#x27;re comfortable with
+              React&#x27;s component lifecycle.
+            </li>
+            <li>
+              Focus on production performance, accessibility, and animation
+              architecture.
+            </li>
+          </ol>
+          <p>
+            Practice and visual problem-solving matter as much as API recall.
+            Prefer a useful, accessible, maintainable result over adding another
+            effect.
+          </p>
         </details>
+        <div class="level-filter">
+          <label for="track">Learning stage</label
+          ><select id="track">
+            <option value="all">All stages</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+            <option>Expert</option></select
+          ><button id="reset" type="button">Reset filters</button>
+        </div>
         <noscript
           ><p>
-            Enable JavaScript to view and search the GSAP handbook.
+            Enable JavaScript to view and search the guide, or
+            <a href="../gsap-mastery-roadmap.md">read the source roadmap</a>.
           </p></noscript
         >
         <div id="content"></div>
       </div>
     </main>
     <footer>
-      Learn in order, return for reference ·
+      Learn, build, and revisit ·
       <a href="../index.html">Documentation home</a> ·
-      <a
-        href="https://gsap.com/docs/v3/"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Official GSAP documentation ↗</a
-      >
-      ·
-      <a
-        href="https://gsap.com/community/standard-license/"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Standard license ↗</a
-      >
+      <a href="../gsap-mastery-roadmap.md">Source roadmap</a> ·
+      <a href="https://gsap.com/docs/v3/">Official GSAP documentation ↗</a>
     </footer>
+    <script src="../js/vendor/prism.js"></script>
+    <script src="../js/code-highlighting.js"></script>
     <script src="../js/gsap-handbook.js"></script>
     <script src="../js/handbook-navigation.js"></script>
-    <script src="../js/gsap-playground.js"></script>
   </body>
 </html>

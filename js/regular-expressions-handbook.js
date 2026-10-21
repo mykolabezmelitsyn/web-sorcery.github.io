@@ -439,6 +439,7 @@ function render() {
     p.textContent = "No matching patterns. Try another search.";
     content.append(p);
   }
+  window.HandbookHighlight?.highlight(content);
 }
 search.addEventListener("input", render);
 render();
