@@ -1,35 +1,188 @@
 @import url("./regular-expressions-handbook.css");
-
-.chapter-intro {
-  color: var(--muted);
-  margin: -6px 0 20px;
+.guide-body {
+  min-width: 0;
 }
-.entry h3 {
-  margin-bottom: 12px;
-}
-.entry .example-head {
-  margin-top: 18px;
-}
-.entry .syntax-summary {
-  overflow-wrap: anywhere;
-  margin: 16px 0 0;
-}
-.entry-reference {
-  display: inline-block;
-  font-size: 14px;
-  margin-top: 16px;
-}
-.exercise-solution {
-  margin-top: 18px;
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
-}
-.exercise-solution summary {
-  cursor: pointer;
-  font-weight: 650;
+a {
   color: var(--accent-ink);
 }
+.tip p {
+  margin: 10px 0 0;
+}
+.learning-plan,
+.project {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 20px 0;
+}
+summary {
+  cursor: pointer;
+  font-weight: 750;
+  color: var(--accent-ink);
+}
+.learning-plan h2 {
+  margin: 24px 0 12px;
+  font-size: 1.15rem;
+}
+.learning-plan p,
+.project p {
+  color: var(--muted);
+}
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+th {
+  background: var(--accent-soft);
+}
+.phases li,
+.project li {
+  margin-bottom: 10px;
+}
+.level-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 25px 0;
+}
+select {
+  font: inherit;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 10px;
+}
+.stage {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 750;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-radius: 5px;
+  padding: 3px 9px;
+  margin-bottom: 12px;
+}
+.goal {
+  color: var(--muted);
+}
+.group-heading {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 28px 0 10px;
+}
+.entry h4 {
+  font-size: 1.12rem;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.entry p {
+  white-space: normal;
+}
+.requirements {
+  font-size: 0.84rem;
+  padding: 8px 11px;
+  border-left: 3px solid var(--line);
+}
+.example-head {
+  margin-top: 14px;
+}
+.example-head span {
+  text-transform: none;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.source {
+  display: inline-block;
+  font-size: 0.84rem;
+  margin: 12px 0 0;
+}
+.project h4 {
+  margin-bottom: 7px;
+}
+.project ol,
+.project ul {
+  padding-left: 24px;
+}
+pre:focus-visible,
+select:focus-visible,
 summary:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .learning-plan,
+  .project {
+    padding: 16px;
+  }
+}
+
+/* IDE-style syntax colors on the handbook's existing dark code surface. */
+pre code .token.comment,
+pre code .token.prolog,
+pre code .token.doctype,
+pre code .token.cdata {
+  color: #94a3b8;
+}
+pre code .token.punctuation {
+  color: #cbd5e1;
+}
+pre code .token.property,
+pre code .token.attr-name,
+pre code .token.parameter {
+  color: #9cdcfe;
+}
+pre code .token.keyword,
+pre code .token.tag,
+pre code .token.atrule {
+  color: #c4a7ff;
+}
+pre code .token.string,
+pre code .token.attr-value,
+pre code .token.template-string > .token.string {
+  color: #f0b08b;
+}
+pre code .token.number,
+pre code .token.boolean,
+pre code .token.constant {
+  color: #b5cea8;
+}
+pre code .token.function,
+pre code .token.function-variable {
+  color: #dcdcaa;
+}
+pre code .token.class-name,
+pre code .token.builtin,
+pre code .token.namespace {
+  color: #4ec9b0;
+}
+pre code .token.operator,
+pre code .token.entity,
+pre code .token.url {
+  color: #d4d4d4;
+}
+pre code .token.regex,
+pre code .token.symbol,
+pre code .token.important {
+  color: #f5c879;
+}
+pre code .token.bold {
+  font-weight: 700;
+}
+pre code .token.italic {
+  font-style: italic;
 }

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="A complete TypeScript learning guide following TS_Course_Topics: 10 chapters and 55 topics, from setup and basic types to type programming and real-world configuration."
+      content="A practical TypeScript learning guide: 148 topics, eight levels, and eight projects, following the TypeScript mastery roadmap."
     />
-    <title>TypeScript — Learning Handbook</title>
+    <title>TypeScript — Mastery Handbook</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <link
       rel="icon"
@@ -53,79 +53,237 @@
           >Regular Expressions</a
         >
         <a href="../docs/git-handbook.html">Git Reference</a>
+        <a href="../docs/gsap-handbook.html">GSAP Animation</a>
+        <a href="../docs/typescript-handbook.html">TypeScript</a>
         <a href="../docs/typescript-handbook.html" aria-current="page"
           >TypeScript</a
         >
-        <a href="../docs/gsap-handbook.html">GSAP Animation</a>
       </nav>
     </div>
     <header class="hero">
-      <h1>TypeScript Learning Handbook</h1>
+      <h1>TypeScript Mastery Handbook</h1>
       <p>
-        Learn TypeScript from the foundations to advanced type programming, with
-        clear explanations, worked examples, and exercises.
+        Build a solid foundation, write dependable applications, and grow into
+        typed library design and large-scale engineering. Follow the roadmap one
+        level at a time.
       </p>
       <a
         class="external"
-        href="https://www.typescriptlang.org/docs/handbook/intro.html"
+        href="https://www.typescriptlang.org/docs/"
         target="_blank"
         rel="noopener noreferrer"
-        >Official TypeScript handbook ↗</a
+        >Official TypeScript documentation ↗</a
+      >
+      <a class="external" href="../typescript-mastery-roadmap.md"
+        >Read the source roadmap</a
       >
       <input
         id="search"
         type="search"
-        placeholder="Search: inference, generics, narrowing, infer, TSConfig…"
-        aria-label="Search TypeScript guide"
+        placeholder="Search: narrowing, generics, React, declarations…"
+        aria-label="Search TypeScript topics and examples"
       />
     </header>
     <main>
-      <aside aria-label="Topics">
-        <div class="nav-title">Topics</div>
-        <nav id="nav" aria-label="TypeScript course chapters"></nav>
+      <aside aria-label="Learning levels">
+        <div class="nav-title">Learning path</div>
+        <nav id="nav" aria-label="TypeScript learning levels"></nav>
       </aside>
-      <div>
+      <div class="guide-body">
         <div class="toolbar">
-          <strong>TypeScript learning path</strong
+          <strong>8 levels · 8 practice projects</strong
           ><span id="count" role="status" aria-live="polite"></span>
         </div>
         <div class="tip">
           <strong
-            >10 chapters · 55 topics · one example for every topic.</strong
+            >Start with JavaScript knowledge; no TypeScript experience is
+            assumed.</strong
           >
-          Follow the chapters in order; the topic names and sequence match
-          <a href="../TS_Course_Topics">TS_Course_Topics</a>. Basic JavaScript
-          familiarity is helpful. Use TypeScript 5.0+ with
-          <code>strict</code> checking and the ES2022 setup in chapter 1.
-          Examples are independent: try each in its own file, or in the
-          <a
-            href="https://www.typescriptlang.org/play/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >TypeScript Playground ↗</a
-          >. Terminal commands, JSON, and examples requiring multiple files are
-          labeled. Commented invalid lines illustrate errors; they are not
-          instructions to run them.
+          <p>
+            This guide follows all 148 topics in
+            <a href="../typescript-mastery-roadmap.md"
+              >typescript-mastery-roadmap.md</a
+            >, in their original order. Focus first on Levels 1–4 and the
+            practical parts of Level 6 for frontend and React work.
+          </p>
+          <p>
+            <strong
+              >Example baseline: TypeScript 5.9.3, strict checking,
+              ES2022.</strong
+            >
+            This is a reproducible reference version, not a claim that it is the
+            latest release. Each lesson is independent: do not paste all
+            examples into one file. Browser examples need a DOM; React examples
+            need React 19 and its types. Additional dependencies and setup are
+            labeled. Classic Compiler API examples are specifically pinned to
+            5.9.3; newer compiler implementations can expose different APIs.
+          </p>
+          <p>
+            Read the explanation, adapt the example, then complete the practice
+            project. Project code is a starting point; the acceptance checks
+            describe the finished result. Type checking catches contract errors,
+            while runtime tests verify behavior. Neither replaces the other.
+          </p>
+        </div>
+        <details class="learning-plan">
+          <summary>
+            How to use the roadmap: stages, priorities, and learning plan
+          </summary>
+          <h2>The four stages</h2>
+          <p>
+            The percentages are the roadmap’s stage markers, not a measurement
+            of your skill or progress.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Stage</th>
+                  <th>Levels</th>
+                  <th>Roadmap marker</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Beginner</td>
+                  <td>1–2</td>
+                  <td>25%</td>
+                </tr>
+                <tr>
+                  <td>Intermediate</td>
+                  <td>3–4</td>
+                  <td>50%</td>
+                </tr>
+                <tr>
+                  <td>Advanced</td>
+                  <td>5–6</td>
+                  <td>75%</td>
+                </tr>
+                <tr>
+                  <td>Expert</td>
+                  <td>7–8</td>
+                  <td>100%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Recommended priorities</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Learning area</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Core types, inference, functions, interfaces</td>
+                  <td>Essential now</td>
+                </tr>
+                <tr>
+                  <td>Narrowing, DOM events, forms, browser APIs</td>
+                  <td>Essential now</td>
+                </tr>
+                <tr>
+                  <td>Generics, utility types, keyof, satisfies</td>
+                  <td>Next</td>
+                </tr>
+                <tr>
+                  <td>Classes, modules, tsconfig, tooling</td>
+                  <td>Next</td>
+                </tr>
+                <tr>
+                  <td>React + TypeScript</td>
+                  <td>High</td>
+                </tr>
+                <tr>
+                  <td>Conditional and mapped types</td>
+                  <td>After practical experience</td>
+                </tr>
+                <tr>
+                  <td>Building and publishing typed libraries</td>
+                  <td>Later</td>
+                </tr>
+                <tr>
+                  <td>Compiler internals and type-system theory</td>
+                  <td>Expert specialization</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Practical learning plan</h2>
+          <ol class="phases">
+            <li>
+              <strong>Phase 1 — Foundations (Weeks 1–3).</strong> Complete Level
+              1; practice DOM and events from Level 2; convert three small
+              JavaScript components to TypeScript.
+            </li>
+            <li>
+              <strong>Phase 2 — Reusable TypeScript (Weeks 4–6).</strong>
+              Complete Levels 2 and 3; practice generics and utility types;
+              rewrite your Tooltip library in TypeScript.
+            </li>
+            <li>
+              <strong>Phase 3 — Application development (Weeks 7–10).</strong>
+              Study Level 4 and practical parts of Level 6; learn Vite, strict
+              tsconfig, linting, and testing; build a React + TypeScript
+              application.
+            </li>
+            <li>
+              <strong>Phase 4 — Advanced TypeScript (Weeks 11–16).</strong>
+              Study Level 5; create custom utility types and typed abstractions;
+              write declaration files and type tests.
+            </li>
+            <li>
+              <strong>Phase 5 — Long-term expertise (Ongoing).</strong> Study
+              Levels 7 and 8; publish and maintain a typed library; practice
+              debugging complex types in production-sized projects.
+            </li>
+          </ol>
+          <p>
+            The first 16 weeks assume regular study and practice. They are a
+            suggested schedule, not a guarantee of mastery. Experience solving
+            real problems develops expert judgment.
+          </p>
+          <h2>What expertise looks like</h2>
+          <p>
+            You can migrate unfamiliar JavaScript safely, model application
+            states, design reusable abstractions, diagnose complex type errors,
+            and maintain compatibility. Prefer the simplest types that provide
+            the guarantees your application actually needs.
+          </p>
+        </details>
+        <div class="level-filter">
+          <label for="track">Learning stage</label
+          ><select id="track">
+            <option value="all">All stages</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+            <option>Expert</option></select
+          ><button id="reset" type="button">Reset filters</button>
         </div>
         <noscript
           ><p>
-            Enable JavaScript to view and search the TypeScript guide.
+            Enable JavaScript to read and search the guide, or
+            <a href="../typescript-mastery-roadmap.md"
+              >read the source roadmap</a
+            >.
           </p></noscript
         >
         <div id="content"></div>
       </div>
     </main>
     <footer>
-      Learn in order, return for reference ·
+      Learn, build, and revisit ·
       <a href="../index.html">Documentation home</a> ·
-      <a href="../TS_Course_Topics">Course outline</a> ·
-      <a
-        href="https://www.typescriptlang.org/docs/handbook/intro.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Official TypeScript handbook ↗</a
+      <a href="../typescript-mastery-roadmap.md">Source roadmap</a> ·
+      <a href="https://www.typescriptlang.org/docs/"
+        >Official TypeScript documentation ↗</a
       >
     </footer>
+    <script src="../js/vendor/prism.js"></script>
     <script src="../js/typescript-handbook.js"></script>
     <script src="../js/handbook-navigation.js"></script>
   </body>
