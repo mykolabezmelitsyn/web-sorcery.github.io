@@ -1,0 +1,25 @@
+/* Keep the established handbook theme, responsive layout, and topic cards. */
+@import url("./gsap-handbook.css");
+.level-filter select {
+  max-width: 100%;
+  min-width: 0;
+}
+.assessment select {
+  max-width: 180px;
+  min-width: 132px;
+}
+#assessment-status {
+  font-size: 0.88rem;
+}
+.project .requirements {
+  font-size: 0.84rem;
+}
+#projects > h2 {
+  margin-top: 38px;
+}
+.project li {
+  color: var(--muted);
+}
+.level-checkpoint {
+  border-left-width: 5px;
+}
