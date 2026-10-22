@@ -1,25 +1,50 @@
-@import url("./regular-expressions-handbook.css");
-
-.entry .example-head {
-  margin-top: 14px;
+/* Reuse the shared handbook theme and responsive container/row layout. */
+@import url("./gsap-handbook.css");
+.git-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
 }
-.entry .risk {
-  margin: 14px 0;
-  padding: 10px 13px;
-  border-left: 4px solid #b45309;
-  border-radius: 4px;
-  background: #fff4df;
-  color: #78350f;
+.git-flow span {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 700;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .entry .risk {
-    background: #382b1c;
-    color: #fcd9a0;
-    border-color: #fbbf24;
+.git-flow small {
+  font-weight: 400;
+  color: var(--muted);
+}
+.git-effects {
+  border-left: 3px solid var(--accent);
+  padding: 8px 14px;
+}
+.git-effects dt {
+  font-weight: 750;
+  margin-top: 8px;
+}
+.git-effects dd {
+  margin: 4px 0 10px;
+  color: var(--muted);
+}
+.command-reference pre {
+  margin-bottom: 16px;
+}
+.level-filter select {
+  max-width: 100%;
+  min-width: 0;
+}
+#references h2 {
+  font-size: 1.15rem;
+}
+#projects > h2 {
+  margin-top: 32px;
+}
+@media (max-width: 760px) {
+  .git-flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-:root[data-theme="dark"] .entry .risk {
-  background: #382b1c;
-  color: #fcd9a0;
-  border-color: #fbbf24;
 }

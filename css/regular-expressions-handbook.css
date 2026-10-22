@@ -123,22 +123,6 @@ aside .nav-title {
   margin: 0 0 9px 9px;
 }
 
-.guide-nav {
-  display: grid;
-  gap: 4px;
-
-  > a {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 4px;
-    counter-increment: guide-link;
-
-    &:before {
-      content: counter(guide-link)'. ';
-    }
-  }
-}
-
 #nav a {
   padding: 7px 11px;
   color: var(--muted);
