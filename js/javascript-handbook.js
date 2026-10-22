@@ -97,7 +97,7 @@ const handbook = {
         {
           name: "Language, runtime, and script loading",
           explanation:
-            "ECMAScript defines the language; an engine executes it, while a runtime supplies APIs such as the browser DOM or Node’s filesystem. A browser script cannot assume Node globals exist. Modern syntax and platform APIs have separate compatibility requirements, so check both.\n\nA classic script without defer blocks HTML parsing while it loads and runs. defer downloads alongside parsing, then executes in document order after parsing. async runs when ready, without that ordering guarantee. Modules have their own scope, are strict, and are deferred by default unless async is added. Use a local HTTP server for modules. This small page demonstrates why a module can safely find the preceding button.",
+            "This page shows how a JavaScript module finds a button in the page and responds to it. Three parts make that possible. ECMAScript defines the language rules. An engine runs the code. A runtime provides the surrounding tools, such as the browser's DOM (its representation of the page) or Node's filesystem APIs. Browser code cannot assume Node globals are available. Language syntax and runtime APIs have separate compatibility requirements; check both.\n\nScript loading affects when code can use the page. A classic script without defer pauses HTML parsing while it loads and runs. defer allows downloading during parsing, then runs scripts in document order after parsing ends. async runs a script when it is ready, without preserving that order. Modules have their own variable scope, use strict mode, and are deferred by default unless async is added. Serve modules through a local HTTP server. In this example, the module can find the button that appears before it in the HTML.",
           files: [
             {
               name: "index.html",
@@ -115,7 +115,7 @@ const handbook = {
         {
           name: "Values, bindings, coercion, and equality",
           explanation:
-            "let is a reassignable block-scoped binding; const prevents rebinding, not mutation of an object. var is function-scoped and has different hoisting rules, so prefer let/const in new code. Primitive values include string, number, boolean, null, undefined, bigint, and symbol; objects have identity and can be shared through references. JavaScript is dynamically typed: a binding’s value can change type.\n\nUse explicit conversion at boundaries and usually compare with ===. == coerces; Object.is differs from === for NaN and signed zero. Falsy values include false, 0, -0, 0n, empty string, null, undefined, and NaN. An empty array/object is truthy. Check precedence with parentheses rather than relying on memory.",
+            "This example shows how variables hold values, how objects can be shared, and how comparisons work. let creates a variable that can be reassigned within its block. const prevents reassignment; it does not prevent changing an object's contents. var belongs to the containing function and follows different initialization rules, so prefer let and const in new code. Primitive values are strings, numbers, booleans, null, undefined, bigints, and symbols. Objects have their own identity, and several variables can refer to the same object. JavaScript is dynamically typed: a variable can later hold a different type of value.\n\nConvert values explicitly when they enter your code, and usually use === for equality. == converts types before comparing. Object.is behaves differently from === for NaN and positive versus negative zero. The falsy values are false, 0, -0, 0n, an empty string, null, undefined, and NaN. Empty arrays and objects are truthy. Use parentheses to make the order of operations clear instead of relying on memory.",
           files: [
             {
               name: "example.mjs",
@@ -133,7 +133,7 @@ const handbook = {
         {
           name: "Choose control flow that expresses intent",
           explanation:
-            "Use if/else for decisions, switch for named alternatives, and a ternary for a short value-producing choice. for/while/do...while support explicit loop control; do...while runs its body at least once. for...of iterates values from an iterable. for...in enumerates enumerable string keys, including inherited ones, so it is usually the wrong choice for arrays.\n\nUse Object.keys or Object.entries when you want own object properties. Strict mode removes several error-prone behaviors, such as accidentally creating a global through assignment. Modules are automatically strict. Prefer early returns to unnecessary nesting, and give loops an exit condition you can explain.",
+            "Control flow decides which code runs and how often it repeats. Use if/else for decisions, switch for named alternatives, and a ternary expression for a short choice that produces a value. for, while, and do...while let you control repetition; do...while always runs its body at least once. for...of reads values from an iterable, an object that supports iteration. for...in lists enumerable string keys, including inherited keys, so it is usually unsuitable for arrays.\n\nUse Object.keys or Object.entries when you want an object's own properties. Strict mode rules out several error-prone behaviors, including creating a global variable by accidental assignment. Modules already use strict mode. Return early when that makes a decision clearer, rather than adding more nested blocks. Every loop should have an exit condition you can explain.",
           files: [
             {
               name: "example.mjs",
@@ -175,7 +175,7 @@ const handbook = {
         {
           name: "Functions are values with different call behavior",
           explanation:
-            "A function declaration is initialized before its source position is reached within its scope. A function expression is created when that expression runs. Arrow functions are concise expressions with lexical this and no own arguments; they are not interchangeable with ordinary methods or constructors. Parameters name inputs; arguments are actual supplied values.\n\nDefault parameters apply when an argument is undefined, while rest collects additional arguments into an array. A function returns undefined unless it returns a value. A callback is passed for another function to call; a higher-order function accepts or returns functions. Anonymous expressions and immediately invoked function expressions (IIFEs) are useful patterns, though modules now provide much of the isolation once supplied by IIFEs.",
+            "Functions package work into values that code can store, pass, and call. A function declaration is initialized before execution reaches its written position within its scope. A function expression creates the function when that expression runs. Arrow functions use this from their surrounding code and have no arguments object of their own. They therefore cannot replace ordinary methods or constructors in every situation. Parameters are the names in the function definition; arguments are the values supplied by a call.\n\nA default parameter applies when its argument is undefined. A rest parameter collects additional arguments into an array. A function returns undefined unless it returns a value explicitly. A callback is a function passed to other code to call. A higher-order function accepts or returns functions. Anonymous function expressions have no explicit name. An immediately invoked function expression, or IIFE, runs as soon as it is defined. IIFEs remain useful, though modules now provide much of the variable isolation they once supplied.",
           files: [
             {
               name: "example.mjs",
@@ -193,7 +193,7 @@ const handbook = {
         {
           name: "Purity, recursion, and reusable boundaries",
           explanation:
-            "A pure function returns the same result for the same inputs and has no observable side effects. A function that writes the DOM, mutates shared state, or reads the current time is impure; those operations are necessary, but isolating them makes data logic easier to test.\n\nRecursion solves a problem by calling the same function on a smaller part. Supply a base case and consider maximum depth; JavaScript stacks are finite and portable code should not assume tail-call optimization. The example flattens a small category tree without mutating its input. An iterative stack is safer for arbitrarily deep external data.",
+            "This example reads a small category tree and returns a flat list without changing the input. Keeping data transformations separate from other work makes them easier to test. A pure function always returns the same result for the same inputs and makes no observable changes elsewhere. A function that changes the DOM or shared data, or reads the current time, is impure. Such work is necessary; give it a clear place outside pure data logic.\n\nThe example uses recursion: a function calls itself to process a smaller part of the problem. Recursion needs a base case that stops further calls. It also needs a sensible depth limit because JavaScript's call stack is finite. Portable code should not assume tail-call optimization, an engine feature that can avoid retaining certain calls. For external data of arbitrary depth, an explicit stack and an iterative loop are safer.",
           files: [
             {
               name: "example.mjs",
@@ -235,7 +235,7 @@ const handbook = {
         {
           name: "Transform strings, arrays, and objects deliberately",
           explanation:
-            "Strings are immutable; methods return new strings. Template literals interpolate expressions, but are not HTML escaping. Number.isNaN and Number.isFinite test numeric values without the coercion of their global counterparts. Math provides numeric helpers; number arithmetic is floating-point, so financial rounding needs a deliberate domain policy.\n\nArray methods can transform values or mutate the original; learn which kind you are using. Destructuring extracts values, spread constructs shallow copies, and rest collects remaining entries. Object methods such as entries expose key/value pairs. The example normalizes product names, filters unavailable records, and calculates a total without rewriting the source array.",
+            "This example cleans product names, removes unavailable products, and calculates a total without rewriting the source array. String methods return new strings because strings cannot be changed in place. Template literals insert expression results into strings; they do not escape HTML. Number.isNaN and Number.isFinite test numeric values without first converting types, unlike their global counterparts. Math supplies numeric helpers. Number arithmetic uses floating-point values, so financial rounding needs an explicit policy suited to the domain.\n\nArray methods differ: some return transformed results, while others change the original array. Know which behavior you are using. Destructuring extracts values into variables. Spread makes shallow copies, so nested objects can remain shared. Rest collects the remaining entries. Object.entries and related methods expose object keys and values for processing.",
           files: [
             {
               name: "example.mjs",
@@ -253,7 +253,7 @@ const handbook = {
         {
           name: "Handle absence without treating zero as missing",
           explanation:
-            "Optional chaining stops a property access or call when the receiver is null/undefined; it does not validate the resulting data. Nullish coalescing supplies a fallback only for null/undefined. Logical OR supplies one for any falsy value, which can accidentally replace zero or an empty string.\n\nThe logical assignments ??=, ||=, and &&= assign conditionally using those respective tests. Use them when mutation is intentional. Spread and destructuring defaults do not make nested values safe or perform a deep merge. This configuration example preserves an intentional zero and validates an optional callback before using its result elsewhere.",
+            "This configuration example handles missing values while preserving an intentional zero. Optional chaining stops an access or call when the value being accessed through is null or undefined. It does not validate the data returned. Nullish coalescing supplies a fallback only for null or undefined. Logical OR supplies a fallback for any falsy value, so it can unintentionally replace zero or an empty string.\n\nThe assignment forms ??=, ||=, and &&= use those same tests to decide whether to assign a new value. Use them only when changing the object or variable is intentional. Spread and destructuring defaults do not protect nested accesses or combine nested objects through a deep merge. The example also handles an optional callback before its result is used elsewhere.",
           files: [
             {
               name: "example.mjs",
@@ -271,7 +271,7 @@ const handbook = {
         {
           name: "Dates, localization, and JSON are separate contracts",
           explanation:
-            "Date stores an instant as a timestamp; presentation depends on locale and time zone. Parse well-defined ISO input and choose a display time zone deliberately. Intl formatters localize numbers and dates; localized display strings are not a general-purpose input parser.\n\nJSON.parse can throw and returns unvalidated data. JSON.stringify omits or changes some JavaScript values: functions/undefined are not preserved as ordinary object properties, BigInt throws without a custom conversion, and Date is usually serialized as an ISO string. JSON round-tripping is therefore not a universal deep clone. Validate the parsed structure before treating it as domain data.",
+            "This example separates a stored date or number from the text shown to a user. Date represents an instant as a timestamp. Its displayed form depends on the locale and time zone. Parse well-defined ISO date input and choose the display time zone deliberately. Intl formatters produce localized numbers and dates. Their output is for presentation, not a general way to parse user input.\n\nJSON serialization has a different purpose: turning supported data into text and reading it back. JSON.parse can throw, and its result has not been checked against your application's expected structure. JSON.stringify does not preserve functions or undefined as ordinary object properties. BigInt needs a custom conversion or serialization throws. Date usually becomes an ISO string. For these reasons, serializing and parsing JSON is not a universal deep-copy method. Validate the parsed structure before using it as application data.",
           files: [
             {
               name: "example.mjs",
@@ -315,7 +315,7 @@ const handbook = {
         {
           name: "Scope, hoisting, and the temporal dead zone",
           explanation:
-            "Lexical scope follows where code is written, not where a function is called. A name is resolved through the surrounding scope chain; a closer declaration shadows an outer one. let/const have block scope, while var has function scope. Their bindings exist before the declaration executes, but let/const remain uninitialized in the temporal dead zone (TDZ). Access then throws; var reads as undefined before assignment.\n\nAn execution context holds the environment for a call, and nested calls use a call stack. Function declarations are initialized differently from function expressions. Instead of saying code is physically moved upward, reason about when each binding is created and initialized.",
+            "This block explains how JavaScript finds a variable and when that variable can be read. Lexical scope means names are resolved from where code is written, not where a function is called. JavaScript searches the surrounding scopes. A closer declaration can hide, or shadow, an outer one. let and const belong to a block; var belongs to a function.\n\nBindings, the associations between names and values, exist before their declarations run. let and const remain uninitialized until their declaration executes. Reading them during this temporal dead zone, or TDZ, throws an error. A var binding instead reads as undefined before assignment. Each function call has an execution context that holds its environment, and nested calls are tracked on the call stack. Function declarations and function expressions are initialized differently. Explain hoisting through binding creation and initialization; source lines are not physically moved upward.",
           files: [
             {
               name: "example.mjs",
@@ -333,7 +333,7 @@ const handbook = {
         {
           name: "Closures retain bindings, not frozen snapshots",
           explanation:
-            "A closure is a function plus access to its surrounding lexical environment. It can keep private state alive after the outer function returns. That state is a binding, so later changes can be observed; it is not automatically a copy of an earlier value.\n\nA common mistake uses one var binding for several delayed callbacks, so every callback sees its final value. A let loop creates a per-iteration binding. Closures can also keep large objects or detached DOM reachable. Release listeners and unnecessary references when a feature ends; garbage collection cannot infer your intended component lifecycle.",
+            "A closure lets a function keep using variables from the code around its definition. This can preserve private state after the outer function has returned. It retains access to the variable binding, not a frozen copy of its earlier value. Later changes can therefore be visible to the function.\n\nThis matters for delayed callbacks. Several callbacks created around one var binding all see that binding's final value. A let loop creates a separate binding for each iteration. Closures can also retain large objects or DOM nodes removed from the page. Remove listeners and release unnecessary references when a feature ends. Garbage collection cannot know when you intended the component to stop existing.",
           files: [
             {
               name: "example.mjs",
@@ -351,7 +351,7 @@ const handbook = {
         {
           name: "this follows the call form; arrows capture it",
           explanation:
-            "For an ordinary function, this depends on how it is called. An object method call supplies the receiver; an extracted method loses that receiver, and a plain strict-mode call has undefined this. call supplies this and separate arguments, apply supplies this and an argument list, and bind returns a function with a bound receiver.\n\nAn arrow has no own this and closes over the surrounding value, so call/apply/bind cannot replace it. Use ordinary methods when the receiver should vary, and arrows when lexical capture is the intent. A bound listener is a new function reference: retain it if you need removeEventListener later.",
+            "This example shows how a function receives this. For an ordinary function, the call determines its value. Calling an object method supplies that object as the receiver. Taking the method out of the object loses that receiver; a plain call in strict mode has undefined as this. call supplies a receiver and separate arguments. apply supplies a receiver and an argument list. bind creates another function with a fixed receiver.\n\nAn arrow function instead uses this from the code around its definition. call, apply, and bind cannot replace that captured value. Use an ordinary method when the receiver should vary, and an arrow when the surrounding this is what you want. Binding a listener creates a new function reference. Keep that reference if you will later remove the listener with removeEventListener.",
           files: [
             {
               name: "example.mjs",
@@ -394,7 +394,7 @@ const handbook = {
         {
           name: "Array pipelines and non-mutating sorting",
           explanation:
-            "map transforms, filter selects, reduce accumulates, find returns the first match, and some/every ask whether at least one/all values pass. They are alternatives chosen by the result you need, not a requirement to put every operation into reduce. flat removes nesting to a chosen depth; flatMap maps and flattens one level.\n\nArray sort mutates and compares strings by default; give numeric data a comparator. toSorted, standardized in ES2023, returns a sorted copy; for older targets use [...items].sort(comparator). Object.keys/values/entries enumerate own enumerable string properties, and fromEntries rebuilds an object. Avoid repeatedly rescanning large collections when one indexed pass is clearer.",
+            "Array methods produce different kinds of results. map transforms elements, filter selects them, reduce combines them into one result, and find returns the first match. some asks whether at least one element passes a test; every asks whether all do. Choose the method that matches the result you need rather than putting every operation into reduce. flat removes nesting to a chosen depth. flatMap transforms elements and removes one level of nesting.\n\nsort changes the original array and compares values as strings by default. Supply a comparator for numeric ordering. toSorted, added in ES2023, returns a sorted copy. For older targets, use [...items].sort(comparator). Object.keys, Object.values, and Object.entries list an object's own enumerable string properties; enumerable means included in these listings. Object.fromEntries builds an object from entries. Avoid repeatedly scanning a large collection when building an index in one pass is clearer.",
           files: [
             {
               name: "example.mjs",
@@ -412,7 +412,7 @@ const handbook = {
         {
           name: "Copies, descriptors, and controlled mutation",
           explanation:
-            "A spread copy is shallow: nested objects remain shared. structuredClone copies supported structured data and cycles, but cannot clone functions or DOM nodes and does not preserve every custom class contract. Choose an explicit copy/update strategy rather than assuming all data can be cloned.\n\nfreeze prevents changes to own properties but is shallow; seal prevents adding/removing properties while retaining writable values. Descriptors define writable, enumerable, and configurable behavior, or a getter/setter pair. Getters should not hide expensive or surprising work. Computed property names use an expression as the key. Model ownership so code can tell whether a change is local or shared.",
+            "This example shows what a copy shares and how property rules limit changes. Spread copies only the outer structure, so nested objects remain shared. structuredClone copies supported structured data, including cycles, but cannot clone functions or DOM nodes. It also does not preserve every custom class's behavior. Choose a copy or update strategy explicitly instead of assuming all data can be cloned.\n\nObject.freeze prevents changes to an object's own properties, but does not freeze nested objects. Object.seal prevents adding or removing properties while allowing values that remain writable to change. A property descriptor defines whether a property can be written, listed, or reconfigured, or defines getter/setter functions instead. A getter should not conceal expensive or surprising work. Computed property names use an expression to choose the key. Make ownership clear so callers know whether a change affects only their data or shared data.",
           files: [
             {
               name: "example.mjs",
@@ -430,7 +430,7 @@ const handbook = {
         {
           name: "Choose keyed and weak collections by ownership",
           explanation:
-            "Map accepts arbitrary keys and preserves insertion order; Set stores unique values. Object keys have a different contract, so use a Map when key identity or non-string keys matter. Object equality is identity: two equal-looking objects are still distinct keys. These collections use SameValueZero equality for their keys/values.\n\nWeakMap and WeakSet are useful for metadata or membership that should not keep an object alive by themselves. They are not enumerable and provide no size, because exposing garbage-collection timing would make behavior unreliable. Do not use them when your application must list or persist entries; use explicit cleanup for resources even when metadata is weakly keyed.",
+            "Map and Set store data under different rules from ordinary objects. Map accepts arbitrary keys and preserves insertion order. Set keeps unique values. Use Map when non-string keys or the identity of a key matters. Two objects with identical-looking contents are still different objects and different keys. Map and Set use SameValueZero equality for keys or values.\n\nWeakMap stores metadata and WeakSet tracks membership without, by themselves, keeping an object alive. They cannot list their entries and have no size property. Exposing that information would make behavior depend on unpredictable garbage-collection timing. Use other collections when you must list or persist entries. Weakly held metadata does not replace explicit cleanup of resources.",
           files: [
             {
               name: "example.mjs",
@@ -470,7 +470,7 @@ const handbook = {
         {
           name: "Errors need a useful boundary and a recovery policy",
           explanation:
-            "Throw Error objects or meaningful subclasses, not bare strings. TypeError is useful for an invalid type; RangeError for a value outside a supported range. A custom class can carry a domain-specific name and an underlying cause. Let an error propagate until a boundary can recover, report context, or show a useful message.\n\ntry/catch handles synchronous throws and awaited promise rejections, not an arbitrary later timer callback. Handle a callback’s own errors or convert it to a promise. finally runs for cleanup and should not accidentally return or throw over the original result. Validate inputs at boundaries, and read stack traces from the failing operation back through its callers.",
+            "Error handling gives a failure a useful place to be reported or recovered from. Throw Error objects or meaningful subclasses rather than strings. TypeError describes an invalid type. RangeError describes a value outside the supported range. A custom error class can name an application-specific failure and retain its underlying cause. Let an error travel through callers until code can recover, add useful context, or show a helpful message.\n\ntry/catch handles synchronous throws and rejections from promises that are awaited inside it. It does not catch errors from an arbitrary timer callback that runs later. Handle errors in that callback or convert the work into a promise. Use finally for cleanup, and avoid returning or throwing there in a way that replaces the original result. Validate inputs where they enter a part of the system. Read a stack trace from the failed operation back through the functions that called it.",
           files: [
             {
               name: "example.mjs",
@@ -509,7 +509,7 @@ const handbook = {
         {
           name: "Build readable patterns, then inspect matches",
           explanation:
-            "A RegExp combines a pattern with flags. Character classes select a character, quantifiers repeat it, anchors constrain position, and boundaries describe transitions such as a word edge. Capturing groups save text; non-capturing groups only group alternatives. Lookahead/lookbehind assert nearby content without consuming it. Check lookbehind support for older target browsers.\n\ntest returns a boolean, exec returns a match with captures, and string match/matchAll/replace expose different result shapes. A global or sticky regex has mutable lastIndex, so repeated test calls can surprise validation code. Use a bounded, non-global pattern for simple field checks; regex cannot prove an email address is deliverable. Avoid nested ambiguous repetition on untrusted, unbounded input.",
+            "A regular expression, or RegExp, matches text using a pattern and flags. Character classes choose a character; quantifiers say how often it can repeat. Anchors restrict a match's position. Boundaries identify transitions such as a word edge. Capturing groups retain matched text; non-capturing groups organize alternatives without retaining a capture. Lookahead and lookbehind check nearby text without including it in the match. Check lookbehind support when targeting older browsers.\n\nChoose the matching operation for the result you need. test returns a boolean. exec returns a match with captures. String match, matchAll, and replace have different result structures. A global or sticky regex changes its lastIndex position, which can make repeated validation tests behave differently. Use a non-global pattern with clear limits for simple fields. A regex cannot prove an email address can receive mail. Avoid nested, ambiguous repetition when processing untrusted input without a size limit.",
           files: [
             {
               name: "example.mjs",
@@ -550,7 +550,7 @@ const handbook = {
         {
           name: "Build dynamic content with explicit DOM ownership",
           explanation:
-            "The DOM is a tree of nodes. querySelector finds the first matching element; closest walks toward ancestors; children and parentElement expose relationships. Creating a node and assigning textContent treats input as text, whereas innerHTML parses markup and must not receive untrusted strings. Attributes describe markup, while properties often represent live state; an input’s value can differ from its value attribute. dataset exposes data-* strings.\n\nUse classList for state classes and styles for deliberate inline values. template stores inert markup to clone; DocumentFragment groups construction before insertion. Build the desired subtree, then replace it once rather than repeatedly mixing DOM reads and writes. Re-render only the owned region so you do not discard another component’s listeners or focus.",
+            "This block builds a part of the page while keeping ownership of that part clear. The DOM represents a page as a tree of nodes. querySelector finds the first matching element. closest searches upward through ancestors. children and parentElement expose relationships. Creating a node and setting textContent inserts text. innerHTML instead parses markup, so do not give it untrusted strings. Attributes describe markup, while properties often describe current state; an input's value can differ from its value attribute. dataset exposes data-* values as strings.\n\nUse classList to change state classes and inline styles only for deliberate values. A template holds inactive markup that can be cloned. A DocumentFragment groups nodes before insertion. Build the intended subtree, then replace it once instead of repeatedly mixing page measurements and changes. Update only the region your component owns. Replacing another component's content can discard its listeners or focus.",
           files: [
             {
               name: "index.html",
@@ -568,7 +568,7 @@ const handbook = {
         {
           name: "Mount, update, and destroy a component",
           explanation:
-            "A mount function receives its root, creates listeners or observers, and returns a cleanup handle. An update method changes owned content; destroy removes external work and is safe to call more than once. This contract is useful even without a framework.\n\nDynamic content is not a reason to scan the entire document after every mutation. Initialize new components at the code boundary that inserts them, or use a narrowly scoped MutationObserver only when insertion is outside your control. Retain function references for listener removal, or group listeners under an AbortController. Avoid deleting unrelated inline styles or markup during cleanup.",
+            "A component can have a clear lifecycle without using a framework. A mount function receives its root element and creates the listeners or observers it needs. It returns a handle for updating or cleaning up that work. An update method changes owned content. destroy stops external work and is safe to call more than once.\n\nInitialize new components where your code inserts them. Dynamic content does not require rescanning the entire document after every change. If another system controls insertion, use a MutationObserver limited to the relevant region. Keep listener function references for removal, or group listeners under an AbortController. Cleanup should leave unrelated markup and inline styles alone.",
           files: [
             {
               name: "index.html",
@@ -609,7 +609,7 @@ const handbook = {
         {
           name: "Event propagation and delegation",
           explanation:
-            "Events travel through capture, target, and usually bubble phases. currentTarget is the element whose listener is running; target is the originating target as exposed to that listener, which can be retargeted across shadow boundaries. Delegation listens at a stable ancestor and finds an actionable descendant, so newly inserted children work too.\n\npreventDefault cancels a cancelable browser action; stopPropagation stops traversal, not the default action. A passive listener promises not to cancel that action, useful for scrolling input. once removes a listener after its first call. Prefer pointer events for shared mouse/pen/touch input, click for activation, and focus/keyboard behavior for non-pointer access. Removing listeners requires the same function and matching capture mode.",
+            "Event delegation lets one listener on a stable ancestor handle actions from its children, including newly inserted children. It works by following event propagation: events pass through capture, target, and usually bubbling phases. currentTarget is the element whose listener is running. target is the event's originating target as exposed to that listener; a shadow boundary can change which target is exposed.\n\npreventDefault cancels a cancelable browser action. stopPropagation stops the event from travelling farther; it does not cancel the default action. A passive listener promises not to cancel that action, which is useful for scrolling input. once removes a listener after its first call. Use pointer events for mouse, pen, and touch input, click for activation, and keyboard/focus behavior for access without a pointer. To remove a listener, supply the same function and matching capture mode.",
           files: [
             {
               name: "index.html",
@@ -627,7 +627,7 @@ const handbook = {
         {
           name: "Custom events connect components without global coupling",
           explanation:
-            "CustomEvent carries structured detail and can opt into bubbling. dispatchEvent runs listeners synchronously; it does not wait for a returned promise. If listeners can veto an action, mark the event cancelable and inspect dispatchEvent’s boolean result. Use explicit naming and document the detail shape.\n\nA shadow-root event needs composed: true to cross that boundary when that is part of the public contract. Avoid putting every local change onto document: broad event buses obscure ownership and make cleanup harder. For a direct parent-child relationship, a callback may be simpler than an event channel.",
+            "CustomEvent lets a component send a named message with structured data in detail. It can be configured to bubble to ancestors. dispatchEvent calls listeners synchronously; it does not wait for promises they return. If a listener may veto an action, make the event cancelable and check the boolean returned by dispatchEvent. Document the event name and the structure of detail.\n\nAn event originating inside a shadow root needs composed: true to cross that boundary when crossing is part of its public contract. Keep local changes local rather than sending everything through document. A global event bus can hide which component owns a change and make cleanup harder. A callback can be simpler for direct communication between a parent and child.",
           files: [
             {
               name: "index.html",
@@ -668,7 +668,7 @@ const handbook = {
         {
           name: "Native validation, FormData, and accessible feedback",
           explanation:
-            "Listen to submit on the form rather than only click on its button, so Enter-key submission works. Native constraints such as required, type, and minLength catch common errors; setCustomValidity adds a custom rule. Clear the old custom message before checking a changed value. Associate messages with the relevant input and announce a concise result rather than every keystroke.\n\nFormData collects successful form controls, with repeated names preserved through getAll. File values are File objects. When sending FormData with Fetch, let the browser set multipart boundaries instead of manually setting Content-Type. A client check improves UX; the server must still validate and authorize the submission.",
+            "This form uses native validation and feedback that users can understand. Listen for submit on the form so submission through Enter works as well as clicking its button. Constraints such as required, type, and minLength catch common problems. setCustomValidity adds a custom rule; clear the previous custom message before checking an edited value. Associate each message with its input. Announce a concise result rather than every keystroke.\n\nFormData collects successful form controls. Use getAll to retrieve repeated names; file controls produce File objects. When sending FormData through Fetch, let the browser create the multipart boundaries rather than setting Content-Type manually. Client-side checks improve the experience, but the server must still validate the data and decide whether the user is allowed to submit it.",
           files: [
             {
               name: "index.html",
@@ -686,7 +686,7 @@ const handbook = {
         {
           name: "Async validation and duplicate submission need a race policy",
           explanation:
-            "An availability check can finish after a newer value has been entered. Abort the old request where possible and use a request identity check before committing its result. Network failure is not the same as an invalid field. Debounce expensive validation, and avoid making every keypress a server request.\n\nFor submission, keep one in-flight operation, disable the submit control, and restore it in finally. Do not blindly retry a payment or creation request: backend idempotency matters. A multi-step form should validate the current step, expose its heading and progress, and retain entered values. The helper below is transport-independent so a real Fetch implementation or test stub can be injected.",
+            "Async validation must avoid showing an old result for a newer input. An availability check may finish after the user edits the field again. Abort the old request where possible, and check its identity before applying the result. A network failure does not mean the field is invalid. Debounce expensive checks, waiting for a pause in typing, rather than requesting the server on every keypress.\n\nFor submission, allow one active operation, disable the submit control, and restore it in finally. Do not automatically retry a payment or creation request without considering backend idempotency: whether repeating the request can avoid duplicating its effect. A multi-step form should validate its current step, show its heading and progress, and retain entered values. The helper accepts its transport function from the caller, so it can use a real Fetch implementation or a controlled test substitute.",
           files: [
             {
               name: "submission.js",
@@ -728,7 +728,7 @@ const handbook = {
         {
           name: "Browser state, URLs, storage, and clipboard",
           explanation:
-            "window, document, navigator, and location belong to the browser runtime. URL and URLSearchParams parse and encode URL components more reliably than string concatenation. History pushState/replaceState update same-origin history without loading a page; popstate handles traversal, not the initial push itself. Keep URL state and displayed state synchronized.\n\nlocalStorage persists strings by origin, sessionStorage is scoped to a tab session, and either can throw or be unavailable. Cookies have separate request and security behavior; HttpOnly cookies cannot be read by JavaScript. Do not treat client storage as authorization. Clipboard writes require a secure context and browser permission/user-activation conditions; handle rejection with a usable fallback.",
+            "This example changes browser state through URLs, history, storage, and the clipboard. window, document, navigator, and location are browser APIs. URL and URLSearchParams parse and encode URL parts more reliably than manual string assembly. History pushState and replaceState update same-origin history without loading another page. popstate handles history traversal; the initial push does not itself trigger that event. Keep the URL and displayed state in agreement.\n\nlocalStorage keeps strings by origin across visits. sessionStorage keeps them for a tab session. Both can throw or be unavailable. Cookies follow separate request and security rules; JavaScript cannot read HttpOnly cookies. Stored client data does not prove authorization. Clipboard writes require a secure context and must satisfy browser permission and user-activation rules. Handle rejection with a usable fallback.",
           files: [
             {
               name: "index.html",
@@ -745,7 +745,7 @@ const handbook = {
         {
           name: "Observers and schedulers replace unnecessary polling",
           explanation:
-            "IntersectionObserver reports visibility crossings, ResizeObserver reports size changes, and MutationObserver reports DOM mutations. They are asynchronous observation tools with different purposes, not interchangeable ways to run an infinite loop. Observe the smallest relevant root and disconnect on destruction. Avoid a resize callback that repeatedly changes the size it observes.\n\nrequestAnimationFrame schedules visual work before a repaint and provides a timestamp; its rate is not guaranteed to be 60 Hz. requestIdleCallback has limited availability and is unsuitable for essential immediate work. Feature-detect it and provide a timeout-based fallback for small background tasks. Cancel whichever scheduling mechanism you created.",
+            "Observers report changes so code does not have to keep checking for them. IntersectionObserver reports visibility crossings. ResizeObserver reports size changes. MutationObserver reports DOM changes. They deliver information asynchronously and serve different purposes. Observe only the relevant region and disconnect when the component ends. Avoid changing an observed size repeatedly from its own resize callback.\n\nChoose a scheduler for the work you need. requestAnimationFrame runs visual work before a repaint and supplies a timestamp; it is not guaranteed to run at 60 Hz. requestIdleCallback has limited browser support and is unsuitable for essential, immediate work. Check that it exists and use a timeout fallback for small background tasks. Cancel the specific scheduler you created during cleanup.",
           files: [
             {
               name: "index.html",
@@ -763,7 +763,7 @@ const handbook = {
         {
           name: "Custom elements and Shadow DOM have explicit lifecycle hooks",
           explanation:
-            "A custom element is a registered class with connected/disconnected lifecycle callbacks. Shadow DOM encapsulates a subtree and styles; it is not a security sandbox. Native controls inside the shadow tree still need accessible names and keyboard behavior. Use public attributes/properties/events rather than reaching into another component’s implementation.\n\nConnection can happen repeatedly when an element is removed and reinserted. Avoid duplicating DOM or listeners each time. Register a custom-element name only once. This small counter keeps its shadow tree between connections and reattaches a listener under a fresh AbortController each time it is connected.",
+            "A custom element packages behavior in a registered class. Its connected and disconnected callbacks manage work when the element enters or leaves the document. Shadow DOM keeps a subtree and its styles separate from surrounding markup; it is not a security sandbox. Native controls inside it still need accessible names and keyboard support. Communicate through public attributes, properties, and events rather than another component's internal structure.\n\nAn element can be removed and reinserted, so connection callbacks may run repeatedly. Do not recreate the same DOM or add duplicate listeners on every connection. Register each custom-element name only once. This counter retains its shadow tree between connections. Each connection creates a fresh AbortController to own the reattached listener.",
           files: [
             {
               name: "index.html",
@@ -804,7 +804,7 @@ const handbook = {
         {
           name: "Use CSS, WAAPI, and frame timing according to the job",
           explanation:
-            "JavaScript can toggle a CSS class to start a transition, use the Web Animations API for explicit playback handles, or use requestAnimationFrame for a custom renderer. An animation’s duration and easing describe progress over time; incrementing a fixed number of pixels per frame makes speed depend on refresh rate.\n\nKeep application state separate from decorative progress and retain a cancellation handle. Batch measurements before writes to avoid layout thrashing. Use transform/opacity when their visual behavior is sufficient, but measure actual rendering costs. Respect reduced motion and keep content useful with animations disabled.",
+            "JavaScript can control animation in several ways. Toggling a CSS class can start a transition. The Web Animations API provides playback handles. requestAnimationFrame lets a custom renderer update each frame. Duration sets how long motion lasts, and easing describes how its progress changes over time. Moving a fixed number of pixels on every frame instead makes speed depend on the display's refresh rate.\n\nKeep application state separate from decorative animation progress, and keep a handle that can cancel the animation. Read page measurements together before making changes. Repeatedly alternating the two can trigger layout thrashing, unnecessary repeated layout work. Use transform and opacity when they produce the intended effect, but measure the actual rendering cost. Honor reduced-motion preferences and keep content useful when animation is disabled.",
           files: [
             {
               name: "index.html",
@@ -822,7 +822,7 @@ const handbook = {
         {
           name: "GSAP adds coordination, scroll integration, and scoped cleanup",
           explanation:
-            "A GSAP tween animates properties; a timeline sequences several tweens around one playhead. ScrollTrigger maps viewport crossings or scroll progress to animation. Register imported plugins and keep core/plugin versions aligned. The dedicated GSAP handbook develops these concepts in much greater depth; here the important JavaScript skill is lifecycle ownership.\n\nUse matchMedia for responsive/reduced-motion conditions and revert it when a feature is destroyed. Scroll-triggered effects should not hide essential content when motion is off. Recalculate after genuine layout changes, and avoid creating new global scroll listeners for every element.",
+            "GSAP coordinates animations and their cleanup. A tween changes properties over time. A timeline sequences several tweens under one playhead, the current position in the sequence. ScrollTrigger connects animation to viewport crossings or scroll progress. Register imported plugins and use matching core/plugin versions. The dedicated GSAP handbook covers these features in detail; this example focuses on owning their lifecycle in JavaScript.\n\nUse matchMedia to apply responsive and reduced-motion conditions. Revert it when the feature is destroyed. Essential content must remain visible when motion is off. Recalculate scroll effects after genuine layout changes, and avoid giving every element its own global scroll listener.",
           files: [
             {
               name: "mount-reveal.js",
@@ -862,7 +862,7 @@ const handbook = {
         {
           name: "Tasks, microtasks, and rendering are different queues",
           explanation:
-            "Synchronous code on an agent runs to completion before another task can interrupt it. Timers schedule later tasks, not exact execution appointments. Promise reactions and queueMicrotask schedule microtasks; the browser drains a microtask checkpoint before moving on to later work, which can delay rendering if that queue is continuously refilled.\n\nA call stack tracks currently executing functions. Asynchronous APIs register work with the host and resume through callbacks or promise reactions later; a Promise does not move expensive CPU work onto another thread. Browsers may render between tasks, but a timer callback is not a guaranteed repaint boundary. This experiment prints the synchronous lines, then the promise and queued microtask, then the timer.",
+            "This experiment prints synchronous messages first, then the promise reaction and queued microtask, then the timer. It shows that different kinds of work are scheduled differently. Within one agent, synchronous JavaScript runs to completion before another task can interrupt it. The call stack tracks the functions currently running. Timers schedule later tasks; they do not reserve an exact execution time.\n\nPromise reactions and queueMicrotask schedule microtasks. The browser processes a microtask checkpoint before moving to later work. Continuously adding microtasks can therefore delay rendering. Async APIs register work with the host runtime and resume later through callbacks or promise reactions. A Promise does not move expensive computation to another thread. Browsers may render between tasks, but a timer callback does not guarantee that a repaint has happened.",
           files: [
             {
               name: "example.mjs",
@@ -880,7 +880,7 @@ const handbook = {
         {
           name: "Timers need a lifetime and a non-overlap policy",
           explanation:
-            "Nested callbacks make dependencies hard to see; separate named steps or use promises instead of growing a pyramid. setInterval can start another asynchronous operation before the previous one finishes. A recursive timeout scheduled after completion is clearer for non-overlapping polling.\n\nCancel timers when their owner ends, and guard work that was already in flight. A timeout delay is a lower scheduling bound, not real-time timing. Use requestAnimationFrame for visual updates and workers for appropriate CPU-heavy work. The poller below takes a transport function, reports one result at a time, and exposes cleanup without requiring a real server.",
+            "This poller calls a supplied transport function, reports one result at a time, and returns a cleanup function. It can be explored without a real server. Named steps or promises make dependent work easier to follow than deeply nested callbacks. For repeated async work, setInterval can begin another operation before the previous one finishes. Scheduling a new timeout after completion avoids that overlap more clearly.\n\nGive timers an owner and cancel them when that owner ends. Also guard work that has already started. A timeout delay is a minimum scheduling delay, not a real-time guarantee. Use requestAnimationFrame for visual updates and workers for suitable CPU-heavy work.",
           files: [
             {
               name: "poller.js",
@@ -922,7 +922,7 @@ const handbook = {
         {
           name: "Promises represent eventual outcomes and propagate errors",
           explanation:
-            "A promise is pending, fulfilled, or rejected; settled means either fulfilled or rejected. Its executor runs synchronously, but reactions run asynchronously. Resolve can adopt another promise/thenable, so resolved is not always the same as already fulfilled. Return a value or promise from then to connect the chain.\n\nA throw in a handler becomes a rejection for the next link. catch can recover by returning a value or propagate by throwing. finally is for cleanup and normally preserves the result unless it throws or returns a rejection. Do not wrap an already promise-based API in a new Promise unnecessarily. Observe the returned chain to prevent unhandled rejections.",
+            "A promise represents work that will produce a value or a failure. It is pending until it becomes fulfilled or rejected; either final outcome is called settled. The executor passed to new Promise runs synchronously. Handlers reacting to its outcome run asynchronously. Resolving can adopt the outcome of another promise or thenable, an object with a then method. A resolved promise is therefore not necessarily fulfilled yet.\n\nReturn a value or promise from then to connect the next step. Throwing in a handler rejects the next promise in the chain. catch can recover by returning a value or pass failure on by throwing. finally normally preserves the outcome while performing cleanup; throwing or returning a rejection replaces that outcome. Do not add a new Promise wrapper around an API that already returns promises without a reason. Observe the returned chain so rejections do not go unhandled.",
           files: [
             {
               name: "example.mjs",
@@ -940,7 +940,7 @@ const handbook = {
         {
           name: "Choose the promise combinator by its failure contract",
           explanation:
-            "Promise.all waits for every fulfillment but rejects on the first observed rejection; it does not cancel the remaining work. allSettled reports every outcome. race settles with the first settled input, including a rejection. any fulfills with the first fulfillment and rejects with AggregateError only when all inputs reject.\n\nStart independent work before awaiting it to run concurrently. Sequential awaits are appropriate when the next operation depends on the previous result or ordering is required. Creating an array of promises does not impose a concurrency limit. Cancellation and request budgets remain your responsibility; a timeout implemented with race alone leaves the losing request running.",
+            "Promise combinators combine several outcomes under different rules. Promise.all waits for every input to fulfill, but rejects on the first rejection it observes. It does not cancel the remaining work. allSettled reports every outcome. race follows the first input to settle, whether it fulfills or rejects. any follows the first fulfillment and rejects with AggregateError only if every input rejects.\n\nStart independent work before awaiting it to allow concurrent progress. Await operations sequentially when one depends on the previous result or order matters. Putting promises in an array does not limit how many operations run at once. You still own cancellation and request limits. A timeout made only with race stops waiting for the losing request; it does not stop that request from running.",
           files: [
             {
               name: "example.mjs",
@@ -980,7 +980,7 @@ const handbook = {
         {
           name: "async/await makes dependencies readable, not automatically concurrent",
           explanation:
-            "An async function always returns a promise. await suspends that function until a value is resolved, while other work can proceed. It does not block the whole browser thread, but synchronous CPU work before or after it still can. try/catch handles an awaited rejection at the boundary where you can respond.\n\nforEach does not await an async callback. Use for...of for sequential async work or map plus Promise.all for independent work, with an explicit concurrency limit when volume grows. for await...of consumes async iterables and can also await values from a synchronous iterable. Return or await the promise your caller must observe; a detached operation needs its own rejection handler.",
+            "async and await make the order of dependent work easier to read. An async function always returns a promise. await pauses that function until the awaited value is resolved, allowing other work to proceed. It does not block the entire browser thread. However, synchronous computation before or after await can still block it. Use try/catch around awaited work where you can respond to a rejection.\n\nforEach does not wait for async callbacks. Use for...of when operations must run sequentially. Use map with Promise.all for independent operations, and set an explicit concurrency limit when their number grows. for await...of reads async iterables and can also await values from a synchronous iterable. Return or await the promise your caller needs to observe. Work started separately needs its own rejection handler.",
           files: [
             {
               name: "example.mjs",
@@ -998,7 +998,7 @@ const handbook = {
         {
           name: "Cancellation, timeout, and latest-result state",
           explanation:
-            "AbortController is a cancellation signal that cooperating APIs such as Fetch observe. It does not terminate arbitrary JavaScript. Always distinguish cancellation from a real failure and release timers in finally. A timeout policy should actually abort the operation when possible, not merely stop waiting.\n\nFor a UI, track loading/error/success and a request identity so stale work cannot overwrite newer results. Retry only bounded, appropriate operations; use backoff and consider server Retry-After, idempotency, and user cancellation. The helper below preserves a caller signal, has a finite timeout, checks HTTP status, and cleans up its listener even after failure.",
+            "This helper loads JSON while preserving the caller's cancellation signal, enforcing a finite timeout, checking HTTP status, and cleaning up its listener after success or failure. AbortController supplies a signal that cooperating APIs such as Fetch can observe. It does not forcibly terminate arbitrary JavaScript. Distinguish cancellation from failure, and release timers in finally. Where possible, a timeout should abort the work rather than only stop waiting for it.\n\nA user interface also needs explicit loading, error, and success states. Track the request's identity so an old response cannot replace a newer result. Retry only suitable operations and limit the attempts. Consider increasing delays between attempts, the server's Retry-After guidance, whether repeating the operation is safe, and whether the user has canceled it.",
           files: [
             {
               name: "fetch-json.js",
@@ -1041,7 +1041,7 @@ const handbook = {
         {
           name: "HTTP and Fetch have two separate failure boundaries",
           explanation:
-            "HTTP defines methods, headers, status codes, and response bodies; a REST-style API maps resources and operations onto those contracts. Fetch rejects for transport failures, but a 404/500 response still normally fulfills, so check response.ok. Parsing JSON is another fallible asynchronous step, and the result still needs shape validation. Request/Response objects expose those contracts; bodies are streams that are generally consumed once.\n\nCORS is enforced by the browser and configured by the server. mode:no-cors does not unlock a readable cross-origin response. Authentication proves identity; authorization is the server’s decision about permitted operations. Do not invent headers or client-side checks to bypass either policy.",
+            "A Fetch request has separate network, HTTP, and data-reading checks. HTTP defines methods, headers, status codes, and response bodies. A REST-style API uses those rules to describe resources and operations. Fetch rejects when transport fails, but normally fulfills for HTTP responses such as 404 or 500. Check response.ok before using the result. JSON parsing is another async step that can fail. Even successfully parsed data needs its structure checked. Request and Response expose these parts of the exchange. Their bodies are streams that are generally consumed once.\n\nCORS is a browser-enforced rule configured by the server. mode:no-cors does not make a cross-origin response readable. Authentication establishes identity; authorization is the server's decision about what that identity may do. Client-side checks or invented headers cannot bypass either policy.",
           files: [
             {
               name: "example.mjs",
@@ -1059,7 +1059,7 @@ const handbook = {
         {
           name: "Search and pagination must not commit outdated responses",
           explanation:
-            "Encode query parameters with URLSearchParams and treat pagination metadata as part of the API contract. Debounce user input, abort the old request, and use a generation number so a server/adapter that finishes despite cancellation cannot commit stale data. Render user data as text.\n\nThis complete browser fixture uses a local fake transport so the race behavior can be explored without a server. Replace only searchProducts with your real Fetch adapter. A real paginated API should validate items and next-page metadata and define how filter changes reset the page; do not combine results from different queries or users in one cache key.",
+            "This browser example demonstrates search races with a local fake transport, so it needs no server. Wait for a pause in input, abort the previous request, and track a generation number for each search. The number prevents an older result from being applied even if a server or adapter finishes despite cancellation. Render returned user data as text. For a real API, encode query parameters with URLSearchParams and treat pagination metadata as part of the response contract.\n\nReplace only searchProducts with your Fetch adapter. Validate both the returned items and next-page metadata. Define how changing a filter resets the page. If results are cached, include the query and user context in the key rather than mixing unrelated results.",
           files: [
             {
               name: "index.html",
@@ -1077,7 +1077,7 @@ const handbook = {
         {
           name: "Choose WebSocket or SSE when updates are a stream",
           explanation:
-            "WebSocket provides a bidirectional connection, while EventSource consumes server-sent events over a one-way server-to-browser stream. Both require a matching backend and explicit authentication, reconnection, message validation, and ownership policies. They do not replace ordinary Fetch for every request.\n\nSSE usually reconnects automatically; avoid creating an additional connection on every message or UI render. Native EventSource cannot add arbitrary request headers. WebSocket messages must be parsed and validated before updating domain state. Close either connection when its owner ends, and never assume every string from a trusted connection is safe HTML.",
+            "Use a streaming connection when the application needs ongoing updates. WebSocket supports messages in both directions. EventSource receives server-sent events, or SSE, in a one-way stream from server to browser. Both need a matching backend and explicit rules for authentication, reconnection, message validation, and cleanup. Neither replaces Fetch for every request.\n\nSSE usually reconnects automatically. Do not create another connection on each message or UI render. Native EventSource cannot add arbitrary request headers. Parse and validate WebSocket messages before changing application data. Close either connection when its owner ends. A string from a trusted connection is still not automatically safe to insert as HTML.",
           files: [
             {
               name: "live-events.js",
@@ -1120,7 +1120,7 @@ const handbook = {
         {
           name: "Prototypes explain both constructor functions and classes",
           explanation:
-            "An object delegates missing-property lookup to its prototype, continuing until null. A constructor function called with new creates an instance whose prototype is usually the constructor’s prototype object. Class syntax builds on that model; it does not introduce a separate inheritance system. Instance methods normally live on the prototype, while static methods live on the class constructor.\n\nUse encapsulation to protect invariants, not simply to hide every property. Private fields use # syntax and cannot be accessed as ordinary string keys. Getters/setters can expose controlled values. Inheritance and overriding enable polymorphism, but composition is often clearer when behavior varies along several independent dimensions.",
+            "This example connects constructor functions and classes to JavaScript's prototype model. When an object lacks a property, lookup continues through its prototype chain until null. Calling a constructor function with new usually gives the instance that constructor's prototype object. Classes build on the same system. Instance methods normally live on the prototype; static methods live on the class constructor.\n\nEncapsulation protects rules that must remain true about an object's state. It does not require hiding every property. Private fields use # syntax and cannot be accessed through ordinary string keys. Getters and setters can provide controlled access to values. Inheritance and method overriding allow different objects to respond differently to a shared operation, called polymorphism. Composition is often clearer when several aspects of behavior vary independently.",
           files: [
             {
               name: "example.mjs",
@@ -1161,7 +1161,7 @@ const handbook = {
         {
           name: "Functional composition keeps transformations testable",
           explanation:
-            "First-class functions can be stored, passed, and returned. Higher-order functions build on that ability. Composition connects small functions; currying turns a multi-argument function into a chain of single-argument functions, while partial application fixes some arguments without requiring that shape.\n\nPrefer pure transformations for domain data, with effects at boundaries. Immutable updates reduce surprises from shared references; they do not require deep-cloning the entire application for every change. Closures can contain local state when that state has a clear owner. Declarative code describes the desired transformation, while imperative code describes steps; choose the form that is easier to understand rather than treating either as universally superior.",
+            "Functional composition connects small functions into a larger transformation. Functions are first-class values: they can be stored, passed, and returned. Higher-order functions accept or return other functions. Currying changes a multi-argument function into a sequence of single-argument functions. Partial application fixes some arguments without requiring that sequence.\n\nKeep transformations of application data pure, and place effects such as external changes at clear boundaries. Immutable updates avoid changing shared objects unexpectedly; they do not require copying every nested value in the application. Closures can hold local state when its owner is clear. Declarative code describes the desired transformation. Imperative code describes its steps. Choose whichever makes the particular task easier to understand.",
           files: [
             {
               name: "example.mjs",
@@ -1202,7 +1202,7 @@ const handbook = {
         {
           name: "Factories, modules, and dependency injection",
           explanation:
-            "A module hides implementation behind exports. A factory returns a configured object without requiring a class. Dependency injection supplies collaborators such as storage or transport rather than importing a fixed global implementation. A singleton shares one instance, which is useful only when that shared lifetime is intended; hidden singleton state often makes tests and multi-instance components harder.\n\nAn adapter translates one interface into another, a strategy selects an interchangeable algorithm, and a decorator wraps behavior with additional work. Prefer direct composition until a named pattern actually clarifies a recurring problem. The repository below uses an injected storage adapter and strategy without global state.",
+            "This repository example receives its storage behavior instead of depending on global state. A module exposes selected exports and keeps implementation details inside. A factory creates a configured object without requiring a class. Dependency injection means passing in collaborators, such as storage or network transport, rather than fixing them to one global implementation. A singleton shares one instance. Use it only when that lifetime is intentional; hidden shared state makes tests and independent component instances harder to manage.\n\nAn adapter translates one interface into another. A strategy supplies an interchangeable algorithm. A decorator wraps existing behavior with additional work. The example uses an injected storage adapter and strategy. Prefer direct composition until naming a pattern makes a recurring problem clearer.",
           files: [
             {
               name: "example.mjs",
@@ -1220,7 +1220,7 @@ const handbook = {
         {
           name: "Observer, Pub/Sub, and explicit state ownership",
           explanation:
-            "An observer subscribes directly to a subject; Pub/Sub introduces a channel between publishers and subscribers. Both can decouple components, but a global bus can also hide dependencies. Return an unsubscribe function and document whether delivery is synchronous, ordered, and isolated from listener errors.\n\nA state store can combine a reducer-like update function with subscription. Keep one authoritative state instead of several mutable copies in unrelated modules. This bus is intentionally small: emit is synchronous, exceptions propagate, and a snapshot of listeners makes subscription changes during delivery predictable. Add complexity only when real requirements demand it.",
+            "This small event bus lets code subscribe to messages and later unsubscribe. An observer subscribes directly to the thing it observes. Publish/subscribe, or Pub/Sub, places a channel between the sender and subscribers. Both reduce direct dependencies, but a global bus can also hide them. Return an unsubscribe function. State whether messages arrive synchronously, in order, and whether one listener's error affects delivery.\n\nA state store can combine subscriptions with a reducer-like function that computes updates. Keep one authoritative state instead of separate mutable copies across modules. In this example, emit runs synchronously and listener exceptions propagate. It reads a snapshot of listeners, making subscription changes during delivery predictable. Add more features only when requirements need them.",
           files: [
             {
               name: "example.mjs",
@@ -1261,7 +1261,7 @@ const handbook = {
         {
           name: "ES modules have scope, live bindings, and an evaluation graph",
           explanation:
-            "ES modules expose named exports and optionally a default export. Static imports declare dependencies that are linked before evaluation; imported bindings are live, read-only views of the exporting module’s bindings. Module scope prevents accidental global variables.\n\nDynamic import returns a promise for a module namespace and can create a lazy-loading boundary. A bundler may split that graph into files and tree-shake unused exports, subject to side effects and configuration. Circular dependencies can observe uninitialized bindings during evaluation; extract shared contracts or invert a dependency rather than relying on a fragile import order. Organize by responsibility and keep application startup explicit.",
+            "ES modules split code into dependencies with explicit exports and their own variable scope. They support named exports and an optional default export. Static imports declare dependencies that are linked before the modules run. Imported bindings are live, read-only views of the exporting module's bindings. Module scope helps prevent accidental globals.\n\nDynamic import returns a promise for an object containing the module's exports. It can provide a point for lazy loading. A bundler may split dependencies into output files and remove unused exports, called tree shaking. Side effects and configuration limit that removal. Circular dependencies can read bindings before they are initialized. Extract shared contracts or reverse a dependency instead of relying on a fragile import order. Group modules by responsibility and make application startup explicit.",
           files: [
             {
               name: "prices.mjs",
@@ -1289,7 +1289,7 @@ const handbook = {
         {
           name: "CommonJS and ESM interoperability is runtime-specific",
           explanation:
-            "Node supports CommonJS and ES modules with different loading and export conventions. .cjs is CommonJS; .mjs is ESM. For .js, package type and runtime rules matter. CommonJS uses require/module.exports, while ESM uses import/export. Browser modules do not provide require by default.\n\nInteroperability has edge cases: named exports inferred from CommonJS are not the same contract as real ESM live bindings, and synchronous loading rules differ by Node version. Prefer one authored format and test every public format you claim to ship. Code splitting, not just syntax conversion, determines what a user downloads initially.",
+            "This block distinguishes Node's two module systems. CommonJS uses require and module.exports. ES modules use import and export. A .cjs file is CommonJS, and a .mjs file is ESM. For .js files, package type and runtime rules determine the interpretation. Browser modules do not supply require by default.\n\nMixing the systems has limits. Names inferred from CommonJS exports do not have the same contract as real ESM live bindings. Rules for synchronous loading also vary by Node version. Prefer one source format and test every public format you advertise. Converting syntax alone does not determine the initial download size; splitting code into separately loaded files matters too.",
           files: [
             {
               name: "legacy.cjs",
@@ -1338,7 +1338,7 @@ const handbook = {
         {
           name: "Package management and builds are reproducible inputs",
           explanation:
-            "package.json records scripts, dependencies, exports, and package metadata. Semantic versioning expresses compatibility intent, not a guarantee that an upgrade cannot break your app. Commit a lockfile and use npm ci in CI to reproduce it. Keep runtime dependencies separate from build/test tools.\n\nVite offers a development server and production pipeline; Parcel offers another integrated workflow; Rollup is a bundler commonly used for libraries. Babel transforms selected syntax and may need separate runtime helpers or polyfills. Syntax transpilation does not create missing Web APIs. Source maps connect output to source. Vite-prefixed client environment variables are exposed in the delivered application, so never put secrets in them.",
+            "Package metadata, a lockfile, and build configuration make a project reproducible. package.json records scripts, dependencies, supported exports, and other package details. Semantic versioning describes compatibility intent; it does not guarantee an upgrade cannot break the application. Commit the lockfile and use npm ci in continuous integration, or CI, to reproduce its dependency choices. Keep runtime dependencies separate from build and test tools.\n\nVite provides a development server and production build pipeline. Parcel offers another integrated workflow. Rollup bundles code and is commonly used for libraries. Babel transforms selected syntax and may need additional runtime helpers or polyfills. Changing syntax does not supply missing Web APIs. Source maps connect generated output to original source. Vite-prefixed client environment variables are included in the delivered application, so never use them for secrets.",
           files: [
             {
               name: "commands.sh",
@@ -1360,7 +1360,7 @@ const handbook = {
         {
           name: "Linting, formatting, Git, and CI serve different checks",
           explanation:
-            "ESLint checks selected code rules; Prettier formats source consistently. Neither proves application behavior. Use a compatible toolchain and make the same checks runnable locally and in CI. For ESLint 9, flat configuration is the normal setup; older .eslintrc tutorials use a different system.\n\nUse small Git changes, review diffs, and run relevant tests before merging. CI can install from the lockfile, lint, test, and build; deployment should consume reviewed output and environment-specific configuration. Treat warnings about unsupported browsers or missing APIs as engineering decisions, not a reason to assume the bundler has polyfilled everything.",
+            "Linting, formatting, tests, and CI answer different questions. ESLint checks configured code rules. Prettier applies consistent formatting. Neither proves that the application behaves correctly. Use compatible tools and provide the same checks locally and in CI. ESLint 9 normally uses flat configuration; older .eslintrc instructions describe a different setup.\n\nKeep Git changes focused, review their diffs, and run relevant tests before merging. CI can install locked dependencies, lint, test, and build the project. Deployment should use reviewed output and configuration for its environment. Review unsupported-browser or missing-API warnings deliberately. Do not assume a bundler has supplied every needed polyfill.",
           files: [
             {
               name: "eslint.config.mjs",
@@ -1410,7 +1410,7 @@ const handbook = {
         {
           name: "Separate domain logic, effects, and application startup",
           explanation:
-            "Single responsibility means a module has a coherent reason to change. Separate data transformations, transport, state, rendering, and component lifecycle instead of placing every operation in a click handler. SOLID principles can guide boundaries, but DRY should not force unrelated things into one abstraction; KISS and YAGNI favor the simplest design that meets current requirements.\n\nConfiguration-driven components still need validated options and a clear public API. JSDoc explains contracts and can support editor checking without converting source to TypeScript. Refactor with behavior tests in place, review ownership and error boundaries, and prefer an explicit API adapter over scattering URL/response assumptions through the DOM layer.",
+            "This block separates data logic, external effects, and application startup so each part has a clear responsibility. A module should have a coherent reason to change. Put transformations, transport, state, rendering, and lifecycle management in suitable places rather than combining them all in a click handler. The design principles known as SOLID can help define those boundaries. DRY means avoiding repetition, but should not force unrelated work into one abstraction. KISS favors simple designs, and YAGNI means not building features before they are needed.\n\nComponents configured through options still need option validation and a clear public API. JSDoc documents those contracts and can support editor checks while the source remains JavaScript. Keep behavior tests in place during refactoring. Review ownership and error handling, and put URL/response assumptions in an explicit API adapter instead of spreading them through DOM code.",
           files: [
             {
               name: "catalog.js",
@@ -1454,7 +1454,7 @@ const handbook = {
         {
           name: "Test contracts at the narrowest useful boundary",
           explanation:
-            "A unit test checks a focused behavior, an integration test checks collaborating pieces, and an end-to-end test drives a real application. Arrange inputs, act, then assert observable outcomes. A regression test captures a real failure mode; test-driven development uses an initially failing test to guide an implementation. Coverage can reveal unvisited code but cannot prove useful assertions or correct requirements.\n\nUse stubs for controlled replies, spies to observe calls, and mocks when interaction itself is the contract. Isolate state between tests, await asynchronous work, and test rejection paths. Test DOM events and network boundaries at an appropriate layer rather than replacing every dependency with a mock.",
+            "Choose the smallest test boundary that can check the behavior you care about. A unit test checks a focused behavior. An integration test checks pieces working together. An end-to-end test drives the actual application. Arrange the inputs, perform the action, and assert an observable result. A regression test captures a real failure so it can be detected again. Test-driven development starts with a failing test to guide the implementation. Coverage shows code that tests have not visited; it does not prove the assertions or requirements are correct.\n\nA stub supplies controlled replies. A spy records calls. Use a mock when the interaction itself is what must be checked. Isolate state between tests, wait for async work, and test rejections. Check DOM events and network behavior at an appropriate level rather than mocking every dependency.",
           files: [
             {
               name: "price.js",
@@ -1493,7 +1493,7 @@ const handbook = {
         {
           name: "Choose tools by the environment being tested",
           explanation:
-            "Vitest integrates naturally with Vite-style modules; Jest provides another mature test runner with its own configuration and mocking behavior. Do not mix their setup instructions without checking compatibility. A simulated DOM is useful for focused unit tests, while a real browser is needed for layout, focus, rendering, and platform integration.\n\nPlaywright drives browsers and offers retrying assertions. MSW intercepts network requests at the network layer so tests exercise the Fetch-using adapter rather than replacing its internals. The example is explicitly pinned to MSW 2’s import convention; newer major versions may change setup. Run the same tests in CI with isolated fixtures, restored handlers, and no dependence on a public API being online.",
+            "Choose a test tool for the environment and behavior being tested. Vitest works naturally with Vite-style modules. Jest is another established runner with different configuration and mocking rules. Check compatibility rather than mixing their setup instructions. A simulated DOM suits focused unit tests. Layout, focus, rendering, and platform integration need a real browser.\n\nPlaywright controls browsers and provides assertions that retry. MSW intercepts network requests so a test can exercise the adapter that uses Fetch instead of replacing the adapter's internals. This example uses MSW 2's import convention; a newer major version may need different setup. Run the same tests in CI. Isolate test data, restore request handlers, and avoid relying on a public API being online.",
           files: [
             {
               name: "api.test.js",
@@ -1515,7 +1515,7 @@ const handbook = {
         {
           name: "Browser tests exercise keyboard and real component state",
           explanation:
-            "An end-to-end test should assert state and behavior rather than sleep for an assumed duration. Use accessible locators when possible and supply deterministic data. Test keyboard interaction, focus return, errors, and cleanup alongside the ordinary mouse path.\n\nThe fixture below targets the dialog example in Chapter 28 served locally. Browser tests cannot replace a screen-reader review, but they can protect focus and accessible-name contracts. Keep tests isolated and include representative browsers and viewport sizes in CI. Visual checks should wait for fonts/assets and use stable animation states.",
+            "This end-to-end test checks the Chapter 28 dialog example served locally. It verifies user-visible state and behavior instead of sleeping for an assumed duration. Use accessible locators, which find elements through their user-facing roles and names, where possible. Supply predictable test data. Check keyboard interaction, focus return, errors, and cleanup as well as mouse interaction.\n\nBrowser tests can protect focus and accessible-name contracts, but do not replace a screen-reader review. Keep tests independent and run representative browsers and viewport sizes in CI. Before visual comparisons, wait for fonts and assets and put animations in a stable state.",
           files: [
             {
               name: "dialog.spec.js",
@@ -1555,7 +1555,7 @@ const handbook = {
         {
           name: "Debug evidence before editing the code",
           explanation:
-            "Use Chrome or Firefox DevTools to pause at a meaningful boundary. A conditional breakpoint isolates the failing input; watch expressions inspect values without adding logging everywhere. Read the stack, async stack, and Network request details together to distinguish state bugs, stale requests, bad data, and backend errors.\n\nSource maps connect bundled output to source. The Performance panel explains long tasks and rendering work; heap snapshots and allocation tools expose retained objects. For listener leaks, reproduce mount/destroy several times and inspect retainers, not just one rising memory graph. Capture a small reproducible case and change one assumption at a time.",
+            "Debugging starts with evidence about where the program's behavior differs from expectations. In Chrome or Firefox DevTools, pause at a useful boundary. A conditional breakpoint pauses only for the input you want to investigate. Watch expressions show values without adding logs throughout the code. Read the call stack, async stack, and Network request details together. This helps distinguish incorrect state, outdated requests, bad data, and server errors.\n\nSource maps connect built output to the original source. The Performance panel shows long-running tasks and rendering work. Heap snapshots and allocation tools show objects retained in memory. To investigate listener leaks, repeat mounting and destruction and inspect which references keep objects alive. One rising memory graph is not enough. Reduce the problem to a small reproducible example and change one assumption at a time.",
           files: [
             {
               name: "debugging-checklist.txt",
@@ -1602,7 +1602,7 @@ const handbook = {
         {
           name: "Measure main-thread and rendering costs",
           explanation:
-            "The critical rendering path includes fetching/parsing resources and preparing the first useful rendering. Layout determines geometry; paint produces pixels; compositing combines layers. Repeatedly reading geometry after style writes can force synchronous layout. Batch reads before writes, avoid rebuilding large DOM trees unnecessarily, and animate a smaller scene when appropriate.\n\nLong tasks delay input and rendering. Use the Performance API and browser traces to find the real cost before micro-optimizing. Core Web Vitals currently include LCP for loading, INP for responsiveness, and CLS for visual stability; lab and field measurements serve different purposes. Lazy loading and dynamic imports can reduce initial work, while workers move suitable computation off the main thread rather than making it disappear.",
+            "This block measures the work that affects loading, rendering, and interaction. The critical rendering path includes fetching and parsing resources and preparing the first useful display. Layout calculates geometry. Paint creates pixels. Compositing combines layers. Reading geometry repeatedly after changing styles can force the browser to calculate layout synchronously. Group measurements before changes, avoid unnecessary rebuilding of large DOM trees, and reduce the animated scene when appropriate.\n\nLong tasks delay both input handling and rendering. Use the Performance API and browser traces to find the main cost before making tiny optimizations. Core Web Vitals include Largest Contentful Paint (LCP) for loading, Interaction to Next Paint (INP) for responsiveness, and Cumulative Layout Shift (CLS) for visual stability. Controlled lab measurements and real-user field measurements answer different questions. Lazy loading and dynamic imports can reduce initial work. Workers move suitable computation off the main thread; they do not eliminate that work.",
           files: [
             {
               name: "index.html",
@@ -1619,7 +1619,7 @@ const handbook = {
         {
           name: "Debounce, throttle, and cache with explicit limits",
           explanation:
-            "Debounce waits for a quiet period, useful for search. Throttle limits call frequency, useful for repeated updates. Both need a documented leading/trailing policy and cleanup. Memoization caches a function’s result by input; it can retain memory or return stale data if inputs are mutable or a key omits important context.\n\nA cache should define key, scope, freshness, size, and invalidation. Do not cache user-specific data under a global query-only key. Garbage collection cannot reclaim entries that remain strongly reachable through an unbounded cache. The debounce below exposes cancel for component teardown; the throttle is explicitly leading-only.",
+            "This block controls how often work runs and how long cached results remain useful. Debounce waits for a quiet period, which suits search input. Throttle limits call frequency, which suits repeated updates. Define whether each runs at the beginning or end of a period, and how it is cleaned up. Memoization stores a function's result by input. It can retain memory or return outdated data when inputs change or the cache key omits relevant context.\n\nA cache needs rules for its key, scope, freshness, size, and invalidation. Do not store user-specific results under a global key containing only the query. Garbage collection cannot reclaim entries still held by an unlimited cache. The debounce example exposes cancel for component cleanup. The throttle runs on the leading edge only, rather than scheduling an extra trailing call.",
           files: [
             {
               name: "rate-limit.mjs",
@@ -1659,7 +1659,7 @@ const handbook = {
         {
           name: "Keep data out of executable HTML",
           explanation:
-            "XSS occurs when attacker-controlled input is interpreted as executable content. textContent is appropriate for plain text; innerHTML is not a general rendering API for untrusted input. If rich HTML is required, use a maintained sanitizer with a policy appropriate to your output context. A regex replacement is not an HTML sanitizer. Validate URL schemes before assigning untrusted navigation targets.\n\nCSP can restrict script execution and resource origins, but does not replace safe rendering. Prefer a deployed header policy with reviewed nonce/hash handling rather than copying a universal inline-script exception. The example treats markup-like input as a literal string. Client-side validation is not a substitute for server-side authorization or output handling.",
+            "This example displays markup-like input as literal text instead of executing it. Cross-site scripting, or XSS, occurs when attacker-controlled input is interpreted as executable content. Use textContent for plain text. Do not pass untrusted input to innerHTML as a general rendering method. If rich HTML is necessary, use a maintained sanitizer with rules suited to where the output will appear. Replacing text with a regex is not HTML sanitization. Validate URL schemes before assigning untrusted navigation destinations.\n\nContent Security Policy, or CSP, can restrict scripts and resource origins. It does not replace safe rendering. Prefer a deployed response-header policy with reviewed nonce or hash rules that identify which scripts are allowed, rather than copying a rule that allows arbitrary inline scripts. Client-side validation also does not replace server-side authorization or correct handling of output.",
           files: [
             {
               name: "index.html",
@@ -1677,7 +1677,7 @@ const handbook = {
         {
           name: "Security boundaries extend beyond rendering",
           explanation:
-            "Authentication establishes identity; authorization must be enforced by the server for each operation. Same-origin policy and CORS restrict browser interactions but do not provide authorization. Cookie-authenticated mutations may require CSRF protection such as server-validated tokens and appropriate SameSite policies. HTTPS protects transport; it does not make every response trustworthy.\n\nToken storage has tradeoffs: JavaScript-readable tokens are exposed to successful XSS, while HttpOnly cookies need a CSRF-aware server design. Keep secrets out of client bundles. Review dependencies, lockfile changes, and security updates. Prototype pollution can arise from merging attacker-controlled keys into ordinary objects; prefer explicit allowed fields, null-prototype records, or Map where appropriate.",
+            "Security rules must be enforced where the relevant authority exists. Authentication establishes who a user is. Authorization decides what that user may do and must be checked by the server for each operation. Same-origin policy and CORS restrict browser interactions; they are not authorization. Changes made through cookie-authenticated requests may need cross-site request forgery, or CSRF, protection. That can include server-validated tokens and suitable SameSite cookie policies. HTTPS protects data in transit, not the trustworthiness of every response.\n\nChoose token storage with its trade-offs in mind. Successful XSS can expose tokens readable by JavaScript. HttpOnly cookies need a server design that accounts for CSRF. Do not put secrets in client bundles. Review dependencies, lockfile changes, and security updates. Prototype pollution can occur when attacker-controlled keys are merged into ordinary objects. Use explicitly allowed fields, records with no prototype, or Map where appropriate.",
           files: [
             {
               name: "example.mjs",
@@ -1717,7 +1717,7 @@ const handbook = {
         {
           name: "Semantic controls and focus are part of component state",
           explanation:
-            "Use native buttons, links, inputs, and dialogs before recreating them with ARIA. ARIA describes semantics and state; it does not add keyboard behavior. Keep aria-expanded/selected/invalid synchronized with actual visibility and interaction. Screen-reader announcements should be concise and purposeful, not a running log of every animation frame.\n\nAn accessible dialog needs a name, focus entry, contained modal interaction, Escape handling, and focus restoration. Native dialog provides much of that foundation. The example uses it directly and returns focus to the opener. Dynamic content and validation still need appropriate labels and message relationships, and motion must have a usable reduced-motion path.",
+            "This example uses a native dialog and returns focus to the button that opened it. Start with native buttons, links, inputs, and dialogs rather than recreating them with ARIA. ARIA supplies accessibility meanings and states, not keyboard behavior. Keep aria-expanded, aria-selected, and aria-invalid aligned with actual visibility and interaction. Screen-reader announcements should report useful information concisely, not every animation frame.\n\nAn accessible dialog needs a name, sensible focus on opening, contained modal interaction, Escape handling, and focus restoration. Native dialog provides much of that foundation. Dynamic content and validation still need correct labels and relationships between controls and messages. Motion must also have a usable reduced-motion alternative.",
           files: [
             {
               name: "index.html",
@@ -1735,7 +1735,7 @@ const handbook = {
         {
           name: "Test accessibility as interaction, not just a score",
           explanation:
-            "Automated tools can find missing names, invalid relationships, and many contrast problems, but cannot prove that a workflow makes sense. Test keyboard order, focus movement, visible focus, zoom/reflow, errors, and reduced motion manually alongside automated checks. Review representative screen-reader behavior when building complex widgets.\n\nKeep meaningful content available when script or motion fails. For a disclosure, logical open state controls hidden and aria-expanded; a decorative transition must not become the only signal. For forms, associate errors with controls and focus an appropriate summary or invalid field. Add regression tests for the interactions you fixed rather than only chasing a tool’s numeric score.",
+            "Accessibility testing checks whether a workflow is usable, not just whether a tool gives it a good score. Automated tools detect missing names, invalid relationships, and many contrast issues. They cannot prove the workflow makes sense. Alongside automation, manually test keyboard order, focus movement, visible focus, zoom and reflow, errors, and reduced motion. Review representative screen-reader behavior for complex widgets.\n\nKeep meaningful content available when scripts or motion fail. A disclosure's logical open state must control hidden and aria-expanded; its decorative animation cannot be the only signal. Associate form errors with their controls, and focus an appropriate error summary or invalid field. Add regression tests for the interactions you fix instead of only pursuing a tool's numeric score.",
           files: [
             {
               name: "accessibility-checklist.txt",
@@ -1774,7 +1774,7 @@ const handbook = {
         {
           name: "Execution contexts are a reasoning model, not a source-code rewrite",
           explanation:
-            "A running execution context tracks evaluation state and environment relationships. Lexical environments resolve names through outer environments; variable environments participate in declaration handling. Binding creation and initialization explain hoisting and the TDZ more accurately than imagining lines being moved. Closures retain access to the environments they use.\n\nWithin one agent, each job runs to completion before another job executes. The host integrates tasks, microtasks, rendering, and I/O; Node’s event-loop phases are not identical to the browser’s model. Engines optimize execution with techniques such as specialization and compiled code, but the observable language semantics must remain intact. Measure real workloads rather than writing code around guessed engine internals.",
+            "Execution contexts explain how running JavaScript tracks its work and finds names. A context holds evaluation state and relationships between environments. A lexical environment resolves names through surrounding environments. A variable environment participates in handling declarations. Creating and initializing bindings explains hoisting and the temporal dead zone more accurately than imagining source lines moving. Closures retain access to the environments they use.\n\nWithin one agent, a job runs to completion before another job executes. The host runtime coordinates tasks, microtasks, rendering, and input/output. Node's event-loop phases differ from the browser's model. Engines may specialize execution or compile code to improve speed, but must preserve observable language behavior. Measure real workloads rather than designing around guesses about engine internals.",
           files: [
             {
               name: "example.mjs",
@@ -1816,7 +1816,7 @@ const handbook = {
         {
           name: "Descriptors and lookup distinguish own from inherited state",
           explanation:
-            "Property lookup checks own properties, then prototypes. Object.create selects a prototype directly, getPrototypeOf inspects it, and setPrototypeOf changes it; frequent prototype mutation can harm clarity and optimization, so construct the intended shape up front. Descriptors define data/accessor behavior and enumerability. Object.keys excludes inherited, non-enumerable, and symbol keys; Reflect.ownKeys includes all own keys.\n\nAn object’s extensibility controls whether new properties can be added. Symbols provide unique property keys and protocol hooks, not universal privacy. Use Object.hasOwn for an ownership question rather than trusting an object’s possibly overwritten hasOwnProperty method.",
+            "This example distinguishes an object's own properties from inherited ones. Property lookup checks the object first, then its prototypes. Object.create selects a prototype when creating an object. Object.getPrototypeOf reads it, and Object.setPrototypeOf changes it. Frequent prototype changes can reduce clarity and interfere with optimization, so build the intended structure up front.\n\nProperty descriptors specify stored values or getter/setter behavior and whether properties are enumerable. Object.keys omits inherited, non-enumerable, and symbol keys. Reflect.ownKeys includes all own keys. Extensibility determines whether new properties can be added. Symbols provide unique keys and hooks into language protocols; they do not guarantee privacy. Use Object.hasOwn to check property ownership rather than trusting an object's possibly replaced hasOwnProperty method.",
           files: [
             {
               name: "example.mjs",
@@ -1834,7 +1834,7 @@ const handbook = {
         {
           name: "Proxy and Reflect intercept operations without replacing invariants",
           explanation:
-            "A Proxy intercepts operations such as property reads/writes; Reflect exposes the corresponding default operations and helps preserve receiver semantics. They are useful for validation, instrumentation, or virtual interfaces, but a proxy must respect language invariants, especially for non-configurable properties. Private fields and built-in internal slots can also make naive forwarding fail.\n\nMetaprogramming should make an explicit abstraction easier to use, not hide arbitrary work behind every property access. The example validates one assignment and forwards everything else with Reflect. It does not claim that wrapping any object creates a complete reactive system or security boundary.",
+            "A Proxy lets code intercept operations such as reading or writing a property. Reflect provides the corresponding default operations and helps retain the correct receiver, the object used as this for an operation. These tools can support validation, tracing, or virtual interfaces. They must still obey language invariants, rules that cannot be broken, especially for non-configurable properties. Private fields and built-ins with internal storage can also make simple forwarding fail.\n\nUse this kind of metaprogramming when it makes an explicit interface easier to use. Do not hide arbitrary work behind every property access. This example checks one assignment and forwards other operations with Reflect. It does not turn an arbitrary wrapped object into a complete reactive system or a security boundary.",
           files: [
             {
               name: "example.mjs",
@@ -1875,7 +1875,7 @@ const handbook = {
         {
           name: "Iterables supply iterators; generators simplify the protocol",
           explanation:
-            "An iterable exposes Symbol.iterator, which returns an iterator with next. Each result has done and optionally value. An iterator is not automatically iterable unless it also provides that protocol. Generator functions create iterator objects and pause at yield; yield* delegates to another iterable.\n\nAsync generators combine suspension with asynchronous values and are consumed with for await...of. A stream of pages can avoid building one huge array, but you still need cancellation and error handling at the external I/O boundary. Map/Set specify ordering and key behavior; their exact internal representation is engine-specific, so do not claim a particular hash-table implementation as a language guarantee.",
+            "Iteration provides a way to read values one step at a time. An iterable exposes Symbol.iterator, which returns an iterator with a next method. Each result contains done and optionally value. An iterator is not automatically iterable; it must also provide the iterable protocol. A generator function creates an iterator and pauses at yield. yield* passes iteration to another iterable.\n\nAsync generators combine that pausing behavior with async values. Read them with for await...of. Receiving pages one at a time can avoid building one enormous array, but external input/output still needs cancellation and error handling. Map and Set define their ordering and key behavior. Engines choose their internal representation, so do not treat a particular hash-table design as a language guarantee.",
           files: [
             {
               name: "example.mjs",
@@ -1893,7 +1893,7 @@ const handbook = {
         {
           name: "Binary data separates storage from interpretation",
           explanation:
-            "ArrayBuffer owns raw bytes. Typed arrays interpret a view of those bytes as a particular numeric type; several views can share the same buffer. DataView reads/writes individual values with explicit endianness, useful for network/file formats whose layout is not the platform’s natural layout.\n\nCheck byte lengths and offsets before parsing external binary data. A typed array is not an ordinary Array, and converting a view is different from copying or transferring its buffer. Transferring an ArrayBuffer to a worker detaches the original storage; shared storage uses a different concurrency contract.",
+            "This example shows that binary storage and the way code reads it are separate. ArrayBuffer holds raw bytes. A typed array views those bytes as a particular numeric type. Several views can share one buffer. DataView reads and writes individual values with explicit endianness, the order of bytes within a value. This is useful for network or file formats whose byte order differs from the platform's usual layout.\n\nCheck lengths and offsets before reading external binary data. A typed array is not an ordinary Array. Converting a view, copying its buffer, and transferring its buffer are different operations. Transferring an ArrayBuffer to a worker detaches the sender's original storage. Shared storage instead needs a different set of rules for concurrent access.",
           files: [
             {
               name: "example.mjs",
@@ -1934,7 +1934,7 @@ const handbook = {
         {
           name: "Reachability determines lifetime; cleanup determines correctness",
           explanation:
-            "Stack versus heap is a useful conceptual distinction, not a promise about the physical location of every JavaScript value. Garbage collection reclaims unreachable storage according to implementation decisions. A detached DOM node is still retained if a live closure, listener registry, or array keeps a path to it. Strong references retain objects; weak collection membership does not do so by itself.\n\nWeakRef and FinalizationRegistry do not provide deterministic resource cleanup. Do not wait for a finalizer to remove a listener, close a socket, abort a request, or release a rendering loop. Use explicit destroy/finally contracts. Compare heap snapshots and retaining paths after repeated mount/destroy to diagnose leaks rather than assuming a temporary memory rise is proof.",
+            "Garbage collection reclaims storage that can no longer be reached. The engine decides how and when that happens. Stack and heap are useful concepts, not guarantees about the physical location of every JavaScript value. A DOM node removed from the page can remain reachable through a closure, listener registry, or array. Strong references retain objects. Membership in a weak collection does not retain an object by itself.\n\nCorrect cleanup must be explicit. WeakRef and FinalizationRegistry do not guarantee when resource cleanup will run. Do not wait for a finalizer to remove a listener, close a socket, abort a request, or stop a rendering loop. Use destroy methods and finally blocks. To investigate leaks, repeat mounting and destruction, compare heap snapshots, and inspect the references retaining objects. A temporary memory increase alone does not prove a leak.",
           files: [
             {
               name: "index.html",
@@ -1974,7 +1974,7 @@ const handbook = {
         {
           name: "Workers provide parallel execution through messages",
           explanation:
-            "Concurrency means several operations are in progress; parallelism means some actually execute at the same time. A worker has its own JavaScript environment and no DOM access. postMessage normally uses structured cloning, so functions and DOM nodes cannot simply be sent. Transfer a buffer when ownership should move rather than copy; the sender’s buffer becomes detached.\n\nWorkers have startup and communication costs, so measure whether the computation justifies them. Attach handlers before sending work, validate message shapes, handle errors, and terminate a short-lived worker when done. A worker does not remove the need to coordinate request identities or canceled UI state.",
+            "This example sends work to a worker and receives its result through messages. Concurrency means several operations are in progress. Parallelism means some run at the same time. A worker has its own JavaScript environment and cannot access the DOM. postMessage normally copies data through structured cloning, so functions and DOM nodes cannot simply be sent. Transferring a buffer moves ownership instead of copying it and detaches it from the sender.\n\nWorkers cost time to start and exchange messages. Measure whether the computation is large enough to justify that cost. Attach handlers before sending work, validate message structures, handle errors, and terminate a short-lived worker when it finishes. You still need to track request identities and canceled UI state.",
           files: [
             {
               name: "index.html",
@@ -2002,7 +2002,7 @@ const handbook = {
         {
           name: "Shared memory requires isolation and an atomic protocol",
           explanation:
-            "SharedArrayBuffer permits several agents to access the same bytes. In browsers, sharing normally requires a secure context and cross-origin isolation configured through response headers. Feature-detect both availability and crossOriginIsolated; ordinary ArrayBuffer messages are often simpler.\n\nAtomics provides synchronized operations on supported shared typed arrays. It does not automatically make a sequence of separate operations one transaction. Race conditions appear when correctness depends on an uncontrolled interleaving. Do not block the browser main thread with Atomics.wait. The example shows one atomic counter operation under a capability guard; a real shared-memory design must document its protocol and test contention.",
+            "SharedArrayBuffer lets several agents access the same bytes. In browsers, sharing normally needs a secure context and cross-origin isolation configured by response headers. Check both that the API exists and that crossOriginIsolated is true. Sending ordinary ArrayBuffer messages is often simpler.\n\nAtomics supplies synchronized operations on supported shared typed arrays. Several separate atomic operations do not automatically form one transaction. A race condition occurs when correctness depends on an uncontrolled ordering of operations. Do not block the browser's main thread with Atomics.wait. This example checks support before performing one atomic counter operation. A real shared-memory design needs documented coordination rules and tests where agents compete for the same data.",
           files: [
             {
               name: "index.html",
@@ -2043,7 +2043,7 @@ const handbook = {
         {
           name: "Routing and state synchronization need a single owner",
           explanation:
-            "A SPA updates views without a full document navigation. A router maps a URL to view state and coordinates history, loading, cleanup, and focus. Hash routing is a useful small starting point; path routing with pushState also needs a server fallback for direct requests and a popstate handler for traversal.\n\nSeparate route state, persistent domain state, and temporary component state. Cancel or ignore old loads when the route changes. Web Components can form the view boundary, but their lifecycle still needs explicit resource ownership. Do not make animation completion the only way a route can become usable. This minimal router uses real links and a live heading, and it returns a cleanup function.",
+            "This minimal router changes the displayed view through real links and a current heading, and returns a cleanup function. A single-page application, or SPA, updates views without a full document navigation. Its router maps URLs to view state and coordinates history, loading, cleanup, and focus. Hash routing is a useful small starting point. Path routing with pushState also needs a server fallback for direct URL requests and a popstate handler for history traversal.\n\nKeep route state, persistent application data, and temporary component state separate. Cancel old loads or ignore their results after navigation. Web Components can define view boundaries, but still need explicit ownership of resources. A route must remain usable without depending solely on an animation's completion.",
           files: [
             {
               name: "index.html",
@@ -2061,7 +2061,7 @@ const handbook = {
         {
           name: "IndexedDB is transactional storage, not a synchronous object",
           explanation:
-            "IndexedDB stores structured values through asynchronous requests and transactions. Version upgrades create or change stores; existing open connections can block an upgrade, so respond to versionchange by closing old connections. Request success alone is not a guarantee that a write transaction has committed.\n\nChoose a schema and handle errors, quota/storage availability, and account/data boundaries. Persistent storage may be cleared, so plan a useful empty/error state. The example writes one small record and waits for transaction completion before showing success. It does not promise cross-device synchronization or a backend conflict-resolution strategy.",
+            "This example saves one small record in IndexedDB and shows success only after the write transaction completes. IndexedDB stores structured values through async requests grouped into transactions. Version upgrades create or change object stores. Other open connections can block an upgrade, so close old connections when they receive versionchange. One request succeeding does not by itself mean the write transaction has committed.\n\nChoose a schema and account for errors, storage quotas, unavailable storage, and boundaries between accounts or data sets. Persistent storage can be cleared, so provide useful empty and error states. This example does not provide cross-device synchronization or a backend strategy for resolving conflicting changes.",
           files: [
             {
               name: "index.html",
@@ -2079,7 +2079,7 @@ const handbook = {
         {
           name: "Offline-first caching must have a narrow, versioned policy",
           explanation:
-            "A service worker runs separately from a page and can intercept requests within its scope. Registration requires a secure context such as HTTPS or localhost. The Cache API stores Request/Response pairs; it is not the same as IndexedDB or the browser’s normal HTTP cache. A PWA also needs appropriate app metadata and a useful installed/offline experience, with browser-specific install behavior.\n\nDefine update, cache invalidation, offline fallback, and account boundaries. Do not cache arbitrary authenticated API responses under a shared shell key. This teaching worker caches only this fixture’s public index page and handles only same-directory navigation. It is a small offline shell, not a complete offline-sync or production PWA architecture.",
+            "This teaching service worker caches only the fixture's public index page and handles navigation in the same directory. A service worker runs separately from the page and can intercept requests within its scope. It must be registered in a secure context, such as HTTPS or localhost. The Cache API stores Request/Response pairs. It is separate from IndexedDB and the browser's normal HTTP cache. A progressive web app, or PWA, also needs suitable app metadata and a useful installed and offline experience. Installation behavior varies by browser.\n\nDefine how updates, cache invalidation, offline fallback, and account separation work. Do not cache arbitrary authenticated API responses under one shared page-shell key. This example is a small offline shell, not a complete system for offline synchronization or a production PWA.",
           files: [
             {
               name: "index.html",
@@ -2126,7 +2126,7 @@ const handbook = {
         {
           name: "A public API is a compatibility promise",
           explanation:
-            "A library’s consumers should depend on a small stable entry point, documented options, lifecycle methods, and error behavior. Configuration should distinguish omitted fields from explicit values and reject invalid combinations. A plugin architecture needs an explicit extension contract and cleanup responsibility; it should not let plugins mutate arbitrary private state by accident.\n\nVersioning communicates public changes. Package exports constrain supported entry points; declarations help TypeScript consumers even when the implementation is JavaScript. ESM and CommonJS need actual compatible outputs if both are advertised. Test browser/Node boundaries and support targets; a browser-only component must not pretend that DOM APIs exist in Node.",
+            "A public API tells library users which behavior they can rely on. Keep supported entry points, options, lifecycle methods, and errors small and well documented. Distinguish an omitted option from an explicit value, and reject invalid combinations. Plugins need a defined extension contract and cleanup owner. They should not accidentally gain access to change arbitrary private state.\n\nVersion changes communicate changes to that public contract. Package exports define supported entry points. Type declarations help TypeScript users even when the implementation is JavaScript. If you advertise both ESM and CommonJS, provide genuinely compatible outputs for both. Test supported environments and browser/Node boundaries. A browser-only component cannot assume DOM APIs exist in Node.",
           files: [
             {
               name: "src/index.js",
@@ -2153,7 +2153,7 @@ const handbook = {
         {
           name: "Review the artifact before any release",
           explanation:
-            "Documentation should explain setup, a complete usage example, options, lifecycle, support policy, and error behavior. Test the public entry point in a clean consumer rather than only source-relative imports. Benchmark representative work with warm-up and realistic inputs; tiny synthetic timings can be dominated by measurement noise or engine optimization.\n\nInspect npm pack output for missing files, accidental secrets, and unsupported formats. Publish only after choosing the real package name, reviewing the registry artifact, and satisfying your release process. The commands below create a local tarball; they intentionally do not publish anything. Maintain changelogs and upgrade tests for backward compatibility.",
+            "Review the package users will receive, not only the source in your repository. Documentation should cover setup, a complete usage example, options, lifecycle, support policy, and errors. Test the public entry point in a clean consumer project rather than relying only on imports from source files. Benchmark representative work with warm-up and realistic inputs. Very small synthetic measurements can mostly reflect timing noise or engine optimization.\n\nInspect npm pack output for missing files, accidental secrets, and unsupported formats. Publish only after selecting the real package name, reviewing the registry artifact, and meeting your release process. These commands create a local tarball; they do not publish it. Keep changelogs and upgrade tests to support backward compatibility.",
           files: [
             {
               name: "commands.sh",
@@ -2193,7 +2193,7 @@ const handbook = {
         {
           name: "Complexity describes growth, not an exact stopwatch time",
           explanation:
-            "Big O describes how resource use grows with input size under a stated model. A scan is O(n), a nested full scan is O(n²), and binary search on sorted data is O(log n). Space complexity includes auxiliary structures and recursion depth. A faster asymptotic method may not be worthwhile for a tiny fixed collection; measure the actual application.\n\nSearching/sorting need explicit ordering and duplicate policies. Hash maps are useful for indexing repeated lookups, but JavaScript does not promise one particular Map representation or a universal constant-time implementation. Prefer readable data transformation and a stable contract before micro-optimizing. This binary search returns a matching index or -1 for a sorted numeric array.",
+            "This binary search finds a matching index, or returns -1, in a sorted numeric array. Its complexity describes how resource use grows as input grows, not its exact running time. Under the stated model, a scan is O(n), a full scan inside another full scan is O(n²), and binary search is O(log n). Space complexity also includes extra data structures and recursion depth. A method with better growth may not be worthwhile for a tiny fixed collection. Measure the actual application.\n\nDefine ordering and duplicate-handling rules for searching and sorting. Maps can index repeated lookups, but JavaScript guarantees neither one specific Map representation nor universal constant-time behavior. Favor readable transformations and a stable contract before making small speed optimizations.",
           files: [
             {
               name: "example.mjs",
@@ -2211,7 +2211,7 @@ const handbook = {
         {
           name: "Stacks, queues, trees, graphs, and backtracking",
           explanation:
-            "A stack is last-in-first-out; a queue is first-in-first-out. Tree traversal can be recursive or iterative. Graphs may contain cycles, so track visited nodes where repeated traversal is not intended. Backtracking explores choices and undoes them before trying another branch; bound the search space and validate inputs before exploring untrusted structures.\n\nCaching repeats of the same subproblem can help, but its keys and lifetime still need a policy. For breadth-first traversal, use an array with a head index rather than repeatedly shifting the whole queue. The example traverses a small graph and returns each reachable node once, including when the graph contains a cycle.",
+            "This example visits each reachable node in a small graph once, even when the graph contains a cycle. A stack processes the newest item first. A queue processes the oldest item first. Trees can be traversed recursively or with a loop. Graphs can lead back to nodes already visited, so track visited nodes when repeats are not wanted. Backtracking explores a choice, undoes it, and tries another. Limit the search space and validate inputs before exploring untrusted structures.\n\nCaching the result of a repeated subproblem can help, but needs clear keys and a lifetime policy. For breadth-first traversal, which works through a queue, use an array with an index pointing to the next item. This avoids repeatedly shifting the whole queue.",
           files: [
             {
               name: "example.mjs",
@@ -2252,7 +2252,7 @@ const handbook = {
         {
           name: "Optional: engines, ASTs, and transforms",
           explanation:
-            "V8 and SpiderMonkey implement the language through evolving parsing, interpretation, compilation, optimization, and garbage-collection strategies. JIT specialization can improve hot code and deoptimize when assumptions fail, but guessed engine folklore is a weak basis for application architecture. Use profiles and an explicit engine/version when researching internals.\n\nAn AST represents parsed syntax. Parsers and transforms must preserve semantics, scope, comments/source maps when relevant, and the syntax version they support. Babel plugins visit AST nodes; use parser/traversal APIs rather than editing source with broad regexes. This tiny Babel 7 plugin changes a deliberately named string marker, leaving unrelated strings alone. Test transformed output and behavior before using such a tool on real code.",
+            "This small Babel 7 plugin changes a deliberately named string marker and leaves unrelated strings alone. It works on an abstract syntax tree, or AST, a structured representation of parsed code. Parsers and transformations need to preserve behavior, scope, supported syntax, and, when relevant, comments and source maps. Babel plugins visit AST nodes. Use parsing and traversal APIs rather than broad regex replacements on source text. Test both the generated output and its behavior before transforming real code.\n\nV8 and SpiderMonkey implement JavaScript through evolving parsing, interpretation, compilation, optimization, and garbage-collection strategies. Just-in-time, or JIT, compilation can specialize frequently run code. The engine can abandon that optimization when its assumptions stop holding. Do not base application architecture on guesses about those internals. Use profiles and identify the engine and version when researching them.",
           files: [
             {
               name: "plugin.mjs",
@@ -2274,7 +2274,7 @@ const handbook = {
         {
           name: "Optional: internationalization, proposals, and disposal",
           explanation:
-            "Intl can handle locale-aware number/date formatting, collation, plural rules, and segmentation; availability depends on the API and runtime data. Keep machine-readable values separate from localized presentation. Metaprogramming through symbols/proxies is useful only when it clarifies a public abstraction.\n\nTC39 proposals progress through stages, including Stage 2.7; Stage 4 indicates a finished language proposal, not immediate support in every deployed browser. Resource-management syntax such as using/await using and disposal protocols needs a target-compatibility review. Deterministic explicit cleanup with try/finally remains a portable pattern; it is unrelated to waiting for garbage collection.",
+            "This block separates localized presentation, language proposals, and predictable resource cleanup. Intl supports locale-aware number and date formatting, string comparison, plural rules, and segmentation. Availability depends on the particular API and runtime data. Keep machine-readable values separate from localized output. Symbols and proxies can support metaprogramming, but should make a public interface clearer rather than more obscure.\n\nTC39 proposals move through stages, including Stage 2.7. Stage 4 means the language proposal is finished, not that every deployed browser supports it. Review target compatibility before using resource-management syntax such as using or await using and its disposal protocols. Explicit try/finally cleanup remains a portable way to release resources predictably. It does not depend on waiting for garbage collection.",
           files: [
             {
               name: "example.mjs",
@@ -2291,7 +2291,7 @@ const handbook = {
         {
           name: "Optional: WebAssembly and Node are different runtime boundaries",
           explanation:
-            "WebAssembly runs compiled modules through a JavaScript host interface. It can suit compute-heavy code or an existing compiled codebase, but copying data and crossing the boundary can dominate a small calculation. It does not automatically accelerate DOM work or make native code safe to call with arbitrary assumptions.\n\nNode supplies server/tooling APIs rather than a browser DOM. Learn its module, process, filesystem, event-loop, and I/O contracts separately from browser APIs. This Node example creates and removes a temporary directory in a finally block. A WebAssembly integration requires an actual compiled module and documented imports/exports; do not treat an unspecified .wasm file as a complete example.",
+            "This Node example creates a temporary directory and removes it in finally. Node provides server and tooling APIs rather than a browser DOM. Learn its module, process, filesystem, event-loop, and input/output rules separately from browser APIs.\n\nWebAssembly is another boundary: compiled modules run through a JavaScript host interface. It can suit computation-heavy work or an existing compiled codebase. For a small calculation, copying data and crossing the boundary can cost more than the calculation itself. WebAssembly does not automatically speed up DOM work or make arbitrary assumptions about native code safe. A complete integration needs an actual compiled module and documented imports and exports. Naming an unspecified .wasm file is not a complete example.",
           files: [
             {
               name: "temporary-file.mjs",
@@ -2710,6 +2710,7 @@ const handbook = {
         source.target = "_blank";
         source.rel = "noopener noreferrer";
         article.append(source);
+        window.JavaScriptInlineFunctions?.highlight(article, lesson);
         section.append(article);
       }
       shown += lessons.length;

@@ -95,9 +95,6 @@
       "aria-label",
       `Mark ${heading.textContent.trim()} as learned`,
     );
-    // const text = document.createElement("span");
-    // text.textContent = "Learned";
-    // label.append(checkbox, text);
     label.append(checkbox);
     control.append(label);
     entry.prepend(control);
