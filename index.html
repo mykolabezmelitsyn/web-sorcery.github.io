@@ -105,97 +105,101 @@
         </div>
       </div>
     </header>
-    <main class="container" id="documentation">
-      <div class="section-heading">
-        <div>
-          <h2>Documentation</h2>
+    <main id="documentation">
+      <div class="container">
+        <div class="row">
+          <div class="section-heading">
+            <div>
+              <h2>Documentation</h2>
+            </div>
+          </div>
+          <div class="grid">
+            <!-- Change href to the relative path of your uploaded HTML file. -->
+            <!-- To add a working guide, replace a placeholder <article> with <a class="doc-card" href="your-file.html"> ... </a>. -->
+            <a class="doc-card" href="./docs/javascript-handbook.html">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">JS</span
+                ><span class="tag">Available</span>
+              </div>
+              <h3>JavaScript Mastery</h3>
+              <p>
+                A practical path through 37 chapters: language foundations, browser
+                APIs, async work, architecture, testing, internals, and five
+                real-world projects.
+              </p>
+              <span class="card-bottom"
+                >Open handbook <span aria-hidden="true">→</span></span
+              >
+            </a>
+            <a class="doc-card" href="./docs/regular-expressions-handbook.html">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">Rx</span
+                ><span class="tag">Available</span>
+              </div>
+              <h3>Regular Expressions</h3>
+              <p>
+                Patterns, flags, groups, lookarounds, and useful examples for
+                everyday text processing.
+              </p>
+              <span class="card-bottom"
+                >Open guide <span aria-hidden="true">→</span></span
+              >
+            </a>
+            <a class="doc-card" href="./docs/git-handbook.html">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">Git</span
+                ><span class="tag">Available</span>
+              </div>
+              <h3>Git Reference</h3>
+              <p>
+                Everyday commands by task, with practical examples and clear
+                warnings for operations that rewrite history or discard work.
+              </p>
+              <span class="card-bottom"
+                >Open guide <span aria-hidden="true">→</span></span
+              >
+            </a>
+            <a class="doc-card" href="./docs/typescript-handbook.html">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">TS</span
+                ><span class="tag">Available</span>
+              </div>
+              <h3>TypeScript Mastery</h3>
+              <p>
+                Learn TypeScript through 148 topics, eight progressive levels, and
+                practical projects—from core types to React, typed libraries, and
+                large-scale engineering.
+              </p>
+              <span class="card-bottom"
+                >Open handbook <span aria-hidden="true">→</span></span
+              >
+            </a>
+            <a class="doc-card" href="./docs/gsap-handbook.html">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">GSAP</span
+                ><span class="tag">Available</span>
+              </div>
+              <h3>GSAP Mastery</h3>
+              <p>
+                A practical roadmap through 29 chapters and 28 projects: core
+                animation, timelines, scroll, creative plugins, and dependable
+                animation engineering.
+              </p>
+              <span class="card-bottom"
+                >Open handbook <span aria-hidden="true">→</span></span
+              >
+            </a>
+            <article class="doc-card placeholder">
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">+</span
+                ><span class="tag soon">Coming soon</span>
+              </div>
+              <h3>Your Next Guide</h3>
+              <p>A space for the next topic you want to document or reference.</p>
+              <span class="card-bottom">Guide not added yet</span>
+            </article>
+          </div>
         </div>
-      </div>
-      <div class="grid">
-        <!-- Change href to the relative path of your uploaded HTML file. -->
-        <!-- To add a working guide, replace a placeholder <article> with <a class="doc-card" href="your-file.html"> ... </a>. -->
-        <a class="doc-card" href="./docs/javascript-handbook.html">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">JS</span
-            ><span class="tag">Available</span>
-          </div>
-          <h3>JavaScript Mastery</h3>
-          <p>
-            A practical path through 37 chapters: language foundations, browser
-            APIs, async work, architecture, testing, internals, and five
-            real-world projects.
-          </p>
-          <span class="card-bottom"
-            >Open handbook <span aria-hidden="true">→</span></span
-          >
-        </a>
-        <a class="doc-card" href="./docs/regular-expressions-handbook.html">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">Rx</span
-            ><span class="tag">Available</span>
-          </div>
-          <h3>Regular Expressions</h3>
-          <p>
-            Patterns, flags, groups, lookarounds, and useful examples for
-            everyday text processing.
-          </p>
-          <span class="card-bottom"
-            >Open guide <span aria-hidden="true">→</span></span
-          >
-        </a>
-        <a class="doc-card" href="./docs/git-handbook.html">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">Git</span
-            ><span class="tag">Available</span>
-          </div>
-          <h3>Git Reference</h3>
-          <p>
-            Everyday commands by task, with practical examples and clear
-            warnings for operations that rewrite history or discard work.
-          </p>
-          <span class="card-bottom"
-            >Open guide <span aria-hidden="true">→</span></span
-          >
-        </a>
-        <a class="doc-card" href="./docs/typescript-handbook.html">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">TS</span
-            ><span class="tag">Available</span>
-          </div>
-          <h3>TypeScript Mastery</h3>
-          <p>
-            Learn TypeScript through 148 topics, eight progressive levels, and
-            practical projects—from core types to React, typed libraries, and
-            large-scale engineering.
-          </p>
-          <span class="card-bottom"
-            >Open handbook <span aria-hidden="true">→</span></span
-          >
-        </a>
-        <a class="doc-card" href="./docs/gsap-handbook.html">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">GSAP</span
-            ><span class="tag">Available</span>
-          </div>
-          <h3>GSAP Mastery</h3>
-          <p>
-            A practical roadmap through 29 chapters and 28 projects: core
-            animation, timelines, scroll, creative plugins, and dependable
-            animation engineering.
-          </p>
-          <span class="card-bottom"
-            >Open handbook <span aria-hidden="true">→</span></span
-          >
-        </a>
-        <article class="doc-card placeholder">
-          <div class="card-top">
-            <span class="card-icon" aria-hidden="true">+</span
-            ><span class="tag soon">Coming soon</span>
-          </div>
-          <h3>Your Next Guide</h3>
-          <p>A space for the next topic you want to document or reference.</p>
-          <span class="card-bottom">Guide not added yet</span>
-        </article>
       </div>
     </main>
     <footer>

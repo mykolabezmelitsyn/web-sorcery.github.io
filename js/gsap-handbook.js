@@ -2107,7 +2107,7 @@ const handbook = {
           ),
         );
       }
-      const link = node("a", chapter.number + ". " + chapter.name);
+      const link = node("a", chapter.name);
       link.href = "#" + section.id;
       menu.append(link);
       section.append(

@@ -3815,7 +3815,7 @@ const levels = [
       shown += matches.length;
       const section = node("section");
       section.id = "level-" + level.number;
-      const link = node("a", level.name);
+      const link = node("a", level.name.replace(/^Level \d+ — /, ""));
       link.href = "#" + section.id;
       menu.append(link);
       section.append(

@@ -390,7 +390,7 @@ function render() {
     const id = slug(category);
     const link = document.createElement("a");
     link.href = "#" + id;
-    link.textContent = category + " (" + matches.length + ")";
+    link.textContent = category;
     nav.append(link);
     const section = document.createElement("section");
     section.id = id;

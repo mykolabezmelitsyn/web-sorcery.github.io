@@ -1099,7 +1099,7 @@ const handbook = {
     },
     {
       number: 17,
-      name: "Object-Oriented Programming (OOP)",
+      name: "OOP",
       level: 5,
       topics: [
         "Constructor functions",
@@ -2669,7 +2669,7 @@ const handbook = {
         menuLevel = chapter.level;
         menu.append(node("div", "Level " + chapter.level, "nav-stage"));
       }
-      const link = node("a", chapter.number + ". " + chapter.name);
+      const link = node("a", chapter.name);
       link.href = "#" + section.id;
       menu.append(link);
       section.append(

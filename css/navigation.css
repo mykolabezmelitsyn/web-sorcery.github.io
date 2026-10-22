@@ -7,7 +7,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px 24px;
-  padding: 12px max(24px, calc((100% - 1100px) / 2));
+  padding: 12px max(24px, calc((100% - 1280px) / 2));
   background: #101827;
   border-bottom: 1px solid #34435a;
 }
@@ -145,4 +145,12 @@
 }
 :root[data-theme="dark"] .theme-icon-moon {
   display: none;
+}
+
+/* Keep hero and main content centered within the same readable width. */
+.hero > .container,
+main > .container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
 }

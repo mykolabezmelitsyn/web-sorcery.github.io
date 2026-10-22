@@ -43,7 +43,6 @@ const themeToggle = document.querySelector(".site-theme-toggle");
 if (themeToggle && window.SiteTheme) {
   function updateThemeButton() {
     const next = window.SiteTheme.current === "dark" ? "light" : "dark";
-    // themeToggle.querySelector(".theme-label").textContent = next === "dark" ? "Dark" : "Light";
     themeToggle.setAttribute("aria-label", "Switch to " + next + " theme");
     themeToggle.title = "Switch to " + next + " theme";
   }

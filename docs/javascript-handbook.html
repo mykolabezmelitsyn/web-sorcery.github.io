@@ -97,266 +97,272 @@
       </nav>
     </div>
     <header class="hero">
-      <h1>JavaScript Mastery Handbook</h1>
-      <p>
-        Revisit the foundations, understand the language, and build dependable
-        browser applications. Follow a practical path from syntax to independent
-        engineering.
-      </p>
-      <a
-        class="external"
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
-        target="_blank"
-        rel="noopener noreferrer"
-        >MDN JavaScript Guide ↗</a
-      >
-      <a class="external" href="../javascript-mastery-roadmap.md"
-        >Read the source roadmap</a
-      >
-      <input
-        id="search"
-        type="search"
-        placeholder="Search: closures, Fetch, DOM, workers, projects…"
-        aria-label="Search JavaScript lessons, roadmap topics, and projects"
-      />
+      <div class="container">
+        <h1>JavaScript Mastery Handbook</h1>
+        <p>
+          Revisit the foundations, understand the language, and build dependable
+          browser applications. Follow a practical path from syntax to independent
+          engineering.
+        </p>
+        <a
+          class="external"
+          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+          target="_blank"
+          rel="noopener noreferrer"
+          >MDN JavaScript Guide ↗</a
+        >
+        <a class="external" href="../javascript-mastery-roadmap.md"
+          >Read the source roadmap</a
+        >
+        <input
+          id="search"
+          type="search"
+          placeholder="Search: closures, Fetch, DOM, workers, projects…"
+          aria-label="Search JavaScript lessons, roadmap topics, and projects"
+        />
+      </div>
     </header>
     <main>
-      <aside aria-label="Roadmap chapters">
-        <div class="nav-title">Learning path</div>
-        <nav id="nav" aria-label="JavaScript chapters"></nav>
-      </aside>
-      <div class="guide-body">
-        <div class="toolbar">
-          <strong>10 levels · 37 chapters · 5 projects</strong
-          ><span id="count" role="status" aria-live="polite"></span>
-        </div>
-        <div class="tip">
-          <strong
-            >Recommended entry: Level 2. Revise Chapters 1–3 wherever your
-            foundations need attention.</strong
-          >
-          <p>
-            This handbook follows all 436 topic bullets in
-            <a href="../javascript-mastery-roadmap.md"
-              >javascript-mastery-roadmap.md</a
-            >, in their original order. It assumes basic HTML/CSS familiarity
-            and develops JavaScript from revision through advanced browser
-            engineering. Prioritize vanilla JavaScript, async work, browser
-            APIs, and reusable UI architecture before optional specializations.
-          </p>
-          <p>
-            <strong>Examples are independent.</strong> Core examples are ES
-            modules using established modern syntax, including ES2023 features
-            such as toSorted; use a current supported browser or the labeled
-            Node runtime. Browser examples need a DOM and should be served over
-            localhost. A multi-file example keeps the shown filenames together.
-            Tool, backend, and integration requirements are labeled; they are
-            not interchangeable runtimes.
-          </p>
-          <p>
-            Read the explanation, run an example, then complete its checkpoint.
-            Project code supplies focused starters rather than five finished
-            applications. Code is displayed and copied, never executed by the
-            handbook. APIs with compatibility or security-context requirements
-            have notes, and tool-specific examples state a reference major
-            version. Reference review: October 22, 2026.
-          </p>
-        </div>
-        <details class="learning-plan">
-          <summary>
-            How to use the roadmap: levels and learning priorities
-          </summary>
-          <h2>Ten learning levels</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Level</th>
-                  <th scope="col">Focus</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>JavaScript Fundamentals (Revision)</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Core JavaScript (Intermediate)</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>DOM Manipulation and Browser JavaScript</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Asynchronous JavaScript</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Object-Oriented and Functional Programming</td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>Modern JavaScript Architecture and Tooling</td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>Testing and Debugging</td>
-                </tr>
-                <tr>
-                  <td>8</td>
-                  <td>Performance, Security, and Accessibility</td>
-                </tr>
-                <tr>
-                  <td>9</td>
-                  <td>Advanced JavaScript Internals</td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>Expert-Level JavaScript Engineering</td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="container">
+        <div class="row">
+          <aside aria-label="Roadmap chapters">
+            <div class="nav-title">Learning path</div>
+            <nav id="nav" class="guide-nav" aria-label="JavaScript chapters"></nav>
+          </aside>
+          <div class="guide-body">
+            <div class="toolbar">
+              <strong>10 levels · 37 chapters · 5 projects</strong
+              ><span id="count" role="status" aria-live="polite"></span>
+            </div>
+            <div class="tip">
+              <strong
+                >Recommended entry: Level 2. Revise Chapters 1–3 wherever your
+                foundations need attention.</strong
+              >
+              <p>
+                This handbook follows all 436 topic bullets in
+                <a href="../javascript-mastery-roadmap.md"
+                  >javascript-mastery-roadmap.md</a
+                >, in their original order. It assumes basic HTML/CSS familiarity
+                and develops JavaScript from revision through advanced browser
+                engineering. Prioritize vanilla JavaScript, async work, browser
+                APIs, and reusable UI architecture before optional specializations.
+              </p>
+              <p>
+                <strong>Examples are independent.</strong> Core examples are ES
+                modules using established modern syntax, including ES2023 features
+                such as toSorted; use a current supported browser or the labeled
+                Node runtime. Browser examples need a DOM and should be served over
+                localhost. A multi-file example keeps the shown filenames together.
+                Tool, backend, and integration requirements are labeled; they are
+                not interchangeable runtimes.
+              </p>
+              <p>
+                Read the explanation, run an example, then complete its checkpoint.
+                Project code supplies focused starters rather than five finished
+                applications. Code is displayed and copied, never executed by the
+                handbook. APIs with compatibility or security-context requirements
+                have notes, and tool-specific examples state a reference major
+                version. Reference review: October 22, 2026.
+              </p>
+            </div>
+            <details class="learning-plan">
+              <summary>
+                How to use the roadmap: levels and learning priorities
+              </summary>
+              <h2>Ten learning levels</h2>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Level</th>
+                      <th scope="col">Focus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>JavaScript Fundamentals (Revision)</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Core JavaScript (Intermediate)</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>DOM Manipulation and Browser JavaScript</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Asynchronous JavaScript</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Object-Oriented and Functional Programming</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Modern JavaScript Architecture and Tooling</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Testing and Debugging</td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>Performance, Security, and Accessibility</td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>Advanced JavaScript Internals</td>
+                    </tr>
+                    <tr>
+                      <td>10</td>
+                      <td>Expert-Level JavaScript Engineering</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                The roadmap’s starting point is intermediate, but it does not
+                measure your ability. Levels and any self-assessment selections are
+                learning aids, not a certification.
+              </p>
+              <h2>Recommended learning order</h2>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Topics</th>
+                      <th scope="col">Why</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1 — Highest</td>
+                      <td>Closures, this, objects, array methods</td>
+                      <td>Strengthen core JS knowledge</td>
+                    </tr>
+                    <tr>
+                      <td>2 — Highest</td>
+                      <td>DOM, events, browser APIs</td>
+                      <td>Directly useful in your daily front-end work</td>
+                    </tr>
+                    <tr>
+                      <td>3 — Highest</td>
+                      <td>Promises, async/await, Fetch, event loop</td>
+                      <td>Essential for modern asynchronous applications</td>
+                    </tr>
+                    <tr>
+                      <td>4 — High</td>
+                      <td>Classes, prototypes, modules, architecture</td>
+                      <td>Build reusable libraries and maintainable components</td>
+                    </tr>
+                    <tr>
+                      <td>5 — High</td>
+                      <td>Testing, debugging, performance</td>
+                      <td>Develop production-level engineering skills</td>
+                    </tr>
+                    <tr>
+                      <td>6 — High</td>
+                      <td>TypeScript and React integration</td>
+                      <td>
+                        Support your transition to modern front-end development
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>7 — Medium</td>
+                      <td>Advanced internals, algorithms, metaprogramming</td>
+                      <td>Develop deeper language expertise</td>
+                    </tr>
+                    <tr>
+                      <td>8 — Optional</td>
+                      <td>Engine internals, ASTs, binary data</td>
+                      <td>Pursue specialized JavaScript knowledge</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                TypeScript and React integration are a later priority in the
+                roadmap. Build a strong JavaScript model first; use the
+                <a href="../docs/typescript-handbook.html">TypeScript handbook</a>
+                and <a href="../docs/gsap-handbook.html">GSAP handbook</a> when
+                those integrations become useful. You do not need every optional
+                specialization to become an expert frontend developer.
+              </p>
+            </details>
+            <details class="learning-plan assessment" id="assessment">
+              <summary>
+                Your self-assessment — To revise, Learning, Comfortable
+              </summary>
+              <p>
+                Choose your own status for each skill area. Selections are saved
+                only in this browser when local storage is available. No status is
+                assigned automatically and nothing is sent to a server.
+              </p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">JavaScript skill</th>
+                      <th scope="col">Includes</th>
+                      <th scope="col">Your status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="assessment-rows"></tbody>
+                </table>
+              </div>
+              <p id="assessment-status" role="status" aria-live="polite"></p>
+              <button id="clear-assessment" type="button">Clear assessment</button>
+              <p>
+                Use your gaps to choose exercises and projects. For a personalized
+                plan, describe your selections and ask: “Create a personalized
+                JavaScript learning plan based on this self-assessment. Prioritize
+                gaps and include practice exercises and projects.”
+              </p>
+            </details>
+            <div class="level-filter">
+              <label for="track">Lesson level</label
+              ><select id="track">
+                <option value="all">All levels</option>
+                <option value="1">
+                  Level 1 — JavaScript Fundamentals (Revision)
+                </option>
+                <option value="2">Level 2 — Core JavaScript (Intermediate)</option>
+                <option value="3">
+                  Level 3 — DOM Manipulation and Browser JavaScript
+                </option>
+                <option value="4">Level 4 — Asynchronous JavaScript</option>
+                <option value="5">
+                  Level 5 — Object-Oriented and Functional Programming
+                </option>
+                <option value="6">
+                  Level 6 — Modern JavaScript Architecture and Tooling
+                </option>
+                <option value="7">Level 7 — Testing and Debugging</option>
+                <option value="8">
+                  Level 8 — Performance, Security, and Accessibility
+                </option>
+                <option value="9">Level 9 — Advanced JavaScript Internals</option>
+                <option value="10">
+                  Level 10 — Expert-Level JavaScript Engineering
+                </option></select
+              ><button id="reset" type="button">Reset filters</button>
+            </div>
+            <noscript
+              ><p>
+                Enable JavaScript to view and search the handbook, or
+                <a href="../javascript-mastery-roadmap.md"
+                  >read the source roadmap</a
+                >.
+              </p></noscript
+            >
+            <div id="content"></div>
+            <div id="projects" aria-label="Practical JavaScript projects"></div>
           </div>
-          <p>
-            The roadmap’s starting point is intermediate, but it does not
-            measure your ability. Levels and any self-assessment selections are
-            learning aids, not a certification.
-          </p>
-          <h2>Recommended learning order</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Priority</th>
-                  <th scope="col">Topics</th>
-                  <th scope="col">Why</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1 — Highest</td>
-                  <td>Closures, this, objects, array methods</td>
-                  <td>Strengthen core JS knowledge</td>
-                </tr>
-                <tr>
-                  <td>2 — Highest</td>
-                  <td>DOM, events, browser APIs</td>
-                  <td>Directly useful in your daily front-end work</td>
-                </tr>
-                <tr>
-                  <td>3 — Highest</td>
-                  <td>Promises, async/await, Fetch, event loop</td>
-                  <td>Essential for modern asynchronous applications</td>
-                </tr>
-                <tr>
-                  <td>4 — High</td>
-                  <td>Classes, prototypes, modules, architecture</td>
-                  <td>Build reusable libraries and maintainable components</td>
-                </tr>
-                <tr>
-                  <td>5 — High</td>
-                  <td>Testing, debugging, performance</td>
-                  <td>Develop production-level engineering skills</td>
-                </tr>
-                <tr>
-                  <td>6 — High</td>
-                  <td>TypeScript and React integration</td>
-                  <td>
-                    Support your transition to modern front-end development
-                  </td>
-                </tr>
-                <tr>
-                  <td>7 — Medium</td>
-                  <td>Advanced internals, algorithms, metaprogramming</td>
-                  <td>Develop deeper language expertise</td>
-                </tr>
-                <tr>
-                  <td>8 — Optional</td>
-                  <td>Engine internals, ASTs, binary data</td>
-                  <td>Pursue specialized JavaScript knowledge</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p>
-            TypeScript and React integration are a later priority in the
-            roadmap. Build a strong JavaScript model first; use the
-            <a href="../docs/typescript-handbook.html">TypeScript handbook</a>
-            and <a href="../docs/gsap-handbook.html">GSAP handbook</a> when
-            those integrations become useful. You do not need every optional
-            specialization to become an expert frontend developer.
-          </p>
-        </details>
-        <details class="learning-plan assessment" id="assessment">
-          <summary>
-            Your self-assessment — To revise, Learning, Comfortable
-          </summary>
-          <p>
-            Choose your own status for each skill area. Selections are saved
-            only in this browser when local storage is available. No status is
-            assigned automatically and nothing is sent to a server.
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">JavaScript skill</th>
-                  <th scope="col">Includes</th>
-                  <th scope="col">Your status</th>
-                </tr>
-              </thead>
-              <tbody id="assessment-rows"></tbody>
-            </table>
-          </div>
-          <p id="assessment-status" role="status" aria-live="polite"></p>
-          <button id="clear-assessment" type="button">Clear assessment</button>
-          <p>
-            Use your gaps to choose exercises and projects. For a personalized
-            plan, describe your selections and ask: “Create a personalized
-            JavaScript learning plan based on this self-assessment. Prioritize
-            gaps and include practice exercises and projects.”
-          </p>
-        </details>
-        <div class="level-filter">
-          <label for="track">Lesson level</label
-          ><select id="track">
-            <option value="all">All levels</option>
-            <option value="1">
-              Level 1 — JavaScript Fundamentals (Revision)
-            </option>
-            <option value="2">Level 2 — Core JavaScript (Intermediate)</option>
-            <option value="3">
-              Level 3 — DOM Manipulation and Browser JavaScript
-            </option>
-            <option value="4">Level 4 — Asynchronous JavaScript</option>
-            <option value="5">
-              Level 5 — Object-Oriented and Functional Programming
-            </option>
-            <option value="6">
-              Level 6 — Modern JavaScript Architecture and Tooling
-            </option>
-            <option value="7">Level 7 — Testing and Debugging</option>
-            <option value="8">
-              Level 8 — Performance, Security, and Accessibility
-            </option>
-            <option value="9">Level 9 — Advanced JavaScript Internals</option>
-            <option value="10">
-              Level 10 — Expert-Level JavaScript Engineering
-            </option></select
-          ><button id="reset" type="button">Reset filters</button>
         </div>
-        <noscript
-          ><p>
-            Enable JavaScript to view and search the handbook, or
-            <a href="../javascript-mastery-roadmap.md"
-              >read the source roadmap</a
-            >.
-          </p></noscript
-        >
-        <div id="content"></div>
-        <div id="projects" aria-label="Practical JavaScript projects"></div>
       </div>
     </main>
     <footer>

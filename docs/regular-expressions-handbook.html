@@ -81,46 +81,52 @@
       </nav>
     </div>
     <header class="hero">
-      <h1>Regular Expressions Handbook</h1>
-      <p>
-        A practical, searchable cheatsheet for JavaScript regular expressions —
-        syntax, quantifiers, groups, flags, lookarounds, validation patterns,
-        and common pitfalls.
-      </p>
-      <a
-        class="external"
-        href="https://regexr.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Test your expressions on RegExr ↗</a
-      ><input
-        id="search"
-        type="search"
-        placeholder="Search: lookahead, capture groups, email, flags…"
-        aria-label="Search regular expression reference"
-      />
+      <div class="container">
+        <h1>Regular Expressions Handbook</h1>
+        <p>
+          A practical, searchable cheatsheet for JavaScript regular expressions —
+          syntax, quantifiers, groups, flags, lookarounds, validation patterns,
+          and common pitfalls.
+        </p>
+        <a
+          class="external"
+          href="https://regexr.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Test your expressions on RegExr ↗</a
+        ><input
+          id="search"
+          type="search"
+          placeholder="Search: lookahead, capture groups, email, flags…"
+          aria-label="Search regular expression reference"
+        />
+      </div>
     </header>
     <main>
-      <aside aria-label="Topics">
-        <div class="nav-title">Topics</div>
-        <nav id="nav" aria-label="Regular expression topics"></nav>
-      </aside>
-      <div>
-        <div class="toolbar">
-          <strong>JavaScript RegExp reference</strong><span id="count"></span>
+      <div class="container">
+        <div class="row">
+          <aside aria-label="Topics">
+            <div class="nav-title">Topics</div>
+            <nav id="nav" class="guide-nav" aria-label="Regular expression topics"></nav>
+          </aside>
+          <div>
+            <div class="toolbar">
+              <strong>JavaScript RegExp reference</strong><span id="count"></span>
+            </div>
+            <div class="tip">
+              All examples use JavaScript regular expressions. Try them in DevTools
+              or
+              <a
+                href="https://regexr.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >RegExr</a
+              >. Note: some advanced flags require modern browsers. Regex is useful
+              for format checks, not proof that input is safe or valid.
+            </div>
+            <div id="content"></div>
+          </div>
         </div>
-        <div class="tip">
-          All examples use JavaScript regular expressions. Try them in DevTools
-          or
-          <a
-            href="https://regexr.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >RegExr</a
-          >. Note: some advanced flags require modern browsers. Regex is useful
-          for format checks, not proof that input is safe or valid.
-        </div>
-        <div id="content"></div>
       </div>
     </main>
     <footer>

@@ -79,31 +79,37 @@
       </nav>
     </div>
     <header class="hero">
-      <h1>Git Reference Handbook</h1>
-      <p>A practical command reference for everyday work: find a task, check the syntax, and copy an example.</p>
-      <a class="external" href="https://git-scm.com/docs" target="_blank" rel="noopener noreferrer">Official Git reference ↗</a>
-      <input id="search" type="search" placeholder="Search: unstage, undo, branch, stash, force…" aria-label="Search Git reference" />
+      <div class="container">
+        <h1>Git Reference Handbook</h1>
+        <p>A practical command reference for everyday work: find a task, check the syntax, and copy an example.</p>
+        <a class="external" href="https://git-scm.com/docs" target="_blank" rel="noopener noreferrer">Official Git reference ↗</a>
+        <input id="search" type="search" placeholder="Search: unstage, undo, branch, stash, force…" aria-label="Search Git reference" />
+      </div>
     </header>
     <main>
-      <aside aria-label="Tasks">
-        <div class="nav-title">Tasks</div>
-        <nav id="nav" aria-label="Git tasks"></nav>
-      </aside>
-      <div>
-        <div class="toolbar">
-          <strong>Git commands by task</strong><span id="count" role="status" aria-live="polite"></span>
+      <div class="container">
+        <div class="row">
+          <aside aria-label="Tasks">
+            <div class="nav-title">Tasks</div>
+            <nav id="nav" class="guide-nav" aria-label="Git tasks"></nav>
+          </aside>
+          <div>
+            <div class="toolbar">
+              <strong>Git commands by task</strong><span id="count" role="status" aria-live="polite"></span>
+            </div>
+            <div class="tip">
+              Run commands inside your repository unless starting or cloning one.
+              Replace &lt;placeholders&gt; with your values; [brackets] mark optional arguments and | marks alternatives.
+              Examples are independent. HEAD is the current commit; origin is a remote name.
+              Check <code>git status</code> before changing work.
+              <code>switch</code> and <code>restore</code> require Git 2.23+;
+              <code>config set/list</code> require Git 2.46+ (older forms:
+              <code>git config --global key value</code> and <code>git config --list --show-origin</code>).
+            </div>
+            <noscript><p>Enable JavaScript to view and search the command reference.</p></noscript>
+            <div id="content"></div>
+          </div>
         </div>
-        <div class="tip">
-          Run commands inside your repository unless starting or cloning one.
-          Replace &lt;placeholders&gt; with your values; [brackets] mark optional arguments and | marks alternatives.
-          Examples are independent. HEAD is the current commit; origin is a remote name.
-          Check <code>git status</code> before changing work.
-          <code>switch</code> and <code>restore</code> require Git 2.23+;
-          <code>config set/list</code> require Git 2.46+ (older forms:
-          <code>git config --global key value</code> and <code>git config --list --show-origin</code>).
-        </div>
-        <noscript><p>Enable JavaScript to view and search the command reference.</p></noscript>
-        <div id="content"></div>
       </div>
     </main>
     <footer>
