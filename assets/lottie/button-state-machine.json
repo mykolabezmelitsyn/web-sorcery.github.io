@@ -1,0 +1,55 @@
+{
+  "initial": "idle",
+  "states": [
+    {
+      "name": "idle",
+      "type": "PlaybackState",
+      "animation": "dot",
+      "autoplay": false,
+      "loop": false,
+      "transitions": [
+        {
+          "type": "Transition",
+          "toState": "active",
+          "guards": [
+            {
+              "type": "Boolean",
+              "inputName": "isActive",
+              "conditionType": "Equal",
+              "compareTo": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "active",
+      "type": "PlaybackState",
+      "animation": "dot",
+      "autoplay": true,
+      "loop": true,
+      "transitions": [
+        {
+          "type": "Transition",
+          "toState": "idle",
+          "guards": [
+            {
+              "type": "Boolean",
+              "inputName": "isActive",
+              "conditionType": "Equal",
+              "compareTo": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "type": "Boolean",
+      "name": "isActive",
+      "value": false
+    }
+  ],
+  "interactions": []
+}
