@@ -105,3 +105,44 @@
   outline: 2px solid #8db6ff;
   outline-offset: 3px;
 }
+
+.site-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.site-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #34435a;
+  border-radius: 8px;
+  background: #101827;
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.site-theme-toggle[hidden] {
+  display: none;
+}
+.site-theme-toggle:hover {
+  background: #233756;
+}
+.site-theme-toggle:focus-visible {
+  outline: 2px solid #8db6ff;
+  outline-offset: 3px;
+}
+.theme-icon-sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+:root[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}

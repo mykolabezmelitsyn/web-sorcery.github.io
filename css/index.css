@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --bg: #f7f8fa;
   --panel: #fff;
   --ink: #17212d;
@@ -241,7 +241,8 @@ footer {
   }
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
+    color-scheme: dark;
     --bg: #0c1220;
     --panel: #172133;
     --ink: #e9eef7;
@@ -250,17 +251,38 @@ footer {
     --accent-soft: #233756;
     --accent-ink: #bed4ff;
   }
-  .tag.soon {
+  :root:not([data-theme]) .tag.soon {
     background: #2b3545;
     color: #b7c1d0;
   }
-  a.doc-card:hover {
+  :root:not([data-theme]) a.doc-card:hover {
     box-shadow: 0 10px 25px #0003;
   }
-  .note {
+  :root:not([data-theme]) .note {
     color: var(--ink);
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c1220;
+  --panel: #172133;
+  --ink: #e9eef7;
+  --muted: #aab9cc;
+  --line: #34435a;
+  --accent-soft: #233756;
+  --accent-ink: #bed4ff;
+}
+:root[data-theme="dark"] .tag.soon {
+  background: #2b3545;
+  color: #b7c1d0;
+}
+:root[data-theme="dark"] a.doc-card:hover {
+  box-shadow: 0 10px 25px #0003;
+}
+:root[data-theme="dark"] .note {
+  color: var(--ink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

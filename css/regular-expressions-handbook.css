@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --bg: #f7f8fa;
   --panel: #fff;
   --ink: #17212d;
@@ -281,7 +281,8 @@ input:focus-visible {
   }
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
+    color-scheme: dark;
     --bg: #0c1220;
     --panel: #172133;
     --ink: #e9eef7;
@@ -290,19 +291,42 @@ input:focus-visible {
     --accent-soft: #233756;
     --accent-ink: #bed4ff;
   }
-  #nav a.active {
+  :root:not([data-theme]) #nav a.active {
     background: #304970;
     color: #e3edff;
   }
-  button {
+  :root:not([data-theme]) button {
     background: #263b60;
     color: #e3edff;
     border-color: #3b5a8a;
   }
-  button:hover {
+  :root:not([data-theme]) button:hover {
     background: #304970;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c1220;
+  --panel: #172133;
+  --ink: #e9eef7;
+  --muted: #aab9cc;
+  --line: #34435a;
+  --accent-soft: #233756;
+  --accent-ink: #bed4ff;
+}
+:root[data-theme="dark"] #nav a.active {
+  background: #304970;
+  color: #e3edff;
+}
+:root[data-theme="dark"] button {
+  background: #263b60;
+  color: #e3edff;
+  border-color: #3b5a8a;
+}
+:root[data-theme="dark"] button:hover {
+  background: #304970;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
