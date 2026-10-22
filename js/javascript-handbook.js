@@ -2549,6 +2549,7 @@ const handbook = {
   ],
 };
 (() => {
+  window.JavaScriptApiNotes?.bind(handbook);
   const content = document.querySelector("#content");
   const nav = document.querySelector("#nav");
   const search = document.querySelector("#search");
@@ -2595,6 +2596,8 @@ const handbook = {
     pre.append(code);
     parent.append(head, pre);
     window.HandbookHighlight?.highlight(code);
+    const notes = window.JavaScriptApiNotes?.decorate(code, file);
+    if (notes) parent.insertBefore(notes, pre);
   }
   const projects = document.querySelector("#projects");
   const totalLessons = handbook.chapters.reduce(
@@ -2633,6 +2636,7 @@ const handbook = {
     return details;
   }
   function render() {
+    window.JavaScriptApiNotes?.close();
     const query = search.value.trim().toLowerCase();
     const fragment = document.createDocumentFragment();
     const menu = document.createDocumentFragment();
