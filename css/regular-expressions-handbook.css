@@ -157,6 +157,7 @@ h2 {
   margin: 0 0 18px;
 }
 .entry {
+  position: relative;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -168,6 +169,7 @@ h2 {
   font-size: 1.14rem;
   margin: 0 0 5px;
   overflow-wrap: anywhere;
+  padding-inline-end: 24px;
 }
 .entry p {
   color: var(--muted);
