@@ -263,7 +263,7 @@ const handbook = {
         {
           name: "Choose the right animation tool",
           explanation:
-            "GSAP updates properties over time. A tween calculates intermediate values between a start and an end; a timeline arranges several tweens around one playhead. The playhead is the current time inside an animation. Core handles CSS animation and plain numeric JavaScript properties; plugins add specialized behavior.\n\nUse a CSS transition for a simple hover state. CSS keyframes suit a self-contained repeating effect. The Web Animations API (WAAPI) offers native JavaScript playback control. GSAP is useful when sequencing, reversing, interruption, dynamic values, or scroll integration becomes central. None of these choices replaces semantic HTML or good layout. This complete first file animates a decorative box only when its button is activated, and respects reduced motion.",
+            "GSAP animates properties by changing their values over time. A tween calculates the values between a start and an end. A timeline arranges tweens around one playhead: the current time within the animation. GSAP core handles CSS animation and numeric JavaScript object properties. Plugins add specialized features.\n\nChoose a CSS transition for a simple hover state or CSS keyframes for a self-contained repeating effect. The Web Animations API (WAAPI) provides native JavaScript playback control. GSAP is useful when you need coordinated sequences, reversal, interruption, dynamic values, or scroll integration. You still need semantic HTML and sound layout. This complete example animates a decorative box when its button is activated and respects reduced motion.",
           files: [
             {
               name: "index.html",
@@ -278,7 +278,7 @@ const handbook = {
         {
           name: "Install once, then register the plugins you use",
           explanation:
-            "For a Vite project, install GSAP from public npm and import its ES modules. Vite serves and bundles modules; it does not change GSAP’s animation model. For a plain HTML experiment, the previous example uses the pinned CDN distribution. Choose one installation approach per example, and keep core and plugin versions aligned.\n\nRegister imported plugins explicitly so bundlers retain them and GSAP knows their capabilities. CSSPlugin is included with the normal gsap import. Public npm includes the formerly paid plugins in GSAP 3.13 and later; older private-registry tutorials are outdated. Availability is subject to GSAP’s standard license, not an MIT license. The live license page redirected to the forums outage during verification; consult its current terms for licensing decisions.",
+            "In a Vite project, install GSAP from public npm and import its ES modules. Vite serves and bundles those modules without changing how GSAP animates. For plain HTML, the previous example loads a fixed version from a CDN. Use one installation approach per example, with matching core and plugin versions.\n\nRegister imported plugins explicitly so GSAP recognizes them and bundlers retain them. The normal gsap import already includes CSSPlugin. Since GSAP 3.13, public npm has included the formerly paid plugins, so older private-registry instructions are outdated. GSAP uses its standard license, not MIT. During the original verification, the live license page redirected to a forums outage page. Consult the current license terms before making licensing decisions.",
           files: [
             {
               name: "commands.sh",
@@ -332,7 +332,7 @@ const handbook = {
         {
           name: "Targets and the four core methods",
           explanation:
-            "A target can be a selector, a DOM element, an array of targets, or a plain object. A selector may match several elements; it does not create missing elements. Query only after the DOM exists. to reads the current value and animates to the destination. from starts at the supplied value and ends at the original value. fromTo supplies both ends. set applies values immediately.\n\nThe example gives three independent boxes different paths. Using a DOM reference is useful when a component must own exactly one element; scoped selectors become important later. Avoid having CSS transitions and GSAP both animate the same transform at once.",
+            "The four core methods set an animation's start and end values. to starts at the current value and moves to the supplied destination. from starts at the supplied value and ends at the original value. fromTo specifies both ends. set applies values immediately.\n\nTargets can be selectors, DOM elements, arrays of targets, or plain objects. A selector can match several elements but cannot create missing ones. Query after the DOM exists. This example animates three independent boxes along different paths. Use a DOM reference when a component must target exactly one element; scoped selectors are covered later. Avoid letting CSS transitions and GSAP animate the same transform simultaneously.",
           files: [
             {
               name: "body.html",
@@ -347,7 +347,7 @@ const handbook = {
         {
           name: "Timing, repetition, and dynamic values",
           explanation:
-            "duration, delay, and repeatDelay use seconds. ease changes how progress is distributed. repeat counts additional iterations; repeat: 1 plays twice, and -1 repeats indefinitely. yoyo alternates direction; paused creates an animation without starting it. Relative values such as +=100 are evaluated from the starting property value.\n\nA function-based value receives the target index, target, and targets array. It is evaluated when the tween initializes, not continuously on every frame. Here the paused group starts on click, travels different distances, repeats once, and returns because of yoyo. Repeated clicks restart the same tween instead of adding competing copies.",
+            "Timing options control when a tween plays and repeats. duration, delay, and repeatDelay are measured in seconds. ease controls how progress changes over that time. repeat counts extra plays: 1 plays twice, while -1 repeats indefinitely. yoyo alternates direction. paused creates the animation without starting it. A relative value such as +=100 is calculated from the property's starting value.\n\nA function-based value receives the target's index, the target, and the targets array. It runs when the tween initializes, not on every frame. Here a click starts the paused group. Targets travel different distances, repeat once, and return with yoyo. Further clicks restart the same tween instead of creating competing copies.",
           files: [
             {
               name: "body.html",
@@ -362,7 +362,7 @@ const handbook = {
         {
           name: "Plain objects and immediate rendering",
           explanation:
-            "GSAP can animate numeric object properties independently of the DOM. Use onUpdate when another renderer needs the changing value. The counter example writes text, but an object can also drive canvas or WebGL. Avoid expensive application rendering on every frame.\n\nfrom and fromTo normally apply their starting values immediately, even if scheduled for later. That can cause a flash or overwrite another animation’s starting state. For a delayed fromTo, immediateRender: false postpones that initial write. It does not make the tween’s future values reactive; use invalidate or a fresh tween when measurements change.",
+            "GSAP can animate numeric properties on ordinary JavaScript objects without using the DOM. onUpdate lets another renderer read the changing value. This counter writes text, but the same approach can drive canvas or WebGL. Keep application rendering on each frame inexpensive.\n\nfrom and fromTo normally apply their starting values immediately, even when scheduled for later. This can cause a flash or overwrite another animation's starting state. For a delayed fromTo, immediateRender: false postpones that first write. It does not keep future values reactive. When measurements change, use invalidate or create a new tween.",
           files: [
             {
               name: "body.html",
@@ -402,7 +402,7 @@ const handbook = {
         {
           name: "Transforms, percentages, and origins",
           explanation:
-            "x and y are translation distances, normally pixels for numeric values. xPercent and yPercent use the animated element’s own dimensions, so -50 centers an element around its positioning point. rotation is around the Z axis; rotationX and rotationY tilt in 3D. scale, scaleX, and scaleY resize visually, without changing layout dimensions. skewX and skewY slant an element.\n\ntransformOrigin chooses the pivot. GSAP composes these transform components; do not also replace transform through another animation system. A parent’s perspective affects its children’s 3D scene; transformPerspective sets perspective on the transformed element itself. Use subtle 3D motion and test text legibility.",
+            "Transform properties move or reshape an element visually. Numeric x and y values normally translate it in pixels. xPercent and yPercent use the element's own dimensions; -50 centers it around its positioning point. rotation turns around the Z axis, while rotationX and rotationY tilt in 3D. scale, scaleX, and scaleY change visual size without changing layout dimensions. skewX and skewY slant the element.\n\ntransformOrigin sets the pivot. GSAP combines these components into a transform, so avoid replacing transform through another animation system at the same time. A parent's perspective affects its children's 3D scene. transformPerspective puts perspective on the transformed element itself. Keep 3D motion restrained and check that text remains legible.",
           files: [
             {
               name: "body.html",
@@ -417,7 +417,7 @@ const handbook = {
         {
           name: "Visibility, color, dimensions, and CSS custom properties",
           explanation:
-            "opacity changes transparency but leaves an element able to receive focus and pointer input. autoAlpha combines opacity with visibility; neither property is a complete dialog or disclosure implementation. hidden, inert, focus, and aria-expanded belong to application state and need deliberate handling.\n\nGSAP can interpolate colors, widths, heights, and CSS custom properties. Width and height can cause layout on each frame; prefer transforms when only the visual appearance needs to change. The custom property below controls a decorative glow, while backgroundColor and opacity provide straightforward feedback. Reserve dimensions for cases where surrounding layout must actually move.",
+            "opacity changes transparency without preventing focus or pointer input. autoAlpha combines opacity and visibility. Neither provides all the behavior needed for a dialog or disclosure. Application state must also manage hidden, inert, focus, and aria-expanded deliberately.\n\nGSAP can animate between colors, dimensions, and CSS custom property values. Width and height may trigger layout calculations on every frame. Prefer transforms for purely visual changes, and animate dimensions when surrounding layout really needs to move. Here a custom property controls a decorative glow, while backgroundColor and opacity provide feedback.",
           files: [
             {
               name: "body.html",
@@ -458,7 +458,7 @@ const handbook = {
         {
           name: "Understand the easing families",
           explanation:
-            "Easing maps elapsed progress to animation progress. none is linear and useful for continuous rotation or scroll-scrubbed travel. power1 through power4 give increasingly pronounced acceleration or deceleration. .in accelerates, .out decelerates, and .inOut does both. A short power2.out is a useful first choice for direct UI feedback.\n\nback overshoots, bounce imitates rebounds, and elastic oscillates. circ, expo, and sine offer distinct smooth curves. steps(6) produces discrete jumps. These are visual curves, not physical collision simulations. Compare them in the official Ease Visualizer and choose an effect that supports the interface’s intent; strong overshoot is rarely appropriate for long text or large viewport movement.",
+            "Easing determines how animation progress changes as time passes. none is linear, making it useful for continuous rotation or scroll-scrubbed travel. power1 through power4 create increasingly strong acceleration or deceleration. .in accelerates, .out decelerates, and .inOut combines both. A short power2.out is a useful starting point for direct interface feedback.\n\nback overshoots, bounce suggests rebounds, and elastic oscillates. circ, expo, and sine provide other smooth curves. steps(6) advances in discrete jumps. These curves imitate motion rather than simulate collisions. Compare them in the official Ease Visualizer and choose one that supports the interface. Strong overshoot rarely suits long text or large movements across the viewport.",
           files: [
             {
               name: "body.html",
@@ -495,7 +495,7 @@ const handbook = {
         {
           name: "Stagger a group without creating a manual timer loop",
           explanation:
-            "A stagger offsets the start times of targets in one tween. A numeric stagger is the gap between starts. each supplies that gap explicitly; amount distributes starts across a total span. from chooses the origin: start, center, end, edges, random, or a numeric index. A stagger ease changes how offsets are distributed, independently of the tween’s own ease.\n\nFor a grid, specify rows/columns or use grid: auto when GSAP can infer them from layout. A function-based stagger returns the start offset for each target. The example creates a wave from the center; modest distances and a small amount prevent the last item from feeling delayed.",
+            "A stagger starts targets at different times within one tween. A numeric stagger sets the gap between starts. each specifies that gap explicitly, while amount spreads the starts across a total span. from selects the starting point: start, center, end, edges, random, or a numeric index. A stagger ease controls the distribution of these offsets separately from the tween's own ease.\n\nFor grids, supply rows and columns, or use grid: auto when GSAP can infer them from layout. A function-based stagger returns each target's start offset. This example creates a wave from the center. Small distances and a short amount keep the last item from feeling delayed.",
           files: [
             {
               name: "body.html",
@@ -531,7 +531,7 @@ const handbook = {
         {
           name: "Callbacks connect motion to application behavior",
           explanation:
-            "onStart runs when an animation begins, onUpdate on updates, onRepeat at repeat boundaries, onComplete at its forward end, and onReverseComplete at its reverse end. Callback parameters can be supplied through the corresponding Params option. A timeline call schedules an arbitrary function, which is covered in Chapter 7.\n\nKeep high-frequency callbacks small. Do not announce a screen-reader message on every update or use animation completion as the only way an essential action can succeed. Here a button reverses the same tween and a polite status reports only completed transitions. If animation is disabled, the application still needs to commit the same logical state.",
+            "Callbacks run application code at points in an animation. onStart runs at the start, onUpdate during updates, onRepeat at repeat boundaries, onComplete at the forward end, and onReverseComplete at the reverse end. Supply arguments through the corresponding Params option. Chapter 7 shows how a timeline call schedules another function.\n\nKeep frequent callbacks small. Avoid screen-reader announcements on every update, and do not make animation completion the only way an essential action succeeds. Here a button reverses one tween, and a polite status reports only completed transitions. If motion is disabled, the application must still apply the same logical state.",
           files: [
             {
               name: "body.html",
@@ -576,7 +576,7 @@ const handbook = {
         {
           name: "Sequence with positions and labels",
           explanation:
-            "A timeline coordinates children under one playhead. Chained to, from, and fromTo calls append at the end unless you supply a position. A number is an absolute time in seconds. +=0.2 and -=0.2 are relative to the timeline’s end. < refers to the most recently added animation’s start; > refers to its end. <0.2 and >-0.3 add offsets to those anchors.\n\nLabels name meaningful points, so later edits do not require recalculating every timestamp. addLabel defines one, add inserts an animation or nested timeline, and call schedules a function. Timeline defaults supply shared child settings; explicit child values override them. Watch the overlapping starts in this example.",
+            "A timeline coordinates animations under one playhead. Chained to, from, and fromTo calls normally append at its end. A position changes where a child starts. Numbers specify absolute seconds; +=0.2 and -=0.2 refer to the timeline's end. < anchors to the most recently added animation's start, and > to its end. <0.2 and >-0.3 add offsets to those anchors.\n\nLabels name meaningful positions so edits do not require recalculating every time. addLabel defines a label, add inserts an animation or nested timeline, and call schedules a function. Timeline defaults provide shared child settings, which explicit child values override. Notice how the positions make starts overlap in this example.",
           files: [
             {
               name: "body.html",
@@ -591,7 +591,7 @@ const handbook = {
         {
           name: "Compose reusable sequences",
           explanation:
-            "A timeline factory returns a timeline rather than starting unrelated tweens in several modules. This makes sequencing, reversal, and testing easier. Build child timelines paused only when they will be controlled independently; a paused child will remain paused when placed in a parent. Scope targets to the owning component.\n\nNested timelines provide separate internal timing while the parent controls the whole sequence. The factory below creates a two-part entrance. Both components can overlap, or the second can start after the first. Keep application state changes outside decorative factories unless that dependency is explicit.",
+            "A timeline factory returns a sequence that callers can control. This makes sequencing, reversal, and testing easier than starting unrelated tweens in several modules. Scope its targets to the component that owns them. Only pause child timelines when they need independent control: a paused child remains paused inside a parent.\n\nNested timelines keep their own internal timing while the parent controls the overall sequence. This factory creates a two-part entrance. The two components can overlap or play one after the other. Keep application state changes outside decorative factories unless the dependency is explicit.",
           files: [
             {
               name: "body.html",
@@ -636,7 +636,7 @@ const handbook = {
         {
           name: "Control a single playhead",
           explanation:
-            "play moves forward, pause stops time, resume continues in the current direction, reverse moves backward, and restart returns to the beginning and plays. seek moves to a time or label. progress is the current iteration’s normalized position from 0 to 1; totalProgress includes repeats and repeat delays. timeScale changes playback speed without rewriting durations. reversed queries or sets direction, and isActive reports whether the animation is currently playing on an active parent.\n\nFor a repeating tween, progress(1) is not equivalent to reaching its final repeated end. The slider below seeks a non-repeating timeline with callbacks suppressed; its output is a learning tool rather than application state.",
+            "Playback methods control one animation's playhead. play moves forward, pause stops it, resume continues in its current direction, reverse moves backward, and restart returns to the beginning and plays. seek moves to a time or label. progress describes the current iteration from 0 to 1; totalProgress also accounts for repeats and repeat delays.\n\ntimeScale changes playback speed without rewriting durations. reversed reads or sets direction. isActive reports whether the animation is playing on an active parent. For a repeating tween, progress(1) does not mean its final repeated end. This slider seeks a non-repeating timeline with callbacks suppressed. Its output demonstrates playback control rather than managing application state.",
           files: [
             {
               name: "body.html",
@@ -651,7 +651,7 @@ const handbook = {
         {
           name: "Stop, recalculate, or restore intentionally",
           explanation:
-            "kill stops and removes an animation, leaving the current rendered values. revert restores the pre-animation inline styles and normally kills the animation. invalidate discards recorded initialization values so a later render can recalculate them; it is not a DOM cleanup operation. Choose the operation according to ownership and the desired visual result.\n\nWhen an interaction is interrupted, reuse or reverse a persistent timeline, or overwrite the conflicting properties with a fresh to tween. Do not queue a new from tween on every event: its starting values can cause jumps. This example changes the travel distance, invalidates the paused tween, restarts it, then allows a separate button to restore its original styles.",
+            "Choose cleanup and recalculation methods according to the result you need. kill stops and removes an animation but leaves its current rendered values. revert restores pre-animation inline styles and normally kills the animation. invalidate discards saved initialization values so a later render can recalculate them. It does not clean up the DOM.\n\nWhen input interrupts a transition, reuse or reverse a persistent timeline, or use a new to tween to overwrite conflicting properties. Creating a new from tween on every event can cause jumps as it applies its starting values. Here the example changes travel distance, invalidates the paused tween, and restarts it. A separate button restores the original styles.",
           files: [
             {
               name: "body.html",
@@ -693,7 +693,7 @@ const handbook = {
         {
           name: "Hover, focus, click, and rapid input",
           explanation:
-            "Treat pointer hover and keyboard focus as equivalent ways to discover an effect. A persistent paused timeline can play toward its open state and reverse from any intermediate point, which avoids stacking animations during rapid input. Pointer movement can drive quickTo for a cursor follower or magnetic button; Chapter 13 covers that optimization.\n\nClick-triggered dropdowns and mobile navigation need semantic state such as aria-expanded, not just an opacity tween. Loading effects should stop when content is ready and should not block access. Validation feedback should accompany a readable error message; a shake alone conveys no useful information to many readers.",
+            "Make an effect available through keyboard focus as well as pointer hover. One persistent paused timeline can play toward its open state or reverse from its current position. This avoids stacking animations during rapid input. Pointer movement can drive quickTo for a cursor follower or magnetic button; Chapter 13 explains that optimization.\n\nClick-driven dropdowns and mobile navigation also need semantic state, such as aria-expanded. Loading effects should stop when content is ready and must not block access. Pair animated validation feedback with a readable error message: shaking a field alone does not communicate the problem to many readers.",
           files: [
             {
               name: "body.html",
@@ -708,7 +708,7 @@ const handbook = {
         {
           name: "Animate an accordion without hiding its state",
           explanation:
-            "An accordion changes document flow; animating height is appropriate because surrounding content must move. Measure the full content height, expose the panel before opening, and hide it only after closing. Keep the latest logical state independent of animation completion. overwrite: auto replaces competing height tweens when input arrives quickly.\n\nDropdowns, tabs, modals, and carousels share the need for an explicit state model but have different keyboard and focus requirements. Use native dialog for modals; tabs need tab selection and panel relationships; carousels need buttons and meaningful reading order. Use the same state-to-animation boundary rather than copying accordion semantics into every component.",
+            "An accordion moves surrounding content, so animating its height is appropriate. Measure the full content height and expose the panel before opening. Hide it only after closing. Keep the latest logical state independent of animation completion. overwrite: auto replaces competing height tweens during rapid input.\n\nOther components also need explicit state, but their keyboard and focus rules differ. Use native dialog for modals. Tabs need selection state and relationships between tabs and panels. Carousels need buttons and a meaningful reading order. Reuse the separation between state and animation without copying accordion semantics into every component.",
           files: [
             {
               name: "body.html",
@@ -753,7 +753,7 @@ const handbook = {
         {
           name: "Translate viewport positions into animation boundaries",
           explanation:
-            'ScrollTrigger connects an animation to a scroll range. trigger is the element being measured. start: "top 85%" means its top meets a point 85% down the viewport. end defines the other boundary. markers reveal those positions during development and should be removed before release. A timeline can own one ScrollTrigger so its children share a single scroll playhead.\n\nWithout scrub, crossings trigger actions: toggleActions lists onEnter, onLeave, onEnterBack, and onLeaveBack actions in that order. once runs a one-time reveal; toggleClass toggles a class without requiring a tween. Separate triggers per independent element are useful for a list of scroll reveals.',
+            "ScrollTrigger maps a scroll range to animation behavior. trigger identifies the measured element. start: \"top 85%\" means its top reaches a point 85% down the viewport. end sets the other boundary. Development markers show these positions; remove them before release. A timeline can own one ScrollTrigger so all its children follow one scroll playhead.\n\nWithout scrub, crossing boundaries triggers actions. toggleActions lists actions for onEnter, onLeave, onEnterBack, and onLeaveBack, in that order. once supports a one-time reveal. toggleClass changes a class without requiring a tween. For independent reveals in a list, give each element its own trigger.",
           files: [
             {
               name: "body.html",
@@ -768,7 +768,7 @@ const handbook = {
         {
           name: "Scrub, pin, and observe scroll state",
           explanation:
-            "scrub: true links animation progress directly to scroll progress; a numeric scrub adds catch-up smoothing. pin holds an element while scrolling through a range. pinSpacing normally reserves space so the following content does not slide underneath; disable it only when that overlap is intentional. Animate a child inside a stable pinned container instead of moving the measurement target.\n\nScrollTrigger.create can observe crossings, toggle classes, or pin without creating a tween. onUpdate receives a trigger instance with progress and direction. Avoid announcing that progress on every frame. This example pins a scene and scrubs a horizontal child over 600 scroll pixels; the following standalone observer only updates a CSS class.",
+            "scrub: true connects animation progress directly to scroll progress. A numeric scrub adds smoothing as the animation catches up. pin holds an element in place during a scroll range. pinSpacing normally reserves space for it so following content does not move underneath. Disable that spacing only for intentional overlap.\n\nKeep the pinned measurement container stable and animate a child inside it. ScrollTrigger.create can observe crossings, toggle classes, or pin without a tween. Its onUpdate receives an instance with progress and direction; avoid announcing progress on every frame. This example pins a scene and moves a horizontal child across 600 scroll pixels. The separate observer only updates a CSS class.",
           files: [
             {
               name: "body.html",
@@ -812,7 +812,7 @@ const handbook = {
         {
           name: "Build a horizontal scene with real measurements",
           explanation:
-            "A horizontal-scrolling section usually converts vertical scroll progress into a translated track. Compute the travel from scrollWidth minus the viewport width. Use function-based values and invalidateOnRefresh so layout changes recalculate both tween travel and the scroll range. A zero-travel layout should stay in normal flow rather than pinning an empty animation.\n\nParallax uses different travel rates to suggest depth; keep distances restrained. Snapping can settle progress onto sections, but it should not fight ordinary navigation. Multi-section stories are easier to maintain when each scene has one authoritative timeline. Avoid attaching scrub triggers to children already controlled by a parent scrub timeline.",
+            "A horizontal section usually translates a track as the page scrolls vertically. Calculate its travel as scrollWidth minus the viewport width. Function-based values with invalidateOnRefresh let layout changes recalculate the tween's travel and scroll range. If travel is zero, keep the section in normal flow instead of pinning it.\n\nParallax suggests depth by moving layers at different rates; use restrained distances. Snapping can settle progress onto sections, but should not resist ordinary navigation. Give each scene one controlling timeline to simplify multi-section stories. Avoid adding separate scrub triggers to children already controlled by a parent scrub timeline.",
           files: [
             {
               name: "body.html",
@@ -827,7 +827,7 @@ const handbook = {
         {
           name: "Refresh layout, update progress, and debug ownership",
           explanation:
-            "refresh remeasures start/end positions after layout changes; update reads the current scroll position and updates progress without performing that measurement pass. getAll lists active triggers, useful for detecting duplicates. Do not refresh in every scroll callback. Refresh after images, fonts, content insertion, or a route layout have settled, and batch repeated requests.\n\nA custom scroll container uses scroller. A third-party virtual scroller may need scrollerProxy and its own update/refresh integration; use its documented adapter rather than guessing. Pinning can fail when ancestors establish unexpected transform or overflow contexts. Check stable geometry, pin order, markers, and ownership before adding pin workarounds.",
+            "refresh remeasures scroll boundaries after layout changes. update reads the current scroll position and updates progress without remeasuring. getAll lists active triggers and helps identify duplicates. Do not refresh on every scroll callback. Wait for images, fonts, inserted content, or route layout to settle, and combine repeated refresh requests.\n\nUse scroller for a custom scroll container. A third-party virtual scroller may need scrollerProxy plus update/refresh integration; follow its documented adapter. Ancestor transforms or overflow can affect pinning. Check geometry, pin order, markers, and ownership before adding workarounds.",
           files: [
             {
               name: "body.html",
@@ -867,7 +867,7 @@ const handbook = {
         {
           name: "Media conditions own their animations",
           explanation:
-            "gsap.matchMedia, added in 3.11, records animations in a context and reverts them when matching conditions change. Conditions can distinguish desktop, mobile, and reduced motion in one setup. Only add desktop pinning when it benefits that layout; mobile can keep content in natural flow. Conditions are about layout and user preference, not a guarantee about input hardware.\n\nReturn cleanup for listeners or other resources created inside the callback. Revert the matchMedia instance when the component is destroyed. Resize and orientation changes can alter geometry; ScrollTrigger normally refreshes on resize, while application-driven layout changes still need an explicit refresh. Size media in CSS before loading to avoid layout shifts.",
+            "gsap.matchMedia creates animations for matching media conditions and reverts them when those conditions change. Added in 3.11, it records animations in a context. One setup can handle desktop, mobile, and reduced motion. Add desktop pinning only when it helps that layout; mobile can retain natural document flow. Media conditions describe layout or preferences, not guaranteed input hardware.\n\nReturn cleanup for listeners and other resources created in the callback. Revert the matchMedia instance when the component is destroyed. Resizing and orientation changes can affect geometry. ScrollTrigger normally refreshes on resize; application-driven layout changes still need an explicit refresh. Reserve media sizes in CSS before loading to prevent layout shifts.",
           files: [
             {
               name: "body.html",
@@ -882,7 +882,7 @@ const handbook = {
         {
           name: "Touch support and responsive ownership",
           explanation:
-            "Do not make hover, mouse position, or wheel input the only route to content. Use pointer events for input that spans mice, pens, and touch, and test keyboard operation separately. A pointer:fine condition is useful for a decorative follower, while click and focus must continue to work everywhere.\n\nKeep mobile animation distances smaller, allow text to wrap naturally, and remove unnecessary pins. When a breakpoint rebuilds a sequence, let the old context revert before creating the next one. Test a live resize across each breakpoint and a reduced-motion preference change; duplicated triggers or leftover inline transforms indicate incomplete cleanup.",
+            "Keep content accessible without hover, mouse movement, or wheel input. Pointer events cover mice, pens, and touch, but keyboard operation still needs separate testing. A pointer:fine condition can enable a decorative follower while click and focus continue working everywhere.\n\nUse smaller travel distances on mobile, let text wrap, and remove unnecessary pins. When a breakpoint rebuilds a sequence, revert the old context before creating its replacement. Test live resizing across every breakpoint and changes to reduced-motion preferences. Duplicate triggers or leftover inline transforms indicate incomplete cleanup.",
           files: [
             {
               name: "body.html",
@@ -925,7 +925,7 @@ const handbook = {
         {
           name: "Keyframes, fresh values, and competing tweens",
           explanation:
-            "Keyframes describe several destinations within one tween; use an array for explicit steps. Function-based values can use current measurements when initialized. repeatRefresh invalidates recorded start/end values on full repeats so random or computed destinations can change; it does not run on every frame or every yoyo return.\n\nmodifiers transforms a computed value before application, useful for wrapping an endless track. snap rounds selected property values. overwrite: auto removes conflicting properties from active tweens when the new tween initializes; it does not indiscriminately destroy every animation on the target. Use onInterrupt to release animation-specific work when a tween is killed before completion. Coordinate independent timelines through one owner rather than both writing the same properties.",
+            "Keyframes specify several destinations within one tween. An array gives explicit steps. Function-based values can read current measurements during initialization. repeatRefresh clears saved start/end values on full repeats, allowing computed or random destinations to change. It does not run every frame or on each yoyo return.\n\nmodifiers transforms a calculated value before it is applied, which is useful for wrapping an endless track. snap rounds chosen property values. When a new tween initializes, overwrite: auto removes conflicting properties from active tweens rather than destroying every animation on the target. onInterrupt can release animation-specific work when a tween is killed before completion. Give shared properties one owner instead of letting independent timelines write them simultaneously.",
           files: [
             {
               name: "body.html",
@@ -940,7 +940,7 @@ const handbook = {
         {
           name: "Fast setters and shared effects",
           explanation:
-            "getProperty reads a GSAP-managed property, often more usefully than parsing a transform matrix. quickTo reuses a tween for frequent changes to one property; quickSetter writes a property directly with low overhead and no easing. Use these after measuring a high-frequency interaction, not as a substitute for a state model.\n\nGlobal defaults affect later animations; config changes engine settings. Prefer timeline-local defaults for reusable components so importing one module does not change every other feature. registerEffect names a reusable factory, optionally extending timelines. The pointer follower below is decorative, bounded to a small pad, and disabled when motion is reduced or the pointer is coarse.",
+            "getProperty reads a GSAP-managed value, often more conveniently than parsing a transform matrix. quickTo reuses a tween for frequent changes to one property. quickSetter writes directly with low overhead and no easing. Use these for measured high-frequency interactions while keeping an explicit state model.\n\nGlobal defaults affect later animations, and config changes engine settings. Prefer timeline-local defaults in reusable components so importing a module does not affect other features. registerEffect names a reusable factory and can add it to timelines. This decorative pointer follower stays inside a small pad and is disabled for reduced motion or a coarse pointer.",
           files: [
             {
               name: "body.html",
@@ -955,7 +955,7 @@ const handbook = {
         {
           name: "Register a composable effect",
           explanation:
-            "An effect bundles a convention into a named factory. It receives normalized targets, merged configuration, and optionally a timeline. Return the tween or timeline so callers retain playback control. extendTimeline adds the effect as a timeline method. Register effects once at the application boundary, and give them names that are unlikely to collide with dependencies.\n\nSynchronize multiple sequences by adding them to one parent timeline, seeking a common progress value, or coordinating explicit controller commands. Avoid two independent clocks owning the same transform. Effects are useful for a shared reveal language; application state and focus management should stay with the component.",
+            "An effect packages a shared animation convention into a named factory. It receives normalized targets, merged configuration, and optionally a timeline. Return its tween or timeline so the caller keeps playback control. extendTimeline adds it as a timeline method. Register effects once at application setup and choose names unlikely to collide with dependencies.\n\nCoordinate sequences with a parent timeline, a shared progress value, or explicit controller commands. Avoid independent clocks controlling the same transform. Effects can establish consistent reveals, while state and focus management remain with the component.",
           files: [
             {
               name: "body.html",
@@ -997,7 +997,7 @@ const handbook = {
         {
           name: "Select, constrain, map, and interpolate",
           explanation:
-            "toArray normalizes selectors or collections to an array. selector(root) creates a scoped query function for component-local targets. clamp bounds a number. normalize maps a source range to 0–1; mapRange maps between arbitrary ranges. interpolate blends numbers, colors, strings, or compatible objects.\n\nMany utilities can return reusable functions when you omit the final value. This makes an input-processing pipeline explicit. Always guard a zero-width input range in application calculations. The example maps a range input to a bounded translation and interpolated color without creating a new eased tween for every event.",
+            "GSAP utilities help select targets and convert input values. toArray turns selectors or collections into an array. selector(root) creates queries scoped to a component. clamp keeps a number within bounds. normalize converts a source range to 0–1, and mapRange converts between arbitrary ranges. interpolate blends numbers, colors, strings, or compatible objects.\n\nMany utilities return reusable functions if you omit the final value. This makes the steps in input processing clear. Guard against a source range with zero width in application calculations. Here a range input drives a bounded translation and blended color without creating an eased tween on every event.",
           files: [
             {
               name: "body.html",
@@ -1012,7 +1012,7 @@ const handbook = {
         {
           name: "Compose discrete and repeating value patterns",
           explanation:
-            "snap rounds to an increment or a supplied set of values; unlike a tween’s snap option, the utility can process ordinary numbers outside animation. random can produce a value or a reusable generator. wrap cycles through a range or array; wrapYoyo moves back and forth across a numeric range. distribute returns a function that calculates target-dependent offsets, useful beyond stagger.\n\npipe combines functions left to right. unitize parses numeric input, applies a function, and appends a unit; getUnit extracts a string’s suffix. Keep units consistent rather than treating any numeric string as pixels. These helpers make mapping pointer or scroll input easier to explain and test.",
+            "Value utilities can create discrete or repeating patterns outside a tween. snap rounds to an increment or a supplied set of values. random returns a value or reusable generator. wrap cycles through a range or array, while wrapYoyo travels back and forth across a numeric range. distribute returns a function calculating target-specific offsets, with uses beyond stagger.\n\npipe runs functions in order from left to right. unitize parses a numeric input, applies a function, and appends a unit. getUnit extracts a string's unit suffix. Keep units consistent instead of assuming every numeric string means pixels. These helpers make pointer and scroll input mapping easier to explain and test.",
           files: [
             {
               name: "utilities.js",
@@ -1055,7 +1055,7 @@ const handbook = {
         {
           name: "Split text responsively and restore it safely",
           explanation:
-            "SplitText creates character, word, and line wrappers so text can animate as a group of targets. Split only what you need. Lines depend on fonts and container width; in 3.13+, autoSplit can re-split when relevant layout changes occur, while onSplit rebuilds the animation. Return that animation so SplitText can manage its cleanup and playhead continuity. mask: lines creates clipping wrappers for a reveal.\n\nThe default aria handling labels the original element and hides generated pieces from assistive technology. Nested links or other semantic content need additional accessibility review: a flattened label can conceal their structure. Use simple decorative headings first. revert restores the original markup; destroy the owning media/context scope on unmount.",
+            "SplitText wraps characters, words, or lines so you can animate them as separate targets. Split only the parts you need. Line breaks depend on fonts and container width. In 3.13 and later, autoSplit can split again after relevant layout changes, and onSplit rebuilds the animation. Return that animation so SplitText can manage cleanup and playhead continuity. mask: lines adds clipping wrappers for a reveal.\n\nDefault aria handling labels the original element and hides the generated pieces from assistive technology. Review nested links or other semantic content carefully: a flattened label can hide their structure. Begin with simple decorative headings. revert restores the original markup. Destroy the owning media/context scope when the component unmounts.",
           files: [
             {
               name: "body.html",
@@ -1070,7 +1070,7 @@ const handbook = {
         {
           name: "Text replacement and scrambled reveals",
           explanation:
-            "TextPlugin replaces text over a tween and is useful for typewriter-like labels; it is not a rich-text editor. ScrambleTextPlugin adds temporary randomized characters while revealing the final message. SplitText animates wrappers rather than changing the underlying message, so choose the plugin according to the intended result.\n\nDo not repeatedly rewrite an aria-live region during an animation. Keep essential text available in a stable accessible label or announce only the final result. The example labels a decorative display separately from its animated text. For reduced motion, immediately use the final phrase. Typewriter effects should not delay access to important instructions.",
+            "TextPlugin replaces text during a tween, making it useful for typewriter-like labels. It is not a rich-text editor. ScrambleTextPlugin reveals a final message through temporary randomized characters. SplitText instead animates wrappers around text without changing the message. Choose the plugin that matches the result you need.\n\nAvoid rewriting an aria-live region on every animation update. Keep essential text in a stable accessible label or announce only the final result. Here a decorative display has a separate label from its animated text. Reduced motion immediately shows the final phrase. Important instructions must remain available without waiting for a typewriter effect.",
           files: [
             {
               name: "body.html",
@@ -1114,7 +1114,7 @@ const handbook = {
         {
           name: "SVG coordinates, attributes, strokes, and clipping",
           explanation:
-            "An SVG viewBox defines an internal coordinate system independent of its CSS pixel size. A path’s d attribute describes commands and points. Core can animate numeric attributes through attr and transforms through CSSPlugin. Stroke width, dasharray, and dashoffset affect outlines; masks use luminance or alpha to reveal content, while clip paths define geometric visible regions.\n\nDrawSVGPlugin manages stroke reveal ranges and length calculations; it does not turn a filled shape into a line drawing. Animate suitable strokes for logo outlines or icons, then coordinate fills and HTML captions on one timeline. Check transform origins in SVG coordinates, and keep accessible titles for meaningful illustrations.",
+            "SVG has its own coordinate system, defined by viewBox, independent of its CSS pixel size. A path's d attribute contains drawing commands and points. GSAP core animates numeric attributes through attr and transforms through CSSPlugin. Stroke width, dasharray, and dashoffset affect outlines. Masks reveal content using luminance or alpha, while clip paths define visible geometric regions.\n\nDrawSVGPlugin calculates lengths and manages stroke reveal ranges. It does not convert a filled shape into a line drawing. Use suitable strokes for icon or logo outlines, then coordinate fills and HTML captions on one timeline. Check transform origins in SVG coordinates and provide accessible titles for meaningful illustrations.",
           files: [
             {
               name: "body.html",
@@ -1129,7 +1129,7 @@ const handbook = {
         {
           name: "Morph outlines and follow a motion path",
           explanation:
-            "MorphSVGPlugin converts and interpolates path shapes, handling differing point counts. Use deliberate endpoint artwork and tune shapeIndex when the correspondence twists. Morphs change geometry; they are different from scaling a whole SVG. MotionPathPlugin moves a target along a path or point array. align and alignOrigin help reconcile the target’s coordinates with the path, and autoRotate follows its tangent.\n\nMotionPathHelper is a development authoring tool for editing paths; remove its UI from production. SVG masks, clip paths, icons, and HTML captions can share a timeline, but DOM nesting and coordinate systems still matter. Start with one inline SVG before mixing independently transformed HTML and SVG layers.",
+            "MorphSVGPlugin animates between path shapes, including paths with different point counts. Choose endpoint artwork deliberately and adjust shapeIndex if the point correspondence causes twisting. A morph changes geometry rather than scaling the whole SVG. MotionPathPlugin moves a target along a path or array of points. align and alignOrigin help match coordinate systems, while autoRotate follows the path's direction.\n\nMotionPathHelper is a development tool for editing paths. Remove its interface from production. Masks, clip paths, icons, and HTML captions can share a timeline, but their DOM nesting and coordinate systems still matter. Start with one inline SVG before combining independently transformed HTML and SVG layers.",
           files: [
             {
               name: "body.html",
@@ -1170,7 +1170,7 @@ const handbook = {
         {
           name: "Animate a layout change with First, Last, Invert, Play",
           explanation:
-            "FLIP means First, Last, Invert, Play: capture the first geometry, make the real layout change, invert the visual difference, then animate those offsets away. Flip.getState captures geometry; Flip.from animates from that capture to the current layout. This is useful for grid/list changes, reordered cards, expanding panels, and DOM reparenting.\n\nThe final DOM should already express the desired logical state. Animate only the visual transition. Flip.to has the opposite direction: animate the current layout toward a recorded state, useful when the captured geometry is the destination. Avoid absolute: true on every item by default; taking elements out of flow can change the layout you meant to preserve.",
+            "FLIP stands for First, Last, Invert, Play. Capture the first geometry, make the real layout change, offset the new layout to look like the old one, then animate those offsets away. Flip.getState captures geometry, and Flip.from animates from that capture to the current layout. Use it for grid/list changes, reordered cards, expanding panels, and moving elements between DOM parents.\n\nThe DOM should already represent the desired final state; animation handles its visual transition. Flip.to works in the other direction, moving the current layout toward a recorded destination. Avoid applying absolute: true to every item by default. Removing elements from normal flow can alter the layout you wanted to preserve.",
           files: [
             {
               name: "body.html",
@@ -1185,7 +1185,7 @@ const handbook = {
         {
           name: "Shared elements and interrupted transitions",
           explanation:
-            "A shared-element transition preserves the visual identity of an item between layouts. Reparent the same element, or give matching elements a stable data-flip-id when using different instances. Capture before DOM changes, then make the complete update before animating. Reordering the actual DOM also changes reading and keyboard order, which should match the final interface.\n\nFlip.getState normally completes relevant in-progress flips before recording the next state, helping repeated interaction produce a stable destination. Use Flip.isFlipping and Flip.killFlipsOf when coordinating a more explicit interruption policy. Framework commits are asynchronous: capture before a state change and animate only after the new layout has been committed. CSS transitions on the same transform can fight FLIP.",
+            "A shared-element transition keeps an item's visual identity as its layout changes. Move the same element between parents, or use stable data-flip-id values to match different instances. Capture the starting state before DOM changes, complete the update, then animate. Actual DOM reordering also changes reading and keyboard order; that order should match the final interface.\n\nFlip.getState normally completes relevant active flips before taking the next capture, helping repeated interactions reach a stable destination. Use Flip.isFlipping and Flip.killFlipsOf for a more explicit interruption policy. Framework updates commit asynchronously: capture before changing state and animate only after the new layout is committed. CSS transitions on the same transform can conflict with FLIP.",
           files: [
             {
               name: "body.html",
@@ -1229,7 +1229,7 @@ const handbook = {
         {
           name: "Draggable, bounds, snapping, and inertia",
           explanation:
-            "The plugin’s exported name is Draggable, not DraggablePlugin. Draggable.create returns an array of instances. type: x, y, x,y, or rotation selects the drag behavior. Bounds constrain travel; snapping aligns the resting value to a grid. Keep ordinary buttons available for people who cannot drag.\n\nInertiaPlugin supplies velocity-based continuation after release when inertia: true is enabled. It is an extra dependency, not an automatic capability of core or Draggable alone. A carousel also needs selected-item state, keyboard navigation, readable labels, and resize handling; a draggable strip is only its movement layer. Destroy the Draggable instance when removing the component.",
+            "Draggable adds dragging behavior. Its exported name is Draggable, not DraggablePlugin, and Draggable.create returns an array of instances. type selects x, y, x,y, or rotation. Bounds limit travel, and snapping aligns resting values to a grid. Provide ordinary buttons for people who cannot drag.\n\nInertiaPlugin adds velocity-based movement after release when inertia: true is enabled. It is a separate dependency; core and Draggable alone do not provide it. A carousel also needs selected-item state, keyboard navigation, readable labels, and resize handling. Dragging supplies only its movement layer. Destroy the Draggable instance when removing the component.",
           files: [
             {
               name: "body.html",
@@ -1244,7 +1244,7 @@ const handbook = {
         {
           name: "Normalize gestures without hijacking navigation",
           explanation:
-            "Observer combines wheel, touch, and pointer input into movement callbacks. It can recognize direction, accumulate deltas, and expose velocities. It does not design your interaction or provide accessible carousel semantics. Pointer and swipe support should complement visible controls rather than replace them.\n\nScope observation to the component. preventDefault can block native scrolling and other browser behavior, so enable it only for a deliberately isolated gesture surface. The example listens to a horizontal swipe or wheel direction and also supplies Previous/Next buttons. It intentionally leaves default scrolling available. Kill the observer during teardown and avoid global wheel handlers for ordinary page navigation.",
+            "Observer turns wheel, touch, and pointer input into movement callbacks. It can report direction, accumulated deltas, and velocity. It does not supply an interaction design or accessible carousel behavior. Keep visible controls alongside pointer and swipe support.\n\nObserve only the relevant component. preventDefault can block native scrolling and other browser behavior, so reserve it for deliberately isolated gesture surfaces. This example responds to horizontal swipes or wheel direction and provides Previous/Next buttons. It leaves default scrolling available. Kill the observer during teardown, and avoid global wheel handlers for ordinary page navigation.",
           files: [
             {
               name: "body.html",
@@ -1285,7 +1285,7 @@ const handbook = {
         {
           name: "ScrollSmoother is a page-level enhancement",
           explanation:
-            "ScrollSmoother uses ScrollTrigger and transforms a content wrapper to soften its relationship to native scrolling. Create it before other page ScrollTriggers. A wrapper and content element define its ownership; fixed-position UI usually belongs outside that transformed content. effects enables data-speed parallax and data-lag follow effects. Use these sparingly.\n\nThe browser still has a native scroll position, but transformed content affects fixed positioning, focus scrolling, anchors, and measurements. Test all of them. Do not create several page smoothers or combine competing scroll engines. Prefer normal scrolling for reduced motion and often for touch. smoothTouch is opt-in; smooth scrolling is not a prerequisite for a polished site.",
+            "ScrollSmoother softens scrolling by using ScrollTrigger to transform a content wrapper relative to native scroll movement. Create it before the page's other ScrollTriggers. Its wrapper and content elements define its scope. Fixed-position interface elements usually belong outside the transformed content. effects enables data-speed parallax and data-lag following effects; use them sparingly.\n\nThe native scroll position remains, but transformed content affects fixed positioning, focus scrolling, anchors, and measurements. Test each of these. Use one page smoother and avoid competing scroll engines. Prefer normal scrolling for reduced motion and often for touch. smoothTouch is opt-in. A polished site does not require smoothed scrolling.",
           files: [
             {
               name: "body.html",
@@ -1300,7 +1300,7 @@ const handbook = {
         {
           name: "Programmatic scroll should preserve focus and user control",
           explanation:
-            "ScrollToPlugin animates native window or container scroll positions. It is separate from ScrollTrigger, which observes scroll, and from ScrollSmoother, which manages a smoothed page. Avoid a simultaneous CSS scroll-behavior:smooth rule when GSAP owns scrolling. autoKill lets manual input interrupt the tween.\n\nScrolling a heading into view does not move keyboard focus to it. For deliberate navigation, preserve a real link, update the fragment, and focus the destination without causing another scroll jump. Reduced motion can use an immediate native jump. Third-party smooth scrolling is an integration choice requiring its own adapter and accessibility tests, not a default dependency.",
+            "ScrollToPlugin animates native scrolling on the window or a container. ScrollTrigger observes scrolling, while ScrollSmoother manages a smoothed page. Keep these roles distinct. Avoid CSS scroll-behavior:smooth while GSAP controls scrolling. autoKill allows manual input to interrupt the tween.\n\nScrolling to a heading does not give it keyboard focus. For deliberate navigation, keep a real link, update the fragment, and focus the destination without a second scroll jump. Reduced motion can use an immediate native jump. A third-party scroll engine needs its own adapter and accessibility testing; it is an optional integration, not a default dependency.",
           files: [
             {
               name: "body.html",
@@ -1341,7 +1341,7 @@ const handbook = {
         {
           name: "Custom curves and specialized ease packs",
           explanation:
-            "CustomEase creates a reusable easing curve from control points or SVG path data. CustomBounce and CustomWiggle generate bounce and oscillation curves and depend on CustomEase. RoughEase, SlowMo, and ExpoScaleEase come from EasePack: rough variation, slowed middle motion, and scale-aware progress serve different purposes. Load only the tools your scene uses.\n\nAn ease changes time mapping, not the endpoint contract. Natural-looking motion comes from appropriate distance, duration, overshoot, and settling together. A custom curve should solve a visual problem that built-in power or sine easing does not; otherwise it adds maintenance without a visible benefit.",
+            "CustomEase creates a reusable easing curve from control points or SVG path data. CustomBounce and CustomWiggle generate bounce and oscillation curves and depend on CustomEase. EasePack supplies RoughEase, SlowMo, and ExpoScaleEase for rough variation, a slowed middle section, and scale-aware progress. Load only the tools the scene needs.\n\nAn ease changes how progress maps to time, not the agreed endpoint. Convincing motion depends on distance, duration, overshoot, and settling together. Use a custom curve for a visible problem that built-in power or sine easing cannot solve. Otherwise, it adds maintenance without improving the result.",
           files: [
             {
               name: "body.html",
@@ -1356,7 +1356,7 @@ const handbook = {
         {
           name: "Physics plugins describe trajectories, not a full simulation",
           explanation:
-            "Physics2DPlugin derives x/y travel from velocity, angle, gravity, acceleration, and friction. PhysicsPropsPlugin applies velocity and acceleration to individual numeric properties. InertiaPlugin is useful when motion should continue from tracked velocity, such as dragging. These tools do not provide collision detection, constraints, or a rigid-body world.\n\nVelocity is change in position per unit time; momentum is the physical idea of continued motion, but a UI often only needs a convincing approximation. Use a bounce ease for a simple rebound and physics when the path should follow initial conditions. A ballistic arc may leave the viewport; choose a bounded decorative area and stop or revert on teardown.",
+            "Physics plugins calculate motion from initial conditions. Physics2DPlugin derives x/y movement from velocity, angle, gravity, acceleration, and friction. PhysicsPropsPlugin applies velocity and acceleration to individual numeric properties. InertiaPlugin continues movement from tracked velocity, such as after dragging. These tools do not supply collisions, constraints, or a rigid-body simulation.\n\nVelocity means the change in position per unit of time. Momentum describes continued motion in physics, but an interface often needs only a convincing approximation. Use a bounce ease for a simple rebound and physics when the path should follow initial conditions. A ballistic arc can leave the viewport. Keep it in a bounded decorative area and stop or revert it during teardown.",
           files: [
             {
               name: "body.html",
@@ -1404,7 +1404,7 @@ const handbook = {
         {
           name: "Measure rendering work before optimizing it",
           explanation:
-            "The browser resolves styles, calculates layout, paints pixels, and composites layers. Transforms and opacity often avoid layout, making them good choices for frequent animation; they do not guarantee free GPU rendering. Large blurred layers, heavy rasterization, and too many composited elements can still be expensive. force3D and will-change are tools to measure, not blanket performance switches.\n\nLayout thrashing happens when code repeatedly writes styles and then forces geometry reads in the same frame. Batch reads before writes. For many elements, reduce animated targets, stagger work, and avoid offscreen effects. Reserve media dimensions to prevent layout shifts. Profile a realistic scene in Chrome DevTools Performance and Rendering panels, including low-powered mobile conditions; FPS alone does not explain the bottleneck.",
+            "The browser resolves styles, calculates layout, paints pixels, and combines layers for display. Transforms and opacity often avoid layout work, so they suit frequent animation. They do not guarantee free GPU rendering. Large blurred layers, costly pixel rendering, and too many composited elements can still be expensive. Measure force3D and will-change rather than enabling them everywhere.\n\nLayout thrashing occurs when repeated style writes force subsequent geometry reads in the same frame. Batch reads before writes. With many elements, reduce animated targets, stagger work, and avoid offscreen effects. Reserve media dimensions to prevent layout shifts. Profile a realistic scene in Chrome DevTools Performance and Rendering panels, including low-powered mobile conditions. FPS alone does not identify the bottleneck.",
           files: [
             {
               name: "body.html",
@@ -1419,7 +1419,7 @@ const handbook = {
         {
           name: "One rendering clock, with deliberate cleanup",
           explanation:
-            "requestAnimationFrame schedules work before a browser repaint; GSAP’s ticker is tied to that rendering cycle and drives its engine. Add a ticker callback when your canvas or renderer needs to redraw from animated state. Do not run a second animation-frame loop that draws the same scene. deltaTime is milliseconds, while ticker time is seconds.\n\nLag smoothing adjusts the clock after long stalls to preserve coordinated animation; disabling it globally can change behavior throughout the app. Keep defaults unless an integration explicitly requires otherwise. Background tabs may throttle frames. Use elapsed time for custom movement, remove callbacks on teardown, and reduce expensive scroll work instead of merely lowering the reported frame rate.",
+            "requestAnimationFrame schedules work before a browser repaint. GSAP's ticker follows that rendering cycle and drives the animation engine. Add a ticker callback when canvas or another renderer must redraw animated state. Avoid a second animation-frame loop drawing the same scene. Ticker time is in seconds, but deltaTime is in milliseconds.\n\nLag smoothing adjusts the clock after long stalls to keep animations coordinated. Disabling it globally can affect the whole app, so retain defaults unless an integration explicitly requires otherwise. Background tabs can throttle frames. Base custom movement on elapsed time, remove callbacks during teardown, and reduce costly scroll work instead of merely lowering the reported frame rate.",
           files: [
             {
               name: "body.html",
@@ -1459,7 +1459,7 @@ const handbook = {
         {
           name: "A context defines animation ownership",
           explanation:
-            "gsap.context records animations and ScrollTriggers created while its callback executes. A scope element makes selector strings component-local. context.revert restores recorded state and disposes those owned animations. It does not automatically remove arbitrary DOM event listeners, timers, observers, or ticker callbacks. Return cleanup for those resources.\n\nEvents happen after initial setup, so animations created inside them must explicitly re-enter the context through context.add. This prevents delayed work from escaping ownership. Destroy before removing or replacing the DOM. A mount/destroy contract also makes repeated initialization, route changes, and memory-leak investigation much more predictable.",
+            "gsap.context groups animation work under an owner. It records animations and ScrollTriggers created while its callback runs. A scope element limits selector strings to the component. context.revert restores recorded state and disposes those animations. It does not automatically remove arbitrary listeners, timers, observers, or ticker callbacks; return cleanup for those resources.\n\nEvent handlers run after setup, so animations they create must re-enter the context explicitly through context.add. This keeps later work under the same owner. Destroy the owner before replacing or removing its DOM. A clear mount/destroy contract also simplifies repeated setup, route changes, and memory-leak investigation.",
           files: [
             {
               name: "body.html",
@@ -1474,7 +1474,7 @@ const handbook = {
         {
           name: "Guard asynchronous work and interrupted state",
           explanation:
-            "A font promise, fetch, timer, or observer can finish after a component has unmounted. Cancel what can be canceled and guard the rest with an alive flag or an abort signal. Enter the owning context when asynchronous code creates an animation. Clear the external resource as well as reverting the GSAP work.\n\nAn interrupted transition should leave a well-defined application state. Decide whether interruption commits the destination, reverses toward the previous state, or starts from the currently rendered value. Avoid killing every global tween to fix one component. Use local references, one property owner, and repeatable setup/teardown instead.",
+            "Async work may finish after its component has unmounted. A font promise, fetch, timer, or observer needs cancellation where possible and an alive flag or abort signal for the rest. If it creates an animation, re-enter the owning context. Clean up external resources as well as reverting GSAP work.\n\nDecide what interruption means for application state: commit the destination, reverse to the previous state, or continue from the rendered value. Keep that outcome well defined. Use local references, one owner per property, and repeatable setup/teardown instead of killing global tweens to repair one component.",
           files: [
             {
               name: "body.html",
@@ -1516,7 +1516,7 @@ const handbook = {
         {
           name: "Use bundled types and guard DOM references",
           explanation:
-            "GSAP includes its declarations; do not install an unrelated @types/gsap package to hide errors. Import core in your Vite TypeScript project and let inference work where possible. gsap.core.Tween and gsap.core.Timeline describe returned animation instances. gsap.TweenVars describes a configuration object. Types do not prove that a selector matches an element.\n\nNarrow DOM references before using them. Keep callbacks small and give reusable helpers explicit inputs and outputs. This example exports a typed factory, with a separate guarded call at the component boundary. Browser APIs require DOM declarations in tsconfig; the compiler does not make them available during server rendering.",
+            "GSAP includes TypeScript declarations. Do not add an unrelated @types/gsap package to hide errors. Import core in the Vite TypeScript project and use inference where possible. gsap.core.Tween and gsap.core.Timeline describe returned animations; gsap.TweenVars describes configuration. These types do not prove that a selector finds an element.\n\nCheck DOM references before using them. Keep callbacks small and reusable helpers explicit about inputs and outputs. This example exports a typed factory and calls it separately after a component-boundary guard. Browser API types require DOM declarations in tsconfig. The compiler does not make those APIs available during server rendering.",
           files: [
             {
               name: "reveal.ts",
@@ -1532,7 +1532,7 @@ const handbook = {
         {
           name: "Typed controllers and classes keep lifecycle explicit",
           explanation:
-            "A component API can expose initialization, playback, refresh, and destruction while hiding selectors and timing. A factory is often enough; a class is useful when an instance has clear state and several public methods. Keep the returned controller smaller than the underlying GSAP timeline so application code does not casually rewrite its children.\n\nSeparate src/motion tokens and factories from src/components application logic. Inject DOM references and shared settings instead of querying global selectors inside every helper. The class below guards its destroyed state and restores styles on teardown. A real component also owns its listeners and accessibility state; the class is the animation layer.",
+            "A small controller can expose initialization, playback, refresh, and destruction while hiding selectors and timing. A factory is often sufficient. A class helps when an instance has clear state and several public methods. Expose less than the full GSAP timeline so application code cannot casually rewrite its children.\n\nKeep motion tokens and factories in src/motion, separate from application logic in src/components. Pass DOM references and shared settings into helpers instead of querying global selectors everywhere. This class guards its destroyed state and restores styles during teardown. It provides the animation layer; the real component must also own listeners and accessibility state.",
           files: [
             {
               name: "MotionCard.ts",
@@ -1577,7 +1577,7 @@ const handbook = {
         {
           name: "React refs, useGSAP, and scoped cleanup",
           explanation:
-            "React owns rendered structure; GSAP owns selected animated properties after the component commits. useGSAP from @gsap/react wraps GSAP setup in a context and handles cleanup. Scope selectors to a ref so two instances cannot animate each other. Strict Mode’s development setup/cleanup cycle is a useful lifecycle test, not a reason to disable cleanup.\n\nInstall @gsap/react separately. This component creates one paused timeline, stores it in a ref, and commands the same playhead from React state. Rapid changes reverse from the current position. Reduced motion seeks directly to the requested endpoint. When dependencies rebuild an animation instead, use revertOnUpdate when the old setup must be restored before rebuilding. Conditional removal needs an exit-state strategy rather than animating an already unmounted node.",
+            "React controls rendered structure. GSAP controls selected animated properties after React commits the component. useGSAP from the separately installed @gsap/react package creates a context for setup and cleanup. Scope selectors to a ref so separate instances cannot animate each other. Strict Mode's development setup/cleanup cycle tests lifecycle handling; keep cleanup enabled.\n\nThis component stores one paused timeline in a ref and controls its playhead from React state. Rapid changes reverse from the current position. Reduced motion seeks straight to the requested endpoint. If dependencies rebuild the animation instead, use revertOnUpdate when the previous setup must be restored first. Conditional removal needs an exit-state strategy because an unmounted node cannot be animated.",
           files: [
             {
               name: "MotionCard.tsx",
@@ -1593,7 +1593,7 @@ const handbook = {
         {
           name: "Event animations need contextSafe",
           explanation:
-            "An event handler runs after useGSAP’s setup callback. Wrap handlers that create new animations in contextSafe so their work is recorded for cleanup and selector scoping. This does not automatically remove listeners you attached manually; React event props handle that part in this example.\n\nFor timeline control from React state, keep a ref to a timeline and command it from the state transition rather than recreating many concurrent copies. Reusable animation hooks should expose a small controller and dispose their context. For conditional content, retain the exiting view until its exit completes, with an immediate reduced-motion path and a cancellation policy for rapid state changes.",
+            "contextSafe records animations created by handlers that run after useGSAP setup. Wrap those handlers so their animations receive context cleanup and selector scoping. This does not remove manually attached listeners. React event props handle listener management in this example.\n\nWhen React state controls a timeline, store it in a ref and command that instance instead of creating concurrent copies. Reusable animation hooks should expose a small controller and dispose their context. For conditional content, retain the exiting view until its exit finishes. Include an immediate reduced-motion path and a cancellation policy for rapid state changes.",
           files: [
             {
               name: "InteractiveCard.tsx",
@@ -1609,7 +1609,7 @@ const handbook = {
         {
           name: "Next.js and routes introduce another lifecycle",
           explanation:
-            "In the Next.js App Router, a component using hooks or browser animation setup must be a Client Component. Put use client at its module boundary. Server-rendered HTML and the initial client render should agree; read window, matchMedia, dimensions, and DOM references inside the client effect rather than while rendering. Keep baseline content visible so hydration or script failure does not hide essential information.\n\nRoute transitions need coordination with your router and persistent layout boundaries. GSAP does not automatically delay navigation or retain an old route for an exit. Plan cancellation, focus restoration, scroll reset, and refreshed ScrollTriggers after a new route commits. Start with page-enter motion; shared exits across routes are an advanced architectural feature.",
+            "In the Next.js App Router, hooks and browser animation setup belong in a Client Component. Put use client at the module boundary. Server-rendered HTML must agree with the initial client render. Read window, matchMedia, dimensions, and DOM references inside the client effect rather than during rendering. Keep baseline content visible in case hydration or scripts fail.\n\nCoordinate route transitions with the router and persistent layouts. GSAP does not automatically delay navigation or retain the old route for an exit animation. Plan cancellation, focus restoration, scroll reset, and ScrollTrigger refreshes after the new route commits. Begin with page-enter motion. Shared exit animations across routes require more advanced architecture.",
           files: [
             {
               name: "app/components/Intro.tsx",
@@ -1653,7 +1653,7 @@ const handbook = {
         {
           name: "Tokens, factories, presets, and explicit dependencies",
           explanation:
-            "Keep application state separate from animation construction. A central module can define timing and easing tokens; factories can create timelines using those presets. Prefer local defaults to broad gsap.defaults changes. Register shared effects at an explicit setup boundary, and import only the plugins a feature needs.\n\nAn animation controller should expose commands such as open, close, refresh, and destroy. It should not own unrelated networking or routing. Track multiple timelines by responsibility: a hover effect, panel transition, and page reveal should not silently compete for the same transform. Initialization should be safe to repeat only after the prior owner has been destroyed.",
+            "Separate application state from animation construction. A central module can hold shared timing and easing values, called tokens. Factories use them to create timelines. Prefer local defaults over broad gsap.defaults changes. Register shared effects at explicit setup and import only the plugins a feature needs.\n\nExpose focused controller commands such as open, close, refresh, and destroy. Keep unrelated networking and routing elsewhere. Give timelines distinct responsibilities so a hover effect, panel transition, and page reveal do not compete for the same transform. Destroy the prior owner before initializing a replacement.",
           files: [
             {
               name: "motion.ts",
@@ -1669,7 +1669,7 @@ const handbook = {
         {
           name: "Use a state machine when transitions can race",
           explanation:
-            "A state machine names allowed states and transitions. A panel might be closed, opening, open, or closing. Rapid input can change direction while motion is in progress, so current animation progress and logical open/closed intent are distinct values. Keep one authoritative intent and let completion handlers report the settled state only if that intent still applies.\n\nA class or controller can encapsulate that contract for an existing UI component library. Reversing one timeline is often simpler than coordinating many from tweens. Dependency injection makes controllers testable: accept an animation adapter with play/reverse methods rather than mocking GSAP’s entire engine. refresh should explain whether it invalidates values, remeasures scroll positions, or rebuilds the component.",
+            "A state machine names the states a component can occupy and the transitions between them. A panel might be closed, opening, open, or closing. During rapid input, animation progress differs from the intended open/closed state. Keep one authoritative intent. Completion handlers should report a settled state only if it still matches that intent.\n\nA controller or class can keep this contract inside an existing UI component library. Reversing one timeline is often simpler than coordinating many from tweens. For testing, inject a small animation adapter with play/reverse methods instead of mocking the whole GSAP engine. Define whether refresh invalidates values, remeasures scroll positions, or rebuilds the component.",
           files: [
             {
               name: "panel-controller.ts",
@@ -1709,7 +1709,7 @@ const handbook = {
         {
           name: "Reduced motion is a usable alternative, not just a shorter duration",
           explanation:
-            "prefers-reduced-motion expresses a preference to reduce potentially uncomfortable motion. Replace large movement, parallax, zoom, and oscillation with a direct state change or a restrained fade when appropriate. Do not leave elements at opacity zero or offscreen when animation is disabled. Every essential control must remain available.\n\nProvide immediate functional feedback before decorative motion completes. Focus should follow the interface action, not a visual effect’s arbitrary delay. Moving content must not disturb reading order or repeatedly announce changes. Keep keyboard operation, touch controls, and meaningful screen-reader text intact. A user-triggered pause or stop is valuable for persistent movement; avoid building a page that requires constant animation to understand.",
+            "prefers-reduced-motion expresses a preference for less potentially uncomfortable movement. Replace large travel, parallax, zoom, and oscillation with direct state changes or restrained fades where appropriate. When motion is disabled, do not leave content transparent or offscreen. Keep every essential control available.\n\nProvide functional feedback immediately, before decorative motion finishes. Move focus according to the interface action rather than an arbitrary animation delay. Preserve reading order and avoid repeated announcements from moving content. Keep keyboard operation, touch controls, and meaningful screen-reader text intact. Provide a user-controlled pause or stop for persistent movement where useful. Understanding the page should not require constant animation.",
           files: [
             {
               name: "body.html",
@@ -1724,7 +1724,7 @@ const handbook = {
         {
           name: "Animate a native dialog while retaining its behavior",
           explanation:
-            "A native dialog provides a modal foundation, including focus containment and Escape behavior. Animate its presentation without replacing that behavior. Move focus into the dialog when it opens and restore focus to the opener when it closes. Essential closing must still work when motion is disabled or interrupted.\n\nThe example animates only entry and uses immediate native closing, deliberately avoiding an exit phase that might delay Escape. A production exit animation needs a retained closing state, disabled duplicate actions, and a guaranteed final close even after interruption. Test tab order, focus restoration, screen-reader labels, and no-animation operation before judging the visual polish.",
+            "A native dialog supplies modal behavior, including focus containment and Escape handling. Animate its appearance while retaining that behavior. Move focus into it when opening and restore focus to the opener when closing. Closing must remain possible when motion is disabled or interrupted.\n\nThis example animates entry only and closes immediately through the native API, avoiding an exit phase that could delay Escape. A production exit animation needs a retained closing state, prevention of duplicate actions, and a guaranteed final close after interruption. Test tab order, focus restoration, screen-reader labels, and no-animation behavior before evaluating visual polish.",
           files: [
             {
               name: "body.html",
@@ -1769,7 +1769,7 @@ const handbook = {
         {
           name: "Debug from the smallest observable scene",
           explanation:
-            "Check gsap.version, script loading, registration, selector matches, and the console before rewriting the timing. Mark timeline labels, inspect duration and startTime, and use getProperty for actual animated values. Unexpected starting values often come from immediateRender, competing transforms, or a from tween created too early.\n\nScrollTrigger markers reveal trigger ranges; refresh after confirmed geometry changes. GSDevTools is an optional development control panel for scrubbing and inspecting a timeline. Remove its UI and markers from production. A minimal reproduction with one target and one tween is easier to reason about than a full page with several independent owners.",
+            "Begin debugging by checking gsap.version, script loading, plugin registration, selector matches, and console messages. Mark timeline labels, inspect duration and startTime, and read animated values with getProperty. Unexpected starting values often come from immediateRender, competing transforms, or creating a from tween too early.\n\nFor scroll problems, use ScrollTrigger markers to inspect ranges and refresh after confirmed geometry changes. GSDevTools is an optional development panel for seeking through and inspecting a timeline. Remove its interface and markers from production. Reduce the problem to one target and one tween before reasoning about a page with several owners.",
           files: [
             {
               name: "body.html",
@@ -1784,7 +1784,7 @@ const handbook = {
         {
           name: "Test positions deterministically, then test the interface",
           explanation:
-            "For a tween’s numeric contract, pause it and seek to a known progress instead of sleeping for an estimated duration. A linear tween from 0 to 120 should be 60 at progress 0.5. Unit-test application controllers through a small playback adapter; mock only that boundary when the engine is not the subject of the test.\n\nIntegration and end-to-end tests should cover rapid input, reduced motion, live breakpoint changes, repeated mount/destroy, and actual focus/hidden state. Visual regression snapshots should seek a stable position and wait for fonts/assets. A mock cannot prove rendering, ScrollTrigger geometry, or real cleanup; exercise those in a browser too.",
+            "Test numeric animation results by pausing and seeking to a known progress value instead of waiting an estimated time. A linear tween from 0 to 120 should reach 60 at progress 0.5. Test application controllers through a small playback adapter. Mock that boundary only when the engine itself is not being tested.\n\nIntegration and end-to-end tests should cover rapid input, reduced motion, live breakpoint changes, repeated mount/destroy, and actual focus and hidden state. For visual snapshots, seek to a stable position and wait for fonts and assets. Mocks cannot prove rendering, ScrollTrigger geometry, or real cleanup. Test those in a browser too.",
           files: [
             {
               name: "body.html",
@@ -1799,7 +1799,7 @@ const handbook = {
         {
           name: "Browser tests assert behavior rather than arbitrary delays",
           explanation:
-            "Playwright can emulate reduced motion before navigation, exercise controls, and poll for state. The fixture-specific example below targets the accordion in Chapter 9 served as /accordion.html. Its reduced-motion path should complete immediately while preserving the same accessible state. Use locators and assertions rather than fixed waitForTimeout delays.\n\nAdd separate tests with normal motion and rapid toggles, two instances mounted together, and a destroy/remount cycle. Record ScrollTrigger counts before and after a feature to detect leaks, without killing unrelated instances. Cross-browser and real-device testing still matter for SVG geometry, touch behavior, fonts, and rendering costs.",
+            "Playwright can set reduced motion before navigation, operate controls, and repeatedly check until the expected state appears. This fixture-specific test uses Chapter 9's accordion served at /accordion.html. Reduced motion should complete immediately while preserving the same accessible state. Use locators and assertions instead of fixed waitForTimeout delays.\n\nAdd normal-motion tests for rapid toggles, two simultaneous instances, and destroy/remount. Compare ScrollTrigger counts before and after a feature to find leaks without killing unrelated instances. Cross-browser and real-device tests still matter for SVG geometry, touch, fonts, and rendering costs.",
           files: [
             {
               name: "accordion.spec.ts",
@@ -1838,7 +1838,7 @@ const handbook = {
         {
           name: "Optional specialization: Canvas, WebGL, and Three.js",
           explanation:
-            "GSAP animates numeric state; a renderer turns that state into pixels. Canvas 2D can read a plain animated object, as in Chapter 21. WebGL and Three.js can animate object.position, rotation, camera positions, or shader uniform.value fields. Avoid replacing a uniform wrapper when the renderer expects a stable object.\n\nKeep one rendering loop. If Three.js already owns a requestAnimationFrame or setAnimationLoop loop, let it render the updated GSAP state. A camera’s lookAt orientation may need updating while its position moves. DOM and 3D sequences can share a parent timeline, but graphics resources need separate disposal. This adapter is intentionally a contract sketch, not a complete Three.js scene or shader program.",
+            "GSAP changes numeric state, and a renderer draws it. Canvas 2D can read an animated plain object, as Chapter 21 shows. WebGL and Three.js can animate object.position, rotation, camera positions, or shader uniform.value fields. Keep a uniform wrapper intact when the renderer expects a stable object.\n\nUse one rendering loop. If Three.js already runs requestAnimationFrame or setAnimationLoop, let that loop render the changing GSAP state. A moving camera may need its lookAt orientation updated too. DOM and 3D animations can share a parent timeline, but graphics resources require separate disposal. This adapter sketches the contract; it is not a complete Three.js scene or shader program.",
           files: [
             {
               name: "scene-motion.ts",
@@ -1854,7 +1854,7 @@ const handbook = {
         {
           name: "Pixi and video need their own integration contracts",
           explanation:
-            "PixiPlugin maps GSAP properties to PixiJS display objects, including convenience handling for scale, rotation, tint, and filters. Register the Pixi namespace with PixiPlugin.registerPIXI and verify the Pixi major version and filter APIs supported by your integration. The plugin does not create a renderer or load textures.\n\nVideo can act as a clock through currentTime/duration, or GSAP can seek its time for a scrubbed scene. Seeking is asynchronous and codec-dependent; wait for metadata, throttle requests, and test real media. Do not play sound without user intent. Immersive experiences still need useful HTML content, accessible controls, cleanup, and a lower-cost fallback.",
+            "PixiPlugin connects GSAP properties to PixiJS display objects, including convenient scale, rotation, tint, and filter handling. Register the Pixi namespace with PixiPlugin.registerPIXI. Verify which Pixi major version and filter APIs the integration supports. The plugin does not create the renderer or load textures.\n\nVideo can drive animation through currentTime/duration, or GSAP can seek video time for a scroll-scrubbed scene. Seeking is asynchronous and depends on the codec. Wait for metadata, throttle requests, and test real media. Play sound only with user intent. Immersive experiences still need useful HTML, accessible controls, cleanup, and a lower-cost fallback.",
           files: [
             {
               name: "pixi-adapter.js",
@@ -1903,7 +1903,7 @@ const handbook = {
         {
           name: "Design motion before choosing an effect",
           explanation:
-            "Timing is duration; spacing is the distance covered between frames. Acceleration and deceleration shape that spacing. Anticipation prepares an action, follow-through lets secondary parts settle, and overlap gives related parts slightly different timing. Squash and stretch suggest weight, but should not distort important text or controls.\n\nMotion hierarchy directs attention to the primary action first. Rhythm, staging, and choreography organize the sequence; continuity helps a user recognize the same item across states. Use meaningful transitions and short microinteractions to explain cause and effect. Consistent timing tokens make a product feel coherent. Storytelling can justify expressive motion in a product scene, while routine forms usually benefit from subtle feedback. Evaluate the no-motion version as carefully as the animated one.",
+            "Motion design starts with timing and spacing. Timing means duration; spacing means distance covered between frames. Acceleration and deceleration shape that spacing. Anticipation prepares an action, follow-through lets secondary parts settle, and overlap gives related parts slightly different timing. Squash and stretch suggest weight, but should not distort important text or controls.\n\nUse a motion hierarchy to direct attention to the primary action first. Rhythm, staging, and choreography organize the sequence. Continuity helps users recognize an item across states. Meaningful transitions and short microinteractions explain cause and effect. Shared timing tokens create consistency. Expressive motion can support storytelling in a product scene, while routine forms usually need subtle feedback. Evaluate the version without motion just as carefully.",
           files: [
             {
               name: "body.html",
