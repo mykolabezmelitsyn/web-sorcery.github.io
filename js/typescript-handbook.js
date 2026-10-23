@@ -74,7 +74,7 @@ const levels = [
         name: "What TypeScript is and how it differs from JavaScript",
         group: "Topics to cover",
         explanation:
-          "TypeScript adds a checker to JavaScript: it describes which values your functions and objects expect and reports incompatible uses before you run them. Editors use the same information for completions, navigation, and safer renaming. You still need ordinary JavaScript knowledge, runtime tests, and input validation.\n\nAnnotations disappear when TypeScript is compiled. The function below only accepts numbers during checking; its emitted JavaScript still needs real numeric arguments. Multiplying 19.5 by 2 produces 39. Uncomment the last line to see the compiler catch a string argument.",
+          "TypeScript checks how you use JavaScript values before the code runs. You describe the values that functions and objects expect, and the checker reports uses that do not match. These descriptions also help your editor suggest code, navigate definitions, and rename things safely.\n\nType annotations disappear from the generated JavaScript. You still need to understand JavaScript, test behavior, and validate outside input. Here the function expects numbers: 19.5 multiplied by 2 returns 39. Uncommenting the last line lets the checker flag a string argument. The generated JavaScript still needs suitable number inputs.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/basic-types.html",
         environment: "core",
@@ -92,7 +92,7 @@ const levels = [
         name: "TypeScript compiler (`tsc`) and how `.ts` becomes `.js`",
         group: "Topics to cover",
         explanation:
-          "tsc checks TypeScript and, when configured to emit, writes JavaScript. Browsers execute the JavaScript output, not type annotations. Checking and transpiling are separate jobs: a tool can remove types without finding type errors.\n\nInstall a local compiler, keep its lockfile, and run the checker before shipping. This small example uses explicit command-line options so it works before a tsconfig exists. The emitted file has no name: string annotation. The guide uses TypeScript 5.9.3 as a reproducible reference compiler, not a claim that it is the newest release.",
+          "The TypeScript compiler, tsc, checks your code and can produce JavaScript from .ts files. Browsers run the generated JavaScript, without its type annotations. Checking types and translating code are separate jobs: a tool that removes annotations does not necessarily check for errors.\n\nInstall the compiler in the project and keep its version in the lockfile so checks are repeatable. Run checking before shipping. This example supplies compiler options directly, so it works without a tsconfig file. The generated function no longer contains name: string. TypeScript 5.9.3 is used here as a reproducible reference, not as a claim about the latest release.",
         source:
           "https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html",
         environment: "core",
@@ -116,7 +116,7 @@ const levels = [
         name: "Type annotations and type inference",
         group: "Topics to cover",
         explanation:
-          'An annotation follows a name after a colon. Type inference lets the checker work out a type from the initializer or surrounding code. Use lowercase string, number, and boolean for primitive values; String and Number describe wrapper objects instead.\n\nA let variable can change, so let score = 10 gets the general type number. A const primitive can retain a literal type such as "ready". const prevents reassignment of the binding; it does not make an object’s properties immutable. In the example, the increment is valid but assigning text to score is not.',
+          "A type annotation states the kind of value a variable holds. Write it after the name, separated by a colon. Type inference means the checker works out a type from the starting value or surrounding code, so you do not always need an annotation.\n\nUse lowercase string, number, and boolean for primitive values. String and Number name wrapper types. A variable declared with let score = 10 gets the type number because its value can change. A primitive declared with const can keep a specific literal type, such as \"ready\". const prevents reassignment; it does not make an object's contents immutable. The example allows a numeric increment and rejects assigning text.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
         environment: "core",
@@ -134,7 +134,7 @@ const levels = [
         name: "Primitive types: `string`, `number`, `boolean`, `null`, `undefined`",
         group: "Topics to cover",
         explanation:
-          "Use lowercase string, number, and boolean for ordinary primitive values. null and undefined are separate types under strictNullChecks: a variable must explicitly allow a missing value before you assign one. number includes integers and fractional values; it does not guarantee finiteness.\n\nChoose an explicit union when absence is meaningful. The example treats a missing score differently from zero and initializes a user name later. Types describe allowed values; they do not supply defaults or validate arbitrary input.",
+          "Primitive types describe basic values such as strings, numbers, and booleans. Use their lowercase names. With strictNullChecks enabled, null and undefined are separate types. Include them explicitly when a value may be missing.\n\nnumber covers integers and fractions, but does not guarantee a finite value. Use a union when absence has meaning. Here a missing score differs from zero, and the username can be assigned later. A type declaration does not supply a default value or validate arbitrary input.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
         environment: "core",
@@ -152,7 +152,7 @@ const levels = [
         name: "Special types: `any`, `unknown`, `never`, `void`",
         group: "Topics to cover",
         explanation:
-          "These four types solve different problems. any skips checking; unknown accepts any input but requires evidence before use. void describes an ignored return value. never describes a value that cannot exist, including the result of a function that never returns normally.\n\nPrefer unknown at external boundaries and concrete types inside your code. Avoid using any to silence an unexplained error. This example narrows unknown before calling a string method, logs without returning data, and defines a failure path that always throws.",
+          "any turns off useful type checking for a value. unknown accepts any value but requires a check before you use it as a specific type. Use unknown for outside input and concrete types inside the application. Do not use any merely to hide an unexplained error.\n\nvoid describes a function whose return value is ignored. never describes a value that cannot occur, including the result of a function that never returns normally. The examples check an unknown value before calling a string method, log a message without returning a useful value, and throw on a path that cannot return normally.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
         environment: "core",
@@ -170,7 +170,7 @@ const levels = [
         name: "Arrays and tuples",
         group: "Topics to cover",
         explanation:
-          "An array describes repeated values of an element type; a tuple describes specific positions. Use number[] or Array<number> for an open-ended numeric list, and [number, string] when the first and second positions have distinct meanings.\n\nA tuple is still an array at runtime. A readonly tuple prevents writes through that reference but does not validate external data. Destructuring a tuple preserves its positional types. Here map infers price as number, while the result tuple gives id a number type and title a string type.",
+          "An array holds a sequence of values with a shared element type. number[] and Array<number> both describe number arrays. A tuple describes specific positions: [number, string] requires a number first and a string second.\n\nTuples are still arrays at runtime. A readonly tuple prevents writes through that reference; it does not validate outside data. In the example, map infers that each price is a number. Destructuring the tuple keeps the id typed as number and the title typed as string.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types",
         environment: "core",
@@ -188,7 +188,7 @@ const levels = [
         name: "Object types and optional properties",
         group: "Topics to cover",
         explanation:
-          "Object types describe required and optional properties. The ? marker allows a property to be absent, so reading it may produce undefined. A type describes the shape your code relies on; it does not create an object or validate data received from a server.\n\nTypeScript usually checks compatibility structurally: an existing object with the necessary fields can fit even if it has more fields. Fresh object literals get additional excess-property checks that catch common misspellings. In this example, the nickname is optional, and nullish coalescing supplies a display fallback.",
+          "An object type describes the properties a value must have. A question mark marks an optional property. Reading an optional property can produce undefined, so handle that possibility.\n\nThis description does not create an object or validate a server response. TypeScript generally checks an object's shape: an existing value may have extra fields if the required fields fit. Fresh object literals receive extra-property checks that help catch typos. The example uses ?? to provide display text when the optional nickname is missing.",
         source: "https://www.typescriptlang.org/docs/handbook/2/objects.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -205,7 +205,7 @@ const levels = [
         name: "`readonly` properties and arrays",
         group: "Topics to cover",
         explanation:
-          "readonly prevents writes through a particular type. A readonly array disallows mutating methods such as push and permits functions to accept arrays without promising to change them. The original data is not frozen at runtime, and aliases may still be able to mutate it.\n\nProperty readonly is shallow: it prevents replacing that property, not automatically changing everything reachable through it. In this example the sum function only reads its input. The cart cannot have its items property reassigned through its declared type, but its mutable array can still receive another item.",
+          "readonly prevents changes through a particular type. A readonly array has no mutating methods such as push. Use it for an input that your function should read without promising to change it.\n\nThis is a checking rule, not a runtime freeze. Another reference may still change the same data. It is also shallow: a readonly object property cannot be replaced, but an array stored there can remain mutable. The sum function only reads its input. The cart example cannot replace items through its readonly property, but can still push into the array.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties",
         environment: "core",
@@ -223,7 +223,7 @@ const levels = [
         name: "Union and literal types",
         group: "Topics to cover",
         explanation:
-          'A union accepts any one of its member types. Before narrowing, you may only perform operations that are valid for every member. Literal unions such as "draft" | "published" are useful when a value must come from a known set.\n\nThis function accepts a numeric or textual identifier. Both support toString, but only a number supports toFixed; the typeof branch makes that distinction safe. A union describes alternatives and does not convert one alternative into another.',
+          "A union allows one of several types. A literal type restricts a value to a specific choice, such as \"draft\" or \"published\". Before checking which union member you have, you can only use operations supported by every possible member.\n\nThe example accepts an id that is a number or a string. Both support toString, but only a number supports toFixed. The typeof check makes that numeric operation safe. Declaring a union does not convert the value.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
         environment: "core",
@@ -241,7 +241,7 @@ const levels = [
         name: "Intersection types",
         group: "Topics to cover",
         explanation:
-          "An intersection requires a value to satisfy every constituent type at once. It is often useful for combining object capabilities: an identified record plus timestamps, for example. It does not merge or copy runtime objects; you still construct the actual value yourself.\n\nIf two constituent types require incompatible types for the same property, that property can become never, making the intersection impossible to satisfy. Prefer composing compatible shapes. The example combines independent properties into one stored item and supplies both when creating it.",
+          "An intersection requires a value to satisfy all the types joined by &. It is useful for combining object requirements, such as an identified record and timestamp fields.\n\nAn intersection does not merge objects at runtime. You must construct a value with all the required fields. Conflicting requirements for the same property can produce never, meaning no value can satisfy them. The example combines compatible fields and supplies each one.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types",
         environment: "core",
@@ -259,7 +259,7 @@ const levels = [
         name: "Type aliases vs. interfaces",
         group: "Topics to cover",
         explanation:
-          "Both type aliases and interfaces can name object shapes. An interface can extend compatible object shapes and can merge with another interface declaration of the same name. A type alias can also name a primitive, union, tuple, or computed type, and cannot be reopened by declaring it again.\n\nChoose based on the shape you need and your project’s conventions. Neither form changes runtime behavior. Here an interface describes a reusable identity and extends it for a user, while aliases describe a status union and an object with equivalent fields.",
+          "Type aliases and interfaces both give names to object shapes. An interface can extend compatible object types, and declarations with the same interface name can merge. A type alias can also name primitives, unions, tuples, and computed types, but cannot be reopened in that way.\n\nChoose according to the shape you need and the project's conventions. Neither changes runtime behavior. The example extends an identity interface into a user shape, uses an alias for a status union, and shows an equivalent object alias.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces",
         environment: "core",
@@ -277,7 +277,7 @@ const levels = [
         name: "Function parameter types and return types",
         group: "Topics to cover",
         explanation:
-          "Annotate a parameter after its name and a return type after the closing parenthesis. The checker verifies calls and the returned values against that contract. A return type can often be inferred; an explicit one is useful at public boundaries or when you want changes to produce a clear error.\n\nThe example calculates an invoice amount and returns a number. The arrow function demonstrates the same contract in expression form. Types do not convert arguments: a string that looks numeric still needs deliberate parsing before it can satisfy a number parameter.",
+          "Function annotations describe accepted arguments and returned values. Put each parameter's type after its name and the return type after the closing parenthesis. The checker then checks calls and results against that contract.\n\nIt can often infer the return type. An explicit return type is useful at a public boundary because an unintended change is reported at the function. Both invoice examples return a number, including the arrow function form. A numeric string still needs parsing; an annotation does not convert it.",
         source: "https://www.typescriptlang.org/docs/handbook/2/functions.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -294,7 +294,7 @@ const levels = [
         name: "Optional, default, and rest parameters",
         group: "Topics to cover",
         explanation:
-          "An optional parameter includes undefined inside the implementation. A default is used when the argument is omitted or explicitly undefined. A rest parameter gathers remaining arguments into an array and must be last.\n\nDesign the contract around what a caller may actually omit; do not make a callback argument optional merely because a callback author can ignore it. This function accepts optional formatting settings through a default and any number of numeric scores.",
+          "An optional parameter may be omitted and can be undefined inside the function. A default supplies a value when the argument is omitted or is undefined. A rest parameter collects remaining arguments into an array and must be last.\n\nThese choices describe what callers may leave out. Do not mark a callback parameter optional merely because a callback can ignore it. The example combines default formatting settings with a rest parameter for any number of scores.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/functions.html#optional-parameters",
         environment: "core",
@@ -312,7 +312,7 @@ const levels = [
         name: "Type assertions (`as`) and non-null assertions (`!`)",
         group: "Topics to cover",
         explanation:
-          "as tells the checker to trust your asserted type; it neither converts nor validates a value. A non-null assertion ! removes null and undefined from the checker’s view without inserting a runtime guard. Both can hide real failures.\n\nPrefer runtime checks when an assumption can fail. Here a selector is narrowed with instanceof before reading value. The commented assertion alternatives would compile even if the element were absent or had the wrong tag. Later levels show justified assertions at controlled boundaries.",
+          "as tells the checker to trust a type assertion; it does not convert or validate a value. The non-null assertion, !, removes null and undefined from the checked type without adding a runtime check. Both can hide failures.\n\nPrefer checking the value when possible. The example verifies the selected element with instanceof before reading value. The commented assertions would compile even if the element were missing or had the wrong tag. Reserve assertions for cases where you can justify the assumption, as later examples discuss.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
         environment: "browser",
@@ -330,7 +330,7 @@ const levels = [
         name: "Basic `tsconfig.json` configuration",
         group: "Topics to cover",
         explanation:
-          "tsconfig.json defines project files and checker/output settings. strict enables a family of checks; target chooses emitted syntax and lib declares assumed runtime APIs. DOM declarations do not make browser objects exist in Node.\n\nThis is a browser/bundler learning configuration. noEmit makes tsc a checker; Vite or another tool can handle output later. rootDir keeps an explicit source layout if you enable emission. moduleDetection isolates top-level names in independent lessons. Run npx tsc -p . to use the config; passing file arguments bypasses it.",
+          "tsconfig.json defines which files belong to a TypeScript project and how checking and output work. strict enables a group of checks. target controls generated syntax. lib supplies descriptions of available APIs; including DOM descriptions does not create browser APIs in Node.\n\nThis learning configuration assumes a browser app built by a bundler. noEmit leaves output to Vite and uses tsc for checking. rootDir concerns file layout when emitting output. moduleDetection keeps lesson files' top-level names separate. Run npx tsc -p . to use this configuration: supplying source filenames directly on the command line bypasses it.",
         source: "https://www.typescriptlang.org/tsconfig/",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -451,7 +451,7 @@ const levels = [
         name: "Type narrowing and control flow analysis",
         group: "Topics to cover",
         explanation:
-          "Control flow analysis follows your branches, assignments, and early returns to refine a value’s type at each location. The declared type remains the set of values that may be assigned later; the narrowed type describes what is possible here.\n\nKeep the checks close to the use. In the example, returning early removes null, and the remaining typeof branch separates numbers from strings. No assertion is needed. When a callback may run later, preserve a narrowed value in a stable local variable rather than assuming mutable state cannot change.",
+          "Narrowing means using evidence from the code to reduce the types a value can have at a particular point. The checker follows branches, assignments, and returns. A variable's declared type still controls future assignments; its narrowed type describes what is possible here.\n\nKeep checks near the code that needs them. This function returns early for null, then uses typeof to distinguish numbers from strings without an assertion. For work in a later callback, capture a stable local value rather than assuming mutable state stays unchanged.",
         source: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -468,7 +468,7 @@ const levels = [
         name: "`typeof`, `instanceof`, and `in` operators",
         group: "Topics to cover",
         explanation:
-          'typeof works well for primitive categories; instanceof checks a runtime constructor relationship; in tests whether a property exists on an object. Remember that typeof null is "object", so exclude null before object checks.\n\nThese are actual JavaScript checks that also provide checker evidence. They cannot test an interface by name because interfaces disappear. This example handles class instances and an error-shaped object using the appropriate runtime operations.',
+          "typeof checks a primitive value's category. instanceof checks its relationship to a runtime constructor. in checks whether a property exists. These JavaScript operations also give the checker evidence for narrowing.\n\nRemember that typeof null is \"object\", so check for null before treating an object as usable. Interfaces disappear during compilation and cannot be checked with instanceof. The examples use actual class instances and property checks to distinguish error shapes.",
         source: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -485,7 +485,7 @@ const levels = [
         name: "Equality and truthiness narrowing",
         group: "Topics to cover",
         explanation:
-          "Equality checks can rule out precise alternatives; truthiness checks exclude every falsy value, including empty strings and zero. A value being truthy is not the same as being present.\n\nUse explicit null/undefined checks when zero or empty text is meaningful. The first function preserves an empty input rather than replacing it. The second keeps zero as a valid score. This distinction matters in forms, numeric inputs, and filters.",
+          "Equality checks can distinguish exact alternatives. Truthiness checks also remove falsy values, including an empty string and zero. That makes a truthiness check different from a check for a missing value.\n\nCompare explicitly with null or undefined when empty text or zero is meaningful. The first example preserves an empty string. The second preserves zero while filtering numeric input. Choose the check that matches the values you intend to keep.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#truthiness-narrowing",
         environment: "core",
@@ -503,7 +503,7 @@ const levels = [
         name: "Custom type guards",
         group: "Topics to cover",
         explanation:
-          "A predicate function packages reusable runtime checks into a return type that tells TypeScript how to narrow. A true result claims the value is T; the checker trusts your implementation, so checking too little can make later code unsafe.\n\nFor a union input, a false result also narrows away the claimed type. Avoid predicates whose condition is merely a subset of that type, such as “is a positive number” while promising only “is number.” This example checks the full small shape it promises, then uses the guard in filter to produce a User array.",
+          "A custom type guard combines a runtime check with a predicate return type, such as value is User. When it returns true, the checker treats the value as that type. It trusts this promise, so an incomplete check can make later code unsafe.\n\nFor a union, returning false can also exclude the promised type. A guard that checks for a positive number must not claim to identify every number. Keep guards small and check the full shape they promise. The User guard checks the required fields, allowing filter to produce a User array.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
         environment: "core",
@@ -521,7 +521,7 @@ const levels = [
         name: "Discriminated unions",
         group: "Topics to cover",
         explanation:
-          "A discriminated union gives every variant a shared property with a distinct literal value. Checking that property narrows the whole object, making the other fields available only in the appropriate branch. This represents valid combinations more clearly than one object with many unrelated optional fields.\n\nHere a successful result always contains data, and a failed result always contains an error message. A switch selects the right shape. Adding an idle state would require handling it before this function could return a string on every path under strict checking.",
+          "A discriminated union represents alternatives with a shared property whose literal value identifies each case. Checking that property narrows the whole object, making the fields for that case available.\n\nThis models valid combinations more clearly than unrelated optional fields. The example gives successful results data and failed results an error message. A switch handles each case. Adding an idle case means updating the function to keep its promised string return under strict checking.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
         environment: "core",
@@ -539,7 +539,7 @@ const levels = [
         name: "Null and undefined handling",
         group: "Topics to cover",
         explanation:
-          "Strict null checking makes absence visible in types. querySelector may return null, find may return undefined, and an optional property may be missing. Decide what each absence means: a normal empty state, a fallback, or an invalid setup.\n\nA guard or early return supplies evidence. Throwing is appropriate when a required element is a genuine programming precondition; silently asserting ! only hides the possibility. This event-binding function reports a missing required control clearly.",
+          "With strict null checking, possible absence is part of a value's type. querySelector can return null, find can return undefined, and optional properties may be missing. Decide whether absence is normal, needs a fallback, or indicates invalid setup.\n\nA guard or early return supplies evidence before use. Throw when a required setup condition is missing. An assertion with ! only hides the possibility from the checker. This binding helper reports a missing required control instead of continuing with an invalid assumption.",
         source: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
         environment: "browser",
         requires: "Browser DOM; compile with the Level 1 setup",
@@ -556,7 +556,7 @@ const levels = [
         name: "Optional chaining (`?.`) and nullish coalescing (`??`)",
         group: "Topics to cover",
         explanation:
-          "Optional chaining stops a property access or call only when the receiver is null or undefined. Nullish coalescing supplies a fallback only for those two values, preserving zero, false, and empty strings.\n\nNeither operator validates that a non-null value has the expected shape. They are useful after your type already describes a valid optional relationship. Here an optional profile may lack a nickname, and zero remains a valid count.",
+          "Optional chaining, ?., stops access when its receiver is null or undefined. The nullish coalescing operator, ??, supplies a fallback only for those two values. It preserves valid values such as zero, false, and an empty string.\n\nNeither checks the shape of a non-null value. Use them with an appropriate type describing optional relationships. The example safely reads an optional profile and nickname while keeping a count of zero.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html",
         environment: "core",
@@ -574,7 +574,7 @@ const levels = [
         name: "DOM element types: `HTMLElement`, `HTMLInputElement`, `HTMLFormElement`, etc.",
         group: "Topics to cover",
         explanation:
-          "DOM interfaces describe capabilities of actual elements. HTMLElement provides shared HTML behavior; HTMLInputElement adds value and checked, while HTMLFormElement exposes form methods. SVGElement is a separate branch.\n\nA selector string is not proof that an element has those capabilities. Use instanceof to validate a runtime node when markup can vary. This helper returns a real input only after checking its tag-specific class, making downstream value access safe.",
+          "DOM types describe different browser elements. HTMLElement provides common HTML features. HTMLInputElement adds fields such as value and checked. HTMLFormElement describes form features, while SVGElement belongs to a separate element family.\n\nA selector's text does not prove which element exists at runtime. Use instanceof when the markup may vary. This helper checks that the selected node is a real input before reading its value.",
         source:
           "https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement",
         environment: "browser",
@@ -592,7 +592,7 @@ const levels = [
         name: "`querySelector<T>()` and `querySelectorAll<T>()`",
         group: "Topics to cover",
         explanation:
-          "querySelector<T> and querySelectorAll<T> let you specify an expected element type. The generic argument does not check the DOM; a wrong selector can still produce a different element at runtime. querySelector always needs a null check even with a type argument.\n\nUse typed queries for tightly controlled markup and runtime instanceof guards at less controlled boundaries. querySelectorAll gives a NodeList, not an array; Array.from can convert it when you need array operations. This example safely checks every selected input before using it.",
+          "The type parameter in querySelector<T> or querySelectorAll<T> states the element type you expect. It does not check the selected elements at runtime. A wrong selector can therefore give a misleading type. querySelector can still return null.\n\nA typed selector can suit markup you control. Use runtime checks when you have less control. querySelectorAll returns a NodeList, not an array; Array.from converts it when you need an array. The example verifies that the selected elements are inputs.",
         source:
           "https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector",
         environment: "browser",
@@ -610,7 +610,7 @@ const levels = [
         name: "Event types: `Event`, `MouseEvent`, `KeyboardEvent`, `SubmitEvent`",
         group: "Topics to cover",
         explanation:
-          "Browser events have a common Event base and specialized interfaces for specific data. MouseEvent provides pointer coordinates, KeyboardEvent provides key information, and SubmitEvent provides submitter. These are native DOM types; React’s event wrappers are introduced at Level 6.\n\naddEventListener often infers the event type from a known event name and target. Keep that inference rather than widening everything to Event. Here the keyboard handler can read key, while the click handler can read clientX.",
+          "Event is the base DOM event type. More specific types expose additional information: MouseEvent has coordinates, KeyboardEvent has keys, and SubmitEvent has a submitter. These are native browser types, not the React event wrappers introduced at Level 6.\n\naddEventListener can infer an event type from the event name and listening object. Keep that inference instead of unnecessarily widening the parameter to Event. The examples read key and clientX from appropriately typed events.",
         source: "https://developer.mozilla.org/en-US/docs/Web/API/Event",
         environment: "browser",
         requires: "Browser DOM; compile with the Level 1 setup",
@@ -627,7 +627,7 @@ const levels = [
         name: "`event.target` vs. `event.currentTarget`",
         group: "Topics to cover",
         explanation:
-          "target is where the event originated, which can be a child inside your control. currentTarget is the element whose listener is currently executing. Both are broadly typed in the native Event contract, and currentTarget is only meaningful during dispatch.\n\nFor direct binding, capturing the known element is often simpler than asserting either property. For delegation, inspect target and find the relevant ancestor. The example handles clicks on a nested span while updating the actual button.",
+          "An event's target is where it originated, which may be a nested child. currentTarget is the object whose listener is running. Native event types describe these broadly, and currentTarget is meaningful during event dispatch.\n\nFor a direct listener, you can use the known element captured by the function. For delegation, check target and find the relevant ancestor with closest. In the example, clicking a span inside a button still finds and updates the intended button without an unchecked assertion.",
         source:
           "https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget",
         environment: "browser",
@@ -645,7 +645,7 @@ const levels = [
         name: "DOM manipulation and event delegation",
         group: "Topics to cover",
         explanation:
-          "Event delegation puts one listener on a stable parent and finds the matching child action. Narrow target to Element before calling closest, then confirm the matched control belongs to this component. This supports dynamically added children without adding listeners to each one.\n\nUse textContent for user-provided strings rather than building HTML from them. This list safely removes only buttons inside its own root. A data attribute communicates the action, while the element’s runtime class supplies the capability check.",
+          "Event delegation uses one listener on a parent to handle events from its children. Check that target is an Element, find the relevant ancestor with closest, and confirm it belongs to the intended component. This also handles children added later without attaching new listeners.\n\nThe example removes items only for matching buttons inside the list. It checks the action attribute and the element's runtime capabilities. Use textContent for user-provided strings instead of inserting them as HTML.",
         source:
           "https://developer.mozilla.org/en-US/docs/Web/API/Element/closest",
         environment: "browser",
@@ -663,7 +663,7 @@ const levels = [
         name: "Form validation and `FormData`",
         group: "Topics to cover",
         explanation:
-          "FormData entries are strings or File objects, and a missing field returns null. Check the runtime value before trimming or parsing it. Type annotations on a desired form model do not validate submitted data.\n\nCombine native constraint validation with domain checks, and keep feedback associated with the input. This example refuses an absent or non-string email, uses the form’s built-in validity rules, and only then prepares normalized data. Rendering, focus placement, and accessible messages remain part of the component’s behavior.",
+          "FormData values can be strings or Files, and a missing field returns null. Check the value before trimming or parsing it. A type annotation on a form model does not validate submitted data.\n\nCombine native form constraints with checks for your application's rules. This example rejects missing or non-string email input, checks validity, and then normalizes the value. Useful feedback must be tied to the input; rendering accessible messages and managing focus remain the component's responsibility.",
         source: "https://developer.mozilla.org/en-US/docs/Web/API/FormData/get",
         environment: "browser",
         requires: "Browser DOM; compile with the Level 1 setup",
@@ -680,7 +680,7 @@ const levels = [
         name: "Fetch API, Promises, `async`/`await`",
         group: "Topics to cover",
         explanation:
-          "fetch resolves for many HTTP error responses, so inspect response.ok before reading data. await unwraps promises inside an async function. Parsed JSON should enter your code as unknown, then be checked before you claim a model type.\n\nAccept an AbortSignal when the caller may leave the view before a request finishes. This loader validates its small response shape and returns a checked name. It needs a real endpoint providing that shape; the function definition itself does not send a request.",
+          "fetch returns a promise, and async functions use await to read resolved values. An HTTP error response does not itself reject fetch, so check response.ok separately. Treat parsed JSON as unknown until its shape has been checked.\n\nThis loader checks a small response shape before reading the name. It accepts an AbortSignal so the caller can cancel work when leaving. Defining the function does not send a request; calling it requires a real endpoint.",
         source:
           "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
         environment: "browser",
@@ -698,7 +698,7 @@ const levels = [
         name: "Error handling with `try/catch` and `unknown`",
         group: "Topics to cover",
         explanation:
-          "JavaScript can throw any value, not only Error instances. Under strict checking, a catch variable is unknown. Narrow it before accessing message or other fields, and decide which failures the caller can recover from.\n\nDo not silently turn every failure into success or lose the original context. This helper turns an arbitrary caught value into a readable message while keeping the try/catch boundary explicit. Cancellation can be handled separately when it is an expected lifecycle event.",
+          "JavaScript can throw any value. Under strict checking, a catch variable is unknown, so check it before reading properties such as message. Decide which failures you can recover from rather than silently treating every failure as success or losing useful context.\n\nThe helper turns a caught value into a readable message, and the try/catch makes handling explicit. Treat cancellation separately when it is an expected part of the operation's lifecycle.",
         source:
           "https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables",
         environment: "core",
@@ -857,7 +857,7 @@ const levels = [
         name: "Generic functions",
         group: "Topics to cover",
         explanation:
-          "A generic type parameter represents a type chosen at a call or instantiation. Its main job is to preserve a relationship between values: the element type going into a container can be the element type coming out. Using any would discard that relationship.\n\nA constraint such as T extends { id: string } says which capabilities the implementation may rely on. Inference often supplies T automatically. Here first preserves the array element type while acknowledging an empty array, and identify accepts different object shapes as long as each includes an id.",
+          "A generic function uses a type parameter to preserve a relationship between its inputs and output. The type is selected or inferred when you call the function. Using any would lose that relationship.\n\nA constraint such as T extends { id: string } states what the function needs while preserving extra fields. The examples keep the first element's actual type, including undefined for an empty array, and accept different object shapes that have a string id.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -874,7 +874,7 @@ const levels = [
         name: "Generic interfaces and type aliases",
         group: "Topics to cover",
         explanation:
-          "Generic interfaces and aliases describe reusable shapes with a relationship between their fields. Supply a concrete type argument when using them. They do not create data, make requests, or validate what arrives at runtime.\n\nHere ApiResponse<T> wraps any already-validated payload, and Nullable<T> adds an explicit absent case. A number response cannot accidentally be consumed as a user response because the type argument preserves the payload’s shape.",
+          "Generic interfaces and aliases describe reusable shapes whose parts are connected by a type parameter. Supplying that parameter does not create data, fetch it, or validate it.\n\nApiResponse<T> describes a response whose payload has already been checked. Nullable<T> allows absence. A response containing a number keeps that payload type and cannot be used as though it contained a user.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -891,7 +891,7 @@ const levels = [
         name: "Generic constraints (`extends`)",
         group: "Topics to cover",
         explanation:
-          "A generic constraint specifies the capabilities an implementation may use. T extends Shape accepts compatible shapes while preserving their additional fields. Without a constraint, treating a generic value as if it had an id would be an unjustified assumption.\n\nUse the smallest required shape. This function needs only a string id, so callers can pass products, users, or other records without losing the type of the original object returned by the helper.",
+          "A generic constraint states which capabilities an input must provide. T extends a required shape lets the implementation use those fields while retaining the caller's additional fields. An unconstrained T does not justify reading id.\n\nAsk for the smallest shape the function needs. Requiring a string id allows users, products, and other models to share this helper. Its result keeps the original input type.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
         environment: "core",
@@ -909,7 +909,7 @@ const levels = [
         name: "Multiple generic parameters",
         group: "Topics to cover",
         explanation:
-          "Use multiple parameters when separate types must remain related rather than collapsed into a broad union. Each parameter should capture meaningful information; adding generics that do not connect inputs and outputs usually just makes an API harder to read.\n\nThe example maps an input element type to a distinct output element type. Inference chooses both from the array and callback, so converting numbers into labels returns string[] without a manual assertion.",
+          "Multiple type parameters keep separate types connected without merging them into one broad union. Each parameter should represent a useful relationship rather than add complexity on its own.\n\nThis mapping helper connects the input element type, the callback parameter, and the output element type. The checker infers that mapping numbers to labels produces string[], without an assertion.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -926,7 +926,7 @@ const levels = [
         name: "Default generic types",
         group: "Topics to cover",
         explanation:
-          "A default supplies a type argument when one is not explicitly provided or inferred. It is useful for common cases but should not disguise the type of unvalidated data. A default must satisfy any constraint on that parameter.\n\nThis Page type defaults to text items while still accepting a different model. Required type parameters must precede optional ones. Choose defaults that match an API’s ordinary behavior and document them as part of its contract.",
+          "A generic default supplies a type when the caller neither provides one nor gives enough information to infer it. The default must satisfy any constraint. Required type parameters come before parameters with defaults.\n\nUse defaults for a documented common case, not to disguise unvalidated input. Page defaults to text items but can describe another model when a type is supplied. Document this choice as part of the API's ordinary behavior.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-parameter-defaults",
         environment: "core",
@@ -944,7 +944,7 @@ const levels = [
         name: "`keyof` operator",
         group: "Topics to cover",
         explanation:
-          'keyof turns the known keys of a type into a union. For an object with id and name properties, keyof produces "id" | "name". It is a type operation, not a function that lists an object’s keys at runtime.\n\nUse it to keep key parameters aligned with a model as the model changes. Index signatures can broaden the result: a string index signature typically yields string | number because numeric JavaScript property access can address string keys. The example rejects a misspelled field and accepts either known property.',
+          "keyof produces a union of a type's property keys. For an object with id and name, that union is \"id\" | \"name\". It is a type operation, not a function that lists keys at runtime.\n\nUse it to keep accepted key arguments aligned with a model as the model changes. A string index signature usually produces string | number because numeric property access can refer to string keys. The example accepts known keys and rejects a typo.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html",
         environment: "core",
@@ -962,7 +962,7 @@ const levels = [
         name: "`typeof` type operator",
         group: "Topics to cover",
         explanation:
-          "In a type position, typeof captures the type of an existing value. It lets a configuration object or a function become the source of a type instead of maintaining a duplicate definition. This is different from JavaScript’s runtime typeof expression, which produces a category string.\n\nThe type query reflects the existing inferred type. It does not automatically preserve all literal property values; an ordinary mutable object’s theme property is usually string. The example creates another object with the same shape and contrasts a type query with a runtime check.",
+          "typeof in a type expression captures the type of an existing value. This helps reuse the shape of a function or configuration without copying it. Runtime typeof instead returns a category string.\n\nThe captured type reflects what was inferred. It does not automatically preserve every literal: a mutable theme property usually becomes string. The example contrasts the type query with the runtime operation and checks another object against the captured shape.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/typeof-types.html",
         environment: "core",
@@ -980,7 +980,7 @@ const levels = [
         name: "Indexed access types (`T[K]`)",
         group: "Topics to cover",
         explanation:
-          "Indexed access uses a key type to extract the corresponding property type. Connect it to a constrained key parameter to preserve the exact return type of a lookup. This is the getProperty pattern emphasized in the roadmap.\n\nThe implementation uses the same key K that selected T[K], so the checker can follow the relationship. A name lookup returns string, an age lookup returns number, and a misspelled key is rejected. An unconstrained string key would not provide that guarantee.",
+          "An indexed access type, T[K], reads a property's type from another type. Constrain K to keyof T so the key belongs to that object. This connects a lookup's return type to the particular key supplied.\n\nIn getProperty, looking up name returns a string and age returns a number. A misspelled key is rejected. An unconstrained string key could not provide the same guarantee.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html",
         environment: "core",
@@ -998,7 +998,7 @@ const levels = [
         name: "`as const` assertions",
         group: "Topics to cover",
         explanation:
-          "as const preserves literal values in an expression and makes literal object fields or tuple positions readonly in the inferred type. It does not deep-freeze an existing object at runtime and cannot recover precision already widened elsewhere.\n\nAn object can become the source for a union of its values. This avoids repeating string spellings in multiple type declarations. The example derives the accepted mode from the object instead of maintaining a second list.",
+          "as const preserves literal values and gives literal object properties and tuple positions readonly types. It does not freeze the value at runtime or recover precision already lost through a separately widened variable.\n\nThe example derives a union from the object's values instead of repeating the same strings in another declaration. Each permitted mode stays tied to its defined value.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions",
         environment: "core",
@@ -1016,7 +1016,7 @@ const levels = [
         name: "`satisfies` operator",
         group: "Topics to cover",
         explanation:
-          "satisfies checks that an expression fits a target type while retaining its resulting inferred shape. Unlike an as assertion, it reports incompatibility instead of asking the checker to accept your claim. It is available in TypeScript 4.9+.\n\nThe target can contextually influence inference, so satisfies is not a universal “preserve every literal” switch; add as const when readonly literal preservation is intended. In this example the checker verifies the permitted keys and value alternatives while keeping green known as a string, so string methods work without a union guard.",
+          "satisfies checks that a value fits a type while retaining its useful inferred shape. Unlike an as assertion, it checks compatibility rather than asking the checker to trust you. It is available in TypeScript 4.9 and later.\n\nThe target type can still influence inference, so satisfies does not preserve every literal in every context. Add as const when that is the intended contract. The example checks keys and value choices while keeping green as a string, allowing string methods without a union guard.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator",
         environment: "core",
@@ -1034,7 +1034,7 @@ const levels = [
         name: "Function overloads",
         group: "Topics to cover",
         explanation:
-          "Overloads describe different ways to call one function, often linking a particular input type to a particular output type. Write the overload signatures first, followed by one implementation broad enough to handle them. Callers only see the overloads, not an additional implementation signature.\n\nPrefer a union parameter when all alternatives return the same kind of result. The example justifies overloads because a string input produces a string array while an array input produces a string. A variable typed as the union of both inputs needs an explicit union overload if you want that call to be public too.",
+          "Overloads describe distinct ways to call a function when the argument form determines its result type. Write the public overload signatures before the broader implementation. Callers can use only the public signatures.\n\nUse a union parameter instead when alternatives return the same shape. Here a string produces string[] and an array produces string, so overloads express a useful relationship. To accept a union-typed variable, the public signatures must also include a matching union overload.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads",
         environment: "core",
@@ -1052,7 +1052,7 @@ const levels = [
         name: "Call signatures and construct signatures",
         group: "Topics to cover",
         explanation:
-          "A call signature describes something usable with parentheses; a construct signature describes something usable with new. A JavaScript function may also have properties, and an interface can express that combination. These signatures describe capabilities rather than implementing them.\n\nThe formatter below is callable and has a label. UserConstructor describes a constructor’s parameter and result shape; assigning a class value checks its constructor side. Neither signature turns an arbitrary object into a function or class.",
+          "A call signature describes a value that can be called like a function. A construct signature uses new to describe a value that creates instances. An interface can combine a call signature with properties to describe a function that carries metadata.\n\nThe formatter is callable and has a label. UserConstructor describes constructor arguments and the resulting instance; assigning a class checks its constructor side. These types do not turn an arbitrary object into a function or class.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/functions.html#call-signatures",
         environment: "core",
@@ -1070,7 +1070,7 @@ const levels = [
         name: "Type predicates (`value is Type`)",
         group: "Topics to cover",
         explanation:
-          "A predicate function packages reusable runtime checks into a return type that tells TypeScript how to narrow. A true result claims the value is T; the checker trusts your implementation, so checking too little can make later code unsafe.\n\nFor a union input, a false result also narrows away the claimed type. Avoid predicates whose condition is merely a subset of that type, such as “is a positive number” while promising only “is number.” This example checks the full small shape it promises, then uses the guard in filter to produce a User array.",
+          "A predicate return type, such as value is User, lets a runtime guard narrow a value when it returns true. The checker trusts that promise. If the implementation checks too little, later code may be unsafe.\n\nA false result can also remove the promised type from a union. A check for positive numbers must not claim to recognize all numbers. Make the guard small and check the whole shape it promises. This User guard checks the required fields so filter can return a User array.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
         environment: "core",
@@ -1088,7 +1088,7 @@ const levels = [
         name: "Assertion functions (`asserts`)",
         group: "Topics to cover",
         explanation:
-          "An assertion function either throws or establishes a fact for the rest of the current scope. Its asserts return annotation tells the checker what to assume after a normal return. It does not return a converted value, and a broken assertion implementation can lie just like a broken predicate.\n\nUse an assertion for a required precondition, and a predicate when you want to branch on validity. This function verifies a string before an email formatter trims and lowercases it. A numeric argument would cause the assertion to throw before string methods run.",
+          "An assertion function establishes a fact for the code that follows a successful call. Its asserts return annotation tells the checker which fact is established. The function must throw when that fact is not true; it does not convert the input.\n\nAn incorrect implementation can lie to the checker. Use an assertion for a required condition and a predicate when you want a choice between branches. Here the check establishes a string before the email formatter trims and lowercases it. Numeric input throws before those methods run.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions",
         environment: "core",
@@ -1106,7 +1106,7 @@ const levels = [
         name: "Exhaustive checking with `never`",
         group: "Topics to cover",
         explanation:
-          "never represents an impossible value. A function that always throws or never finishes can return never. In control flow, a value narrowed past every possible union member becomes never. It differs from void: a void function may return normally, while a never function cannot.\n\nUse this for exhaustiveness checks: a helper accepts only never, so passing an unhandled variant to it produces an error. This example checks the current two directions. Adding another direction without adding a matching case makes the assertNever call fail during checking.",
+          "never describes a value that cannot occur. A function that always throws or never finishes can return never. A void function, by comparison, may return normally without a useful result.\n\nAfter every case of a union has been handled, the remaining value can narrow to never. The helper accepts only that impossible remainder. The direction example handles two cases; adding a third without handling it makes the assertNever call fail checking.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type",
         environment: "core",
@@ -1124,7 +1124,7 @@ const levels = [
         name: "`Partial<T>`",
         group: "Built-in utility types",
         explanation:
-          "Partial makes every top-level property optional. Use it for patches, not as a claim that missing values were filled in. Decide how an omitted field differs from an explicitly provided undefined; exactOptionalPropertyTypes makes that distinction more visible.",
+          "Partial<T> makes every top-level property optional. It is useful for patches, but does not supply missing values. Decide whether an omitted property differs from one explicitly set to undefined; exactOptionalPropertyTypes makes that distinction clearer.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1142,7 +1142,7 @@ const levels = [
         name: "`Required<T>`",
         group: "Built-in utility types",
         explanation:
-          "Required removes optional property markers from a shape. It does not fill defaults or validate an optional input. Construct the actual required object deliberately, as this configuration helper does. The operation is shallow rather than recursive.",
+          "Required<T> removes optional markers from top-level properties. It does not fill defaults or validate input, and it does not make nested properties required. The configuration helper must construct an actual object containing the required values.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1160,7 +1160,7 @@ const levels = [
         name: "`Readonly<T>`",
         group: "Built-in utility types",
         explanation:
-          "Readonly makes top-level properties readonly through this view. It does not freeze runtime data or make nested mutable objects immutable. Use it when a consumer should inspect an object without replacing its fields.",
+          "Readonly<T> makes top-level properties readonly through that type. Consumers can inspect them but cannot replace them. It does not freeze the object at runtime or make nested data immutable.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1178,7 +1178,7 @@ const levels = [
         name: "`Pick<T, K>`",
         group: "Built-in utility types",
         explanation:
-          "Pick selects known keys while preserving their property types and modifiers. It describes a view of a type; it does not remove other fields from an existing runtime object. Explicitly construct a public object before serializing sensitive data.",
+          "Pick<T, K> selects named properties while preserving their types and modifiers. It changes the type description, not the runtime object. To keep private fields out of serialized output, construct the public object explicitly.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1196,7 +1196,7 @@ const levels = [
         name: "`Omit<T, K>`",
         group: "Built-in utility types",
         explanation:
-          "Omit builds an object type without selected keys. It is convenient when a creation input resembles a stored model except for server-owned fields. Like Pick, it does not delete runtime properties and should not be used as a sanitization operation.",
+          "Omit<T, K> describes a type without the selected keys. It can separate creation input from stored data with server-owned fields. It does not delete or sanitize properties on a runtime object.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1214,7 +1214,7 @@ const levels = [
         name: "`Record<K, V>`",
         group: "Built-in utility types",
         explanation:
-          "Record maps a key type to a value type. A finite literal union requires every listed key. An open-ended string dictionary may miss at runtime, so use undefined in the value type or enable noUncheckedIndexedAccess for arbitrary reads.",
+          "Record<K, V> maps keys to a value type. A finite key union requires an entry for every key. An open string dictionary can still have missing entries; include undefined in its value type or use noUncheckedIndexedAccess when reading arbitrary keys.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1232,7 +1232,7 @@ const levels = [
         name: "`Exclude<T, U>`",
         group: "Built-in utility types",
         explanation:
-          "Exclude removes union members assignable to another type. It filters alternatives, not properties inside each object member. This derives a non-idle state without repeating its remaining alternatives.",
+          "Exclude<T, U> removes union members assignable to U. It does not remove properties from inside an object. The example derives the non-idle cases without repeating the other members.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1250,7 +1250,7 @@ const levels = [
         name: "`Extract<T, U>`",
         group: "Built-in utility types",
         explanation:
-          "Extract keeps union members assignable to a constraint. It is useful for selecting variants from a discriminated union. A structural constraint can match the variants you want without naming every other property.",
+          "Extract<T, U> keeps union members assignable to U. It can select cases from a discriminated union using a matching structural condition, without listing every other field on those cases.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1268,7 +1268,7 @@ const levels = [
         name: "`NonNullable<T>`",
         group: "Built-in utility types",
         explanation:
-          "NonNullable removes null and undefined from a union type. The type operation does not inspect or change a value. Use a runtime guard to establish that a particular value actually fits the resulting type.",
+          "NonNullable<T> removes null and undefined from a type. It does not inspect or change a runtime value. You still need a guard to establish that an actual value fits the resulting type.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1286,7 +1286,7 @@ const levels = [
         name: "`ReturnType<T>`",
         group: "Built-in utility types",
         explanation:
-          "ReturnType extracts a function type’s result. Apply typeof to a function value first. It does not execute the function; with overloads, extraction generally reflects the last overload signature rather than resolving a specific invocation.",
+          "ReturnType<T> extracts a function type's result type without executing it. Use typeof first when starting from a function value. For overloaded functions, it usually reflects the last signature rather than the result of a particular call.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1304,7 +1304,7 @@ const levels = [
         name: "`Parameters<T>`",
         group: "Built-in utility types",
         explanation:
-          "Parameters extracts a function type’s argument list as a tuple, including optional and rest positions. This keeps forwarding helpers synchronized with a function signature without copying the parameter types.",
+          "Parameters<T> extracts a function's arguments as a tuple, including optional and rest parameters. A forwarding helper can use that tuple to stay aligned with the original function without copying its parameter list.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1322,7 +1322,7 @@ const levels = [
         name: "`Awaited<T>`",
         group: "Built-in utility types",
         explanation:
-          "Awaited models recursive promise/thenable unwrapping and leaves plain values intact. Use it with ReturnType to describe the resolved value of an async function. Available since TypeScript 4.5; it performs no asynchronous work itself.",
+          "Awaited<T> describes the resolved value of a promise or thenable, unwrapping nested layers. Plain values stay unchanged. Combine it with ReturnType to describe an async function's resolved result. Available since TypeScript 4.5, it performs no asynchronous work itself.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -1469,7 +1469,7 @@ const levels = [
         name: "Classes and constructors",
         group: "Topics to cover",
         explanation:
-          "Class fields describe instance state. Under strictPropertyInitialization, initialize required fields at declaration or in the constructor. Optional fields may be absent. A constructor parameter marked public, private, protected, or readonly can also declare and initialize a property.\n\npublic is the default visibility. protected allows subclass access; TypeScript private is a checker restriction, while JavaScript #private enforces runtime privacy. readonly fields can be initialized but not reassigned through the class contract. The example uses a parameter property, an initialized field, and an optional nickname without hiding missing initialization behind !.",
+          "A class defines instance data and behavior. With strictPropertyInitialization, required fields must be initialized where declared or in the constructor. Mark a field optional when absence is valid rather than hiding it with !.\n\nConstructor parameters marked public, private, protected, or readonly also declare and initialize properties. public is the default visibility; protected permits subclass access, while private restricts access during checking. A # field provides runtime privacy. readonly allows initialization but prevents later reassignment through that contract. The example initializes its required data and leaves the nickname optional.",
         source: "https://www.typescriptlang.org/docs/handbook/2/classes.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1486,7 +1486,7 @@ const levels = [
         name: "`public`, `private`, `protected`",
         group: "Topics to cover",
         explanation:
-          "public is the default visibility; protected permits the class and subclasses to access a member; private restricts access through TypeScript’s checker. JavaScript #private fields enforce runtime privacy, unlike the private keyword.\n\nUse access modifiers to express ownership rather than putting all state behind unnecessary getters. Here a subclass can use the shared protected name, but callers cannot access the private token. None of these modifiers validates constructor input.",
+          "Visibility controls where class members may be used. public members are available by default. protected members are available within the class and its subclasses. private restricts access during type checking; # fields enforce privacy at runtime.\n\nUse visibility to express ownership without adding unnecessary getters. The subclass can read the protected name, while outside callers cannot access the private token through its type. These restrictions do not validate constructor input.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#member-visibility",
         environment: "core",
@@ -1504,7 +1504,7 @@ const levels = [
         name: "`readonly` class properties",
         group: "Topics to cover",
         explanation:
-          "A readonly class property may be initialized in its declaration or constructor, then cannot be reassigned through the class contract. It remains a type-level restriction, not a runtime freeze, and is shallow for object-valued fields.\n\nConstructor parameter properties provide compact initialization when that makes the public API clearer. This instance keeps a stable id while allowing its mutable display name to change.",
+          "A readonly class property can be initialized at its declaration or in the constructor, then cannot be reassigned through that contract. The rule is checked by TypeScript; it does not freeze an object or make nested values readonly.\n\nParameter properties provide a compact form when they keep the API clear. This example gives an instance a stable id while allowing its name to change.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#readonly",
         environment: "core",
@@ -1522,7 +1522,7 @@ const levels = [
         name: "Getters and setters",
         group: "Topics to cover",
         explanation:
-          "Accessors look like properties to callers but execute methods on read or write. Use them when a property needs normalization or a computed result, not to hide expensive surprising side effects. A setter may accept a broader input than the getter returns.\n\nThis setter checks and converts input before storing a finite nonnegative size. The getter consistently returns a number, so later consumers do not repeat parsing logic.",
+          "Getters run code when a property is read; setters run code when it is assigned. They are useful for computed values or normalization, but property access should not hide surprising expensive work. A setter can accept a broader type than its getter returns.\n\nHere the setter converts and checks the input, rejecting values that are not finite and nonnegative. The getter always returns a number, so consumers do not need to parse the stored value.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#getters--setters",
         environment: "core",
@@ -1540,7 +1540,7 @@ const levels = [
         name: "Inheritance and `super`",
         group: "Topics to cover",
         explanation:
-          "extends inherits behavior from one base class. A derived constructor must call super before accessing this; super.method() invokes a base implementation. Prefer composition when the relationship is “uses a capability” rather than a stable subtype relationship.\n\nThis subclass reuses the base name initialization and greeting, then extends the result. Keep overrides compatible with the base method so callers using the base type continue to work.",
+          "extends lets a class reuse one base class's behavior. A derived constructor must call super before using this. A call to super.method uses the base implementation.\n\nChoose composition when an object uses a capability rather than represents a subtype. The example subclasses reuse the base name and extend the greeting. Overrides must remain compatible so code written for the base class still works.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#class-heritage",
         environment: "core",
@@ -1558,7 +1558,7 @@ const levels = [
         name: "Abstract classes",
         group: "Topics to cover",
         explanation:
-          "An abstract class cannot be instantiated directly. It can share working implementation while leaving some members for concrete subclasses to supply. Use an abstract base only when shared implementation and a stable extension contract are useful.\n\nThe render method below depends on an abstract label that each concrete control implements. The checker ensures a non-abstract subclass supplies that member. No runtime registration or factory is implied by the declaration.",
+          "An abstract class cannot be instantiated directly. It can share implemented members while requiring subclasses to provide abstract members. Use it when a stable extension point makes that shared structure useful.\n\nHere render relies on an abstract label, so every concrete subclass must supply it. Declaring an abstract class does not register subclasses or create a runtime factory.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#abstract-classes-and-members",
         environment: "core",
@@ -1576,7 +1576,7 @@ const levels = [
         name: "`implements` and `override`",
         group: "Topics to cover",
         explanation:
-          "implements checks a class’s instance shape against a contract; it does not copy behavior or infer every method parameter. override marks an intentional replacement of a base member. Enable noImplicitOverride so a forgotten override marker becomes a diagnostic.\n\nUse these checks to protect refactoring. Renaming a base member should reveal derived code that no longer overrides it. This class fulfills a lifecycle interface and deliberately replaces the base destroy behavior.",
+          "implements checks that a class's instances satisfy an interface. It does not copy behavior into the class or infer every parameter type. override explicitly marks a member that replaces an inherited member. noImplicitOverride reports overrides that omit this marker.\n\nIf a base member is renamed, the marker helps reveal a mismatched subclass during refactoring. The example implements a lifecycle contract and deliberately overrides destroy.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/classes.html#implements-clauses",
         environment: "core",
@@ -1594,7 +1594,7 @@ const levels = [
         name: "Generic classes",
         group: "Topics to cover",
         explanation:
-          "A generic class connects its instance fields and methods through a type parameter. Choose that parameter when creating an instance, or let the constructor infer it from its arguments. This avoids a separate class for each stored value type without losing checking.\n\nA class’s static members belong to the shared constructor, so they cannot use the instance’s T as if each instance had separate static storage. The example keeps values in an instance array, accepts only its element type in add, and acknowledges that a lookup may miss.",
+          "A generic class connects its instance fields and methods with a type parameter. The caller supplies that type when constructing the class, or the checker infers it from constructor arguments. This avoids duplicating a class or losing checks with any.\n\nStatic members belong to the shared constructor, so they cannot use the instance's type parameter as separate per-type storage. The example stores typed items in an instance array, checks additions, and allows a lookup to be missing.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-classes",
         environment: "core",
@@ -1612,7 +1612,7 @@ const levels = [
         name: "Structural typing",
         group: "Topics to cover",
         explanation:
-          "TypeScript usually checks whether required members are present, not whether a value explicitly named an interface. That is structural typing. An existing object with extra properties can fit a narrower contract; fresh object literals get extra checks to catch likely mistakes.\n\nDesign functions around the capabilities they use. This formatter needs only a name and accepts a richer user object. Structural typing is not a promise that arbitrary runtime input is valid; external data still requires validation.",
+          "TypeScript usually compares object shapes rather than requiring an explicit interface declaration. An existing object with extra fields is compatible when its required members fit. Fresh object literals receive additional checks for unexpected properties.\n\nThis formatter only needs a name, so it accepts a richer user object. Shape compatibility does not validate arbitrary runtime input; outside data still needs checking.",
         source:
           "https://www.typescriptlang.org/docs/handbook/type-compatibility.html",
         environment: "core",
@@ -1630,7 +1630,7 @@ const levels = [
         name: "ES modules: `import` and `export`",
         group: "Topics to cover",
         explanation:
-          "Modules give each file an explicit boundary. Export the values consumers need, and import them where used. A browser or runtime must resolve the emitted imports; TypeScript checking alone does not bundle dependencies or rewrite all specifiers.\n\nThis two-file example uses .js specifiers that TypeScript resolves to local .ts sources while preserving runtime-friendly output. A bundler can process it; direct Node ESM output needs a matching module configuration and package type.",
+          "ES modules use export and import to define file boundaries. TypeScript checks these relationships, but the runtime or bundler must resolve the generated imports. Checking does not bundle files or rewrite every module specifier.\n\nThe two-file example uses a .js import that TypeScript resolves to the .ts source and preserves in output. A bundler can process the source directly. Running the emitted ESM directly in Node requires matching module settings and package metadata.",
         source: "https://www.typescriptlang.org/docs/handbook/2/modules.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1653,7 +1653,7 @@ const levels = [
         name: "Type-only imports and exports",
         group: "Topics to cover",
         explanation:
-          "Type-only imports and exports are erased. Use them for interfaces, aliases, and classes used solely as types. Import a class normally if you need new or instanceof at runtime. verbatimModuleSyntax makes these choices visible in emitted code.\n\nSeparating type and value usage avoids accidental runtime dependencies and works well with independent-file transpilers. This example exports a shape, imports it only for checking, and constructs an actual object in the consumer.",
+          "Type-only imports and exports identify declarations needed for checking rather than runtime execution. Interfaces and aliases disappear from output. A class needs a normal import when used with new or instanceof; it can be imported as a type when only its shape is needed.\n\nWith verbatimModuleSyntax, these choices control what remains in output. They also avoid unintended runtime dependencies and help tools that translate files independently. This example exports and imports a shape as a type, then creates the actual object separately.",
         source: "https://www.typescriptlang.org/docs/handbook/2/modules.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1676,7 +1676,7 @@ const levels = [
         name: "Declaration files (`.d.ts`)",
         group: "Topics to cover",
         explanation:
-          "A declaration file describes JavaScript that exists elsewhere. It provides types without providing the implementation. Loading declarations alone cannot make an unavailable package or global work at runtime.\n\nKeep declarations small and accurate, and include them in the checker’s project. This .d.ts describes an optional global supplied by a vendor browser script; the consumer handles its absence. export {} makes the declaration file a module so declare global can augment Window deliberately.",
+          "A .d.ts file describes JavaScript implemented elsewhere. It contains type declarations, not executable implementations, and cannot supply missing runtime code. Keep descriptions small, accurate, and included in the checked project.\n\nThis example describes an optional vendor value on the browser's global object. The consumer still checks whether it exists. export {} makes the declaration file a module so declare global can extend Window.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
         environment: "browser",
@@ -1700,7 +1700,7 @@ const levels = [
         name: "Third-party library types and `@types`",
         group: "Topics to cover",
         explanation:
-          "First check whether a dependency includes its own declarations. If it does, use the package’s types. Otherwise install its matching @types package when one exists. Match supported major versions rather than adding an unrelated declaration package to hide errors.\n\nGSAP includes declarations; React commonly uses @types/react and @types/react-dom. These types do not install or validate runtime behavior. Keep the project’s lockfile and run the checker after dependency updates.",
+          "Check whether a dependency includes its own types before installing a separate type package. Otherwise, look for a maintained @types package matching the supported major version. Do not add unrelated declarations merely to stop errors.\n\nGSAP includes declarations. React commonly uses @types/react and @types/react-dom. These descriptions do not install or validate runtime behavior. Keep versions locked and rerun the checker after updates.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html",
         environment: "core",
@@ -1718,7 +1718,7 @@ const levels = [
         name: "Global type declarations and module augmentation",
         group: "Topics to cover",
         explanation:
-          "Use declare global for a genuinely global API and module augmentation to extend an existing module’s extensible declarations. Augmentation must match the real module specifier and cannot invent runtime behavior. Avoid broad globals for ordinary application models.\n\nThis example augments an existing local Settings interface with an optional debug field. The implementation is still ordinary JavaScript; augmentation only changes what consumers can describe. Keep ambient changes documented because they affect every file in the project.",
+          "Use declare global to describe genuine globals, and module augmentation to extend declarations that an existing module allows to be extended. The module specifier must match. Neither technique creates runtime values, so do not use it to invent behavior or make ordinary models global.\n\nThe example extends local Settings with an optional debug setting at the type level. Such declarations can affect every file in the project; document their purpose and scope.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation",
         environment: "core",
@@ -1748,7 +1748,7 @@ const levels = [
         name: "Organizing types across a project",
         group: "Topics to cover",
         explanation:
-          "Put a type near the feature or API that owns its meaning. Export small public contracts from a deliberate entry point instead of turning one global types.ts into a dependency hub. Keep domain types distinct from raw server responses when their guarantees differ.\n\nUse type-only imports for shared contracts and avoid circular runtime dependencies. This layout keeps user behavior in its feature and exposes one intentionally small public surface. A type alias is not an excuse to duplicate every inferred local type.",
+          "Keep types near the feature or API that owns their meaning. Export a small public surface instead of placing every model in one global types.ts file. Raw server data and internal domain models may need different types when they offer different guarantees.\n\nType-only imports can share contracts without introducing circular runtime dependencies. The user feature example keeps its behavior and public API together. There is no need to duplicate every inferred local type.",
         source: "https://www.typescriptlang.org/docs/handbook/2/modules.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1783,7 +1783,7 @@ const levels = [
         name: "`strict` and `strictNullChecks`",
         group: "Compiler and tooling",
         explanation:
-          "strict enables a family of checks, including strictNullChecks, noImplicitAny, and strictPropertyInitialization. strictNullChecks distinguishes nullish values from ordinary values and forces you to handle missing data. Turning it off removes useful evidence rather than fixing the underlying absence.\n\nEnable strict at the start of a new project. During a migration, adopt it in a controlled slice and address diagnostics rather than adding blanket assertions. Here an explicit branch handles a possibly missing array result.",
+          "strict enables a family of checks, including strictNullChecks, noImplicitAny, and strictPropertyInitialization. These checks expose missing values and unsupported assumptions. Turning them off does not make those runtime situations disappear.\n\nStart new projects with strict checking. For a migration, tighten a controlled part of the project and address diagnostics rather than adding assertions everywhere. The example branches before using a possibly missing array value.",
         source: "https://www.typescriptlang.org/tsconfig/#strict",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1800,7 +1800,7 @@ const levels = [
         name: "`noUncheckedIndexedAccess`",
         group: "Compiler and tooling",
         explanation:
-          "noUncheckedIndexedAccess adds undefined to unchecked array and open-ended dictionary lookups. It addresses a common mismatch between a declared element type and a missing key at runtime. Fixed tuple positions and known required properties can still be precise.\n\nCheck the lookup or supply a meaningful fallback. Do not erase the diagnostic with ! unless another invariant really proves presence. This dictionary models absence explicitly even if the option is disabled, making the boundary honest across configurations.",
+          "noUncheckedIndexedAccess adds undefined when reading an unchecked array position or an open dictionary key. Known required properties and tuple positions can remain precise.\n\nCheck the lookup or provide a suitable fallback. Use ! only when a real invariant justifies it. You can also explicitly include undefined in a dictionary's value type, even when this option is disabled.",
         source:
           "https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess",
         environment: "core",
@@ -1818,7 +1818,7 @@ const levels = [
         name: "`exactOptionalPropertyTypes`",
         group: "Compiler and tooling",
         explanation:
-          "exactOptionalPropertyTypes distinguishes an absent optional field from an explicitly assigned undefined unless undefined is part of the property’s declared type. Reading an optional field still may produce undefined.\n\nThis matters for patch APIs, spreads, and property-existence checks. An omitted theme can mean “leave unchanged,” while an explicit value can mean “replace.” The example shows both the ordinary optional property and a separate contract that intentionally permits undefined.",
+          "exactOptionalPropertyTypes distinguishes a missing property from a property explicitly assigned undefined. To allow that assignment, include undefined in the property's type. Reading an optional property can still produce undefined.\n\nThis matters for patches, object spreads, and property-existence checks. Omitting a theme can mean leaving it unchanged, while supplying it means replacing it. The example contrasts an ordinary optional property with a contract that explicitly permits undefined.",
         source:
           "https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes",
         environment: "core",
@@ -1836,7 +1836,7 @@ const levels = [
         name: "`target`, `lib`, `module`, and `moduleResolution`",
         group: "Compiler and tooling",
         explanation:
-          "target chooses JavaScript syntax level; lib declares available runtime APIs. module describes the emitted/import model, and moduleResolution tells the checker how imports are found. They must fit the actual host. No configuration polyfills missing browser features.\n\nUse ESNext/bundler for a bundler-owned app, or matching NodeNext settings for direct Node ESM. Keep .js specifiers where direct emitted Node imports require them. These are alternatives for different hosts, not a pair of configs to merge blindly.",
+          "target controls generated syntax, lib describes assumed APIs, module controls the import/output model, and moduleResolution controls how the checker finds imports. Set them for the environment that will actually run or bundle the code. They do not add missing APIs or polyfills.\n\nAn ESNext/bundler browser setup and a NodeNext setup for direct Node ESM are alternatives. The latter needs appropriate .js import specifiers. Do not combine settings from the two examples without accounting for their different hosts.",
         source:
           "https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html",
         environment: "core",
@@ -1860,7 +1860,7 @@ const levels = [
         name: "`noEmit` vs. JavaScript output",
         group: "Compiler and tooling",
         explanation:
-          "noEmit turns tsc into a checker without writing JavaScript. That is useful when a bundler handles output. When tsc owns emission, configure rootDir, outDir, module settings, and noEmitOnError so output is placed deliberately and invalid builds are not treated as success.\n\nChecking, building, and executing are separate commands. This script sequence makes that distinction explicit. A successful Vite transform alone is not evidence that the type checker passed.",
+          "noEmit makes tsc check without generating files, which suits a project whose bundler produces output. When tsc does emit, rootDir, outDir, and module define the output layout and format. noEmitOnError controls whether errors prevent emission; decide how the build rejects invalid output.\n\nChecking, building, and running are separate tasks. A successful Vite build does not prove that the TypeScript checker passed. Keep the appropriate commands explicit.",
         source: "https://www.typescriptlang.org/tsconfig/#noEmit",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1877,7 +1877,7 @@ const levels = [
         name: "Source maps",
         group: "Compiler and tooling",
         explanation:
-          "Source maps connect emitted JavaScript locations to their original TypeScript source for a debugger. Enable sourceMap when tsc emits code, then use a browser or Node debugger that reads those maps. Declaration maps solve a different library-navigation problem covered at Level 7.\n\nMaps do not change runtime semantics or catch errors themselves. Check deployment policy before publishing original sources, and ensure paths match deployed assets. This output config writes JavaScript maps alongside its emitted files.",
+          "Source maps connect locations in generated JavaScript to the original TypeScript, allowing a debugger to show the source you wrote. Enable sourceMap for tsc output and keep the JavaScript and its maps in the expected deployed layout.\n\nMaps do not change behavior or catch errors. Decide whether deployed sources should be exposed and check the paths they reference. Declaration maps serve editor navigation for types, a different purpose covered at Level 7.",
         source: "https://www.typescriptlang.org/tsconfig/#sourceMap",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1900,7 +1900,7 @@ const levels = [
         name: "Vite with TypeScript",
         group: "Compiler and tooling",
         explanation:
-          "Vite serves and bundles TypeScript, but its transforms do not replace full-project type checking. Run tsc --noEmit separately, ideally as part of the build script and CI. Use the template’s configuration as a starting point and keep its runtime requirements in mind.\n\nStart with vanilla-ts for browser components and react-ts when reaching the React milestone. The commands create a new practice app; they are not instructions to run inside an unrelated existing repository. Use a Node version supported by the installed Vite release.",
+          "Vite serves and bundles TypeScript by translating it, without performing full type checking. Run tsc --noEmit during development or CI alongside the build. Follow the template's runtime requirements, including its supported Node version.\n\nUse vanilla-ts for the first practice project and react-ts for the React milestone. These commands create a new practice project; they are not instructions to replace an unrelated existing app.",
         source: "https://vite.dev/guide/features.html#typescript",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -1917,7 +1917,7 @@ const levels = [
         name: "ESLint with typescript-eslint",
         group: "Compiler and tooling",
         explanation:
-          "ESLint reports code-quality and policy issues; TypeScript checks type relationships. typescript-eslint supplies TypeScript parsing and rules. Start with its supported flat configuration, then add type-aware rules at Level 6 when the project can provide type information.\n\nKeep compiler, ESLint, and plugin versions compatible. This configuration uses the typescript-eslint v8 flat-config style. It is a separate file executed by ESLint, not a TypeScript source example to paste into your application.",
+          "ESLint checks code-quality rules, while TypeScript checks type relationships. typescript-eslint lets ESLint understand TypeScript syntax. Start with supported flat configuration and compatible tool versions; rules needing type information are introduced at Level 6.\n\nThis example uses the version 8 configuration style. ESLint executes its configuration separately from the application's TypeScript source. Keep that distinction when choosing files and settings.",
         source: "https://typescript-eslint.io/getting-started/",
         environment: "tooling",
         requires:
@@ -1941,7 +1941,7 @@ const levels = [
         name: "Incremental migration from JavaScript using `allowJs`, `checkJs`, and JSDoc",
         group: "Compiler and tooling",
         explanation:
-          "allowJs includes JavaScript in a TypeScript project; checkJs asks the checker to report errors in those files. JSDoc can describe contracts without renaming every file immediately. Migrate feature boundaries and tests before trying to convert an entire codebase at once.\n\nStart with a small checked slice and gradually tighten guarantees. Keep output separate from input if you emit JavaScript so you do not overwrite source files. This .js helper gets useful checking through JSDoc while remaining ordinary JavaScript.",
+          "allowJs includes JavaScript in a TypeScript project, and checkJs reports errors in those JavaScript files. JSDoc comments can describe contracts without renaming every file. Begin with feature boundaries and behavior tests rather than converting the whole codebase at once.\n\nMigrate a manageable part, then tighten its checks. Keep generated output separate from input so it cannot overwrite sources. This helper remains JavaScript while JSDoc makes its contract checkable.",
         source:
           "https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html",
         environment: "core",
@@ -2058,7 +2058,7 @@ const levels = [
         name: "Conditional types (`T extends U ? X : Y`)",
         group: "Topics to cover",
         explanation:
-          "A conditional type selects a result according to assignability. T extends U ? X : Y is type-level branching, not a runtime if statement. It is especially useful when a generic’s output shape depends on the input type.\n\nKeep the relationship visible and test concrete cases in the editor. This helper extracts a payload only from values with the expected property and yields never otherwise. It does not inspect an actual object or validate an HTTP response.",
+          "A conditional type chooses one type or another based on whether a type is assignable to another. Its form, T extends U ? X : Y, is a type-level choice, not a runtime if statement. It is useful when a generic's output shape depends on its input type.\n\nKeep that relationship clear and try concrete cases in the editor. This helper extracts the payload type from a shape with the expected property and produces never otherwise. It does not inspect an object or validate an HTTP response.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html",
         environment: "core",
@@ -2076,7 +2076,7 @@ const levels = [
         name: "Conditional type distribution",
         group: "Topics to cover",
         explanation:
-          "A conditional type distributes over a union when the checked side is a naked type parameter. It evaluates each member separately and combines the results; never disappears from a resulting union. Wrap the checked types in tuples when the entire union should be tested together.\n\nThis is why filters such as Exclude work member by member. The two helpers below deliberately answer different questions: which members are strings, and whether every possible member is a string.",
+          "A conditional type checks union members separately when its checked side is a type parameter used on its own. This is called distribution. The results are combined into a union, where never contributes no remaining member. Wrap the checked types in tuples to test the union as a whole instead.\n\nThis explains why filters such as Exclude work member by member. The first helper asks which members are strings. The second asks whether every possible member is a string.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types",
         environment: "core",
@@ -2094,7 +2094,7 @@ const levels = [
         name: "Mapped types",
         group: "Topics to cover",
         explanation:
-          "A mapped type visits property keys and builds a new object type. Each output property can refer to the corresponding original type through T[K]. Modifiers such as readonly, -readonly, ?, and -? add or remove mutability and optionality restrictions.\n\nThis is the idea behind many built-in utilities. It changes a type description, not the object at runtime. In the example, every settings field becomes a callback that accepts that field’s own value type, so the compact handler receives a boolean and the theme handler receives a string.",
+          "A mapped type builds an object type by visiting its property keys. It can read each original property's type with T[K]. Modifiers such as readonly, -readonly, ?, and -? add or remove write restrictions and optional markers.\n\nMany built-in utilities use this pattern. It changes a type description, not a runtime object. Here each settings field becomes a callback accepting that field's value type: compact receives a boolean, and theme receives a string.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html",
         environment: "core",
@@ -2112,7 +2112,7 @@ const levels = [
         name: "Mapped type modifiers (`+readonly`, `-?`, etc.)",
         group: "Topics to cover",
         explanation:
-          "Mapped type modifiers transform optionality or mutability while visiting properties. readonly or +readonly adds readonly; -readonly removes it. ? adds optionality and -? removes its marker. These operations remain shallow unless you deliberately recurse.\n\nThe example derives editable, required settings from a read-only optional input shape. It does not fill missing values automatically: the actual object must still provide every required field.",
+          "Mapped type modifiers change whether properties are optional or writable. readonly and +readonly add the readonly restriction; -readonly removes it. ? makes a property optional, and -? removes that marker. These changes affect only the current level unless the type explicitly repeats them for nested data.\n\nThe example derives editable, required settings from a readonly shape with optional properties. It does not supply missing values. The actual object must still contain every required field.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers",
         environment: "core",
@@ -2130,7 +2130,7 @@ const levels = [
         name: "Key remapping with `as`",
         group: "Topics to cover",
         explanation:
-          "Key remapping changes the output key in a mapped type using as. You can rename keys, produce template-based names, or remove keys by remapping them to never. Be explicit about string keys when applying string-only intrinsic transformations.\n\nUse this for small derived APIs rather than a clever substitute for a clear public contract. Here each model property gets a corresponding getter signature; the runtime object still needs real getter implementations.",
+          "Key remapping uses as in a mapped type to choose each output property's name. It can rename keys, build names from templates, or remove a key by mapping it to never. String-only transformations need keys explicitly restricted to strings.\n\nUse this for small derived APIs when it keeps the public contract clear. Here each model property gets a getter signature. The runtime object still needs an implementation for every getter.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as",
         environment: "core",
@@ -2148,7 +2148,7 @@ const levels = [
         name: "Template literal types",
         group: "Topics to cover",
         explanation:
-          "Template literal types form string types from other literal types. If a placeholder contains a union, the resulting type includes its combinations. Use this to describe event names, translation keys, or other small string conventions without maintaining parallel lists.\n\nThey do not generate strings or validate arbitrary runtime text. Union combinations can also grow quickly; large generated schemas may be clearer as explicit generated types. The example derives four permitted event names and builds a handler that only accepts those names.",
+          "Template literal types build string types from other literal types. A union inside a placeholder produces the possible combinations. This can describe event names, translation keys, or small naming conventions without keeping duplicate lists.\n\nThey do not generate strings or validate runtime text. Combinations can grow quickly; explicit generated types may be clearer for large schemas. This example derives four allowed event names and creates a handler accepting only those names.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
         environment: "core",
@@ -2166,7 +2166,7 @@ const levels = [
         name: "The `infer` keyword",
         group: "Topics to cover",
         explanation:
-          "infer declares a temporary type variable while matching the true side of a conditional type. It extracts part of a structure instead of making callers provide that information separately. The extracted name is available in the conditional’s true result.\n\nHere ElementOf matches a readonly array and extracts its item type, while Fulfilled matches a Promise and extracts one layer of its result. ElementOf falls back to the original input for a non-array. A recursive built-in such as Awaited goes further than this deliberately small one-layer promise helper.",
+          "infer introduces a temporary type variable when a conditional type matches a structure. The variable captures part of that structure and is available in the conditional's true result. Callers do not need to provide the captured type separately.\n\nElementOf matches a readonly array and extracts its item type; for a non-array, it keeps the original type. Fulfilled extracts one layer of a Promise result. The built-in Awaited handles recursive unwrapping, unlike this intentionally limited promise helper.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types",
         environment: "core",
@@ -2184,7 +2184,7 @@ const levels = [
         name: "Recursive types",
         group: "Topics to cover",
         explanation:
-          "A recursive type refers to itself to describe nested data. Use it for trees and other structures whose depth is not fixed. The declaration describes valid shapes; it does not prevent cycles or bound recursion at runtime.\n\nGive a recursive algorithm an obvious base case and consider iterative traversal for very deep input. This folder tree ends when children is empty, and a small traversal collects its labels. External JSON still requires validation before being treated as a Folder.",
+          "A recursive type refers to itself, allowing it to describe data with an unfixed depth, such as a tree. The type describes allowed shapes. It does not prevent runtime cycles or limit how deeply an algorithm recurses.\n\nGive recursive code a clear stopping condition. Consider an iterative traversal for very deep data. Here traversal stops when a folder has no children and collects the folder labels. External JSON still needs validation before it can be treated as a Folder.",
         source: "https://www.typescriptlang.org/docs/handbook/2/objects.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -2201,7 +2201,7 @@ const levels = [
         name: "Recursive conditional types",
         group: "Topics to cover",
         explanation:
-          "A recursive conditional type repeatedly transforms a type until a base case matches. For nested arrays, infer can extract one level and recursion can process the next. This exists only in the checker; it does not flatten an actual array.\n\nCompiler instantiation depth and union growth impose practical limits. Do not apply unbounded recursive helpers to enormous arbitrary schemas without measuring. The helper below has one focused job and a clear non-array base case.",
+          "A recursive conditional type repeats a type transformation until a stopping case matches. For nested arrays, infer extracts one level and recursion handles the next. This happens only during checking; it does not flatten an actual array.\n\nThe compiler limits how deeply it can expand types, and unions can grow quickly. Measure before applying unbounded helpers to huge arbitrary schemas. This helper has one specific job and stops when it reaches a non-array type.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html#recursive-conditional-types",
         environment: "core",
@@ -2219,7 +2219,7 @@ const levels = [
         name: "Advanced generic constraints and inference",
         group: "Topics to cover",
         explanation:
-          "Constraints should express what the implementation uses, while inference should preserve useful caller information. Avoid widening a result with an unnecessary annotation. const type parameters, available in TypeScript 5.0+, favor literal-like inference for inline arguments.\n\nUse readonly-compatible constraints for inferred readonly tuples. A const parameter cannot recover literal information already widened in a separate variable. This small route-definition helper preserves its inline values and derives the permitted route union.",
+          "A generic constraint should describe what the implementation needs, while inference should retain useful details from the caller. An unnecessary result annotation can lose those details. const type parameters, available since TypeScript 5.0, favor literal-like inference for inline arguments.\n\nUse constraints that accept readonly values when inferring readonly tuples. A const type parameter cannot recover literals already widened in a separate variable. This route helper preserves inline route values and uses them to derive the allowed route union.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters",
         environment: "core",
@@ -2237,7 +2237,7 @@ const levels = [
         name: "Variance and assignability",
         group: "Topics to cover",
         explanation:
-          "Variance describes how a generic relationship behaves when one argument type is more specific than another. A producer that only returns T can be covariant; a consumer accepting T must be contravariant under strict function checking. A read/write container often needs stronger constraints.\n\nReason about permitted operations, not just the generic’s name. A producer of Dog can satisfy a request for Animal; a consumer restricted to Dog cannot safely accept every Animal. Method signatures have a historical bivariance exception, discussed at Level 8.",
+          "Variance describes how changing a type argument affects compatibility between generic types. A producer that only returns T can be covariant: a Dog producer can serve where an Animal producer is needed. A consumer accepting T must be contravariant under strict function checking: a function limited to Dogs cannot accept every Animal.\n\nJudge compatibility by the permitted operations, not the generic's name. A container that both reads and writes may need stronger constraints. Method signatures have a historical bivariance exception, covered at Level 8.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations",
         environment: "core",
@@ -2255,7 +2255,7 @@ const levels = [
         name: "Nominal-like typing with branded types",
         group: "Topics to cover",
         explanation:
-          "TypeScript normally compares shapes, so two string aliases remain interchangeable. A brand adds a distinguishing type-level property to prevent accidental mixing, for example a UserId and an OrderId that are both represented by strings at runtime.\n\nCreate a brand only at a trusted boundary after the required validation. A narrow as assertion inside that constructor is the controlled point where runtime evidence becomes a static claim. Brands are erased, can be bypassed with assertions, and must be re-established after deserializing data. This constructor validates a user-id format before branding it.",
+          "A branded type distinguishes values that otherwise have the same shape. Ordinary string aliases are interchangeable in TypeScript. Adding a distinguishing type-level property can prevent mixing a UserId with an OrderId, even though both remain strings at runtime.\n\nCreate branded values at a trusted boundary after validation. A narrow as assertion inside that constructor records the guarantee established by the runtime check. Brands disappear during compilation, can be bypassed with assertions, and must be established again after deserialization. This constructor checks the user-id format before applying its brand.",
         source:
           "https://www.typescriptlang.org/play/typescript/language-extensions/nominal-typing.ts.html",
         environment: "core",
@@ -2273,7 +2273,7 @@ const levels = [
         name: "Combining mapped and conditional types",
         group: "Topics to cover",
         explanation:
-          "Mapped and conditional types can work together: visit each key, inspect its value type, and keep or transform selected properties. Key remapping to never removes a key, unlike assigning a property the value type never.\n\nKeep one transformation per named helper and make the matching rule explicit. This helper selects only required string-valued fields. An optional string would include undefined and would not match the same condition without a deliberate NonNullable adjustment.",
+          "Mapped and conditional types can select properties by visiting each key and checking its value type. Mapping a key to never removes that key. Giving a property the value type never does not remove it.\n\nGive each helper one named transformation and make its matching rule clear. This helper keeps required string-valued fields. An optional string includes undefined, so it would not match unless you deliberately adjusted the condition with NonNullable.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html",
         environment: "core",
@@ -2291,7 +2291,7 @@ const levels = [
         name: "Creating custom utility types",
         group: "Topics to cover",
         explanation:
-          "Write custom utilities only when a standard utility does not express your real contract. Name the intended guarantee and use small examples that should compile and examples that must fail. Avoid claiming a deep or exact guarantee that the implementation does not provide.\n\nThis helper makes a selected subset required without changing the other properties. It composes Pick, Required, and Omit instead of rebuilding those operations. The resulting object must actually provide the required id.",
+          "A custom utility type should express a real contract that the standard utilities do not already cover. Name its guarantee and check small examples that must pass and fail. Do not claim that it checks nested data or exact shapes unless it actually does.\n\nThis helper makes selected properties required and leaves the others unchanged. It combines Pick, Required, and Omit rather than rebuilding them. The actual resulting object must provide the required id.",
         source:
           "https://www.typescriptlang.org/docs/handbook/utility-types.html",
         environment: "core",
@@ -2309,7 +2309,7 @@ const levels = [
         name: "Avoiding overly complex or expensive type-level computations",
         group: "Topics to cover",
         explanation:
-          "Recursive distribution and large template unions can grow much faster than the runtime code suggests. Prefer named intermediate types, bounded recursion, and concrete public models when a universal abstraction buys little. A hard-to-read type is a maintenance cost even when it compiles.\n\nMeasure a slow project before rewriting everything: extendedDiagnostics provides totals, and a trace can identify expensive instantiations. This example deliberately uses a finite public shape instead of deriving every possible nested path. Complexity should pay for a concrete safety benefit.",
+          "Repeated union distribution and large template unions can make checking expensive even when the runtime code is small. Prefer named intermediate types, bounded recursion, and concrete public models when a general abstraction adds little value. Difficult types also cost time to maintain.\n\nMeasure a slow project before rewriting it. extendedDiagnostics reports totals, and a trace can help identify expensive type expansions. This example uses a finite public shape instead of computing every possible nested path. Added complexity should provide a specific safety benefit.",
         source: "https://github.com/microsoft/TypeScript/wiki/Performance",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -2453,7 +2453,7 @@ const levels = [
         name: "Typing external API responses",
         group: "Topics to cover",
         explanation:
-          "A response type describes what your application expects; it is not evidence that a server sent that data. Treat JSON as unknown until a parser or schema establishes its shape. Check HTTP status separately from payload validity.\n\nThe User type below becomes trustworthy only after parseUser succeeds. Keep transport data and internal models separate when the internal model adds guarantees or transformed fields. The example validates one small response without relying on an unsafe generic response.json assertion.",
+          "A response type describes the data your application expects, not what the server actually sent. Treat JSON as unknown until a parser or schema checks its shape. Check the HTTP status separately from the payload.\n\nHere parseUser must succeed before the value can be trusted as a User. Keep transport data separate from internal models when the internal form adds guarantees or transforms fields. The example checks a small response instead of trusting a generic assertion on response.json.",
         source: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -2470,7 +2470,7 @@ const levels = [
         name: "Runtime validation using schemas (e.g., Zod)",
         group: "Topics to cover",
         explanation:
-          "A runtime schema checks actual data and can derive its TypeScript output type, keeping validation and the model aligned. Zod 4 safeParse returns a discriminated success/failure result; parse throws on invalid input. Async refinements require the async parsing variants.\n\nValidate at boundaries rather than repeatedly asserting inside the app. Decide how validation errors become useful UI feedback. This example accepts one valid user and rejects a numeric name. The dependency is not part of TypeScript itself.",
+          "A runtime schema checks actual data and can supply a matching TypeScript output type. This keeps the model and validation aligned. In Zod 4, safeParse returns distinguishable success and failure cases, while parse throws for invalid input. Async refinements need the async parsing methods.\n\nValidate where data enters the application instead of repeatedly asserting types inside it. Decide how errors will become useful UI feedback. This example accepts a valid user and rejects a numeric name. Zod is a separate dependency, not part of TypeScript.",
         source: "https://zod.dev/basics",
         environment: "zod",
         requires: "zod@4; strict TypeScript",
@@ -2487,7 +2487,7 @@ const levels = [
         name: "Understanding compile-time types vs. runtime values",
         group: "Topics to cover",
         explanation:
-          "Types and interfaces usually disappear during compilation. Runtime values such as functions, classes, and schema objects remain. You cannot use an interface with instanceof or expect a type alias to validate JSON.\n\nChoose the appropriate runtime evidence: a constructor check, a predicate, or a schema parser. In this example the User alias helps callers, while the actual function performs the runtime check. Keeping these roles separate prevents false confidence at an external boundary.",
+          "Types and interfaces usually disappear when TypeScript is compiled. Functions, classes, and schema objects remain as runtime values. An interface cannot be used with instanceof, and a type alias cannot validate JSON.\n\nChoose a real check for the job: a constructor check, a predicate, or a schema parser. Here the User alias describes the value for callers, while the function performs the runtime check. Both roles matter when accepting outside data.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/basic-types.html#erased-types",
         environment: "core",
@@ -2505,7 +2505,7 @@ const levels = [
         name: "Typed error handling and result patterns",
         group: "Topics to cover",
         explanation:
-          "Expected failures can be modeled as data instead of thrown exceptions. A result union forces the caller to inspect a discriminant before accessing the successful value. Unexpected bugs may still throw and should be handled at an appropriate boundary.\n\nKeep error variants meaningful enough for recovery. This parser distinguishes invalid numeric input from a successful result and never pretends that an error message is a number. A production API can add transport, validation, or authorization variants as needed.",
+          "A result union represents expected failures as data. A shared identifying property makes callers check the case before reading the successful value. Unexpected bugs can still throw and need handling at an appropriate boundary.\n\nMake error cases specific enough to support recovery. This parser distinguishes invalid numeric input from success rather than treating an error message as a number. A production API can add transport, validation, or authorization cases when needed.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
         environment: "core",
@@ -2523,7 +2523,7 @@ const levels = [
         name: "Generics for API clients and reusable data functions",
         group: "Topics to cover",
         explanation:
-          "A generic API helper should preserve a guarantee supplied by a parser, not invent a trusted response type from a caller’s type argument. Accept a function that turns unknown input into T only after validation.\n\nKeep cancellation and HTTP handling in the transport layer and domain validation in the parser. This fetch helper does not send a request until called. Its return type is connected to the parser’s result, so the runtime check and static type stay together.",
+          "A generic API helper should preserve a guarantee established by a parser. A caller's type argument alone cannot make response data trustworthy. Accept a parser that checks unknown input before returning T.\n\nKeep HTTP handling and cancellation in the transport helper, and domain checks in the parser. This function sends no request until called. Its result type comes from the parser, keeping the runtime check connected to the static type.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "browser",
         requires: "Browser DOM; compile with the Level 1 setup",
@@ -2540,7 +2540,7 @@ const levels = [
         name: "Async application state modeling",
         group: "Topics to cover",
         explanation:
-          "Model asynchronous state as mutually exclusive cases instead of a group of booleans and optional fields that can contradict each other. A discriminated union can make success always carry data and failure always carry an error.\n\nHandle stale requests and cancellation as lifecycle decisions as well as type decisions. The renderer below cannot read data before success because that property is not available in the other branches. This is a useful contract for reducers and React hooks.",
+          "Represent async state as separate, mutually exclusive cases. This avoids combinations of booleans and optional fields that can contradict each other. A discriminated union can require data in the success case and an error in the failure case.\n\nCancellation and stale requests still need lifecycle decisions; types alone do not manage them. This renderer cannot read data outside success because the other cases do not contain that property. The same contract is useful in reducers and React hooks.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
         environment: "core",
@@ -2558,7 +2558,7 @@ const levels = [
         name: "Type-safe configuration objects",
         group: "Topics to cover",
         explanation:
-          "satisfies checks a configuration against a contract without replacing its useful inferred shape. as const can preserve readonly literal choices where needed. Neither validates a configuration read dynamically from a server or file.\n\nUse a finite key union when missing options should be detected. The example requires both feature configurations and preserves literal modes. An extra or misspelled fresh key becomes a diagnostic instead of silently entering a loose dictionary.",
+          "satisfies checks a configuration against a contract while retaining useful inference. Add as const where you need readonly literal choices. Neither operation validates configuration loaded dynamically from a file or server.\n\nA finite key union lets the checker report missing required options. This example requires both feature configurations and preserves their literal modes. An extra or misspelled key in the fresh object is reported rather than accepted as an arbitrary dictionary entry.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator",
         environment: "core",
@@ -2576,7 +2576,7 @@ const levels = [
         name: "Working with third-party JavaScript libraries",
         group: "Topics to cover",
         explanation:
-          "An untyped dependency is a boundary, not a reason to spread any across the application. Describe the small surface you actually use, verify its runtime behavior, and hide dependency-specific details behind an adapter when useful.\n\nA declaration for existing JavaScript must match the implementation. This local vendor example shows both files so the contract can be checked against real behavior. For remote packages, first look for bundled types or a maintained @types package before writing your own.",
+          "Keep an untyped dependency's uncertainty at its boundary instead of spreading any through the app. Describe the small part of its API you use, verify the runtime behavior, and use an adapter when it helps isolate dependency-specific details.\n\nDeclarations must match the existing JavaScript. This example shows both local vendor files so the description can be compared with the implementation. For a remote package, first check for bundled types or a maintained @types package before writing declarations yourself.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
         environment: "core",
@@ -2606,7 +2606,7 @@ const levels = [
         name: "TypeScript with GSAP and browser animation APIs",
         group: "Topics to cover",
         explanation:
-          "GSAP ships TypeScript declarations for its tweens and contexts; browser animation APIs already appear in lib.dom declarations. Let inference describe tween instances and retain cleanup handles. Types do not ensure a selector matches an element or that an animation is accessible.\n\nUse runtime DOM guards, reduced-motion handling, and explicit teardown. This helper returns a destroy function for either a GSAP context or a native Animation. Cancelled native animations can reject finished, so handle that promise when you observe it.",
+          "GSAP includes declarations for tweens and contexts. Native browser animation APIs are described by lib.dom. Let inference describe animation instances and keep the handles needed for cleanup. Types do not prove that a selector finds an element or that an animation is accessible.\n\nUse runtime element checks, reduced-motion handling, and explicit teardown. This helper returns a destroy function for a GSAP context or native Animation. Cancelling a native animation can reject its finished promise, so handle that rejection if you observe the promise.",
         source: "https://gsap.com/docs/v3/Installation/",
         environment: "gsap",
         requires: "GSAP 3.11+; DOM declarations; browser runtime",
@@ -2623,7 +2623,7 @@ const levels = [
         name: "Testing TypeScript code with Vitest",
         group: "Topics to cover",
         explanation:
-          "Runtime tests verify behavior; the type checker verifies static contracts. Vitest can execute TypeScript tests, but passing runtime tests does not replace tsc --noEmit. Keep both commands in CI.\n\nUse focused examples around actual behavior, especially parsing and state transitions. This test checks a small conversion and a rejected invalid value. The function and test are in separate files to model an ordinary project boundary.",
+          "Runtime tests check behavior, while the type checker checks static contracts. Vitest can run TypeScript tests, but passing them does not replace tsc --noEmit. Run both in CI.\n\nFocus tests on real behavior, especially parsing and state changes. This example checks a small conversion and rejection of an invalid value. The function and its test live in separate files, as they would across a normal project boundary.",
         source: "https://vitest.dev/guide/",
         environment: "vitest",
         requires: "Vitest 4; separate strict type checking",
@@ -2652,7 +2652,7 @@ const levels = [
         name: "Mocking typed functions and services",
         group: "Topics to cover",
         explanation:
-          "A typed mock preserves the service signature while controlling its responses. Mock at the boundary your code owns instead of replacing every internal function. An assertion that a mock was called is usually less useful than checking the behavior produced by a realistic response.\n\nThis example supplies a predictable async user lookup and checks its resolved model. The mock’s generic call signature rejects incompatible resolved values during checking, while the runtime test verifies the returned data.",
+          "A typed mock lets a test control a service's response while preserving its function signature. Mock a boundary your code owns rather than every internal function. Checking behavior from a realistic response is usually more useful than only checking that a mock was called.\n\nThis example supplies a predictable async user lookup and checks the resolved model. The mock's generic signature rejects incompatible resolved values during type checking. The runtime test checks the returned data.",
         source: "https://vitest.dev/guide/mocking/functions",
         environment: "vitest",
         requires: "Vitest 4; save as a *.test.ts file",
@@ -2669,7 +2669,7 @@ const levels = [
         name: "Type-aware linting",
         group: "Topics to cover",
         explanation:
-          "Type-aware lint rules can detect problems such as ignored promises or unsafe any flows using the checker’s type information. They require a configured project and cost more than syntax-only linting. Use rules that address real failure modes and keep tool versions compatible.\n\nWith typescript-eslint v8, projectService can obtain project information for included files. This flat configuration targets TypeScript sources. Keep eslint.config.mjs outside that glob unless you intentionally configure it too. A resolved promise should be awaited, returned, caught, or explicitly documented as intentionally ignored.",
+          "Type-aware lint rules use the checker's information to find problems such as unhandled promises and unsafe uses of any. They need project configuration and cost more than syntax-only rules. Choose rules for real failure cases and keep tool versions compatible.\n\nIn typescript-eslint v8, projectService obtains type information for files included in a project. This flat configuration targets TypeScript sources. Leave eslint.config.mjs outside that pattern unless you configure it deliberately too. Await, return, or catch a promise, or explicitly document why it is being ignored.",
         source: "https://typescript-eslint.io/getting-started/typed-linting/",
         environment: "tooling",
         requires:
@@ -2687,7 +2687,7 @@ const levels = [
         name: "`.tsx` and JSX typing",
         group: "React + TypeScript",
         explanation:
-          "Files containing JSX use .tsx so TypeScript parses tags as expressions. React’s type packages describe elements, props, and hooks; configure jsx for your build tool. A Vite React project typically uses react-jsx, while a framework may preserve JSX for its own transform.\n\nDo not confuse the native DOM element instance with a React element description. This component returns JSX; a ref to its rendered input would instead hold an HTMLInputElement. Install matching react/react-dom and @types packages.",
+          "Use .tsx for files containing JSX so TypeScript parses tags as expressions. React's type packages describe elements, props, and hooks. Set jsx to match your build tool: Vite React commonly uses react-jsx, while a framework may preserve JSX for its own transform.\n\nA React element description differs from the native DOM instance rendered from it. This component returns JSX; a ref to its input would hold an HTMLInputElement. Install matching react, react-dom, and their @types packages.",
         source: "https://react.dev/learn/typescript",
         environment: "react",
         requires:
@@ -2705,7 +2705,7 @@ const levels = [
         name: "Component props and children",
         group: "React + TypeScript",
         explanation:
-          "Props form a component’s public contract. Type children explicitly when the component accepts them; ReactNode covers values React can render, while a function child needs its own call signature. An optional prop can have a destructuring default.\n\nKeep the contract small rather than exposing every implementation detail. This panel requires a title and renderable children, with an optional compact setting. It can be used from another component without manual assertions.",
+          "Props describe a component's public inputs. Declare children explicitly when the component accepts them. ReactNode covers values React can render; a function used as a child needs a separate call signature. A destructuring default can supply an optional prop's value.\n\nKeep props focused on what consumers need. This panel requires a title and renderable children, with an optional compact setting. Another component can use it without assertions.",
         source: "https://react.dev/learn/typescript",
         environment: "react",
         requires:
@@ -2723,7 +2723,7 @@ const levels = [
         name: "Event handlers",
         group: "React + TypeScript",
         explanation:
-          "React event handlers use React’s typed event wrappers, not the native KeyboardEvent or MouseEvent types from lib.dom. An inline handler often gets the correct type automatically. For a named handler, import the appropriate handler type or event type.\n\ncurrentTarget is typed as the element whose handler is running, making it a useful place to read an input value. Do not assume target is the same element when nested content can originate an event. This component keeps a controlled text field synchronized with state.",
+          "React handlers use React's event wrappers, rather than the native KeyboardEvent or MouseEvent types from lib.dom. Inline handlers often receive the right type through inference. For a named handler, import an appropriate React handler or event type.\n\ncurrentTarget has the type of the element whose handler is running, making it useful for reading an input's value. target can be a nested element that originated the event. Here the handler keeps a controlled text field synchronized with state.",
         source: "https://react.dev/learn/typescript#typing-dom-events",
         environment: "react",
         requires:
@@ -2741,7 +2741,7 @@ const levels = [
         name: "Typing `useState`, `useRef`, `useReducer`, and `useContext`",
         group: "React + TypeScript",
         explanation:
-          "Let hooks infer simple initial state, and supply a type argument when the initial value omits later alternatives. A DOM ref commonly starts as null. useReducer benefits from a discriminated action union, while a nullable context needs a guard at the consuming boundary.\n\nThis complete example demonstrates all four hooks. The reducer keeps arithmetic in one place, the ref focuses an input, and the context carries a typed user name. A real application should place providers deliberately rather than adding context for every local variable.",
+          "Hooks can infer simple state from its initial value. Supply a type argument when that value does not include later possibilities. A DOM ref often starts as null. For useReducer, a discriminated union describes actions; for nullable context, check the value when consuming it.\n\nThis example combines all four hooks. The reducer keeps arithmetic together, the ref focuses an input, and context supplies a typed user name. In a real app, place providers deliberately rather than creating context for every local variable.",
         source: "https://react.dev/learn/typescript",
         environment: "react",
         requires:
@@ -2759,7 +2759,7 @@ const levels = [
         name: "Custom hooks",
         group: "React + TypeScript",
         explanation:
-          "A custom hook packages reusable stateful behavior, with the same lifecycle and dependency rules as built-in hooks. Preserve its result type instead of returning any, and clean up work such as timers or subscriptions.\n\nThis generic debounce hook preserves the input type while delaying updates. Its timeout is cancelled when the input or delay changes and on unmount. It does not validate a value or decide whether delaying a particular interaction is good UX.",
+          "A custom hook packages reusable stateful behavior. It follows the same lifecycle and dependency rules as built-in hooks. Keep its result type meaningful instead of returning any, and clean up timers, subscriptions, or other ongoing work.\n\nThis generic debounce hook delays updates while preserving the input type. It cancels the timeout when the value or delay changes and when the component unmounts. It does not validate the value or determine whether delaying that interaction gives a good user experience.",
         source: "https://react.dev/learn/reusing-logic-with-custom-hooks",
         environment: "react",
         requires:
@@ -2777,7 +2777,7 @@ const levels = [
         name: "Generic components",
         group: "React + TypeScript",
         explanation:
-          "A generic component connects item types to callbacks without forcing every consumer to use one broad base model. Let props infer T where possible, and require a stable key rather than using array positions for changing collections.\n\nA function declaration avoids the generic-arrow ambiguity in TSX; an arrow form often needs <T,>. This list keeps renderItem’s item typed to the actual input data. It describes React props, not a runtime validator for an external dataset.",
+          "A generic component connects each item's type to its callbacks without requiring all consumers to share one broad model. Let the props infer T where possible. Require a stable key for changing collections instead of using array positions.\n\nA function declaration avoids ambiguity between generics and JSX in TSX; an arrow form often needs <T,>. This list gives renderItem the actual input item type. It describes React props and does not validate an outside dataset at runtime.",
         source: "https://react.dev/learn/typescript",
         environment: "react",
         requires:
@@ -2795,7 +2795,7 @@ const levels = [
         name: "Discriminated union props",
         group: "React + TypeScript",
         explanation:
-          "A discriminated prop union describes permitted combinations. It can distinguish controlled state supplied by a parent from local state owned by the component, or a link variant from a button variant. Invalid combinations then become checker errors.\n\nKeep hooks unconditional even when props select behavior. This component always creates local state but only uses it in the local branch. The controlled branch requires onChange; the local branch manages its own update.",
+          "A discriminated prop union describes allowed combinations of inputs. It can distinguish a parent-controlled value from locally owned state, or a link from a button. The checker can then reject incompatible combinations.\n\nAlways call hooks unconditionally, even when props select different behavior. This component creates local state on every render but uses it only in the local case. The controlled case requires onChange; the local case handles its own update.",
         source: "https://react.dev/learn/typescript",
         environment: "react",
         requires:
@@ -2813,7 +2813,7 @@ const levels = [
         name: "Context and state management",
         group: "React + TypeScript",
         explanation:
-          "Context distributes a typed value through a provider; it does not automatically solve state ownership or prevent needless rerenders. Keep local state local, and use a reducer or a focused store when transitions are shared and complex.\n\nA small consumer hook can enforce a required provider. Throwing on a missing provider is clearer than inventing a misleading default or asserting away null. The provider below owns one theme value and exposes only the operations consumers need.",
+          "Context passes a typed value through a provider. It does not decide who owns state or automatically prevent unnecessary rerenders. Keep local state local; use a reducer or focused store when shared transitions become complex.\n\nA small consumer hook can check that a required provider exists. Throwing for a missing provider exposes the setup problem instead of hiding null with an assertion or supplying a misleading default. This provider owns one theme value and exposes only the operations its consumers need.",
         source: "https://react.dev/learn/scaling-up-with-reducer-and-context",
         environment: "react",
         requires:
@@ -2831,7 +2831,7 @@ const levels = [
         name: "React Router integration",
         group: "React + TypeScript",
         explanation:
-          "Route parameters come from a URL and need runtime validation even when their names are typed. Declarative routing, data routers, and framework route modules have different integration patterns; do not mix their setup instructions.\n\nThis example uses React Router 7’s declarative API from react-router. A parameter can be missing, so the page handles that case before using it. Parse and validate numeric identifiers rather than asserting that a URL string is a number. Install the version whose documentation you follow.",
+          "Route parameters are URL input and need runtime validation even when their names are typed. React Router's declarative routing, data routers, and framework route modules use different setups. Follow the setup for the approach you choose.\n\nThis example uses React Router 7's declarative API from react-router. It handles a missing parameter before using it. Parse and validate numeric identifiers rather than asserting that a URL string is a number. Install the version matching the documentation you follow.",
         source: "https://reactrouter.com/7.18.4/start/declarative/installation",
         environment: "router",
         requires:
@@ -2849,7 +2849,7 @@ const levels = [
         name: "Next.js with TypeScript",
         group: "React + TypeScript",
         explanation:
-          "Next.js combines TypeScript with a specific server/client and routing model. Keep server-only work out of client bundles, use a client boundary for interactive hooks, and follow the installed Next.js version’s generated types. Types still do not validate request input.\n\nThis App Router example follows the asynchronous params convention used by modern Next.js, including Next 16. The route file awaits its parameter before rendering. It belongs in a Next project, not in a plain Vite client app. Run the framework’s build/type checks as well as your tests, and avoid copying older synchronous-params tutorials blindly.",
+          "Next.js adds its own routing and server/client model to TypeScript. Keep server-only work out of client bundles and put interactive hooks behind a client boundary. Follow the generated types for the installed Next.js version. Types do not validate request input.\n\nThis App Router example uses the asynchronous params convention of modern Next.js, including Next 16. The route awaits its parameter before rendering. It belongs in a Next project, not a plain Vite client app. Run the framework's build and type checks alongside tests, and check the version before copying older synchronous-params examples.",
         source: "https://nextjs.org/docs/app/api-reference/config/typescript",
         environment: "next",
         requires:
@@ -2958,7 +2958,7 @@ const levels = [
         name: "Designing ergonomic public APIs",
         group: "Topics to cover",
         explanation:
-          "An ergonomic API makes the ordinary call easy and the unsafe call hard. Prefer a small options object, understandable defaults, and named exported models over positional arguments that are easy to swap. Avoid exposing implementation-only types or DOM details consumers do not need.\n\nDocument lifetime and failure behavior as part of the contract. This minimal factory returns a stable handle with one operation. A real tooltip also needs focus/hover behavior, positioning, and accessible relationships; the public handle should not require consumers to manipulate internal nodes.",
+          "An approachable public API makes ordinary calls easy and unsafe calls difficult. Prefer a small options object, clear defaults, and named exported models to positional arguments that callers can swap accidentally. Keep implementation-only types and unnecessary DOM details private.\n\nDocument how long an object remains usable, how it is cleaned up, and how failures behave. This minimal factory returns a stable handle with one operation. A real tooltip also needs focus and hover behavior, positioning, and accessible relationships. Consumers should not need to manipulate its internal nodes.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html",
         environment: "browser",
@@ -2976,7 +2976,7 @@ const levels = [
         name: "Type inference across library boundaries",
         group: "Topics to cover",
         explanation:
-          "Inference should survive the emitted declaration boundary, not merely work inside the source repository. Keep meaningful generic parameters in exported signatures and avoid annotating a result with a wider type than callers need.\n\nBuild the package, inspect its .d.ts, and compile a consumer against the packed output. A local source import can hide packaging mistakes. This generic helper’s declaration preserves the relation between input element type and possible result without exposing implementation details.",
+          "A library's inference must work through its generated declarations, not just inside its source repository. Keep useful generic relationships in exported signatures. Avoid a wider result annotation that discards details callers need.\n\nBuild the package, inspect its .d.ts output, and compile a consumer against the packed package. Importing local source can hide packaging errors. This helper's declaration preserves the relationship between the input element type and its possibly missing result without exposing implementation details.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
         environment: "core",
@@ -2994,7 +2994,7 @@ const levels = [
         name: "Advanced generic API design",
         group: "Topics to cover",
         explanation:
-          "Advanced generics are useful when they express real relationships consumers need. An API should infer obvious arguments, constrain keys, and reject mismatched values without requiring callers to write its implementation types.\n\nKeep mutation ownership clear. This store exposes key-aware get/set methods while its internal object remains private to the closure. The caller supplies a model with a real theme union so setting light later is valid; an over-narrow literal model would intentionally reject it.",
+          "Use advanced generics to express relationships callers actually need. A useful API infers obvious arguments, restricts keys, and rejects mismatched values without requiring callers to understand its implementation types.\n\nBe clear about who can mutate data. This store keeps its object inside a closure and exposes get and set methods whose value types follow the chosen key. The caller supplies a model with a theme union, so setting light later is valid. An intentionally narrower literal model would reject that change.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -3011,7 +3011,7 @@ const levels = [
         name: "Function overloads vs. union parameters",
         group: "Topics to cover",
         explanation:
-          "Use a union parameter when callers can supply any alternative and the result shape is the same. Use overloads when distinct argument patterns genuinely imply distinct result types or arities. Too many overloads can make maintenance and inference harder.\n\nThe implementation signature is not an extra public overload. A union-typed argument needs a matching public signature if you intend to support it. This formatter needs no overload because both input forms produce a string; the separate lookup demonstrates a meaningful overload relationship.",
+          "Use a union parameter when all accepted alternatives produce the same result shape. Use overloads when distinct argument patterns imply different result types or numbers of arguments. Too many overloads can complicate maintenance and inference.\n\nThe implementation signature is not another public overload. Supporting a union-typed argument requires a matching public signature. The formatter needs no overload because both forms return a string. The separate lookup shows a relationship where overloads are useful.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/functions.html#writing-good-overloads",
         environment: "core",
@@ -3029,7 +3029,7 @@ const levels = [
         name: "Creating and publishing `.d.ts` files",
         group: "Topics to cover",
         explanation:
-          "Generate declarations from checked sources instead of maintaining a parallel public API by hand when possible. Include the generated .d.ts files in the published tarball and point the package’s type entry at them. Declaration files are not executable implementations.\n\nBuild first, inspect the package contents, and test a consumer. A package that works from a monorepo source path may fail after publishing if dist files or exports are missing. These commands perform local generation and a dry-run inspection; they do not publish anything.",
+          "Generate .d.ts declarations from checked source when possible, rather than maintaining a second public API by hand. Include them in the published package and point its type entry to them. Declarations describe code; they do not execute it.\n\nBuild first, inspect the package contents, and test a consumer. A package can work through a monorepo source path yet fail after publishing because output files or exports are missing. These commands generate files locally and inspect a dry run. They do not publish the package.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html",
         environment: "core",
@@ -3047,7 +3047,7 @@ const levels = [
         name: "`declaration` and `declarationMap`",
         group: "Topics to cover",
         explanation:
-          "declaration emits type descriptions; declarationMap maps those descriptions back to source for editor navigation. They are different from sourceMap, which relates runtime JavaScript to TypeScript during debugging.\n\nChoose whether to include sources or maps according to the package’s navigation goals. Make output paths explicit and test the published layout. This build configuration produces ESM JavaScript, declarations, and declaration maps from one public entry point.",
+          "declaration generates type descriptions. declarationMap connects those descriptions to source files for editor navigation. sourceMap has a separate role: connecting running JavaScript to TypeScript for debugging.\n\nChoose whether to ship sources and maps based on the navigation experience you want. Set output paths explicitly and test the packaged layout. This configuration builds ESM JavaScript, declarations, and declaration maps from one public entry point.",
         source: "https://www.typescriptlang.org/tsconfig/#declarationMap",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -3076,7 +3076,7 @@ const levels = [
         name: "Package `exports` and `types`",
         group: "Topics to cover",
         explanation:
-          "Package exports define which entry points consumers can resolve. types locates declarations, while the runtime entry must locate actual JavaScript. Keep the declaration’s module interpretation aligned with the emitted format; a filename alone does not make the package dual ESM/CommonJS.\n\nThis is an ESM-only package sketch. types appears before the runtime import condition, and the top-level types supports appropriate tools reading that field. files restricts the packed output. Test the tarball from an independent consumer rather than relying on source aliases.",
+          "Package exports define the entry points consumers can resolve. types identifies declarations, while a runtime entry must point to actual JavaScript. The declarations' module interpretation must match the output format. A filename alone does not make a package support both ESM and CommonJS.\n\nThis sketch is ESM-only. The types condition comes before import, and the top-level types field supports tools that read it. files limits what is packed. Test the tarball in an independent consumer rather than relying on source aliases.",
         source:
           "https://www.typescriptlang.org/docs/handbook/modules/reference.html#packagejson-exports",
         environment: "core",
@@ -3094,7 +3094,7 @@ const levels = [
         name: "ESM and CommonJS interoperability",
         group: "Topics to cover",
         explanation:
-          "ESM and CommonJS differ in evaluation and import/export behavior, not just extension spelling. NodeNext checking follows package metadata and extensions; .mts/.mjs and .cts/.cjs explicitly select formats. A bundler’s interop can differ from direct Node execution.\n\nPrefer a clearly documented single format unless dual output is a real requirement. Dual packages need separate runtime entries and correctly interpreted declarations for each format; changing exports alone cannot generate them. This pair demonstrates explicit source formats without claiming to be a complete dual-package build.",
+          "ESM and CommonJS differ in how code is evaluated and how imports and exports behave. With NodeNext, checking follows package metadata and extensions. .mts/.mjs explicitly select ESM, while .cts/.cjs select CommonJS. A bundler may handle interoperability differently from Node running directly.\n\nPrefer one documented format unless both are needed. Supporting both requires separate runtime entries and declarations interpreted correctly for each. Changing exports does not generate those files. This example shows explicit source formats, not a complete dual-format package build.",
         source:
           "https://www.typescriptlang.org/docs/handbook/modules/appendices/esm-cjs-interop.html",
         environment: "node-format",
@@ -3118,7 +3118,7 @@ const levels = [
         name: "Type-safe npm package configuration",
         group: "Topics to cover",
         explanation:
-          "package.json is configuration consumed by npm, Node, bundlers, and type resolvers. TypeScript does not automatically prove that every referenced output file exists or that exports describes a usable package. Validate the installed artifact, not just the source configuration.\n\nKeep peer/runtime/dev dependencies intentional, include generated files, and run a consumer check with supported module settings. A dry run is a review step, not a publication. The commands below inspect metadata and the tarball before any release action.",
+          "npm, Node, bundlers, and type resolvers all read package.json. TypeScript does not automatically prove that its referenced output files exist or its exports form a usable package. Check the installed artifact as well as the source configuration.\n\nChoose peer, runtime, and development dependencies deliberately. Include generated output and check a consumer with supported module settings. These commands inspect metadata and the tarball before release. A dry run is a review step, not publication.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html",
         environment: "core",
@@ -3136,7 +3136,7 @@ const levels = [
         name: "Testing public types with tools such as `tsd` or `TSTyche`",
         group: "Topics to cover",
         explanation:
-          "Public type tests check inferred results and rejected calls as part of the package contract. tsd or TSTyche can express expectations that ordinary runtime tests cannot. Run them against the package’s public declarations, not private implementation paths.\n\nHere a small tsd fixture checks the output type and an intentionally invalid call. It belongs in a built package whose types entry resolves correctly. expectError is interpreted by tsd; it is not a directive that makes the expression safe in an ordinary application.",
+          "Public type tests check inferred types and calls that should be rejected. Tools such as tsd and TSTyche can express these expectations, which ordinary runtime tests cannot. Test the package's public declarations rather than private source paths.\n\nThis tsd fixture checks a result type and a deliberately invalid call. It belongs in a built package with a working types entry. expectError has meaning to tsd; it does not make that expression safe in an ordinary application.",
         source: "https://github.com/tsdjs/tsd",
         environment: "type-test",
         requires: "tsd; built package exporting greet(name: string): string",
@@ -3159,7 +3159,7 @@ const levels = [
         name: "Writing declarations for untyped JavaScript libraries",
         group: "Topics to cover",
         explanation:
-          "Describe the real JavaScript API with accurate parameters, returns, optionality, and module shape. A blanket declare module declaration that turns every export into any stops errors without providing useful safety. Avoid inventing runtime exports merely to satisfy a consumer.\n\nFor a small local library, a sibling .d.ts can describe the existing implementation. For a published package, follow the actual package’s module shape and test a consumer. This declaration matches the visible JavaScript rather than an imagined interface.",
+          "A declaration for JavaScript must match its real parameters, return values, optional inputs, and module shape. A blanket declare module that makes exports any hides errors without providing useful checks. Do not invent exports to satisfy the consuming code.\n\nA sibling .d.ts can describe a small local library. For a published dependency, follow its actual module shape and test a consumer. Here the declaration can be compared directly with the visible implementation.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-d-ts.html",
         environment: "core",
@@ -3189,7 +3189,7 @@ const levels = [
         name: "Backward-compatible API and type design",
         group: "Topics to cover",
         explanation:
-          "Types are part of the public API. Narrowing an accepted input, changing inference, making an optional field required, or adding a new union variant consumed exhaustively can break callers even when JavaScript behavior appears compatible.\n\nUse consumer fixtures and public type tests when reviewing releases. Add an option with a documented default rather than silently redefining an existing parameter. Keep old supported calls working deliberately, and treat a meaningful contract break as a versioning decision.",
+          "Types are part of a public API. Restricting an accepted input, changing inference, requiring a previously optional field, or adding a union case handled exhaustively can break consumers even when runtime behavior seems compatible.\n\nReview releases with consumer fixtures and public type tests. Prefer adding an option with a documented default to silently changing an existing parameter's meaning. Preserve supported calls deliberately and treat a meaningful contract break as a versioning decision.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html",
         environment: "core",
@@ -3207,7 +3207,7 @@ const levels = [
         name: "TypeScript package documentation",
         group: "Topics to cover",
         explanation:
-          "Document installation, runtime requirements, ownership/cleanup, errors, supported compiler versions, and the public import path. Examples should be checked against the published declarations and should not rely on private source files.\n\nA generic parameter needs an explanation of its relationship, not just its letter. Provide the simplest useful call first, then controlled variations. This consumer example uses only exported contracts, showing a callback’s inferred model and an explicit destroy step.",
+          "Package documentation should explain installation, runtime requirements, ownership and cleanup, errors, supported compiler versions, and the public import path. Check examples against the published declarations. They should not depend on private source files.\n\nExplain what a generic parameter connects, rather than merely naming its letter. Start with the simplest useful call, then show variations. This consumer uses only exported contracts, showing the callback's inferred model and an explicit destroy step.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html",
         environment: "core",
@@ -3344,7 +3344,7 @@ const levels = [
         name: "Structural type compatibility in depth",
         group: "Topics to cover",
         explanation:
-          "Structural compatibility compares the members required for an operation. Extra members do not normally prevent assignment, but private/protected class members can carry origin requirements that make otherwise similar shapes incompatible. Function relationships add parameter and result rules.\n\nThink about the permitted consumer operations rather than treating types as exact object records. This read-only view accepts a richer object, and the function deliberately relies only on its declared name capability. External validation and exact-property policies are separate concerns.",
+          "Structural compatibility compares the members needed for an operation. Extra fields usually do not prevent assignment. Private and protected class members can also require a shared declaration origin, making otherwise similar shapes incompatible. Function compatibility adds rules for parameters and results.\n\nFocus on what consumers are allowed to do, rather than treating types as exact object records. This readonly view accepts a richer object, and the function uses only its declared name field. Runtime validation and policies for exact keys are separate concerns.",
         source:
           "https://www.typescriptlang.org/docs/handbook/type-compatibility.html",
         environment: "core",
@@ -3362,7 +3362,7 @@ const levels = [
         name: "Assignability and excess property checking",
         group: "Topics to cover",
         explanation:
-          "Excess property checking applies to fresh object literals in selected contexts; it is not a universal exact-object guarantee. Assignability from an existing variable usually asks whether the required members exist. Assertions can bypass those helpful diagnostics.\n\nUse satisfies to check a fresh configuration while preserving inference, and use runtime validation when exact external keys matter. This example contrasts a rich existing object with a checked literal. Reassigning through an intermediate variable does not sanitize the runtime object.",
+          "Excess property checking reports unexpected keys on fresh object literals in certain contexts. It does not guarantee that every object has exactly the declared keys. An existing variable is usually compatible when it has the required members. Assertions can bypass the extra checks.\n\nUse satisfies to check a fresh configuration while preserving inference. Use runtime validation when outside data must have exact keys. The example contrasts a richer existing object with a checked literal. Moving an object through an intermediate variable does not remove its runtime properties.",
         source:
           "https://www.typescriptlang.org/docs/handbook/type-compatibility.html",
         environment: "core",
@@ -3380,7 +3380,7 @@ const levels = [
         name: "Soundness limitations of TypeScript",
         group: "Topics to cover",
         explanation:
-          "TypeScript deliberately accepts some programs it cannot prove safe, trading complete soundness for compatibility with JavaScript patterns. any, assertions, mutable aliases, unchecked lookups, and some function rules can bypass guarantees. Passing the checker is not a runtime proof.\n\nPrefer readonly inputs, narrow external values, and keep unsafe assumptions local. This example shows mutable-array aliasing: a wider view can insert a number into storage originally viewed as strings. It demonstrates the limitation without calling a string method on the inserted value.",
+          "TypeScript allows some programs it cannot prove safe to support common JavaScript patterns. This is a limitation of soundness: passing its checks is not proof of runtime safety. any, assertions, mutable references to shared data, unchecked lookups, and some function rules can weaken guarantees.\n\nPrefer readonly inputs, check outside values, and keep unsafe assumptions local. This example gives a string array a wider mutable view that can insert a number into the same storage. It demonstrates the limitation without calling a string method on that number.",
         source:
           "https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness",
         environment: "core",
@@ -3398,7 +3398,7 @@ const levels = [
         name: "Covariance, contravariance, and bivariance",
         group: "Topics to cover",
         explanation:
-          "Covariance lets a producer of a subtype stand in for a producer of a base type. Contravariance reverses the relationship for consumer parameters. Bivariance permits either parameter direction; TypeScript retains a method-signature exception even under strictFunctionTypes for compatibility.\n\nUse function-valued properties when strict callback parameter checking is important. Do not rely on the method exception to make an unsafe callback safe. The example marks the dangerous direction as a commented failure, while the safe consumer direction handles every Dog it may receive.",
+          "Covariance allows a producer of a more specific type to replace a producer of a broader type. Contravariance reverses this relationship for input parameters. Bivariance permits either direction. For compatibility, TypeScript retains a method-signature exception even with strictFunctionTypes enabled.\n\nUse function-valued properties when strict callback parameter checks matter. The method exception cannot make an unsafe callback safe. The example comments out the dangerous direction; the safe consumer accepts every Dog it can receive.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#strict-function-types",
         environment: "core",
@@ -3416,7 +3416,7 @@ const levels = [
         name: "Type inference limitations",
         group: "Topics to cover",
         explanation:
-          "Inference works from available evidence, not intent. A generic with no informative input may infer unknown; an initializer can widen literals; a generic conditional return relationship may be clearer to the caller than to the implementation checker.\n\nImprove the contract or split a function before reaching for broad casts. An explicit type argument is reasonable when the initial value is intentionally absent and cannot supply the future type. This helper preserves the value type once the caller provides that missing information.",
+          "Inference uses available evidence, not your intent. A generic with no informative input may infer unknown. Initializers can widen literals, and a conditional relationship obvious to a caller may be harder for the checker to establish inside the implementation.\n\nImprove the contract or split the function before adding broad casts. An explicit type argument is reasonable when the initial value is deliberately absent and cannot describe future values. This helper preserves the value type after the caller supplies that missing information.",
         source: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -3433,7 +3433,7 @@ const levels = [
         name: "Control flow analysis internals",
         group: "Topics to cover",
         explanation:
-          "The checker’s control flow model follows assignments and branch evidence, but it is not a full symbolic execution of every callback or side effect. A refinement on mutable data can become stale when external code changes that data. Await boundaries and closures deserve deliberate reasoning.\n\nUse a stable local snapshot for work that must retain a checked value, and re-check mutable shared state after operations that may invalidate it. This example captures a primitive string before calling code that clears the original field. Compiler internals are version-dependent; rely on observable contracts rather than private implementation symbols.",
+          "Control flow analysis tracks assignments and evidence from branches. It does not fully simulate every callback or side effect. A narrowed field can become invalid if other code changes the underlying object. Think carefully about closures and work that crosses await boundaries.\n\nCapture a stable local value when you need to retain a checked value. Recheck shared mutable state after operations that may change it. Here a primitive string is captured before another function clears its original field. Compiler internals vary by version, so rely on observable contracts rather than private implementation symbols.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#control-flow-analysis",
         environment: "core",
@@ -3451,7 +3451,7 @@ const levels = [
         name: "Compiler pipeline fundamentals",
         group: "Topics to cover",
         explanation:
-          "The classic compiler parses source text into an abstract syntax tree, binds names to symbols, checks type relationships, and optionally emits output. Parsing a file does not by itself perform whole-program semantic checking. Transforming syntax is not equivalent to preserving a program’s types or behavior.\n\nThis Node script uses the classic TypeScript 5.9.3 JavaScript compiler package and prints variable declaration names from a parsed file. It creates no project and makes no claim that the source type-checks. New compiler implementations and major versions may expose different entry points; keep API tooling pinned and tested.",
+          "The classic compiler parses source into an abstract syntax tree, a structured representation of the code. It then links names to symbols, checks type relationships, and optionally generates output. Parsing alone does not check a whole program's meaning. Changing syntax does not automatically preserve types or behavior.\n\nThis Node script uses the classic TypeScript 5.9.3 JavaScript compiler package to print variable declaration names. It creates no project and does not establish that the parsed source type-checks. New implementations or major versions may use different entry points. Pin and test compiler-API tooling.",
         source:
           "https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API",
         environment: "compiler",
@@ -3470,7 +3470,7 @@ const levels = [
         name: "TypeScript Compiler API",
         group: "Topics to cover",
         explanation:
-          "A Program represents a compiler project; a TypeChecker answers semantic questions about its nodes, symbols, and types. Use public APIs rather than importing private checker internals. For a real project, read and parse its tsconfig so your tool uses the same options as the build.\n\nThis pinned classic-API example creates a small program and asks for a variable’s inferred type. Run it from the shown project directory. getPreEmitDiagnostics checks errors before output; the example avoids emitting files because its job is inspection.",
+          "A Program represents a compiler project. Its TypeChecker answers questions about the project's nodes, symbols, and types. Use these public APIs instead of private checker internals. For a real project, read and parse tsconfig so the tool uses the build's options.\n\nThis pinned classic-API example creates a small program and inspects a variable's inferred type. Run it from the shown project directory. getPreEmitDiagnostics checks for errors before output. The example inspects code without emitting files.",
         source:
           "https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API",
         environment: "compiler",
@@ -3495,7 +3495,7 @@ const levels = [
         name: "Language Service API basics",
         group: "Topics to cover",
         explanation:
-          "A language service maintains editor-oriented project state and answers questions such as completions, quick info, and definitions. Its host supplies filenames, versions, snapshots, and environment information. Update script versions when content changes so cached results can be invalidated.\n\nThis deliberately small classic-API example serves one virtual file and asks for quick info about a numeric constant. It uses noLib for an isolated demonstration; a real editor host must also provide standard libraries, module resolution, and actual project settings. Do not treat this tiny host as a production language server.",
+          "A language service keeps project state for editor features such as completions, quick info, and definitions. Its host supplies filenames, versions, source snapshots, and environment details. When content changes, update script versions so cached answers can be refreshed.\n\nThis small classic-API example serves one virtual file and requests quick info for a numeric constant. noLib keeps the demonstration isolated. A real editor host also needs standard libraries, module resolution, and actual project settings. This host is not a production language server.",
         source:
           "https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API",
         environment: "compiler",
@@ -3513,7 +3513,7 @@ const levels = [
         name: "Advanced declaration-file design",
         group: "Topics to cover",
         explanation:
-          "Advanced declarations need to express the real call/construct shape, overloads, namespaces, or augmentation surface of an existing JavaScript package. Choose the matching module template and verify it with consumers using supported resolution modes.\n\nDo not make every export generic or optional to accommodate uncertain behavior. This example describes a callable value that also carries metadata, a common JavaScript pattern. The runtime implementation is shown so the declaration can be compared to actual behavior; default/named exports must match.",
+          "Advanced declarations describe an existing package's real behavior: whether values can be called or constructed, which overloads exist, and what namespaces or extensions it supports. Choose a module template that matches the implementation and test consumers using supported resolution settings.\n\nDo not make exports generic or optional just because behavior is uncertain. This example describes a callable value with metadata, a common JavaScript pattern. Its runtime implementation is shown for comparison. Default and named exports must match the actual module.",
         source:
           "https://www.typescriptlang.org/docs/handbook/declaration-files/library-structures.html",
         environment: "core",
@@ -3543,7 +3543,7 @@ const levels = [
         name: "Debugging complex generic type errors",
         group: "Topics to cover",
         explanation:
-          "Read a complex diagnostic from the mismatched boundary inward: expected type, actual type, then the smallest property or parameter that differs. Replace a deep composed expression with named intermediate aliases and minimal concrete examples.\n\nUse satisfies to inspect an object without forcing it into a misleading annotation, and use @ts-expect-error only for a deliberately invalid type test. Avoid fixing a confusing generic by converting the entire return type to any. This small reproduction makes the missing field visible.",
+          "Read a complex type error from the mismatched boundary inward. First compare the expected and actual types, then find the smallest differing property or parameter. Break deeply composed expressions into named intermediate types and small concrete examples.\n\nUse satisfies to inspect an object's compatibility without a misleading annotation. Reserve @ts-expect-error for deliberately invalid type tests. Do not hide a confusing generic error by changing its entire return type to any. This small reproduction exposes the missing field.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
         environment: "core",
@@ -3561,7 +3561,7 @@ const levels = [
         name: "Compiler performance analysis",
         group: "Topics to cover",
         explanation:
-          "Compiler performance is affected by project scope, duplicate dependency types, large inferred declarations, union growth, and recursive instantiations. Measure before changing code or suppressing diagnostics. extendedDiagnostics gives a useful overview; traces expose more detailed work.\n\nKeep trace generation separate from normal builds, compare like-for-like runs, and focus on the actual expensive boundary. Narrow include patterns, avoid accidental source duplication, and name reusable types before adding more elaborate type-level algorithms. skipLibCheck is a tradeoff, not proof that dependency types agree.",
+          "Checking speed depends on project scope, duplicated dependency types, large inferred declarations, growing unions, and recursive type expansion. Measure before changing code or suppressing errors. extendedDiagnostics gives an overview; traces provide more detail.\n\nGenerate traces separately from normal builds and compare equivalent runs. Focus on the expensive boundary. Restrict include patterns, avoid duplicate sources, and name reusable types before adding more elaborate type computations. skipLibCheck is a tradeoff; it does not prove that dependency declarations agree.",
         source: "https://github.com/microsoft/TypeScript/wiki/Performance",
         environment: "core",
         requires: "Independent TypeScript file; strict ES2022 setup",
@@ -3578,7 +3578,7 @@ const levels = [
         name: "Project references and incremental builds",
         group: "Topics to cover",
         explanation:
-          "Project references split a large build into explicit dependencies. Referenced projects use composite and produce declarations so dependents can build against their public output. tsc -b orders builds and reuses up-to-date work. Incremental metadata improves repeated builds but does not replace clean CI checks.\n\nKeep rootDir/outDir explicit and avoid importing another package’s private source tree. This solution config sketches an ordered build; the complete workspace exercise below supplies the package configs. A frontend noEmit check and a declaration-emitting library build have different jobs.",
+          "Project references divide a large build into declared dependencies. Referenced projects use composite and generate declarations for dependent projects to consume. tsc -b builds them in order and reuses up-to-date work. Incremental metadata speeds repeat builds but does not replace clean CI checks.\n\nSet rootDir and outDir explicitly. Avoid importing another package's private source tree. This solution configuration sketches the build order; the workspace exercise supplies the package configurations. A frontend check with noEmit and a library build that emits declarations serve different purposes.",
         source:
           "https://www.typescriptlang.org/docs/handbook/project-references.html",
         environment: "workspace",
@@ -3602,7 +3602,7 @@ const levels = [
         name: "TypeScript in monorepos",
         group: "Topics to cover",
         explanation:
-          "A monorepo is multiple packages in one repository, not one giant program with unrestricted cross-imports. Give each package a public entry, clear dependencies, its own compiler settings, and a deliberate build/check command. Workspaces link local packages; exports controls their surface.\n\nDo not rely on paths aliases as a runtime module loader: they do not rewrite emitted specifiers. For npm workspaces, a local package version can satisfy an ordinary dependency range. This metadata sketch keeps a shared package explicit; the final practice project adds builds, consumers, tests, and CI.",
+          "A monorepo contains multiple packages in one repository. Give each package a public entry point, explicit dependencies, compiler settings, and build/check commands instead of treating it as one unrestricted program. Workspaces link local packages, and exports controls their exposed entry points.\n\npaths aliases do not load modules at runtime or rewrite generated import specifiers. In npm workspaces, a local package's version can satisfy a normal dependency range. This metadata sketch declares the shared package explicitly. The final practice project adds builds, consumers, tests, and CI.",
         source:
           "https://www.typescriptlang.org/docs/handbook/project-references.html",
         environment: "workspace",
@@ -3627,7 +3627,7 @@ const levels = [
         name: "Large-scale JavaScript-to-TypeScript migration",
         group: "Topics to cover",
         explanation:
-          "Migrate by stable boundaries while keeping runtime behavior covered by tests. Start with allowJs/checkJs and JSDoc where renaming is expensive, then convert leaf utilities and public contracts. Treat external data as unknown rather than exporting broad any into newly typed code.\n\nTrack remaining unchecked boundaries, make ownership explicit, and tighten strictness in manageable projects. Do not combine a large behavioral rewrite with a syntax-only migration unless you can review and validate both. This plan keeps type checking and behavior checks independent.",
+          "Migrate JavaScript along stable boundaries while preserving behavior with tests. Use allowJs, checkJs, and JSDoc where renaming is costly, then convert small independent utilities and public contracts. Treat outside data as unknown rather than passing broad any types into newly checked code.\n\nTrack unchecked boundaries, assign ownership, and tighten checks in manageable projects. Avoid combining a large behavior rewrite with a syntax migration unless both can be reviewed and validated. This plan keeps type checks separate from behavior checks.",
         source:
           "https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html",
         environment: "core",
@@ -3645,7 +3645,7 @@ const levels = [
         name: "TypeScript upgrades and compatibility management",
         group: "Topics to cover",
         explanation:
-          "Compiler and declaration upgrades can change inference and diagnostics without changing runtime code. Use a lockfile, choose supported compiler ranges, read release notes, and test the actual package consumers you claim to support.\n\nUpgrade the compiler and dependent tooling deliberately rather than suppressing new errors globally. For compiler-API tooling, an implementation change can require a different entry point; the pinned classic examples in this guide are intentionally explicit. The commands compare a known compiler and a candidate without changing the repository’s dependency manifest.",
+          "Compiler and declaration updates can change inference and diagnostics without changing runtime code. Use a lockfile, choose supported compiler ranges, read release notes, and test the package consumers you claim to support.\n\nUpdate the compiler and related tools deliberately rather than suppressing new errors globally. Compiler-API tools may need a different entry point after an implementation change; this guide explicitly pins its classic examples for that reason. These commands compare a known compiler with a candidate without changing the repository's dependency manifest.",
         source:
           "https://www.typescriptlang.org/docs/handbook/release-notes/overview.html",
         environment: "core",
@@ -3663,7 +3663,7 @@ const levels = [
         name: "Keeping complex type-level code readable and maintainable",
         group: "Topics to cover",
         explanation:
-          "Prefer the smallest type that expresses a guarantee the application uses. Name intermediate steps, document assumptions and distribution behavior, and give helpers examples that should pass and should fail. A clever universal type can be less valuable than a small clear domain contract.\n\nExpertise includes knowing when not to abstract. This helper has one named transformation and a direct use case: constructing an editable draft while keeping an id. It is easier to explain and test than an unbounded deep utility with many unrelated options.",
+          "Choose the smallest type that expresses a guarantee the application needs. Name intermediate steps, document assumptions and union distribution, and provide examples that should pass and fail. A small domain contract can be more useful than a clever universal type.\n\nKnowing when to avoid abstraction is part of expertise. This helper performs one named transformation: creating an editable draft while retaining an id. It is easier to explain and test than an unbounded deep utility with unrelated options.",
         source:
           "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html",
         environment: "core",
