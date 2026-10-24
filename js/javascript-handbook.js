@@ -822,7 +822,7 @@ const handbook = {
         {
           name: "GSAP adds coordination, scroll integration, and scoped cleanup",
           explanation:
-            "GSAP coordinates animations and their cleanup. A tween changes properties over time. A timeline sequences several tweens under one playhead, the current position in the sequence. ScrollTrigger connects animation to viewport crossings or scroll progress. Register imported plugins and use matching core/plugin versions. The dedicated GSAP handbook covers these features in detail; this example focuses on owning their lifecycle in JavaScript.\n\nUse matchMedia to apply responsive and reduced-motion conditions. Revert it when the feature is destroyed. Essential content must remain visible when motion is off. Recalculate scroll effects after genuine layout changes, and avoid giving every element its own global scroll listener.",
+            "GSAP coordinates animations and their cleanup. A tween changes properties over time. A timeline sequences several tweens under one playhead, the current position in the sequence. ScrollTrigger connects animation to viewport crossings or scroll progress. Register imported plugins and use matching core/plugin versions. The official GSAP documentation covers these features in detail; this example focuses on owning their lifecycle in JavaScript.\n\nUse matchMedia to apply responsive and reduced-motion conditions. Revert it when the feature is destroyed. Essential content must remain visible when motion is off. Recalculate scroll effects after genuine layout changes, and avoid giving every element its own global scroll listener.",
           files: [
             {
               name: "mount-reveal.js",
@@ -2408,7 +2408,7 @@ const handbook = {
       levels: "Levels 3–4, 6, 8",
       steps: [
         "Build a readable static page, then identify the transitions and scroll scenes that support its content.",
-        "Use the scoped mountReveal helper from Chapter 12 and the GSAP handbook for timeline/ScrollTrigger details.",
+        "Use the scoped mountReveal helper from Chapter 12 and the official GSAP documentation for timeline/ScrollTrigger details.",
         "Expose initialize/refresh/destroy boundaries, respect reduced motion, and refresh after content geometry settles.",
         "Profile representative mobile conditions and test rapid input, live breakpoints, route changes, and remounts.",
       ],

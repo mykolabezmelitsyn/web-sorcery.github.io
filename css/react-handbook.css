@@ -1,0 +1,43 @@
+/* Reuse the established handbook cards, layout, and light/dark color themes. */
+@import url("./gsap-handbook.css");
+.guide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin: 18px 0;
+}
+.guide-links .external {
+  margin: 0;
+}
+.topic-path {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0 0 8px;
+}
+.entry-content p,
+.entry-content li,
+.entry-content a,
+.entry h3,
+.entry h4 {
+  overflow-wrap: anywhere;
+}
+.entry-content ul,
+.entry-content ol {
+  padding-left: 24px;
+}
+.entry-content li {
+  margin: 10px 0;
+  line-height: 1.7;
+}
+.entry-content blockquote,
+#source-introduction blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 16px 0;
+  padding-left: 16px;
+}
+#source-introduction p {
+  overflow-wrap: anywhere;
+}
+.entry-content > :last-child {
+  margin-bottom: 0;
+}

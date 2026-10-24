@@ -1,0 +1,27 @@
+/* Preserve the shared handbook design while keeping cheat-sheet entries compact. */
+@import url("./handbook-common.css");
+.entry h4 {
+  margin: 24px 0 10px;
+  font-size: 1rem;
+}
+.method-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+#example-setup {
+  margin-top: 14px;
+}
+.guide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+caption {
+  text-align: left;
+  padding: 10px;
+  font-weight: 700;
+}
+.entry p,
+.entry h4 {
+  overflow-wrap: anywhere;
+}

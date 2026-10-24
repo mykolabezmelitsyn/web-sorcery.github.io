@@ -1,5 +1,5 @@
 /* Reuse the shared handbook theme and responsive container/row layout. */
-@import url("./gsap-handbook.css");
+@import url("./handbook-common.css");
 .git-flow {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

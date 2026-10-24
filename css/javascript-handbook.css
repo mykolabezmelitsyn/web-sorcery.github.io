@@ -1,5 +1,5 @@
 /* Keep the established handbook theme, responsive layout, and topic cards. */
-@import url("./gsap-handbook.css");
+@import url("./handbook-common.css");
 .level-filter select {
   max-width: 100%;
   min-width: 0;
