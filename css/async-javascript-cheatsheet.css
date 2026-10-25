@@ -1,0 +1,14 @@
+/* Use the same layout, themes, and entry styling as the other cheat sheets. */
+@import url("./handbook-common.css");
+.entry h4 {
+  margin: 24px 0 10px;
+  font-size: 1rem;
+}
+.entry p,
+.entry h4 {
+  overflow-wrap: anywhere;
+}
+.method-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
