@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Learn Git through 18 roadmap stages, practical explanations, annotated commands, recovery workflows, and five hands-on projects."
+      content="A categorized Git cheat sheet built from supplied category images, with concise explanations, practical examples, and saved learning progress."
     />
-    <title>Git — Mastery Handbook</title>
+    <title>Git — Categorized Cheat Sheet</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <link
       rel="icon"
@@ -30,7 +30,7 @@
     <link rel="manifest" href="../site.webmanifest" />
     <meta name="theme-color" content="#092e2c" />
     <script src="../js/theme.js"></script>
-    <link rel="stylesheet" href="../css/git-handbook.css" />
+    <link rel="stylesheet" href="../css/git-cheatsheet.css" />
     <link rel="stylesheet" href="../css/navigation.css" />
     <link rel="stylesheet" href="../css/code-highlighting.css" />
     <link rel="stylesheet" href="../css/handbook-progress.css" />
@@ -103,120 +103,83 @@
           >Regular Expressions</a
         >
         <a href="../docs/typescript-cheatsheet.html">TypeScript</a>
-        <a href="../docs/git-handbook.html">Git</a>
-        <a href="../docs/git-handbook.html" aria-current="page">Git</a>
+        <a href="../docs/git-cheatsheet.html" aria-current="page">Git</a>
+
         <a href="../docs/lottie-handbook.html">Lottie Animation</a>
         <a href="../docs/gsap-cheatsheet.html">GSAP Cheat Sheet</a>
       </nav>
     </div>
     <header class="hero">
       <div class="container">
-        <h1>Git Mastery Handbook</h1>
+        <h1>Git Cheat Sheet</h1>
         <p>
-          Understand the history. Collaborate with confidence. Recover
-          deliberately. A practical path from your first snapshot to
-          professional frontend workflows.
+          A practical reference, built category by category. Short explanations,
+          labeled examples, and the methods in the order you supplied them.
         </p>
         <a class="external" href="https://git-scm.com/docs"
-          >Official Git reference ↗</a
+          >Official Git documentation ↗</a
         >
         <input
           id="search"
           type="search"
-          placeholder="Search: staging, rebase, recovery, worktrees…"
-          aria-label="Search Git stages, lessons, commands, and projects"
+          placeholder="Search categories, commands, and examples…"
+          aria-label="Search Git categories, commands, and examples"
         />
       </div>
     </header>
     <main>
       <div class="container">
         <div class="row">
-          <aside aria-label="Roadmap stages">
-            <div class="nav-title">Learning path</div>
-            <nav id="nav" class="guide-nav" aria-label="Git stages"></nav>
+          <aside aria-label="Cheat sheet categories">
+            <div class="nav-title">Categories</div>
+            <nav id="nav" class="guide-nav" aria-label="Git categories"></nav>
           </aside>
           <div class="guide-body">
             <div class="toolbar">
-              <strong>18 stages · 163 topics · 5 projects</strong
+              <strong id="sheet-summary"
+                >12 categories · 270 entries · 543 examples</strong
               ><span id="count" role="status" aria-live="polite"></span>
             </div>
             <div class="tip">
-              <strong>Learn the model before memorizing commands.</strong>
+              <strong>Built from your category images.</strong>
               <p>
-                Follow stages 1–4 for foundations, prioritize 5–10 for everyday
-                collaboration, then deepen your knowledge in 11–17. Stage 18
-                applies the skills to frontend work. Every roadmap topic,
-                essential command, practice prompt, project, and study-plan item
-                is retained below.
+                Each item will have a concise description and 2–3 labeled,
+                practical Git examples. Categories and items follow the order
+                you supply, without unrelated topics.
               </p>
               <p>
-                <strong>Version baseline:</strong> lab scripts tested with Git
-                2.52.0. This is a tested baseline, not a claim about the latest
-                release. <code>switch</code>/<code>restore</code> need Git
-                2.23+; <code>init -b</code> needs 2.28+. Newer
-                <code>config get/set/list</code> forms need 2.46+; examples use
-                older compatible forms. Consult
-                <code>git help COMMAND</code> for your installed version.
+                Try examples in a practice repository, using the prerequisites
+                given for each example. Commands are displayed for reference and
+                do not execute on this page. Each entry will include a checkbox
+                to save learning progress in this browser.
               </p>
-              <p>
-                <strong>Running examples:</strong> POSIX-style shell
-                (macOS/Linux or Git Bash on Windows), with <code>mktemp</code>.
-                PowerShell needs syntax adaptations. Each complete lab creates a
-                fresh temporary directory and sets repository-local identity.
-                Contextual snippets require the stated branches/files and are
-                independent alternatives. Code is never executed by this page.
-              </p>
-              <p>
-                Before a command, ask: what happens to my working tree, index,
-                local refs, and remote refs? Preserve valuable uncommitted work
-                separately. Recovery has limits, particularly for discarded
-                files Git never recorded.
-              </p>
+              <a class="source" href="../git-mastery-roadmap.md"
+                >Cheat sheet requirements ↗</a
+              >
             </div>
-            <div class="git-flow" aria-label="Snapshot workflow">
-              <span>Working files<br /><small>Edit your changes</small></span
-              ><span>Index<br /><small>Review the next snapshot</small></span
-              ><span>Local commit<br /><small>Record that snapshot</small></span
-              ><span>Remote refs<br /><small>Publish deliberately</small></span>
-            </div>
-            <details class="learning-plan">
-              <summary>Study plan, priorities, and undo decision guide</summary>
-              <div id="learning-plan"></div>
-            </details>
             <div class="level-filter">
-              <label for="stage-filter">Learning focus</label
-              ><select id="stage-filter">
-                <option value="all">All stages</option>
-                <option value="review">Foundations · stages 1–4</option>
-                <option value="focus">Collaboration · stages 5–10</option>
-                <option value="deepen">Deepen · stages 11–17</option>
-                <option value="frontend">Frontend · stage 18</option></select
-              ><button id="reset" type="button">Reset filters</button>
+              <button id="reset" type="button">Reset search</button>
             </div>
+            <div id="content"></div>
             <noscript
               ><p>
-                Enable JavaScript to read the interactive guide, or
-                <a href="../git-mastery-roadmap.md"
-                  >read the complete source roadmap</a
-                >.
+                Enable JavaScript to view the categorized examples and
+                saved-progress controls.
               </p></noscript
             >
-            <div id="content"></div>
-            <div id="projects" aria-label="Git hands-on projects"></div>
-            <div id="references" class="learning-plan"></div>
           </div>
         </div>
       </div>
     </main>
     <footer>
-      Learn, inspect, practice, recover ·
-      <a href="../index.html">Documentation home</a> ·
-      <a href="../git-mastery-roadmap.md">Source roadmap</a> ·
-      <a href="https://git-scm.com/docs">Official Git documentation ↗</a>
+      <div class="container">
+        DevDocs · <a href="../index.html">Documentation home</a> · Git cheat
+        sheet
+      </div>
     </footer>
     <script src="../js/vendor/prism.js"></script>
     <script src="../js/code-highlighting.js"></script>
-    <script src="../js/git-handbook.js"></script>
+    <script src="../js/git-cheatsheet.js"></script>
     <script src="../js/handbook-navigation.js"></script>
     <script src="../js/handbook-progress.js"></script>
   </body>
