@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Searchable Regular Expressions handbook with realistic JavaScript examples, flags, groups, lookarounds and validation patterns."
+      content="A categorized JavaScript General cheat sheet built from supplied category images, with concise explanations, practical examples, and saved learning progress."
     />
-    <title>Regular Expressions — Practical Handbook</title>
+    <title>JavaScript General — Categorized Cheat Sheet</title>
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <link
       rel="icon"
@@ -30,7 +30,7 @@
     <link rel="manifest" href="../site.webmanifest" />
     <meta name="theme-color" content="#092e2c" />
     <script src="../js/theme.js"></script>
-    <link rel="stylesheet" href="../css/regular-expressions-handbook.css" />
+    <link rel="stylesheet" href="../css/javascript-general-cheatsheet.css" />
     <link rel="stylesheet" href="../css/navigation.css" />
     <link rel="stylesheet" href="../css/code-highlighting.css" />
     <link rel="stylesheet" href="../css/handbook-progress.css" />
@@ -98,81 +98,94 @@
       </div>
       <nav id="site-menu" class="site-menu" aria-label="Main navigation" hidden>
         <a href="../index.html">Home</a>
-        <a href="../docs/javascript-handbook.html">JavaScript</a>
-        <a href="../docs/regular-expressions-handbook.html" aria-current="page"
-          >Regular Expressions</a
-        >
+        <a href="../docs/javascript-cheatsheets.html">JavaScript</a>
         <a href="../docs/typescript-cheatsheet.html">TypeScript</a>
-
         <a href="../docs/git-cheatsheet.html">Git</a>
+
         <a href="../docs/lottie-handbook.html">Lottie Animation</a>
         <a href="../docs/gsap-cheatsheet.html">GSAP Cheat Sheet</a>
       </nav>
     </div>
     <header class="hero">
       <div class="container">
-        <h1>Regular Expressions Handbook</h1>
+        <h1>JavaScript General Cheat Sheet</h1>
         <p>
-          A practical, searchable cheatsheet for JavaScript regular expressions
-          — syntax, quantifiers, groups, flags, lookarounds, validation
-          patterns, and common pitfalls.
+          A practical reference, built category by category. Short explanations,
+          labeled examples, and the methods in the order you supplied them.
         </p>
         <a
           class="external"
-          href="https://regexr.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Test your expressions on RegExr ↗</a
-        ><input
+          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+          >MDN JavaScript Guide ↗</a
+        >
+        <input
           id="search"
           type="search"
-          placeholder="Search: lookahead, capture groups, email, flags…"
-          aria-label="Search regular expression reference"
+          placeholder="Search categories, methods, and examples…"
+          aria-label="Search JavaScript categories, methods, and examples"
         />
       </div>
     </header>
     <main>
       <div class="container">
         <div class="row">
-          <aside aria-label="Topics">
-            <div class="nav-title">Topics</div>
+          <aside aria-label="Cheat sheet categories">
+            <div class="nav-title">Categories</div>
             <nav
               id="nav"
               class="guide-nav"
-              aria-label="Regular expression topics"
+              aria-label="JavaScript General categories"
             ></nav>
           </aside>
-          <div>
+          <div class="guide-body">
             <div class="toolbar">
-              <strong>JavaScript RegExp reference</strong
-              ><span id="count"></span>
+              <strong id="sheet-summary"
+                >11 categories · 319 entries · 646 examples</strong
+              ><span id="count" role="status" aria-live="polite"></span>
             </div>
             <div class="tip">
-              All examples use JavaScript regular expressions. Try them in
-              DevTools or
-              <a
-                href="https://regexr.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                >RegExr</a
-              >. Note: some advanced flags require modern browsers. Regex is
-              useful for format checks, not proof that input is safe or valid.
+              <strong>Built from your category images.</strong>
+              <p>
+                Each item will have a concise description and 2–3 labeled,
+                practical JavaScript examples. Categories and items follow the
+                order you supply, without unrelated topics.
+              </p>
+              <p>
+                Run each example independently in the environment specified,
+                such as a browser console or Node.js. Examples are displayed for
+                reference and do not execute on this page. Each entry will
+                include a checkbox to save learning progress in this browser.
+              </p>
+              <a class="source" href="../javascript-mastery-roadmap.md"
+                >Cheat sheet requirements ↗</a
+              >
+            </div>
+            <div class="level-filter">
+              <button id="reset" type="button">Reset search</button>
             </div>
             <div id="content"></div>
+            <noscript
+              ><p>
+                Enable JavaScript to view the categorized examples and
+                saved-progress controls.
+              </p></noscript
+            >
           </div>
         </div>
       </div>
     </main>
     <footer>
-      Made for quick reference ·
-      <a href="../index.html">Documentation home</a> ·
-      <a href="https://regexr.com/" target="_blank" rel="noopener noreferrer"
-        >Original RegExr tool ↗</a
-      >
+      <div class="container">
+        DevDocs ·
+        <a href="../docs/javascript-cheatsheets.html"
+          >JavaScript cheat sheets</a
+        >
+        · JavaScript General
+      </div>
     </footer>
     <script src="../js/vendor/prism.js"></script>
     <script src="../js/code-highlighting.js"></script>
-    <script src="../js/regular-expressions-handbook.js"></script>
+    <script src="../js/javascript-general-cheatsheet.js"></script>
     <script src="../js/handbook-navigation.js"></script>
     <script src="../js/handbook-progress.js"></script>
   </body>
