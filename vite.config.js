@@ -50,6 +50,8 @@ const nunjucksPagesInPlace = () => ({
 })
 
 export default defineConfig({
+  // Keep compiled URLs valid at both a domain root and a GitHub Pages project path.
+  base: './',
   plugins: [
     // Templates are the source; publish the compiled site at the server root.
     {
@@ -74,6 +76,8 @@ export default defineConfig({
       pages: {
         root: './src',
         dir: './src/pages',
+        // Pages are moved out of src/pages in the build; adjust relative asset URLs too.
+        normalizeBasePath: true,
       },
       // Turn off Vituum's auto-generated "+.scss" / "+.js" import files,
       // so nothing is written into src/ behind your back.

@@ -13,7 +13,7 @@ export function initGSAPBasicAnimation() {
     immediateRender: false
   });
 
-  toggleButton.addEventListener('click', function () {
+  toggleButton?.addEventListener('click', function () {
     textAnimation.paused(!textAnimation.paused());
   })
 }

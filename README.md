@@ -58,3 +58,10 @@ From a terminal: `wc -l dist/assets/*` reports 0 or 1 line per file, and
 
 Minifiers are set in `vite.config.js` (`build.minify: 'oxc'`, `build.cssMinify: 'lightningcss'`).
 HTML pages are not minified.
+
+## Deployment
+
+The compiled site uses relative URLs, so it works at a domain root or a GitHub Pages
+repository path. Run `npm run build`, then deploy the generated HTML pages, `assets/`,
+and static icons together. For deployment from a Git branch, commit these generated
+files together; uploading HTML alone leaves its compiled CSS and JavaScript missing.

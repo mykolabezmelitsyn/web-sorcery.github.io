@@ -3,7 +3,7 @@
     {
       "number": "01",
       "title": "Basic",
-      "url": "/gsap-basic.html",
+      "url": "./gsap-basic.html",
       "description": "Transform: Move, rotate, scale, skew. Opacity: Fade in/out, crossfade. Stagger: Sequential element animations. Timeline: Complex synchronized sequences. Easing: Bounce, elastic, spring-like motion.",
       "hiddenDescription": true
     },
