@@ -1,0 +1,15 @@
+// Element-level defaults built on the design tokens.
+@use "../abstracts/variables";
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: variables.$font-family-base;
+  line-height: variables.$line-height-base;
+  color: variables.$color-text;
+  background-color: variables.$color-background;
+}

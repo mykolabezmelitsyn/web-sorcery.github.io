@@ -1,0 +1,29 @@
+{#
+  Base layout. Every page extends this file:
+    {% extends "layouts/base.njk" %}
+  Pages fill the blocks below; anything not overridden keeps its default.
+#}
+<!doctype html>
+<html lang="{{ site.lang }}" class="no-js">
+  <head>
+    {% include "includes/meta.njk" %}
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+
+    {# Vite compiles this SCSS entry to CSS (dev) and to a minified, hashed .css file (build). #}
+    <link rel="stylesheet" href="/src/scss/main.scss" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% include "partials/header.njk" %}
+
+    <main id="main" class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.njk" %}
+
+    {# ES module entry; bundled and minified into dist/assets/ on build. #}
+    <script type="module" src="/src/scripts/main.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

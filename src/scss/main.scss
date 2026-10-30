@@ -1,0 +1,6 @@
+// SCSS entry point, linked from src/templates/layouts/base.njk.
+// Vite compiles it with Sass, then Lightning CSS minifies it on build.
+// Partials (files starting with "_") are pulled in with @use, in this order:
+
+@use "base/reset";
+@use "base/base";
