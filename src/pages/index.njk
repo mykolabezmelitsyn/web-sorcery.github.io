@@ -1,7 +1,53 @@
-{#
-  Home page -> dist/index.html
-  Add a page by creating another file here, e.g. src/pages/about.njk -> /about.html
-#}
 {% extends "layouts/base.njk" %}
 
-{% block content %}{% endblock %}
+{% block content %}
+  <section class="portfolio__section" id="work" aria-labelledby="work-title">
+    <div class="portfolio__intro">
+      <p class="portfolio__eyebrow">Design & creative development</p>
+      <h1 class="portfolio__title" id="work-title">Thoughtful interfaces.<br>A little curiosity.</h1>
+      <p class="portfolio__description">A personal collection of digital experiences, quiet details, and ideas in progress.</p>
+    </div>
+    <div class="portfolio__section-heading">
+      <h2 class="portfolio__heading">Selected work</h2>
+      <span class="portfolio__count">01 — 03</span>
+    </div>
+    <div class="portfolio__grid">
+      <article class="card card--animation">
+        <div class="card__image card__image--illustrated">
+          <!-- GSAP ANIMATION PLACEHOLDER: the first card's animation target. -->
+          <svg class="card__background" data-animation-target viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+            <ellipse cx="200" cy="150" rx="156" ry="64" transform="rotate(-35 200 150)" />
+            <ellipse cx="200" cy="150" rx="156" ry="64" transform="rotate(35 200 150)" />
+            <circle cx="200" cy="150" r="104" />
+            <circle cx="318" cy="68" r="7" fill="currentColor" stroke="none" />
+          </svg>
+          <h3 class="card__title">
+            <a class="card__link" href="/gsap-animations.html">GSAP Animations</a>
+          </h3>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__image card__image--illustrated">
+          <svg class="card__background" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+            <rect x="70" y="30" width="180" height="220" rx="2" transform="rotate(-14 160 140)" />
+            <rect x="110" y="40" width="180" height="220" rx="2" />
+            <rect x="150" y="50" width="180" height="220" rx="2" transform="rotate(14 240 160)" />
+          </svg>
+          <h3 class="card__title">An independent perspective</h3>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__image card__image--illustrated">
+          <svg class="card__background" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+            <rect x="46" y="42" width="308" height="216" rx="12" />
+            <path d="M46 84H354M146 84V258M146 170H354" />
+            <circle cx="66" cy="64" r="3" fill="currentColor" stroke="none" />
+            <circle cx="80" cy="64" r="3" fill="currentColor" stroke="none" />
+            <path d="M70 112H120M70 128H108M70 144H114M172 112H274M172 128H244M172 198H320M172 214H286" />
+          </svg>
+          <h3 class="card__title">Less, but more useful</h3>
+        </div>
+      </article>
+    </div>
+  </section>
+{% endblock %}

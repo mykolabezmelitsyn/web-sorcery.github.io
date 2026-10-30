@@ -1,15 +1,92 @@
-// Element-level defaults built on the design tokens.
 @use "../abstracts/variables";
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: .5s linear both zoom-out;
+}
+
+::view-transition-new(root) {
+  animation: .5s linear both zoom-in;
+}
+
+@keyframes zoom-out {
+  to {
+    transform: translateX(-50%) scale(.9);
+    opacity: 0;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+}
 
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+
 body {
-  min-height: 100vh;
+  margin: 0;
   font-family: variables.$font-family-base;
   line-height: variables.$line-height-base;
-  color: variables.$color-text;
-  background-color: variables.$color-background;
+  color: var(--color-text);
+  background: var(--color-background);
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+button, a {
+  touch-action: manipulation;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 5px;
+}
+
+section, main {
+  scroll-margin-top: 9rem;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-weight: normal;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  background: var(--color-background);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }

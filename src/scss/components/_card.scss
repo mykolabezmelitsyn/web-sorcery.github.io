@@ -1,0 +1,123 @@
+.card {
+  position: relative;
+  min-width: 0;
+}
+
+.card__image {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  container-type: inline-size;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  padding: 2rem;
+  color: var(--color-accent);
+  background: var(--color-surface);
+}
+.card__image--editorial, .card__image--type {
+  background: var(--color-surface-alt);
+}
+
+.card__background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.card__image--illustrated .card__title {
+  z-index: 1;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+}
+
+.card__animation-target {
+  width: 35%;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-accent);
+  border-radius: 50%;
+}
+
+.card__image-word {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.card__image-type {
+  font-family: Georgia, serif;
+  font-size: clamp(2rem, 40cqi, 6rem);
+  line-height: 1;
+  letter-spacing: -0.08em;
+}
+
+.card__interface {
+  width: 80%;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-paper);
+}
+
+.card__interface-label {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-family: Georgia, serif;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+.card__interface-line {
+  width: 70%;
+  height: 0.25rem;
+  margin-top: 0.5rem;
+  background: var(--color-border);
+}
+
+.card__interface-line--short {
+  width: 45%;
+}
+
+.card__interface-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.card__interface-panels span {
+  aspect-ratio: 1.5;
+  background: var(--color-surface-alt);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: -0.025em;
+}
+
+.card__link {
+  text-decoration: none;
+}
+
+.card__link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.card__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.card__link:focus-visible::after {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 5px;
+}

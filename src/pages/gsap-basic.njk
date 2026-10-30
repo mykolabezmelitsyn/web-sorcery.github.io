@@ -1,0 +1,33 @@
+{% extends "layouts/base.njk" %}
+{% set portfolioHome = "/index.html" %}
+{% set description = "Basic GSAP animations." %}
+
+{% block title %}Basic — GSAP Animations — Web Sorcery{% endblock %}
+
+{% block content %}
+  <section class="portfolio__section" aria-labelledby="basic-title">
+    <div class="portfolio__intro">
+      <h1 class="portfolio__title" id="basic-title">Basic</h1>
+    </div>
+    <div class="portfolio__content">
+      <div class="portfolio-example" role="group" aria-label="Topic example">
+        <button class="portfolio-example__play" type="button" data-gsap-play="basic" aria-label="Play example">Play</button>
+        <div class="portfolio-example__stage">
+          <h2 data-gsap-example="basic">
+            Progress over perfection.
+          </h2>
+        </div>
+      </div>
+
+      <div class="portfolio-example" role="group" aria-label="Topic example">
+        <button class="portfolio-example__play" type="button" data-gsap-play="" aria-label="Play example">Play</button>
+        <div class="portfolio-example__stage"></div>
+      </div>
+
+      <div class="portfolio-example" role="group" aria-label="Topic example">
+        <button class="portfolio-example__play" type="button" data-gsap-play="" aria-label="Play example">Play</button>
+        <div class="portfolio-example__stage"></div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
