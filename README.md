@@ -17,8 +17,9 @@ Requires Node.js `^20.19.0` or `>=22.12.0`.
 ## Structure
 
 ```
+index.html            Main Nunjucks entry, extending the shared base layout
 src/
-  pages/              One .njk file per page: index.njk -> index.html, about.njk -> about.html
+  pages/              Child pages: gsap-animations.njk -> gsap-animations.html
   templates/
     layouts/          Page skeletons that pages {% extends %} (base.njk)
     partials/         Visible page sections that layouts {% include %} (header, footer)
@@ -33,6 +34,9 @@ src/
 public/               Copied to dist/ as-is (favicon.svg)
 dist/                 Build output (generated, git-ignored)
 ```
+
+The root `index.html` is the home page entry in development and production. It uses
+Nunjucks to compose the shared layout and partials; child pages stay in `src/pages/`.
 
 Template paths in `{% extends %}`, `{% include %}` and `{% import %}` are relative to
 `src/templates/`, e.g. `{% include "partials/header.njk" %}`.
