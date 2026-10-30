@@ -10,16 +10,17 @@ Requires Node.js `^20.19.0` or `>=22.12.0`.
 | ----------------- | ---------------------------------------------------------------------------- |
 | `npm install`     | Installs Vite, the Nunjucks plugin and Sass into `node_modules/`.             |
 | `npm run dev`     | Starts the dev server at http://localhost:5173 with live reload.             |
-| `npm run build`   | Renders the pages, compiles SCSS and writes a minified site to `dist/`.      |
+| `npm run build`   | Renders the pages, compiles SCSS and writes a minified site to `dist/` and the project root.      |
 | `npm run watch`   | Same as `build`, then rebuilds `dist/` every time a source file is saved.    |
 | `npm run preview` | Serves the built `dist/` folder locally to check the production output.      |
 
 ## Structure
 
 ```
-index.html            Main Nunjucks entry, extending the shared base layout
+index.html            Generated server-ready home page (do not edit)
+assets/               Generated compiled CSS and JavaScript (do not edit)
 src/
-  pages/              Child pages: gsap-animations.njk -> gsap-animations.html
+  pages/              Source pages: index.njk, gsap-animations.njk, gsap-basic.njk
   templates/
     layouts/          Page skeletons that pages {% extends %} (base.njk)
     partials/         Visible page sections that layouts {% include %} (header, footer)
@@ -35,8 +36,12 @@ public/               Copied to dist/ as-is (favicon.svg)
 dist/                 Build output (generated, git-ignored)
 ```
 
-The root `index.html` is the home page entry in development and production. It uses
-Nunjucks to compose the shared layout and partials; child pages stay in `src/pages/`.
+Edit `src/pages/index.njk` for home page content and `src/templates/layouts/base.njk`
+for the shared document layout. `npm run build` renders all pages into `dist/`, then
+copies the complete compiled site to the project root so a static server can serve
+`/index.html`, child pages, and their assets directly. `npm run watch` keeps these
+generated files updated as sources change. Do not edit generated HTML or `assets/`.
+Development with `npm run dev` renders the source templates directly.
 
 Template paths in `{% extends %}`, `{% include %}` and `{% import %}` are relative to
 `src/templates/`, e.g. `{% include "partials/header.njk" %}`.

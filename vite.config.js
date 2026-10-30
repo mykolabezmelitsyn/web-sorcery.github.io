@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { cpSync, readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import vituum from 'vituum'
@@ -21,17 +21,6 @@ const nunjucksPlugins = nunjucks({
 })
 delete nunjucksPlugins[0].buildStart
 delete nunjucksPlugins[0].buildEnd
-
-// Render the root HTML entry with the same Nunjucks pipeline as child pages.
-// The plugin recognizes template extensions, so supply a virtual .njk filename.
-const renderNunjucks = nunjucksPlugins[0].transformIndexHtml.handler
-nunjucksPlugins[0].transformIndexHtml.handler = (content, context) => {
-  const filename = context.filename === fromRoot('./index.html')
-    ? fromRoot('./index.njk.html')
-    : context.filename
-
-  return renderNunjucks(content, { ...context, filename })
-}
 
 // ...and serve each "<page>.njk.html" entry straight from "<page>.njk" instead.
 // In watch mode it also watches pages, templates and data, so `npm run watch`
@@ -62,28 +51,22 @@ const nunjucksPagesInPlace = () => ({
 
 export default defineConfig({
   plugins: [
+    // Templates are the source; publish the compiled site at the server root.
     {
-      name: 'root-template-entry',
-      configureServer(server) {
-        // Serve the root entry before Vituum rewrites page URLs into src/pages.
-        server.middlewares.use(async (req, res, next) => {
-          const pathname = new URL(req.url, 'http://localhost').pathname
-          if (!['/', '/index.html'].includes(pathname)) return next()
-
-          try {
-            const source = readFileSync(fromRoot('./index.html'), 'utf8')
-            const html = await server.transformIndexHtml('/index.html', source)
-            res.setHeader('Content-Type', 'text/html; charset=utf-8')
-            res.end(html)
-          }
-          catch (error) {
-            next(error)
-          }
-        })
+      name: 'publish-root-output',
+      apply: 'build',
+      transformIndexHtml: {
+        order: 'post',
+        handler: (html) => html.replace(/^[\t ]+$/gm, ''),
+      },
+      closeBundle() {
+        const outputDirectory = fromRoot('./dist')
+        for (const entry of readdirSync(outputDirectory)) {
+          cpSync(`${outputDirectory}/${entry}`, fromRoot(`./${entry}`), { recursive: true })
+        }
       },
     },
-    // Vituum discovers root index.html and child templates as HTML entries
-    // (src/pages/about.njk -> /about.html in dev and dist/about.html in build).
+    // Vituum renders src/pages templates into HTML pages.
     vituum({
       // Only pages are build entries. Styles and scripts are pulled in by the
       // <link>/<script> tags in the layout, so they are bundled once, not twice.
@@ -132,6 +115,8 @@ export default defineConfig({
       polyfill: false,
     },
     rolldownOptions: {
+      // Exclude generated root HTML from build inputs, including watch rebuilds.
+      input: ['./src/pages/**/*.njk'],
       output: {
         // Page entries are named after their template ("index.njk"); strip the
         // ".njk" so bundles are named assets/index-[hash].js, not index.njk-[hash].js.

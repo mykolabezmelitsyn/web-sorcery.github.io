@@ -1,6 +1,53 @@
-{% extends "layouts/base.njk" %}
 
-{% block content %}
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A personal collection of thoughtful interfaces, playful interactions, and creative coding experiments." />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link rel="manifest" href="/site.webmanifest" />
+    <title>Web Sorcery — Design &amp; creative development</title>
+
+
+
+    <script>
+      try {
+        const theme = localStorage.getItem("portfolio-theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // CSS follows the system preference when storage is unavailable.
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/main-DnNqBGOI.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/main-CmUJZsKj.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+<header class="header">
+      <div class="header__inner">
+        <a class="header__brand" href="#main">Web Sorcery<span class="header__dot" aria-hidden="true">.</span></a>
+        <div class="header__controls">
+          <button class="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" hidden>
+            <span class="theme-toggle__icon" aria-hidden="true">◐</span>
+            <span class="theme-toggle__label">Dark mode</span>
+          </button>
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" hidden>Menu <span aria-hidden="true">+</span></button>
+        </div>
+        <nav class="header__nav" id="main-navigation" aria-label="Main navigation">
+          <a class="header__link" href="#work">Selected work</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="site-main portfolio">
   <section class="portfolio__section" id="work" aria-labelledby="work-title">
     <div class="portfolio__intro">
       <p class="portfolio__eyebrow">Design & creative development</p>
@@ -50,4 +97,10 @@
       </article>
     </div>
   </section>
-{% endblock %}
+    </main>
+
+
+    <!-- GSAP CDN PLACEHOLDER: add the GSAP CDN script tag here when animation work begins. -->
+
+  </body>
+</html>
