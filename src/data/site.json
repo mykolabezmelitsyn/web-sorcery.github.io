@@ -1,7 +1,8 @@
 {
   "site": {
-    "name": "web-sorcery.github.io",
-    "description": "",
+    "name": "Web Sorcery — Design & creative development",
+    "description": "A personal collection of thoughtful interfaces, playful interactions, and creative coding experiments.",
     "lang": "en"
-  }
+  },
+  "year": 2026
 }
