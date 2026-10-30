@@ -1,0 +1,113 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+.header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--page-width);
+  min-height: 5rem;
+  margin: auto;
+  padding: 1rem 1.25rem;
+}
+.header__brand {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.header__dot {
+  color: var(--color-accent);
+}
+
+.header__controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header__nav {
+  display: flex;
+  flex-basis: 100%;
+  gap: 1.5rem;
+  padding: 0.75rem 0;
+}
+
+.header__link {
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+.header__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.theme-toggle, .menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  background: transparent;
+  cursor: pointer;
+}
+.theme-toggle {
+  min-width: 2.75rem;
+}
+
+.theme-toggle__icon {
+  font-size: 1.4rem;
+}
+
+.theme-toggle__label {
+  display: none;
+}
+
+.menu-toggle {
+  gap: 0.75rem;
+}
+
+
+/* Keep in sync with the menu breakpoint in modules/portfolio.js. */
+@media (min-width: 48rem) {
+  .header__inner {
+    flex-wrap: nowrap;
+    gap: 2.5rem;
+    padding-inline: 2rem;
+  }
+
+  .header__brand {
+    margin-right: auto;
+  }
+
+  .header__controls {
+    order: 1;
+  }
+
+  .header__nav {
+    flex-basis: auto;
+    gap: 2rem;
+    padding: 0;
+  }
+
+  .menu-toggle {
+    display: none;
+  }
+
+  .theme-toggle__label {
+    display: inline;
+  }
+
+}

@@ -1,0 +1,27 @@
+.portfolio-example {
+  display: grid;
+  gap: 1rem;
+}
+
+.portfolio-example__play {
+  justify-self: start;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  color: var(--color-text);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.portfolio-example__play:hover {
+  border-color: var(--color-accent);
+}
+
+.portfolio-example__stage {
+  min-width: 0;
+  min-height: 20rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}

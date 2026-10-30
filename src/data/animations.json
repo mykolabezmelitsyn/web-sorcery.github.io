@@ -1,0 +1,111 @@
+{
+  "animations": [
+    {
+      "number": "01",
+      "title": "Basic",
+      "url": "/gsap-basic.html",
+      "description": "Transform: Move, rotate, scale, skew. Opacity: Fade in/out, crossfade. Stagger: Sequential element animations. Timeline: Complex synchronized sequences. Easing: Bounce, elastic, spring-like motion.",
+      "hiddenDescription": true
+    },
+    {
+      "number": "02",
+      "title": "Scroll-based",
+      "description": "ScrollTrigger, pinning, scrubbing."
+    },
+    {
+      "number": "03",
+      "title": "Parallax",
+      "description": "Elements moving at different speeds."
+    },
+    {
+      "number": "04",
+      "title": "Text",
+      "description": "SplitText, typing, scrambling, reveals."
+    },
+    {
+      "number": "05",
+      "title": "SVG",
+      "description": "Path drawing, shape morphing."
+    },
+    {
+      "number": "06",
+      "title": "Motion Path",
+      "description": "Animate along custom paths."
+    },
+    {
+      "number": "07",
+      "title": "3D Transforms",
+      "description": "Perspective, rotation, depth."
+    },
+    {
+      "number": "08",
+      "title": "FLIP",
+      "description": "Layout and position transitions."
+    },
+    {
+      "number": "09",
+      "title": "Physics",
+      "description": "Gravity, velocity, inertia."
+    },
+    {
+      "number": "10",
+      "title": "Draggable",
+      "description": "Drag, throw, snap."
+    },
+    {
+      "number": "11",
+      "title": "Mouse Interactions",
+      "description": "Hover, cursor-following effects."
+    },
+    {
+      "number": "12",
+      "title": "Touch Interactions",
+      "description": "Swipe, gesture-based animations."
+    },
+    {
+      "number": "13",
+      "title": "Page Transitions",
+      "description": "Enter/exit animations."
+    },
+    {
+      "number": "14",
+      "title": "UI Animations",
+      "description": "Menus, modals, accordions, sliders."
+    },
+    {
+      "number": "15",
+      "title": "Image Animations",
+      "description": "Reveals, masks, zoom, clipping."
+    },
+    {
+      "number": "16",
+      "title": "Canvas/WebGL",
+      "description": "Animate graphical properties and objects."
+    },
+    {
+      "number": "17",
+      "title": "Looping",
+      "description": "Infinite loops, yoyo, repeat."
+    },
+    {
+      "number": "18",
+      "title": "Responsive Animations",
+      "description": "Different animations per breakpoint."
+    },
+    {
+      "number": "19",
+      "title": "Scroll Navigation",
+      "description": "Smooth scrolling, scroll-to."
+    },
+    {
+      "number": "20",
+      "title": "SVG/Canvas Particles",
+      "description": "Particle movement and effects."
+    },
+    {
+      "number": "21",
+      "title": "Advanced Effects",
+      "description": "Magnetic buttons, infinite marquees, carousels, horizontal scrolling."
+    }
+  ]
+}

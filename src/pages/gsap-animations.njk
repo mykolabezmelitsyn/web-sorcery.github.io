@@ -1,0 +1,38 @@
+{% extends "layouts/base.njk" %}
+{% set portfolioHome = "/index.html" %}
+{% set description = "A collection of 21 GSAP animation topics, from transforms and text to scroll interactions and advanced effects." %}
+
+{% block title %}GSAP Animations — Web Sorcery{% endblock %}
+
+{% block content %}
+  <section class="portfolio__section" aria-labelledby="animations-title">
+    <div class="portfolio__intro">
+      <p class="portfolio__eyebrow">Creative coding / Animation studies</p>
+      <h1 class="portfolio__title" id="animations-title">GSAP Animations</h1>
+      <p class="portfolio__description">A collection of motion ideas, from simple transforms to more playful interactions. A starting point for future explorations.</p>
+    </div>
+    <div class="portfolio__section-heading">
+      <h2 class="portfolio__heading">Animation collection</h2>
+      <span class="portfolio__count">01 — {{ animations | length }}</span>
+    </div>
+    <div class="portfolio__grid">
+      {% for animation in animations %}
+        <article class="card">
+          <div class="card__image{% if loop.index is even %} card__image--editorial{% endif %}">
+            <span class="card__image-type" aria-hidden="true">{{ animation.number }}</span>
+            <h3 class="card__title">
+              {% if animation.url %}
+                <a class="card__link" href="{{ animation.url }}">{{ animation.title }}</a>
+              {% else %}
+                {{ animation.title }}
+              {% endif %}
+            </h3>
+            {% if animation.hiddenDescription %}
+              <p hidden>{{ animation.description }}</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

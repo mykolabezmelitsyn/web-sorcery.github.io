@@ -1,0 +1,41 @@
+{#
+  Base layout. Every page extends this file:
+    {% extends "layouts/base.njk" %}
+  Pages fill the blocks below; anything not overridden keeps its default.
+#}
+<!doctype html>
+<html lang="{{ site.lang }}" class="no-js">
+  <head>
+    {% include "includes/meta.njk" %}
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+
+    {# Vite compiles this SCSS entry to CSS (dev) and to a minified, hashed .css file (build). #}
+    {# Set the saved theme before CSS renders; the module handles later changes. #}
+    <script>
+      try {
+        const theme = localStorage.getItem("portfolio-theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // CSS follows the system preference when storage is unavailable.
+      }
+    </script>
+    <link rel="stylesheet" href="/src/scss/main.scss" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {% include "partials/header.njk" %}
+
+    <main id="main" class="site-main portfolio">
+      {% block content %}{% endblock %}
+    </main>
+
+
+    <!-- GSAP CDN PLACEHOLDER: add the GSAP CDN script tag here when animation work begins. -->
+    {# ES module entry; bundled and minified into dist/assets/ on build. #}
+    <script type="module" src="/src/scripts/main.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

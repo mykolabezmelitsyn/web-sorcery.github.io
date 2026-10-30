@@ -1,0 +1,7 @@
+// Design tokens. Emit nothing on their own; load where needed with:
+//   @use "../abstracts/variables";
+
+$font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$line-height-base: 1.5;
+$color-text: #1a1a1a;
+$color-background: #ffffff;
