@@ -118,12 +118,15 @@
           href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions"
           >MDN Regular Expressions Guide ↗</a
         >
-        <input
-          id="search"
-          type="search"
-          placeholder="Search categories, methods, and examples…"
-          aria-label="Search JavaScript categories, methods, and examples"
-        />
+        <div class="search-controls">
+          <input
+            id="search"
+            type="search"
+            placeholder="Search categories, methods, and examples…"
+            aria-label="Search JavaScript categories, methods, and examples"
+          />
+          <button id="reset" type="button">Reset search</button>
+        </div>
       </div>
     </header>
     <main>
@@ -142,26 +145,6 @@
               <strong id="sheet-summary"
                 >7 categories · 129 entries · 263 examples</strong
               ><span id="count" role="status" aria-live="polite"></span>
-            </div>
-            <div class="tip">
-              <strong>Built from your category images.</strong>
-              <p>
-                Each item will have a concise description and 2–3 labeled,
-                practical JavaScript examples. Categories and items follow the
-                order you supply, without unrelated topics.
-              </p>
-              <p>
-                Run each example independently in the environment specified,
-                such as a browser console or Node.js. Examples are displayed for
-                reference and do not execute on this page. Each entry will
-                include a checkbox to save learning progress in this browser.
-              </p>
-              <a class="source" href="../javascript-mastery-roadmap.md"
-                >Cheat sheet requirements ↗</a
-              >
-            </div>
-            <div class="level-filter">
-              <button id="reset" type="button">Reset search</button>
             </div>
             <div id="content"></div>
             <noscript

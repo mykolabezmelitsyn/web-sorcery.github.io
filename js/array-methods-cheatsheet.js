@@ -10,7 +10,7 @@ const handbook = {
         {
           name: "map() — transform elements",
           explanation:
-            "Creates a new array from each visited element’s callback result. Use it when each input position should produce a transformed output.",
+            "Returns a new array with each item changed by the supplied function.",
           note: "map does not itself mutate the input, but its callback can. The output uses the initial input length; sparse holes are skipped and preserved rather than filled, and mutation during iteration can affect which positions are visited.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -18,19 +18,19 @@ const handbook = {
             {
               label: "Double numbers without changing the input",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map(value => value * 2);\nconsole.log(...doubled);\nconsole.log(doubled !== numbers, ...numbers);",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconst doubled = numbers.map((value) => value * 2);\nconsole.log(...doubled);\nconsole.log(doubled !== numbers, ...numbers);",
             },
             {
               label: "Preserve a sparse hole",
               language: "javascript",
-              code: "const numbers = [1, , 3]; let calls = 0;\nconst mapped = numbers.map(value => { calls++; return value * 2; });\nconsole.log(mapped.length, 1 in mapped, calls, mapped[2]);",
+              code: "const numbers = [1, , 3];\nlet calls = 0;\nconst mapped = numbers.map((value) => {\n  calls++;\n  return value * 2;\n});\nconsole.log(mapped.length, 1 in mapped, calls, mapped[2]);",
             },
           ],
         },
         {
           name: "map() callback index and source array",
           explanation:
-            "Receives the current value, index, and source array in the callback. Use them for labels, first/last flags, or position-aware records.",
+            "Receives the current value, index, and source array in the callback.",
           note: "The third argument is the source array, not the new result currently being constructed.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -43,14 +43,14 @@ const handbook = {
             {
               label: "Build records with boundary flags",
               language: "javascript",
-              code: "const numbers = [10, 20];\nconst detailed = numbers.map((value, index, array) => ({ value, index, isFirst: index === 0, isLast: index === array.length - 1 }));\nfor (const row of detailed) console.log(row.value, row.index, row.isFirst, row.isLast);",
+              code: "const numbers = [10, 20];\nconst detailed = numbers.map((value, index, array) => ({\n  value,\n  index,\n  isFirst: index === 0,\n  isLast: index === array.length - 1,\n}));\nfor (const row of detailed)\n  console.log(row.value, row.index, row.isFirst, row.isLast);",
             },
           ],
         },
         {
           name: "Map objects into enriched records",
           explanation:
-            "Returns new objects that combine existing fields with derived values. Use it to prepare presentation data while preserving original records.",
+            "Returns new objects that combine existing fields with derived values.",
           note: "Object spread is shallow; nested references are still shared unless separately copied. Parenthesize an object literal returned by a concise arrow.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -58,19 +58,19 @@ const handbook = {
             {
               label: "Add display names and adult flags",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }];\nconst cards = users.map(user => ({ ...user, displayName: `${user.name} (${user.age})`, isAdult: user.age >= 18 }));\nconsole.log(cards[0].displayName, cards[1].isAdult, cards[0] !== users[0]);',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n];\nconst cards = users.map((user) => ({\n  ...user,\n  displayName: `${user.name} (${user.age})`,\n  isAdult: user.age >= 18,\n}));\nconsole.log(cards[0].displayName, cards[1].isAdult, cards[0] !== users[0]);',
             },
             {
               label: "Keep original top-level fields unchanged",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }];\nconst updated = users.map(user => ({ ...user, age: user.age + 1 }));\nconsole.log(users[0].age, updated[0].age);',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n];\nconst updated = users.map((user) => ({ ...user, age: user.age + 1 }));\nconsole.log(users[0].age, updated[0].age);',
             },
           ],
         },
         {
           name: "Extract properties with map()",
           explanation:
-            "Creates an array containing a selected property from each record. Use it for labels, IDs, or a data series.",
+            "Creates an array containing a selected property from each record.",
           note: "An absent property produces undefined at that position; map does not remove the item.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -78,19 +78,19 @@ const handbook = {
             {
               label: "Extract user names",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }];\nconsole.log(...users.map(user => user.name));',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n];\nconsole.log(...users.map((user) => user.name));',
             },
             {
               label: "Keep positions when a property is absent",
               language: "javascript",
-              code: 'const users = [{ name: "John" }, {}];\nconst names = users.map(user => user.name);\nconsole.log(names.length, names[0], names[1]);',
+              code: 'const users = [{ name: "John" }, {}];\nconst names = users.map((user) => user.name);\nconsole.log(names.length, names[0], names[1]);',
             },
           ],
         },
         {
           name: "Chain map() with other transformations",
           explanation:
-            "Feeds one transformation’s result into the next method. Use it to express ordered mapping and selection steps.",
+            "Feeds one transformation’s result into the next method.",
           note: "Each map/filter step creates an intermediate array. Choose a clear pipeline first and measure if very large workloads make allocation significant.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -98,19 +98,18 @@ const handbook = {
             {
               label: "Double, select, and label",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconst result = numbers.map(value => value * 2).filter(value => value > 5).map(value => `Number: ${value}`);\nconsole.log(...result);",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconst result = numbers\n  .map((value) => value * 2)\n  .filter((value) => value > 5)\n  .map((value) => `Number: ${value}`);\nconsole.log(...result);",
             },
             {
               label: "Extract and normalize names",
               language: "javascript",
-              code: 'const users = [{ name: "John" }, { name: "Jane" }];\nconsole.log(...users.map(user => user.name).map(name => name.toUpperCase()));',
+              code: 'const users = [{ name: "John" }, { name: "Jane" }];\nconsole.log(\n  ...users.map((user) => user.name).map((name) => name.toUpperCase()),\n);',
             },
           ],
         },
         {
           name: "Convert strings to numbers with map()",
-          explanation:
-            "Applies numeric conversion to each input string. Use Number for whole-string conversion or a wrapper around parseInt for explicit integer parsing.",
+          explanation: "Applies numeric conversion to each input string.",
           note: "Do not pass parseInt directly to map: the index becomes its radix argument. Number and parseInt also differ for strings containing units or extra text.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -118,19 +117,19 @@ const handbook = {
             {
               label: "Convert complete numeric strings",
               language: "javascript",
-              code: 'console.log(...["1", "2", "3"].map(Number));\nconsole.log(...["1", "2", "3"].map(value => parseInt(value, 10)));',
+              code: 'console.log(...["1", "2", "3"].map(Number));\nconsole.log(...["1", "2", "3"].map((value) => parseInt(value, 10)));',
             },
             {
               label: "Avoid the parseInt callback-argument trap",
               language: "javascript",
-              code: 'const wrong = ["10", "10", "10"].map(parseInt);\nconsole.log(wrong[0], Number.isNaN(wrong[1]), wrong[2]);\nconsole.log(...["10", "10", "10"].map(value => parseInt(value, 10)));',
+              code: 'const wrong = ["10", "10", "10"].map(parseInt);\nconsole.log(wrong[0], Number.isNaN(wrong[1]), wrong[2]);\nconsole.log(...["10", "10", "10"].map((value) => parseInt(value, 10)));',
             },
           ],
         },
         {
           name: "Create list markup or elements with map()",
           explanation:
-            "Transforms item data into a list of markup strings or DOM nodes. Use plain text node construction for external text.",
+            "Transforms item data into a list of markup strings or DOM nodes.",
           note: "Markup interpolation is only used with fixed trusted values here and does not escape external input. The second example is a complete HTML file; save it as index.html and open it in a browser.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -138,7 +137,7 @@ const handbook = {
             {
               label: "Build trusted list markup",
               language: "javascript",
-              code: 'const items = ["Apple", "Banana", "Orange"];\nconst listItems = items.map(item => `<li>${item}</li>`);\nconsole.log(listItems.join(""));',
+              code: 'const items = ["Apple", "Banana", "Orange"];\nconst listItems = items.map((item) => `<li>${item}</li>`);\nconsole.log(listItems.join(""));',
             },
             {
               label: "Construct text-bearing list elements",
@@ -146,7 +145,7 @@ const handbook = {
                 {
                   path: "index.html",
                   language: "html",
-                  code: '<!doctype html>\n<meta charset="utf-8">\n<title>Array transformation example</title>\n<body>\n<ul></ul>\n<script>\nconst items = ["Apple", "<b>Literal</b>"];\nconst listItems = items.map(item => { const li = document.createElement("li"); li.textContent = item; return li; });\ndocument.querySelector("ul").append(...listItems);\nconsole.log(document.querySelectorAll("li").length, listItems[1].textContent, document.querySelector("b"));\n</script>',
+                  code: '<!doctype html>\n<meta charset="utf-8" />\n<title>Array transformation example</title>\n<body>\n  <ul></ul>\n  <script>\n    const items = ["Apple", "<b>Literal</b>"];\n    const listItems = items.map((item) => {\n      const li = document.createElement("li");\n      li.textContent = item;\n      return li;\n    });\n    document.querySelector("ul").append(...listItems);\n    console.log(\n      document.querySelectorAll("li").length,\n      listItems[1].textContent,\n      document.querySelector("b"),\n    );\n  </script></body\n>',
                 },
               ],
             },
@@ -155,7 +154,7 @@ const handbook = {
         {
           name: "Async mapping with Promise.all()",
           explanation:
-            "Maps values to promises and awaits their input-ordered results together. Use it for independent asynchronous transformations.",
+            "Maps values to promises and awaits their input-ordered results together.",
           note: "map itself does not await async callbacks. Operations begin as callbacks run; Promise.all coordinates them and does not impose a concurrency limit or cancel outstanding work after failure.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map",
@@ -163,19 +162,19 @@ const handbook = {
             {
               label: "Fetch and parse self-contained URLs",
               language: "javascript",
-              code: 'const urls = ["data:application/json,1", "data:application/json,2"];\nconst promises = urls.map(async url => {\n  const response = await fetch(url);\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n});\nPromise.all(promises).then(results => console.log(...results)).catch(error => console.log(error.name));',
+              code: 'const urls = ["data:application/json,1", "data:application/json,2"];\nconst promises = urls.map(async (url) => {\n  const response = await fetch(url);\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n});\nPromise.all(promises)\n  .then((results) => console.log(...results))\n  .catch((error) => console.log(error.name));',
             },
             {
               label: "Handle a failed mapped operation",
               language: "javascript",
-              code: 'const promises = ["data:application/json,1", "data:application/json,invalid"].map(async url => {\n  const response = await fetch(url); return response.json();\n});\nPromise.all(promises).catch(error => console.log(error.name));',
+              code: 'const promises = [\n  "data:application/json,1",\n  "data:application/json,invalid",\n].map(async (url) => {\n  const response = await fetch(url);\n  return response.json();\n});\nPromise.all(promises).catch((error) => console.log(error.name));',
             },
           ],
         },
         {
           name: "filter() — select elements",
           explanation:
-            "Creates a new array containing visited elements whose predicate returns a truthy result. Use it to select a subset without changing input membership.",
+            "Returns a new array of items that pass the supplied check.",
           note: "The method itself does not mutate the source, but callback code can. Sparse holes are skipped, and retained object references are not cloned.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -183,19 +182,18 @@ const handbook = {
             {
               label: "Select even and odd numbers",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\nconsole.log(...numbers.filter(value => value % 2 === 0));\nconsole.log(...numbers.filter(value => value % 2 !== 0));",
+              code: "const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\nconsole.log(...numbers.filter((value) => value % 2 === 0));\nconsole.log(...numbers.filter((value) => value % 2 !== 0));",
             },
             {
               label: "Handle no matches and sparse holes",
               language: "javascript",
-              code: "const numbers = [1, , 3];\nconsole.log(numbers.filter(value => value > 10).length);\nconst allVisited = numbers.filter(() => true);\nconsole.log(allVisited.length, ...allVisited, numbers.length);",
+              code: "const numbers = [1, , 3];\nconsole.log(numbers.filter((value) => value > 10).length);\nconst allVisited = numbers.filter(() => true);\nconsole.log(allVisited.length, ...allVisited, numbers.length);",
             },
           ],
         },
         {
           name: "Filter by callback index",
-          explanation:
-            "Uses the predicate index to retain selected input positions. Use it for a prefix or positional subset.",
+          explanation: "Keeps items based on their position in the array.",
           note: "The index refers to the source array rather than the growing filtered result.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -214,8 +212,7 @@ const handbook = {
         },
         {
           name: "Filter objects by multiple conditions",
-          explanation:
-            "Selects records satisfying combined property tests. Use it for rules such as active adult membership.",
+          explanation: "Selects records satisfying combined property tests.",
           note: "The selected records are the original object references, so later object mutations are shared with the source.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -223,19 +220,18 @@ const handbook = {
             {
               label: "Select active adults",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconst activeAdults = users.filter(user => user.age >= 18 && user.active);\nconsole.log(activeAdults.length, activeAdults[0].name);',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconst activeAdults = users.filter((user) => user.age >= 18 && user.active);\nconsole.log(activeAdults.length, activeAdults[0].name);',
             },
             {
               label: "Inspect reference sharing",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconst adults = users.filter(user => user.age >= 18);\nconsole.log(adults[0] === users[0], users.length);',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconst adults = users.filter((user) => user.age >= 18);\nconsole.log(adults[0] === users[0], users.length);',
             },
           ],
         },
         {
           name: "Remove duplicates with filter() and indexOf()",
-          explanation:
-            "Keeps a value only at its first indexOf position. Use this familiar pattern for small collections with indexOf-compatible equality.",
+          explanation: "Keeps a value only at its first indexOf position.",
           note: "This pattern can be quadratic and drops NaN because indexOf cannot find it. Objects are compared by identity, not by matching fields.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -243,19 +239,18 @@ const handbook = {
             {
               label: "Keep the first occurrence",
               language: "javascript",
-              code: "const values = [1, 2, 2, 3, 3, 3, 4];\nconsole.log(...values.filter((value, index, array) => array.indexOf(value) === index));",
+              code: "const values = [1, 2, 2, 3, 3, 3, 4];\nconsole.log(\n  ...values.filter((value, index, array) => array.indexOf(value) === index),\n);",
             },
             {
               label: "Recognize the NaN limitation",
               language: "javascript",
-              code: "const unique = [NaN, NaN, 1].filter((value, index, array) => array.indexOf(value) === index);\nconsole.log(unique.length, unique[0]);",
+              code: "const unique = [NaN, NaN, 1].filter(\n  (value, index, array) => array.indexOf(value) === index,\n);\nconsole.log(unique.length, unique[0]);",
             },
           ],
         },
         {
           name: "Remove falsy values with filter(Boolean)",
-          explanation:
-            "Retains values that Boolean converts to true. Use it when every falsy value should be discarded.",
+          explanation: "Keeps values that Boolean converts to true.",
           note: "This also removes valid application values such as zero, false, and empty strings. Use an explicit predicate if only nullish values should be removed.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -269,14 +264,14 @@ const handbook = {
               label:
                 "Compare removing all falsy values with nullish-only selection",
               language: "javascript",
-              code: 'const values = [0, false, "", null, undefined];\nconsole.log(values.filter(Boolean).length);\nconst kept = values.filter(value => value !== null && value !== undefined);\nconsole.log(kept.length, ...kept);',
+              code: 'const values = [0, false, "", null, undefined];\nconsole.log(values.filter(Boolean).length);\nconst kept = values.filter((value) => value !== null && value !== undefined);\nconsole.log(kept.length, ...kept);',
             },
           ],
         },
         {
           name: "Filter records by a search term",
           explanation:
-            "Retains records whose normalized text contains a search term. Use it for a simple case-insensitive substring search.",
+            "Keeps records whose normalized text contains a search term.",
           note: "This is a substring comparison rather than a locale-aware or accent-insensitive search engine. The example defines all input records and the search term.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -284,19 +279,18 @@ const handbook = {
             {
               label: "Match product names case-insensitively",
               language: "javascript",
-              code: 'const products = [{ name: "iPhone 12", price: 999 }, { name: "Samsung Galaxy", price: 899 }, { name: "iPhone 13", price: 1099 }];\nconst searchTerm = "IPHONE";\nconsole.log(...products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase())).map(product => product.name));',
+              code: 'const products = [\n  { name: "iPhone 12", price: 999 },\n  { name: "Samsung Galaxy", price: 899 },\n  { name: "iPhone 13", price: 1099 },\n];\nconst searchTerm = "IPHONE";\nconsole.log(\n  ...products\n    .filter((product) =>\n      product.name.toLowerCase().includes(searchTerm.toLowerCase()),\n    )\n    .map((product) => product.name),\n);',
             },
             {
               label: "Return no matches for an absent term",
               language: "javascript",
-              code: 'const products = [{ name: "Book" }, { name: "Pen" }], searchTerm = "phone";\nconsole.log(products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase())).length);',
+              code: 'const products = [{ name: "Book" }, { name: "Pen" }],\n  searchTerm = "phone";\nconsole.log(\n  products.filter((product) =>\n    product.name.toLowerCase().includes(searchTerm.toLowerCase()),\n  ).length,\n);',
             },
           ],
         },
         {
           name: "Filter numeric ranges",
-          explanation:
-            "Combines comparison predicates to keep values within a numeric interval. Use explicit inclusive or exclusive limits to match the rule.",
+          explanation: "Keeps numbers within the chosen range.",
           note: "The examples use actual numbers. Validate or convert external values deliberately rather than depending on accidental coercion.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -304,19 +298,18 @@ const handbook = {
             {
               label: "Keep an inclusive interval",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\nconsole.log(...numbers.filter(value => value >= 3 && value <= 7));",
+              code: "const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\nconsole.log(...numbers.filter((value) => value >= 3 && value <= 7));",
             },
             {
               label: "Exclude the boundary values",
               language: "javascript",
-              code: "console.log(...[2, 3, 4, 5, 6].filter(value => value > 2 && value < 6));",
+              code: "console.log(...[2, 3, 4, 5, 6].filter((value) => value > 2 && value < 6));",
             },
           ],
         },
         {
           name: "Chain filters and property mapping",
-          explanation:
-            "Applies separate selection rules and then projects the retained records. Use it when distinct rules improve readability.",
+          explanation: "Selects records, then returns the fields you need.",
           note: "Each filter creates another array. A single combined predicate can express the same selection when that is clearer.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -324,19 +317,19 @@ const handbook = {
             {
               label: "Select adults, then active users, then names",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconsole.log(...users.filter(user => user.age >= 18).filter(user => user.active).map(user => user.name));',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconsole.log(\n  ...users\n    .filter((user) => user.age >= 18)\n    .filter((user) => user.active)\n    .map((user) => user.name),\n);',
             },
             {
               label: "Compare with a combined predicate",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconst chained = users.filter(user => user.age >= 18).filter(user => user.active);\nconst combined = users.filter(user => user.age >= 18 && user.active);\nconsole.log(chained.length, combined.length, chained[0] === combined[0]);',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconst chained = users\n  .filter((user) => user.age >= 18)\n  .filter((user) => user.active);\nconst combined = users.filter((user) => user.age >= 18 && user.active);\nconsole.log(chained.length, combined.length, chained[0] === combined[0]);',
             },
           ],
         },
         {
           name: "Filter using asynchronous checks",
           explanation:
-            "Awaits predicate results before applying a synchronous filter. Use a mapped keep flag or aligned result array for asynchronous selection.",
+            "Waits for each check to finish before filtering the items.",
           note: "An async predicate passed directly to filter returns a truthy Promise, so it does not perform asynchronous filtering. Promise.all preserves alignment with input order.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter",
@@ -344,7 +337,7 @@ const handbook = {
             {
               label: "Await keep flags and then select",
               language: "javascript",
-              code: "const items = [1, 2, 3, 4];\nasync function checkAsync(item) { return item % 2 === 0; }\nPromise.all(items.map(async item => ({ item, keep: await checkAsync(item) })))\n  .then(results => results.filter(result => result.keep).map(result => result.item))\n  .then(filtered => console.log(...filtered));",
+              code: "const items = [1, 2, 3, 4];\nasync function checkAsync(item) {\n  return item % 2 === 0;\n}\nPromise.all(items.map(async (item) => ({ item, keep: await checkAsync(item) })))\n  .then((results) =>\n    results.filter((result) => result.keep).map((result) => result.item),\n  )\n  .then((filtered) => console.log(...filtered));",
             },
             {
               label: "Avoid a direct async filter predicate",
@@ -356,7 +349,7 @@ const handbook = {
         {
           name: "reduce() — sum and product",
           explanation:
-            "Combines visited values into one accumulator result. Use an initial value that represents the operation’s identity.",
+            "Combines array items into one result, such as a sum or product.",
           note: "An explicit initial value makes empty-input behavior predictable: zero for addition and one for multiplication. reduce can return any accumulator type; the callback must return the next accumulator.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -369,14 +362,14 @@ const handbook = {
             {
               label: "Multiply and handle empty inputs",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.reduce((acc, current) => acc * current, 1));\nconsole.log([].reduce((acc, current) => acc + current, 0), [].reduce((acc, current) => acc * current, 1));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.reduce((acc, current) => acc * current, 1));\nconsole.log(\n  [].reduce((acc, current) => acc + current, 0),\n  [].reduce((acc, current) => acc * current, 1),\n);",
             },
           ],
         },
         {
           name: "reduce() callback parameters",
           explanation:
-            "Receives accumulator, current value, source index, and source array. Use these to build an aggregate with position-aware information.",
+            "Passes the running result, current item, index, and source array to the callback.",
           note: "With an explicit initial value, the first visited element starts the callback; without one, the first present element seeds the accumulator and is not passed through the callback.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -389,14 +382,13 @@ const handbook = {
             {
               label: "Observe the first callback without an initial value",
               language: "javascript",
-              code: "const indices = [];\nconst total = [1, 2, 3].reduce((acc, current, index) => { indices.push(index); return acc + current; });\nconsole.log(total, ...indices);",
+              code: "const indices = [];\nconst total = [1, 2, 3].reduce((acc, current, index) => {\n  indices.push(index);\n  return acc + current;\n});\nconsole.log(total, ...indices);",
             },
           ],
         },
         {
           name: "Find maximum and minimum with reduce()",
-          explanation:
-            "Carries the largest or smallest visited number as an accumulator. Use it for extrema when the input and empty-array policy are explicit.",
+          explanation: "Keeps track of the largest or smallest number.",
           note: "A reduction without an initial value throws on an empty array. Numeric sentinel seeds such as Infinity are alternatives, but their empty result must match the application’s intended policy.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -404,19 +396,19 @@ const handbook = {
             {
               label: "Find extrema of a nonempty array",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconst max = numbers.reduce((max, current) => current > max ? current : max);\nconst min = numbers.reduce((min, current) => Math.min(min, current));\nconsole.log(max, min);",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconst max = numbers.reduce((max, current) => (current > max ? current : max));\nconst min = numbers.reduce((min, current) => Math.min(min, current));\nconsole.log(max, min);",
             },
             {
               label: "Choose null when the input is empty",
               language: "javascript",
-              code: "function extrema(numbers) {\n  if (numbers.length === 0) return null;\n  return { max: numbers.reduce((a, b) => Math.max(a, b)), min: numbers.reduce((a, b) => Math.min(a, b)) };\n}\nconsole.log(extrema([]));\ntry { [].reduce((a, b) => Math.max(a, b)); } catch (error) { console.log(error.name); }",
+              code: "function extrema(numbers) {\n  if (numbers.length === 0) return null;\n  return {\n    max: numbers.reduce((a, b) => Math.max(a, b)),\n    min: numbers.reduce((a, b) => Math.min(a, b)),\n  };\n}\nconsole.log(extrema([]));\ntry {\n  [].reduce((a, b) => Math.max(a, b));\n} catch (error) {\n  console.log(error.name);\n}",
             },
           ],
         },
         {
           name: "Count occurrences with reduce()",
           explanation:
-            "Builds a dictionary of counts indexed by each item’s key. Use it to summarize category or token frequencies.",
+            "Builds a dictionary of counts indexed by each item’s key.",
           note: "A null-prototype accumulator avoids collisions with inherited names such as constructor or __proto__. Values become object property keys, so choose a key policy appropriate for the data.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -424,19 +416,18 @@ const handbook = {
             {
               label: "Count repeated letters",
               language: "javascript",
-              code: 'const items = ["a", "b", "a", "c", "b", "a"];\nconst counts = items.reduce((acc, item) => { acc[item] = (acc[item] ?? 0) + 1; return acc; }, Object.create(null));\nconsole.log(counts.a, counts.b, counts.c);',
+              code: 'const items = ["a", "b", "a", "c", "b", "a"];\nconst counts = items.reduce((acc, item) => {\n  acc[item] = (acc[item] ?? 0) + 1;\n  return acc;\n}, Object.create(null));\nconsole.log(counts.a, counts.b, counts.c);',
             },
             {
               label: "Count keys that collide with Object.prototype names",
               language: "javascript",
-              code: 'const counts = ["__proto__", "constructor", "__proto__"].reduce((acc, item) => { acc[item] = (acc[item] ?? 0) + 1; return acc; }, Object.create(null));\nconsole.log(counts.__proto__, counts.constructor, Object.getPrototypeOf(counts));',
+              code: 'const counts = ["__proto__", "constructor", "__proto__"].reduce((acc, item) => {\n  acc[item] = (acc[item] ?? 0) + 1;\n  return acc;\n}, Object.create(null));\nconsole.log(\n  counts.__proto__,\n  counts.constructor,\n  Object.getPrototypeOf(counts),\n);',
             },
           ],
         },
         {
           name: "Group records by a property",
-          explanation:
-            "Accumulates an array for each selected property value. Use it to organize records into categories.",
+          explanation: "Accumulates an array for each selected property value.",
           note: "Use a null-prototype dictionary for arbitrary string keys. Grouped records remain original references rather than cloned objects.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -444,19 +435,18 @@ const handbook = {
             {
               label: "Group users by role",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, role: "admin" }, { name: "Jane", age: 25, role: "user" }, { name: "Bob", age: 35, role: "admin" }];\nconst grouped = users.reduce((acc, user) => { (acc[user.role] ??= []).push(user); return acc; }, Object.create(null));\nconsole.log(...grouped.admin.map(user => user.name), grouped.user[0].name);',
+              code: 'const users = [\n  { name: "John", age: 30, role: "admin" },\n  { name: "Jane", age: 25, role: "user" },\n  { name: "Bob", age: 35, role: "admin" },\n];\nconst grouped = users.reduce((acc, user) => {\n  (acc[user.role] ??= []).push(user);\n  return acc;\n}, Object.create(null));\nconsole.log(...grouped.admin.map((user) => user.name), grouped.user[0].name);',
             },
             {
               label: "Group items with a special category name",
               language: "javascript",
-              code: 'const items = [{ category: "__proto__", value: 1 }, { category: "__proto__", value: 2 }];\nconst grouped = items.reduce((acc, item) => { (acc[item.category] ??= []).push(item); return acc; }, Object.create(null));\nconsole.log(grouped.__proto__.length, grouped.__proto__[0] === items[0]);',
+              code: 'const items = [\n  { category: "__proto__", value: 1 },\n  { category: "__proto__", value: 2 },\n];\nconst grouped = items.reduce((acc, item) => {\n  (acc[item.category] ??= []).push(item);\n  return acc;\n}, Object.create(null));\nconsole.log(grouped.__proto__.length, grouped.__proto__[0] === items[0]);',
             },
           ],
         },
         {
           name: "Flatten one level with reduce()",
-          explanation:
-            "Concatenates each nested array into one accumulator array. Use it to recognize a one-level flattening reduction.",
+          explanation: "Joins each nested array into one accumulator array.",
           note: "This does not recursively flatten deeper nesting. Repeated concatenation copies the growing accumulator and can be expensive for very large inputs.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -476,7 +466,7 @@ const handbook = {
         {
           name: "Create a lookup dictionary",
           explanation:
-            "Indexes records by a selected property for later access. Use it when a known key should retrieve a record.",
+            "Indexes records by a selected property for later access.",
           note: "This example creates an object dictionary rather than a JavaScript Map. Repeated keys overwrite earlier records, and a null prototype avoids inherited-key collisions.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -484,19 +474,18 @@ const handbook = {
             {
               label: "Index users by name",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, role: "admin" }, { name: "Jane", age: 25, role: "user" }, { name: "Bob", age: 35, role: "admin" }];\nconst lookup = users.reduce((acc, user) => { acc[user.name] = user; return acc; }, Object.create(null));\nconsole.log(lookup.John.age, lookup.Jane === users[1]);',
+              code: 'const users = [\n  { name: "John", age: 30, role: "admin" },\n  { name: "Jane", age: 25, role: "user" },\n  { name: "Bob", age: 35, role: "admin" },\n];\nconst lookup = users.reduce((acc, user) => {\n  acc[user.name] = user;\n  return acc;\n}, Object.create(null));\nconsole.log(lookup.John.age, lookup.Jane === users[1]);',
             },
             {
               label: "Define the duplicate-key overwrite policy",
               language: "javascript",
-              code: 'const users = [{ name: "John", id: 1 }, { name: "John", id: 2 }];\nconst lookup = users.reduce((acc, user) => { acc[user.name] = user; return acc; }, Object.create(null));\nconsole.log(lookup.John.id);',
+              code: 'const users = [\n  { name: "John", id: 1 },\n  { name: "John", id: 2 },\n];\nconst lookup = users.reduce((acc, user) => {\n  acc[user.name] = user;\n  return acc;\n}, Object.create(null));\nconsole.log(lookup.John.id);',
             },
           ],
         },
         {
           name: "Calculate an average",
-          explanation:
-            "Aggregates a sum and divides by the array length. Use an explicit empty-input policy rather than silently returning a misleading result.",
+          explanation: "Adds the numbers and divides by the number of items.",
           note: "The callback-last-index variation assumes a dense numeric array; holes can make that pattern incorrect. The helper here defines a dense finite-number input contract and returns null for an empty input.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -509,14 +498,13 @@ const handbook = {
             {
               label: "Handle an empty array deliberately",
               language: "javascript",
-              code: "function average(numbers) { return numbers.length ? numbers.reduce((sum, value) => sum + value, 0) / numbers.length : null; }\nconsole.log(average([]), average([2, 4]));",
+              code: "function average(numbers) {\n  return numbers.length\n    ? numbers.reduce((sum, value) => sum + value, 0) / numbers.length\n    : null;\n}\nconsole.log(average([]), average([2, 4]));",
             },
           ],
         },
         {
           name: "Pipe synchronous functions with reduce()",
-          explanation:
-            "Passes a value through functions from left to right. Use it to compose a small synchronous transformation pipeline.",
+          explanation: "Passes a value through functions from left to right.",
           note: "An empty function list acts as the identity function. This helper is synchronous and does not automatically await promise-returning stages.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -524,19 +512,19 @@ const handbook = {
             {
               label: "Compose addition, doubling, and squaring",
               language: "javascript",
-              code: "const pipe = (...functions) => value => functions.reduce((acc, fn) => fn(acc), value);\nconst addOne = value => value + 1, double = value => value * 2, square = value => value * value;\nconsole.log(pipe(addOne, double, square)(3));",
+              code: "const pipe =\n  (...functions) =>\n  (value) =>\n    functions.reduce((acc, fn) => fn(acc), value);\nconst addOne = (value) => value + 1,\n  double = (value) => value * 2,\n  square = (value) => value * value;\nconsole.log(pipe(addOne, double, square)(3));",
             },
             {
               label: "Use the empty pipeline as identity",
               language: "javascript",
-              code: "const pipe = (...functions) => value => functions.reduce((acc, fn) => fn(acc), value);\nconsole.log(pipe()(7));",
+              code: "const pipe =\n  (...functions) =>\n  (value) =>\n    functions.reduce((acc, fn) => fn(acc), value);\nconsole.log(pipe()(7));",
             },
           ],
         },
         {
           name: "Remove duplicates with reduce() and includes()",
           explanation:
-            "Accumulates only values that are not already present in the result. Use it to recognize an explicit first-occurrence deduplication reduction.",
+            "Accumulates only values that are not already present in the result.",
           note: "includes uses SameValueZero equality, so it can match NaN. Objects still compare by identity, and repeated linear membership tests can make the pattern quadratic.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -544,12 +532,12 @@ const handbook = {
             {
               label: "Keep the first occurrence",
               language: "javascript",
-              code: "const items = [1, 2, 2, 3, 3, 4];\nconst unique = items.reduce((acc, item) => { if (!acc.includes(item)) acc.push(item); return acc; }, []);\nconsole.log(...unique);",
+              code: "const items = [1, 2, 2, 3, 3, 4];\nconst unique = items.reduce((acc, item) => {\n  if (!acc.includes(item)) acc.push(item);\n  return acc;\n}, []);\nconsole.log(...unique);",
             },
             {
               label: "Preserve a single NaN and shared object identity",
               language: "javascript",
-              code: "const object = {};\nconst unique = [NaN, NaN, object, object].reduce((acc, item) => { if (!acc.includes(item)) acc.push(item); return acc; }, []);\nconsole.log(unique.length, Number.isNaN(unique[0]), unique[1] === object);",
+              code: "const object = {};\nconst unique = [NaN, NaN, object, object].reduce((acc, item) => {\n  if (!acc.includes(item)) acc.push(item);\n  return acc;\n}, []);\nconsole.log(unique.length, Number.isNaN(unique[0]), unique[1] === object);",
             },
           ],
         },
@@ -564,7 +552,7 @@ const handbook = {
         {
           name: "find() — first matching element",
           explanation:
-            "Returns the first value satisfying a predicate, stopping once a match is found. Use it when one matching value is needed rather than every match.",
+            "Returns the first item that passes the check, or undefined if none does.",
           note: "Returns undefined if nothing matches, which can be ambiguous if the matching value itself is undefined. Unlike some/every, find visits sparse holes as undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find",
@@ -572,19 +560,19 @@ const handbook = {
             {
               label: "Find the first even and first larger number",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.find(value => value % 2 === 0), numbers.find(value => value > 3), numbers.find(value => value > 10));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(\n  numbers.find((value) => value % 2 === 0),\n  numbers.find((value) => value > 3),\n  numbers.find((value) => value > 10),\n);",
             },
             {
               label: "Visit a sparse hole as undefined",
               language: "javascript",
-              code: "const values = [1, , 3]; let calls = 0;\nconst found = values.find(value => { calls++; return value === undefined; });\nconsole.log(found, calls);",
+              code: "const values = [1, , 3];\nlet calls = 0;\nconst found = values.find((value) => {\n  calls++;\n  return value === undefined;\n});\nconsole.log(found, calls);",
             },
           ],
         },
         {
           name: "Find objects by their properties",
           explanation:
-            "Returns the original record matching an ID or field condition. Use it to retrieve one object without creating a filtered result array.",
+            "Returns the original record matching an ID or field condition.",
           note: "The returned object is shared with the source array. Guard missing results before accessing fields.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find",
@@ -592,19 +580,19 @@ const handbook = {
             {
               label: "Find a user and the first qualifying age",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconsole.log(users.find(user => user.id === 2)?.name, users.find(user => user.age >= 30)?.name);',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconsole.log(\n  users.find((user) => user.id === 2)?.name,\n  users.find((user) => user.age >= 30)?.name,\n);',
             },
             {
               label: "Handle an absent record",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconst user = users.find(user => user.id === 123);\nconsole.log(user, user?.name ?? "Not found");',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconst user = users.find((user) => user.id === 123);\nconsole.log(user, user?.name ?? "Not found");',
             },
           ],
         },
         {
           name: "Use the find callback index and source",
           explanation:
-            "Combines a value test with source position or other source-array information. Use callback arguments for a position-sensitive search.",
+            "Combines a value test with source position or other source-array information.",
           note: "find stops at the first truthy predicate result. The third callback argument is the source array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find",
@@ -617,14 +605,14 @@ const handbook = {
             {
               label: "Inspect early termination and source identity",
               language: "javascript",
-              code: "const numbers = [1, 2, 3]; const visited = [];\nconst found = numbers.find((value, index, array) => { visited.push(index); return array === numbers && value === 2; });\nconsole.log(found, ...visited);",
+              code: "const numbers = [1, 2, 3];\nconst visited = [];\nconst found = numbers.find((value, index, array) => {\n  visited.push(index);\n  return array === numbers && value === 2;\n});\nconsole.log(found, ...visited);",
             },
           ],
         },
         {
           name: "findIndex() — first matching position",
           explanation:
-            "Returns the index of the first predicate match or -1 when none matches. Use it when a position is needed for an update or removal.",
+            "Returns the first matching index, or -1 if none is found.",
           note: "Index zero is valid and falsy, while -1 is truthy: compare explicitly with -1. Sparse holes are visited as undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex",
@@ -632,19 +620,19 @@ const handbook = {
             {
               label: "Find the first even position",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.findIndex(value => value % 2 === 0), numbers.findIndex(value => value > 10));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(\n  numbers.findIndex((value) => value % 2 === 0),\n  numbers.findIndex((value) => value > 10),\n);",
             },
             {
               label: "Keep index zero distinct from a missing match",
               language: "javascript",
-              code: "console.log([2, 3].findIndex(value => value === 2), [2, 3].findIndex(value => value === 9));",
+              code: "console.log(\n  [2, 3].findIndex((value) => value === 2),\n  [2, 3].findIndex((value) => value === 9),\n);",
             },
           ],
         },
         {
           name: "Update a record found by index",
           explanation:
-            "Finds a record position and replaces that array slot with an updated object. Use an explicit not-found guard before assigning.",
+            "Finds a record position and replaces that array slot with an updated object.",
           note: "The array is mutated by the assignment, while object spread creates a new shallow record. findIndex itself does not perform the update.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex",
@@ -652,19 +640,19 @@ const handbook = {
             {
               label: "Replace a found user record",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconst index = users.findIndex(user => user.id === 2);\nif (index !== -1) users[index] = { ...users[index], age: 26 };\nconsole.log(users[1].name, users[1].age);',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconst index = users.findIndex((user) => user.id === 2);\nif (index !== -1) users[index] = { ...users[index], age: 26 };\nconsole.log(users[1].name, users[1].age);',
             },
             {
               label: "Skip a missing record",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconst index = users.findIndex(user => user.id === 123);\nif (index !== -1) users[index] = { ...users[index], age: 26 };\nconsole.log(users.length, Object.hasOwn(users, "-1"));',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconst index = users.findIndex((user) => user.id === 123);\nif (index !== -1) users[index] = { ...users[index], age: 26 };\nconsole.log(users.length, Object.hasOwn(users, "-1"));',
             },
           ],
         },
         {
           name: "Remove a record found by condition",
           explanation:
-            "Finds the matching slot and removes one element with splice. Use it for in-place removal of a single record.",
+            "Finds the matching slot and removes one element with splice.",
           note: "Always guard -1: splice(-1, 1) would remove the final element when no match exists.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex",
@@ -672,19 +660,19 @@ const handbook = {
             {
               label: "Remove the matching user",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconst index = users.findIndex(user => user.name === "Bob");\nif (index !== -1) users.splice(index, 1);\nconsole.log(...users.map(user => user.name));',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconst index = users.findIndex((user) => user.name === "Bob");\nif (index !== -1) users.splice(index, 1);\nconsole.log(...users.map((user) => user.name));',
             },
             {
               label: "Do not remove an unrelated final element",
               language: "javascript",
-              code: 'const users = [{ id: 1, name: "John", age: 30 }, { id: 2, name: "Jane", age: 25 }, { id: 3, name: "Bob", age: 35 }];\nconst index = users.findIndex(user => user.name === "Missing");\nif (index !== -1) users.splice(index, 1);\nconsole.log(users.length, users.at(-1).name);',
+              code: 'const users = [\n  { id: 1, name: "John", age: 30 },\n  { id: 2, name: "Jane", age: 25 },\n  { id: 3, name: "Bob", age: 35 },\n];\nconst index = users.findIndex((user) => user.name === "Missing");\nif (index !== -1) users.splice(index, 1);\nconsole.log(users.length, users.at(-1).name);',
             },
           ],
         },
         {
           name: "findLast() — search values from the end",
           explanation:
-            "Visits positions in descending index order and returns the first matching value encountered. Use it to retrieve the last match in array order.",
+            "Searches backward for a matching item. Returns undefined if none is found.",
           note: "ES2023. It does not reverse or mutate the array; missing matches return undefined. Sparse holes are visited as undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast",
@@ -692,19 +680,19 @@ const handbook = {
             {
               label: "Find the final even value",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.findLast(value => value % 2 === 0), numbers.findLast(value => value > 10));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(\n  numbers.findLast((value) => value % 2 === 0),\n  numbers.findLast((value) => value > 10),\n);",
             },
             {
               label: "Observe reverse visitation order",
               language: "javascript",
-              code: "const visited = [];\nconst found = [1, 2, 3, 4, 5].findLast((value, index) => { visited.push(index); return value % 2 === 0; });\nconsole.log(found, ...visited);",
+              code: "const visited = [];\nconst found = [1, 2, 3, 4, 5].findLast((value, index) => {\n  visited.push(index);\n  return value % 2 === 0;\n});\nconsole.log(found, ...visited);",
             },
           ],
         },
         {
           name: "findLastIndex() — last matching position",
           explanation:
-            "Returns the index of the first predicate match while searching from the end. Use it when a final matching slot is needed.",
+            "Returns the index of the first predicate match while searching from the end.",
           note: "ES2023. Returns -1 for no match and does not change the source ordering.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex",
@@ -712,19 +700,19 @@ const handbook = {
             {
               label: "Find a final even index",
               language: "javascript",
-              code: "console.log([1, 2, 3, 4, 5].findLastIndex(value => value % 2 === 0));",
+              code: "console.log([1, 2, 3, 4, 5].findLastIndex((value) => value % 2 === 0));",
             },
             {
               label: "Handle no match and an undefined hole",
               language: "javascript",
-              code: "console.log([1, 2].findLastIndex(value => value > 10));\nconsole.log([1, , 3].findLastIndex(value => value === undefined));",
+              code: "console.log([1, 2].findLastIndex((value) => value > 10));\nconsole.log([1, , 3].findLastIndex((value) => value === undefined));",
             },
           ],
         },
         {
           name: "Array-only findLast fallback",
           explanation:
-            "Provides a standalone reverse predicate search when native findLast is unavailable. Use a feature check without modifying global prototypes.",
+            "Provides a standalone reverse predicate search when native findLast is unavailable.",
           note: "This is an explicitly array-only educational fallback, not a complete generic standards polyfill. A production polyfill must also implement the specification’s coercion and property-definition details; the image’s direct prototype assignment omits those.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast",
@@ -732,19 +720,18 @@ const handbook = {
             {
               label: "Choose native support or a standalone fallback",
               language: "javascript",
-              code: 'function findLastFallback(array, predicate, thisArg) {\n  if (!Array.isArray(array) || typeof predicate !== "function") throw new TypeError("Expected an array and predicate");\n  const length = array.length;\n  for (let index = length - 1; index >= 0; index--) {\n    const value = array[index];\n    if (predicate.call(thisArg, value, index, array)) return value;\n  }\n  return undefined;\n}\nconst values = [1, 2, 3, 4, 5];\nconst predicate = value => value % 2 === 0;\nconsole.log(typeof values.findLast === "function" ? values.findLast(predicate) : findLastFallback(values, predicate));\nconsole.log(findLastFallback(values, predicate));',
+              code: 'function findLastFallback(array, predicate, thisArg) {\n  if (!Array.isArray(array) || typeof predicate !== "function")\n    throw new TypeError("Expected an array and predicate");\n  const length = array.length;\n  for (let index = length - 1; index >= 0; index--) {\n    const value = array[index];\n    if (predicate.call(thisArg, value, index, array)) return value;\n  }\n  return undefined;\n}\nconst values = [1, 2, 3, 4, 5];\nconst predicate = (value) => value % 2 === 0;\nconsole.log(\n  typeof values.findLast === "function"\n    ? values.findLast(predicate)\n    : findLastFallback(values, predicate),\n);\nconsole.log(findLastFallback(values, predicate));',
             },
             {
               label: "Forward thisArg and visit sparse positions",
               language: "javascript",
-              code: 'function findLastFallback(array, predicate, thisArg) {\n  if (!Array.isArray(array) || typeof predicate !== "function") throw new TypeError("Expected an array and predicate");\n  const length = array.length;\n  for (let index = length - 1; index >= 0; index--) {\n    const value = array[index];\n    if (predicate.call(thisArg, value, index, array)) return value;\n  }\n  return undefined;\n}\nconst values = [1, , 3];\nconsole.log(findLastFallback(values, function (value) { return value === this.expected; }, { expected: undefined }));\ntry { findLastFallback(values, null); } catch (error) { console.log(error.name); }',
+              code: 'function findLastFallback(array, predicate, thisArg) {\n  if (!Array.isArray(array) || typeof predicate !== "function")\n    throw new TypeError("Expected an array and predicate");\n  const length = array.length;\n  for (let index = length - 1; index >= 0; index--) {\n    const value = array[index];\n    if (predicate.call(thisArg, value, index, array)) return value;\n  }\n  return undefined;\n}\nconst values = [1, , 3];\nconsole.log(\n  findLastFallback(\n    values,\n    function (value) {\n      return value === this.expected;\n    },\n    { expected: undefined },\n  ),\n);\ntry {\n  findLastFallback(values, null);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "some() — any passing value",
-          explanation:
-            "Returns true once a visited value passes the predicate, otherwise false. Use it for an existence test rather than retrieving the value itself.",
+          explanation: "Returns true if at least one item passes the check.",
           note: "Short-circuits on the first truthy result and skips sparse holes. It is synchronous: an async predicate returns a truthy promise rather than an awaited boolean.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some",
@@ -752,19 +739,19 @@ const handbook = {
             {
               label: "Check numeric conditions",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.some(value => value % 2 === 0), numbers.some(value => value < 0), numbers.some(value => value > 3));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(\n  numbers.some((value) => value % 2 === 0),\n  numbers.some((value) => value < 0),\n  numbers.some((value) => value > 3),\n);",
             },
             {
               label: "Skip sparse holes",
               language: "javascript",
-              code: "const values = new Array(3); let calls = 0;\nconsole.log(values.some(() => { calls++; return true; }), calls);",
+              code: "const values = new Array(3);\nlet calls = 0;\nconsole.log(\n  values.some(() => {\n    calls++;\n    return true;\n  }),\n  calls,\n);",
             },
           ],
         },
         {
           name: "Test object collections with some()",
           explanation:
-            "Checks whether any record satisfies a property condition. Use it for flags such as any minor or inactive user.",
+            "Checks whether any record satisfies a property condition.",
           note: "A missing property evaluates to undefined, so the supplied users have no admin role even though other fields are present.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some",
@@ -772,19 +759,19 @@ const handbook = {
             {
               label: "Check for an admin, minor, and inactive user",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconsole.log(users.some(user => user.role === "admin"), users.some(user => user.age < 18), users.some(user => !user.active));',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconsole.log(\n  users.some((user) => user.role === "admin"),\n  users.some((user) => user.age < 18),\n  users.some((user) => !user.active),\n);',
             },
             {
               label: "Require several properties on the same record",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconsole.log(users.some(user => user.age >= 18 && user.active));',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconsole.log(users.some((user) => user.age >= 18 && user.active));',
             },
           ],
         },
         {
           name: "Observe some/every short-circuiting",
           explanation:
-            "Stops some after the first passing result and every after the first failing result. Use it when testing should avoid unnecessary later work.",
+            "Stops some after the first passing result and every after the first failing result.",
           note: "These are value tests, not a substitute for a loop when every item must produce a side effect.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every",
@@ -792,19 +779,19 @@ const handbook = {
             {
               label: "Stop some after the first true result",
               language: "javascript",
-              code: "const visited = [];\nconst result = [1, 2, 3, 4, 5].some((value, index) => { visited.push(index); return value > 3; });\nconsole.log(result, ...visited);",
+              code: "const visited = [];\nconst result = [1, 2, 3, 4, 5].some((value, index) => {\n  visited.push(index);\n  return value > 3;\n});\nconsole.log(result, ...visited);",
             },
             {
               label: "Stop every after the first false result",
               language: "javascript",
-              code: "const visited = [];\nconst result = [1, 2, 3, 4, 5].every((value, index) => { visited.push(index); return value < 3; });\nconsole.log(result, ...visited);",
+              code: "const visited = [];\nconst result = [1, 2, 3, 4, 5].every((value, index) => {\n  visited.push(index);\n  return value < 3;\n});\nconsole.log(result, ...visited);",
             },
           ],
         },
         {
           name: "every() — all passing values",
           explanation:
-            "Returns true if all visited elements pass a predicate and false at the first failure. Use it for collection-wide conditions.",
+            "Returns true if all checked items pass. Also returns true for an empty array.",
           note: "Skips sparse holes and returns true for an empty array. If an application requires at least one item, check length separately.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every",
@@ -812,19 +799,18 @@ const handbook = {
             {
               label: "Check positive, even, and small numbers",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(numbers.every(value => value > 0), numbers.every(value => value % 2 === 0), numbers.every(value => value < 10));",
+              code: "const numbers = [1, 2, 3, 4, 5];\nconsole.log(\n  numbers.every((value) => value > 0),\n  numbers.every((value) => value % 2 === 0),\n  numbers.every((value) => value < 10),\n);",
             },
             {
               label: "Require a nonempty collection explicitly",
               language: "javascript",
-              code: "function allPositiveNonempty(values) { return values.length > 0 && values.every(value => value > 0); }\nconsole.log([].every(value => value > 0), allPositiveNonempty([]), allPositiveNonempty([1, 2]));",
+              code: "function allPositiveNonempty(values) {\n  return values.length > 0 && values.every((value) => value > 0);\n}\nconsole.log(\n  [].every((value) => value > 0),\n  allPositiveNonempty([]),\n  allPositiveNonempty([1, 2]),\n);",
             },
           ],
         },
         {
           name: "Validate record fields with every()",
-          explanation:
-            "Applies a predicate to all records or field values. Use it for a clearly defined application-level validation rule.",
+          explanation: "Applies a predicate to all records or field values.",
           note: "The email expression is a small syntax heuristic, not complete address validation or deliverability verification. A truthy result from each callback is sufficient.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every",
@@ -832,19 +818,19 @@ const handbook = {
             {
               label: "Test all adults and nonempty names",
               language: "javascript",
-              code: 'const users = [{ name: "John", age: 30, active: true }, { name: "Jane", age: 25, active: false }, { name: "Bob", age: 17, active: true }];\nconsole.log(users.every(user => user.age >= 18), users.every(user => typeof user.name === "string" && user.name.length > 0));',
+              code: 'const users = [\n  { name: "John", age: 30, active: true },\n  { name: "Jane", age: 25, active: false },\n  { name: "Bob", age: 17, active: true },\n];\nconsole.log(\n  users.every((user) => user.age >= 18),\n  users.every((user) => typeof user.name === "string" && user.name.length > 0),\n);',
             },
             {
               label: "Apply a simple email syntax heuristic",
               language: "javascript",
-              code: 'const emails = ["user@example.com", "admin@site.org"];\nconst looksLikeEmail = email => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\nconsole.log(emails.every(looksLikeEmail), ["invalid"].every(looksLikeEmail));',
+              code: 'const emails = ["user@example.com", "admin@site.org"];\nconst looksLikeEmail = (email) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\nconsole.log(emails.every(looksLikeEmail), ["invalid"].every(looksLikeEmail));',
             },
           ],
         },
         {
           name: "Empty arrays, sparse arrays, and all-falsy tests",
           explanation:
-            "Distinguishes structural emptiness from a predicate that accepts every visited value. Use an explicit name for an all-falsy test instead of calling it empty.",
+            "Distinguishes structural emptiness from a predicate that accepts every visited value.",
           note: "An array of holes can have positive length while some/every visit no elements. The image’s length === 0 || every(value => !value) condition accepts nonempty all-falsy arrays too.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every",
@@ -852,19 +838,18 @@ const handbook = {
             {
               label: "Compare empty-array test results",
               language: "javascript",
-              code: "console.log([].some(value => value > 0), [].every(value => value > 0));",
+              code: "console.log(\n  [].some((value) => value > 0),\n  [].every((value) => value > 0),\n);",
             },
             {
               label: "Do not mistake all-falsy values or holes for zero length",
               language: "javascript",
-              code: 'const allFalsy = [0, false, ""];\nconst holes = new Array(2);\nconsole.log(allFalsy.length === 0, allFalsy.every(value => !value));\nconsole.log(holes.length, holes.every(() => false), holes.some(() => true));',
+              code: 'const allFalsy = [0, false, ""];\nconst holes = new Array(2);\nconsole.log(\n  allFalsy.length === 0,\n  allFalsy.every((value) => !value),\n);\nconsole.log(\n  holes.length,\n  holes.every(() => false),\n  holes.some(() => true),\n);',
             },
           ],
         },
         {
           name: "Test selection, errors, and required values",
-          explanation:
-            "Builds collection-level UI flags with some and every. Use predicates that express exactly what counts as selected, erroneous, or filled.",
+          explanation: "Builds collection-level UI flags with some and every.",
           note: "Whitespace-only text is treated as empty in the field example by trimming it. UI field checks are not a replacement for domain or server validation.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every",
@@ -872,19 +857,18 @@ const handbook = {
             {
               label: "Check selection and error flags",
               language: "javascript",
-              code: 'const items = [{ selected: true, error: null }, { selected: false, error: "Missing" }];\nconsole.log(items.every(item => item.selected), items.some(item => Boolean(item.error)));',
+              code: 'const items = [\n  { selected: true, error: null },\n  { selected: false, error: "Missing" },\n];\nconsole.log(\n  items.every((item) => item.selected),\n  items.some((item) => Boolean(item.error)),\n);',
             },
             {
               label: "Validate required nonblank text fields",
               language: "javascript",
-              code: 'const fields = [{ value: "John" }, { value: "   " }];\nconsole.log(fields.every(field => typeof field.value === "string" && field.value.trim().length > 0));',
+              code: 'const fields = [{ value: "John" }, { value: "   " }];\nconsole.log(\n  fields.every(\n    (field) => typeof field.value === "string" && field.value.trim().length > 0,\n  ),\n);',
             },
           ],
         },
         {
           name: "includes() — value membership",
-          explanation:
-            "Returns whether an array contains a requested value. Use it for a boolean membership test.",
+          explanation: "Returns whether an array contains a requested value.",
           note: "Uses SameValueZero equality, not exactly ===: NaN matches NaN, and positive/negative zero match. Objects still compare by reference.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes",
@@ -904,7 +888,7 @@ const handbook = {
         {
           name: "includes versus indexOf equality",
           explanation:
-            "Distinguishes SameValueZero membership from indexOf’s strict-equality search. Use the difference deliberately for NaN and sparse arrays.",
+            "includes can find NaN; indexOf cannot. Both can find ordinary matching values.",
           note: "includes treats sparse holes as undefined, whereas indexOf skips holes. Neither coerces string numbers into numeric equality.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes",
@@ -917,14 +901,14 @@ const handbook = {
             {
               label: "Compare holes, undefined, and numeric strings",
               language: "javascript",
-              code: 'const values = new Array(1);\nconsole.log(values.includes(undefined), values.indexOf(undefined), [1].includes("1"));',
+              code: 'const values = new Array(1);\nconsole.log(\n  values.includes(undefined),\n  values.indexOf(undefined),\n  [1].includes("1"),\n);',
             },
           ],
         },
         {
           name: "Search from a starting index",
           explanation:
-            "Restricts includes or indexOf to positions at or after a normalized fromIndex. Use negative indices to start relative to the end while still searching forward.",
+            "Restricts includes or indexOf to positions at or after a normalized fromIndex.",
           note: "A negative index does not reverse the search. If the normalized start is at or beyond length, no match is possible.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes",
@@ -932,19 +916,19 @@ const handbook = {
             {
               label: "Start at or after the matching position",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5, NaN];\nconsole.log(numbers.includes(3, 3), numbers.includes(3, 2), numbers.indexOf(3, 3));",
+              code: "const numbers = [1, 2, 3, 4, 5, NaN];\nconsole.log(\n  numbers.includes(3, 3),\n  numbers.includes(3, 2),\n  numbers.indexOf(3, 3),\n);",
             },
             {
               label: "Normalize negative and out-of-range starts",
               language: "javascript",
-              code: "const numbers = [1, 2, 3, 4, 5, NaN];\nconsole.log(numbers.includes(3, -4), numbers.indexOf(3, -4), numbers.includes(3, 99), numbers.indexOf(3, -99));",
+              code: "const numbers = [1, 2, 3, 4, 5, NaN];\nconsole.log(\n  numbers.includes(3, -4),\n  numbers.indexOf(3, -4),\n  numbers.includes(3, 99),\n  numbers.indexOf(3, -99),\n);",
             },
           ],
         },
         {
           name: "Case-sensitive and multiple-value membership",
           explanation:
-            "Combines includes with some or every to test requested values. Use some for any requested member and every for all requested members.",
+            "Combines includes with some or every to test requested values.",
           note: "String membership is case-sensitive. Normalize text explicitly if the application wants a different comparison policy.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes",
@@ -957,14 +941,14 @@ const handbook = {
             {
               label: "Test any and all requested values",
               language: "javascript",
-              code: 'const array = ["a", "c"], requested = ["a", "b", "c"];\nconsole.log(requested.some(value => array.includes(value)), requested.every(value => array.includes(value)));',
+              code: 'const array = ["a", "c"],\n  requested = ["a", "b", "c"];\nconsole.log(\n  requested.some((value) => array.includes(value)),\n  requested.every((value) => array.includes(value)),\n);',
             },
           ],
         },
         {
           name: "indexOf() — first value position",
           explanation:
-            "Returns the first index strictly equal to a requested value, or -1 when missing. Use it when a position is needed instead of a boolean.",
+            "Returns the first index strictly equal to a requested value, or -1 when missing.",
           note: "Compare explicitly against -1 rather than checking truthiness. indexOf does not accept a predicate and cannot find NaN.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf",
@@ -984,7 +968,7 @@ const handbook = {
         {
           name: "Find every occurrence with indexOf()",
           explanation:
-            "Continues each search from the position after the previous match. Use it to collect matching indices without repeatedly returning the same match.",
+            "Continues each search from the position after the previous match.",
           note: "The helper inherits indexOf equality and its inability to match NaN. Advancing the starting position ensures termination.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf",
@@ -992,19 +976,19 @@ const handbook = {
             {
               label: "Collect repeated-value positions",
               language: "javascript",
-              code: "function allIndices(array, value) {\n  const indices = [];\n  let index = array.indexOf(value);\n  while (index !== -1) { indices.push(index); index = array.indexOf(value, index + 1); }\n  return indices;\n}\nconsole.log(...allIndices([1, 2, 3, 2, 4, 2], 2));",
+              code: "function allIndices(array, value) {\n  const indices = [];\n  let index = array.indexOf(value);\n  while (index !== -1) {\n    indices.push(index);\n    index = array.indexOf(value, index + 1);\n  }\n  return indices;\n}\nconsole.log(...allIndices([1, 2, 3, 2, 4, 2], 2));",
             },
             {
               label: "Handle missing and adjacent occurrences",
               language: "javascript",
-              code: "function allIndices(array, value) {\n  const indices = [];\n  let index = array.indexOf(value);\n  while (index !== -1) { indices.push(index); index = array.indexOf(value, index + 1); }\n  return indices;\n}\nconsole.log(allIndices([1, 2], 9).length);\nconsole.log(...allIndices([2, 2, 2], 2));",
+              code: "function allIndices(array, value) {\n  const indices = [];\n  let index = array.indexOf(value);\n  while (index !== -1) {\n    indices.push(index);\n    index = array.indexOf(value, index + 1);\n  }\n  return indices;\n}\nconsole.log(allIndices([1, 2], 9).length);\nconsole.log(...allIndices([2, 2, 2], 2));",
             },
           ],
         },
         {
           name: "lastIndexOf() — reverse value search",
           explanation:
-            "Returns the last strictly equal position, searching backward from an optional start. Use it to find the final occurrence of a simple value.",
+            "Returns the last strictly equal position, searching backward from an optional start.",
           note: "The start position is included in the search; negative starts are relative to the end. Returns -1 if no match exists and cannot match NaN.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf",
@@ -1017,14 +1001,14 @@ const handbook = {
             {
               label: "Handle negative starts and missing values",
               language: "javascript",
-              code: "const array = [1, 2, 3, 2, 4, 2];\nconsole.log(array.lastIndexOf(2, -2), array.lastIndexOf(9), array.lastIndexOf(2, -99));",
+              code: "const array = [1, 2, 3, 2, 4, 2];\nconsole.log(\n  array.lastIndexOf(2, -2),\n  array.lastIndexOf(9),\n  array.lastIndexOf(2, -99),\n);",
             },
           ],
         },
         {
           name: "Remove all occurrences in place",
           explanation:
-            "Repeatedly finds and splices a matching value until none remain. Use it when the original array must be mutated.",
+            "Repeatedly finds and splices a matching value until none remain.",
           note: "The helper searches again after each removal so shifted adjacent matches are not skipped. Repeated searching and splicing can be costly for large arrays, and NaN is not matched by this pattern.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf",
@@ -1032,19 +1016,19 @@ const handbook = {
             {
               label: "Remove repeated and adjacent matches",
               language: "javascript",
-              code: "function removeAll(array, value) {\n  let index = array.indexOf(value);\n  while (index !== -1) { array.splice(index, 1); index = array.indexOf(value); }\n  return array;\n}\nconst array = [1, 2, 2, 3, 2];\nconsole.log(removeAll(array, 2) === array, ...array);",
+              code: "function removeAll(array, value) {\n  let index = array.indexOf(value);\n  while (index !== -1) {\n    array.splice(index, 1);\n    index = array.indexOf(value);\n  }\n  return array;\n}\nconst array = [1, 2, 2, 3, 2];\nconsole.log(removeAll(array, 2) === array, ...array);",
             },
             {
               label: "Leave the array unchanged when no value matches",
               language: "javascript",
-              code: "function removeAll(array, value) {\n  let index = array.indexOf(value);\n  while (index !== -1) { array.splice(index, 1); index = array.indexOf(value); }\n  return array;\n}\nconst array = [1, 3, 4];\nremoveAll(array, 2); console.log(...array);",
+              code: "function removeAll(array, value) {\n  let index = array.indexOf(value);\n  while (index !== -1) {\n    array.splice(index, 1);\n    index = array.indexOf(value);\n  }\n  return array;\n}\nconst array = [1, 3, 4];\nremoveAll(array, 2);\nconsole.log(...array);",
             },
           ],
         },
         {
           name: "Check whether a value occurs exactly once",
           explanation:
-            "Compares its first and last found positions while requiring that it is present. Use it for exact single-occurrence checks.",
+            "Compares its first and last found positions while requiring that it is present.",
           note: "Without the presence guard, an absent value incorrectly appears unique because -1 equals -1. This helper uses indexOf equality and therefore does not count NaN.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf",
@@ -1064,7 +1048,7 @@ const handbook = {
         {
           name: "Detect duplicates with some() and indexOf()",
           explanation:
-            "Checks whether any visited item is not at its first indexOf position. Use it for small inputs where strict-equality duplicate semantics are appropriate.",
+            "Checks whether any visited item is not at its first indexOf position.",
           note: "The image’s pattern reports even a single NaN as a duplicate because indexOf(NaN) is -1. Document that limitation rather than treating it as a general-purpose duplicate detector.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some",
@@ -1072,7 +1056,7 @@ const handbook = {
             {
               label: "Detect ordinary duplicate values",
               language: "javascript",
-              code: "const hasDuplicates = array => array.some((item, index) => array.indexOf(item) !== index);\nconsole.log(hasDuplicates([1, 2, 2]), hasDuplicates([1, 2, 3]));",
+              code: "const hasDuplicates = (array) =>\n  array.some((item, index) => array.indexOf(item) !== index);\nconsole.log(hasDuplicates([1, 2, 2]), hasDuplicates([1, 2, 3]));",
             },
             {
               label: "Expose the NaN false positive",
@@ -1084,7 +1068,7 @@ const handbook = {
         {
           name: "Choose membership or position results",
           explanation:
-            "Uses includes for a boolean decision and indexOf for a known position to update. Use the method whose result matches the next operation.",
+            "Uses includes for a boolean decision and indexOf for a known position to update.",
           note: "Neither scans object properties; use a predicate method for structural conditions. Both may inspect a linear number of array elements in a full search.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes",
@@ -1092,19 +1076,18 @@ const handbook = {
             {
               label: "Use membership directly in a branch",
               language: "javascript",
-              code: 'const array = [1, 2, 3], value = 2;\nif (array.includes(value)) console.log("Present");',
+              code: 'const array = [1, 2, 3],\n  value = 2;\nif (array.includes(value)) console.log("Present");',
             },
             {
               label: "Use a position for a guarded update",
               language: "javascript",
-              code: "const array = [1, 2, 3], value = 2, newValue = 20;\nconst position = array.indexOf(value);\nif (position !== -1) array[position] = newValue;\nconsole.log(...array);",
+              code: "const array = [1, 2, 3],\n  value = 2,\n  newValue = 20;\nconst position = array.indexOf(value);\nif (position !== -1) array[position] = newValue;\nconsole.log(...array);",
             },
           ],
         },
         {
           name: "Set membership for repeated lookups",
-          explanation:
-            "Builds a Set once and checks membership with has. Use it when repeated membership checks justify the construction and memory cost.",
+          explanation: "Builds a Set once and checks membership with has.",
           note: "Set uses SameValueZero equality and removes duplicate membership. The standard requires average sublinear access, not a universal guaranteed O(1); implementation and workload determine performance. A Set snapshot does not track later array changes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -1112,12 +1095,12 @@ const handbook = {
             {
               label: "Reuse a membership set",
               language: "javascript",
-              code: "const array = [1, 2, 2, 3, NaN], set = new Set(array);\nconsole.log(set.has(2), set.has(9), set.has(NaN), set.size);",
+              code: "const array = [1, 2, 2, 3, NaN],\n  set = new Set(array);\nconsole.log(set.has(2), set.has(9), set.has(NaN), set.size);",
             },
             {
               label: "Keep the source and Set lifetimes explicit",
               language: "javascript",
-              code: "const array = [1, 2], set = new Set(array);\narray.push(3);\nconsole.log(array.includes(3), set.has(3));\nset.add(3); console.log(set.has(3));",
+              code: "const array = [1, 2],\n  set = new Set(array);\narray.push(3);\nconsole.log(array.includes(3), set.has(3));\nset.add(3);\nconsole.log(set.has(3));",
             },
           ],
         },
@@ -1132,7 +1115,7 @@ const handbook = {
         {
           name: "push() — append elements",
           explanation:
-            "Adds one or more elements to the end and returns the new length. Use it to grow an existing array.",
+            "Adds one or more elements to the end and returns the new length.",
           note: "Mutates the array; passing an array appends that array as one element. Spread arguments only for reasonably sized inputs.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push",
@@ -1145,14 +1128,13 @@ const handbook = {
             {
               label: "Append an array versus its elements",
               language: "javascript",
-              code: "const a = [1]; const values = [8, 9];\na.push(values);\nconsole.log(a.length, a[1] === values);\na.push(...values);\nconsole.log(a.length, a[2], a[3]);",
+              code: "const a = [1];\nconst values = [8, 9];\na.push(values);\nconsole.log(a.length, a[1] === values);\na.push(...values);\nconsole.log(a.length, a[2], a[3]);",
             },
           ],
         },
         {
           name: "pop() — remove the last element",
-          explanation:
-            "Removes and returns the last element. Use it with push for a last-in, first-out stack.",
+          explanation: "Removes and returns the last element.",
           note: "Mutates the array; an empty array returns undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop",
@@ -1165,14 +1147,14 @@ const handbook = {
             {
               label: "Empty and sparse tails",
               language: "javascript",
-              code: "const empty = []; const sparse = [1, ,];\nconsole.log(empty.pop(), empty.length);\nconsole.log(sparse.pop(), sparse.length);",
+              code: "const empty = [];\nconst sparse = [1, ,];\nconsole.log(empty.pop(), empty.length);\nconsole.log(sparse.pop(), sparse.length);",
             },
           ],
         },
         {
           name: "shift() — remove the first element",
           explanation:
-            "Removes and returns the first element, shifting later positions toward zero. Use it for a small FIFO queue.",
+            "Removes and returns the first element, shifting later positions toward zero.",
           note: "Mutates the array; empty arrays return undefined. Front operations can require moving many indexed properties.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift",
@@ -1192,7 +1174,7 @@ const handbook = {
         {
           name: "unshift() — prepend elements",
           explanation:
-            "Adds elements at the beginning in argument order and returns the new length. Use it when changing the front of an existing array.",
+            "Adds elements at the beginning in argument order and returns the new length.",
           note: "One multi-argument call preserves argument order; repeated single calls reverse that order.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift",
@@ -1205,14 +1187,14 @@ const handbook = {
             {
               label: "Compare call order",
               language: "javascript",
-              code: "const together = [3]; together.unshift(1, 2);\nconst separate = [3]; separate.unshift(1); separate.unshift(2);\nconsole.log(...together); console.log(...separate);",
+              code: "const together = [3];\ntogether.unshift(1, 2);\nconst separate = [3];\nseparate.unshift(1);\nseparate.unshift(2);\nconsole.log(...together);\nconsole.log(...separate);",
             },
           ],
         },
         {
           name: "splice() — remove, insert, or replace",
           explanation:
-            "Changes an array at a starting index and returns an array of deleted elements. Set deleteCount to zero for insertion.",
+            "Changes an array at a starting index and returns an array of deleted elements.",
           note: "The returned array contains removed values, not the edited array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice",
@@ -1232,7 +1214,7 @@ const handbook = {
         {
           name: "splice() bounds and clearing",
           explanation:
-            "Negative starts count back from the end; omitting deleteCount removes the remainder. Use splice(0) to empty an array while keeping its identity.",
+            "Negative starts count back from the end; omitting deleteCount removes the remainder.",
           note: "Omitted deleteCount differs from explicit undefined, which converts to zero. splice is destructive; slice copies.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice",
@@ -1245,14 +1227,14 @@ const handbook = {
             {
               label: "Clear aliases and distinguish undefined",
               language: "javascript",
-              code: "const a = [1, 2]; const alias = a;\nconsole.log(a.splice(1, undefined).length, a.length);\nconst removed = a.splice(0);\nconsole.log(...removed); console.log(alias === a, alias.length);",
+              code: "const a = [1, 2];\nconst alias = a;\nconsole.log(a.splice(1, undefined).length, a.length);\nconst removed = a.splice(0);\nconsole.log(...removed);\nconsole.log(alias === a, alias.length);",
             },
           ],
         },
         {
           name: "Stacks and queues",
           explanation:
-            "Use push/pop for a stack and push/shift for a small queue. An index-based queue avoids repeatedly shifting the remaining items.",
+            "Use push/pop for a stack and push/shift for a small queue.",
           note: "Complexity depends on the engine and array shape; do not treat screenshot timing claims as guarantees. Compact or clear long-lived queue storage to release consumed values.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push",
@@ -1260,19 +1242,19 @@ const handbook = {
             {
               label: "Last in, first out",
               language: "javascript",
-              code: 'const stack = []; stack.push("A", "B");\nconsole.log(stack.pop(), stack.pop());',
+              code: 'const stack = [];\nstack.push("A", "B");\nconsole.log(stack.pop(), stack.pop());',
             },
             {
               label: "A queue with a head pointer",
               language: "javascript",
-              code: 'const queue = []; let head = 0;\nqueue.push("A", "B");\nconst take = () => head < queue.length ? queue[head++] : undefined;\nconsole.log(take(), take(), take());\nqueue.splice(0, head); head = 0;\nconsole.log(queue.length, head);',
+              code: 'const queue = [];\nlet head = 0;\nqueue.push("A", "B");\nconst take = () => (head < queue.length ? queue[head++] : undefined);\nconsole.log(take(), take(), take());\nqueue.splice(0, head);\nhead = 0;\nconsole.log(queue.length, head);',
             },
           ],
         },
         {
           name: "Copying alternatives to end and front edits",
           explanation:
-            "Build a new array with spread to append or prepend, and slice to remove an end. Use these patterns when callers must retain the original array.",
+            "Adds or removes items at either end by creating a new array.",
           note: "These are shallow copies: nested objects remain shared.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1280,19 +1262,19 @@ const handbook = {
             {
               label: "Append and prepend without mutation",
               language: "javascript",
-              code: "const a = [1, 2];\nconsole.log(...[...a, 3]); console.log(...[0, ...a]);\nconsole.log(...a);",
+              code: "const a = [1, 2];\nconsole.log(...[...a, 3]);\nconsole.log(...[0, ...a]);\nconsole.log(...a);",
             },
             {
               label: "Drop either end",
               language: "javascript",
-              code: "const a = [1, 2, 3];\nconsole.log(...a.slice(0, -1)); console.log(...a.slice(1));\nconsole.log(a.length, [].slice(1).length);",
+              code: "const a = [1, 2, 3];\nconsole.log(...a.slice(0, -1));\nconsole.log(...a.slice(1));\nconsole.log(a.length, [].slice(1).length);",
             },
           ],
         },
         {
           name: "slice() — extract a range",
           explanation:
-            "Returns a new array from start up to the exclusive end. Omit end to copy through the tail.",
+            "Returns a new array from start up to the exclusive end.",
           note: "Does not change the original; indices are clamped to the array bounds.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1300,7 +1282,7 @@ const handbook = {
             {
               label: "Extract a middle and a tail",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(1, 4)); console.log(...a.slice(2));\nconsole.log(...a);",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(1, 4));\nconsole.log(...a.slice(2));\nconsole.log(...a);",
             },
             {
               label: "Empty and out-of-range intervals",
@@ -1311,8 +1293,7 @@ const handbook = {
         },
         {
           name: "slice() with negative indices",
-          explanation:
-            "A negative index is relative to the array length. Use it for the last few items or to exclude the final item.",
+          explanation: "A negative index is relative to the array length.",
           note: "The end remains exclusive even when it is negative.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1320,19 +1301,19 @@ const handbook = {
             {
               label: "Take the end and exclude the end",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(-2)); console.log(...a.slice(0, -1));",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(-2));\nconsole.log(...a.slice(0, -1));",
             },
             {
               label: "Middle range and clamping",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(1, -1)); console.log(...a.slice(-99, 2));",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(...a.slice(1, -1));\nconsole.log(...a.slice(-99, 2));",
             },
           ],
         },
         {
           name: "Shallow copies with slice() and concat()",
           explanation:
-            "Calling slice() or concat() with no arguments copies the top-level array. Use this to change array membership independently while retaining shared object references.",
+            "Calling slice() or concat() with no arguments copies the top-level array.",
           note: "Neither operation deep-clones nested data; both preserve sparse holes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1340,19 +1321,19 @@ const handbook = {
             {
               label: "Separate arrays, shared records",
               language: "javascript",
-              code: "const a = [{ count: 1 }]; const b = a.slice(); const c = a.concat();\nb[0].count = 2; b.push({ count: 3 });\nconsole.log(a !== b, c !== a, a[0].count, a.length, b.length);",
+              code: "const a = [{ count: 1 }];\nconst b = a.slice();\nconst c = a.concat();\nb[0].count = 2;\nb.push({ count: 3 });\nconsole.log(a !== b, c !== a, a[0].count, a.length, b.length);",
             },
             {
               label: "Preserve a missing position",
               language: "javascript",
-              code: "const a = [1, , 3]; const b = a.slice(0); const c = a.concat();\nconsole.log(b.length, 1 in b, 1 in c);",
+              code: "const a = [1, , 3];\nconst b = a.slice(0);\nconst c = a.concat();\nconsole.log(b.length, 1 in b, 1 in c);",
             },
           ],
         },
         {
           name: "concat() — combine arrays and values",
           explanation:
-            "Returns a new array combining the receiver with supplied arrays or values. Use it to merge lists without changing their membership.",
+            "Returns a new array combining the receiver with supplied arrays or values.",
           note: "Ordinary arrays spread one level; deeper nested arrays remain nested.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat",
@@ -1360,7 +1341,7 @@ const handbook = {
             {
               label: "Combine several arrays and scalars",
               language: "javascript",
-              code: "const a = [1, 2], b = [3, 4], c = [5, 6];\nconsole.log(...a.concat(b, c)); console.log(...a.concat(3, 4, [5, 6]));\nconsole.log(a.length, b.length);",
+              code: "const a = [1, 2],\n  b = [3, 4],\n  c = [5, 6];\nconsole.log(...a.concat(b, c));\nconsole.log(...a.concat(3, 4, [5, 6]));\nconsole.log(a.length, b.length);",
             },
             {
               label: "Keep deeper nesting",
@@ -1371,8 +1352,7 @@ const handbook = {
         },
         {
           name: "Combine arrays with spread",
-          explanation:
-            "Array spread inserts iterable values into a new array. Conditionally spread an empty array to omit an optional group.",
+          explanation: "Array spread inserts iterable values into a new array.",
           note: "Spread uses iteration, so array holes become explicit undefined values; concat preserves holes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat",
@@ -1380,19 +1360,19 @@ const handbook = {
             {
               label: "Merge with extra values",
               language: "javascript",
-              code: "const a = [1, 2], b = [5, 6];\nconsole.log(...[...a, 3, 4, ...b]);\nconsole.log(...[...a, ...(false ? b : []), 7]);",
+              code: "const a = [1, 2],\n  b = [5, 6];\nconsole.log(...[...a, 3, 4, ...b]);\nconsole.log(...[...a, ...(false ? b : []), 7]);",
             },
             {
               label: "Conditional inclusion and sparse copying",
               language: "javascript",
-              code: "const a = [1], b = [2, 3];\nconsole.log(...[...a, ...(true ? b : [])]);\nconst copy = [...new Array(1)];\nconsole.log(copy.length, 0 in copy, copy[0]);",
+              code: "const a = [1],\n  b = [2, 3];\nconsole.log(...[...a, ...(true ? b : [])]);\nconst copy = [...new Array(1)];\nconsole.log(copy.length, 0 in copy, copy[0]);",
             },
           ],
         },
         {
           name: "removeAt() — copy without one position",
           explanation:
-            "Combine two slices to remove one valid index from a copy. Validate indices to prevent accidental duplication with negative or out-of-range inputs.",
+            "Combine two slices to remove one valid index from a copy.",
           note: "This helper accepts only an existing nonnegative integer index.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1400,19 +1380,19 @@ const handbook = {
             {
               label: "Remove the middle",
               language: "javascript",
-              code: 'function removeAt(a, index) { if (!Number.isInteger(index) || index < 0 || index >= a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), ...a.slice(index + 1)]; }\nconst a = [1, 2, 3];\nconsole.log(...removeAt(a, 1)); console.log(...a);',
+              code: 'function removeAt(a, index) {\n  if (!Number.isInteger(index) || index < 0 || index >= a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), ...a.slice(index + 1)];\n}\nconst a = [1, 2, 3];\nconsole.log(...removeAt(a, 1));\nconsole.log(...a);',
             },
             {
               label: "Reject an invalid position",
               language: "javascript",
-              code: 'function removeAt(a, index) { if (!Number.isInteger(index) || index < 0 || index >= a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), ...a.slice(index + 1)]; }\ntry { removeAt([1, 2], -1); } catch (error) { console.log(error.name); }',
+              code: 'function removeAt(a, index) {\n  if (!Number.isInteger(index) || index < 0 || index >= a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), ...a.slice(index + 1)];\n}\ntry {\n  removeAt([1, 2], -1);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "insertAt() — insert into a copy",
           explanation:
-            "Join the prefix, new item, and suffix to insert without changing the input. This helper allows positions from zero through length.",
+            "Join the prefix, new item, and suffix to insert without changing the input.",
           note: "An index equal to length appends; invalid positions throw.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1420,19 +1400,19 @@ const handbook = {
             {
               label: "Insert in the middle",
               language: "javascript",
-              code: 'function insertAt(a, index, item) { if (!Number.isInteger(index) || index < 0 || index > a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), item, ...a.slice(index)]; }\nconst a = [1, 3]; console.log(...insertAt(a, 1, 2)); console.log(...a);',
+              code: 'function insertAt(a, index, item) {\n  if (!Number.isInteger(index) || index < 0 || index > a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), item, ...a.slice(index)];\n}\nconst a = [1, 3];\nconsole.log(...insertAt(a, 1, 2));\nconsole.log(...a);',
             },
             {
               label: "Append to an empty array and reject invalid input",
               language: "javascript",
-              code: 'function insertAt(a, index, item) { if (!Number.isInteger(index) || index < 0 || index > a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), item, ...a.slice(index)]; }\nconsole.log(...insertAt([], 0, "first"));\ntry { insertAt([1], 2, 9); } catch (error) { console.log(error.name); }',
+              code: 'function insertAt(a, index, item) {\n  if (!Number.isInteger(index) || index < 0 || index > a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), item, ...a.slice(index)];\n}\nconsole.log(...insertAt([], 0, "first"));\ntry {\n  insertAt([1], 2, 9);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "replaceAt() — replace in a copy",
           explanation:
-            "Combine slices around an existing index with a replacement value. Use it for a shallow immutable array update.",
+            "Combine slices around an existing index with a replacement value.",
           note: "This helper replaces one existing index and preserves length.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1440,19 +1420,19 @@ const handbook = {
             {
               label: "Replace a value",
               language: "javascript",
-              code: 'function replaceAt(a, index, item) { if (!Number.isInteger(index) || index < 0 || index >= a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), item, ...a.slice(index + 1)]; }\nconst a = [1, 2, 3]; console.log(...replaceAt(a, 1, 9)); console.log(...a);',
+              code: 'function replaceAt(a, index, item) {\n  if (!Number.isInteger(index) || index < 0 || index >= a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), item, ...a.slice(index + 1)];\n}\nconst a = [1, 2, 3];\nconsole.log(...replaceAt(a, 1, 9));\nconsole.log(...a);',
             },
             {
               label: "Replace the last item and reject a missing position",
               language: "javascript",
-              code: 'function replaceAt(a, index, item) { if (!Number.isInteger(index) || index < 0 || index >= a.length) throw new RangeError("Invalid index"); return [...a.slice(0, index), item, ...a.slice(index + 1)]; }\nconsole.log(...replaceAt([1, 2], 1, 7));\ntry { replaceAt([], 0, 9); } catch (error) { console.log(error.name); }',
+              code: 'function replaceAt(a, index, item) {\n  if (!Number.isInteger(index) || index < 0 || index >= a.length)\n    throw new RangeError("Invalid index");\n  return [...a.slice(0, index), item, ...a.slice(index + 1)];\n}\nconsole.log(...replaceAt([1, 2], 1, 7));\ntry {\n  replaceAt([], 0, 9);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "move() — reorder a copy",
           explanation:
-            "Remove one item from a copy and insert it at the destination. The destination is the item’s index in the final array.",
+            "Remove one item from a copy and insert it at the destination.",
           note: "Both indices must identify existing positions; moving to the same index returns a separate copy.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice",
@@ -1460,19 +1440,19 @@ const handbook = {
             {
               label: "Move forward",
               language: "javascript",
-              code: 'function move(a, from, to) { if (![from, to].every(i => Number.isInteger(i) && i >= 0 && i < a.length)) throw new RangeError("Invalid index"); const copy = a.slice(); const [item] = copy.splice(from, 1); copy.splice(to, 0, item); return copy; }\nconst a = ["A", "B", "C", "D"]; console.log(...move(a, 0, 2)); console.log(...a);',
+              code: 'function move(a, from, to) {\n  if (![from, to].every((i) => Number.isInteger(i) && i >= 0 && i < a.length))\n    throw new RangeError("Invalid index");\n  const copy = a.slice();\n  const [item] = copy.splice(from, 1);\n  copy.splice(to, 0, item);\n  return copy;\n}\nconst a = ["A", "B", "C", "D"];\nconsole.log(...move(a, 0, 2));\nconsole.log(...a);',
             },
             {
               label: "Move backward or keep the position",
               language: "javascript",
-              code: 'function move(a, from, to) { if (![from, to].every(i => Number.isInteger(i) && i >= 0 && i < a.length)) throw new RangeError("Invalid index"); const copy = a.slice(); const [item] = copy.splice(from, 1); copy.splice(to, 0, item); return copy; }\nconst a = [1, 2, 3]; console.log(...move(a, 2, 0)); console.log(move(a, 1, 1) !== a);',
+              code: 'function move(a, from, to) {\n  if (![from, to].every((i) => Number.isInteger(i) && i >= 0 && i < a.length))\n    throw new RangeError("Invalid index");\n  const copy = a.slice();\n  const [item] = copy.splice(from, 1);\n  copy.splice(to, 0, item);\n  return copy;\n}\nconst a = [1, 2, 3];\nconsole.log(...move(a, 2, 0));\nconsole.log(move(a, 1, 1) !== a);',
             },
           ],
         },
         {
           name: "paginate() — extract a page",
           explanation:
-            "Calculate a one-based page offset and slice at most pageSize elements. Use positive integer page and size arguments.",
+            "Calculate a one-based page offset and slice at most pageSize elements.",
           note: "A page beyond the input returns an empty array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1480,19 +1460,18 @@ const handbook = {
             {
               label: "Full and partial pages",
               language: "javascript",
-              code: 'function paginate(a, page, pageSize) { if (![page, pageSize].every(n => Number.isSafeInteger(n) && n > 0)) throw new RangeError("Use positive integers"); const start = (page - 1) * pageSize; return a.slice(start, start + pageSize); }\nconst a = [1, 2, 3, 4, 5]; console.log(...paginate(a, 2, 2)); console.log(...paginate(a, 3, 2));',
+              code: 'function paginate(a, page, pageSize) {\n  if (![page, pageSize].every((n) => Number.isSafeInteger(n) && n > 0))\n    throw new RangeError("Use positive integers");\n  const start = (page - 1) * pageSize;\n  return a.slice(start, start + pageSize);\n}\nconst a = [1, 2, 3, 4, 5];\nconsole.log(...paginate(a, 2, 2));\nconsole.log(...paginate(a, 3, 2));',
             },
             {
               label: "Beyond the end and invalid size",
               language: "javascript",
-              code: 'function paginate(a, page, pageSize) { if (![page, pageSize].every(n => Number.isSafeInteger(n) && n > 0)) throw new RangeError("Use positive integers"); const start = (page - 1) * pageSize; return a.slice(start, start + pageSize); }\nconsole.log(paginate([1], 4, 2).length);\ntry { paginate([1], 1, 0); } catch (error) { console.log(error.name); }',
+              code: 'function paginate(a, page, pageSize) {\n  if (![page, pageSize].every((n) => Number.isSafeInteger(n) && n > 0))\n    throw new RangeError("Use positive integers");\n  const start = (page - 1) * pageSize;\n  return a.slice(start, start + pageSize);\n}\nconsole.log(paginate([1], 4, 2).length);\ntry {\n  paginate([1], 1, 0);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "chunk() — split into groups",
-          explanation:
-            "Take consecutive slices of a fixed maximum size. Use it for batches, retaining a shorter final group.",
+          explanation: "Take consecutive slices of a fixed maximum size.",
           note: "Reject zero, negative, fractional, and nonfinite sizes to avoid invalid or nonterminating loops.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice",
@@ -1500,19 +1479,18 @@ const handbook = {
             {
               label: "Split with a shorter final group",
               language: "javascript",
-              code: 'function chunk(a, size) { if (!Number.isSafeInteger(size) || size <= 0) throw new RangeError("Use a positive integer size"); const chunks = []; for (let i = 0; i < a.length; i += size) chunks.push(a.slice(i, i + size)); return chunks; }\nconst groups = chunk([1, 2, 3, 4, 5], 2);\nconsole.log(JSON.stringify(groups));',
+              code: 'function chunk(a, size) {\n  if (!Number.isSafeInteger(size) || size <= 0)\n    throw new RangeError("Use a positive integer size");\n  const chunks = [];\n  for (let i = 0; i < a.length; i += size) chunks.push(a.slice(i, i + size));\n  return chunks;\n}\nconst groups = chunk([1, 2, 3, 4, 5], 2);\nconsole.log(JSON.stringify(groups));',
             },
             {
               label: "Empty input and invalid size",
               language: "javascript",
-              code: 'function chunk(a, size) { if (!Number.isSafeInteger(size) || size <= 0) throw new RangeError("Use a positive integer size"); const chunks = []; for (let i = 0; i < a.length; i += size) chunks.push(a.slice(i, i + size)); return chunks; }\nconsole.log(chunk([], 3).length);\ntry { chunk([1], 0); } catch (error) { console.log(error.name); }',
+              code: 'function chunk(a, size) {\n  if (!Number.isSafeInteger(size) || size <= 0)\n    throw new RangeError("Use a positive integer size");\n  const chunks = [];\n  for (let i = 0; i < a.length; i += size) chunks.push(a.slice(i, i + size));\n  return chunks;\n}\nconsole.log(chunk([], 3).length);\ntry {\n  chunk([1], 0);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "sort() — default string ordering",
-          explanation:
-            "Sorts an array in place and returns the same array. Without a comparator, defined values are compared as UTF-16 strings.",
+          explanation: "Sorts an array in place and returns the same array.",
           note: "Default ordering is not numeric or language-aware alphabetic ordering.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1520,19 +1498,19 @@ const handbook = {
             {
               label: "Sort words and observe identity",
               language: "javascript",
-              code: 'const a = ["banana", "apple", "cherry"]; const result = a.sort();\nconsole.log(...a); console.log(result === a);',
+              code: 'const a = ["banana", "apple", "cherry"];\nconst result = a.sort();\nconsole.log(...a);\nconsole.log(result === a);',
             },
             {
               label: "See the default numeric trap",
               language: "javascript",
-              code: "const a = [10, 5, 40, 25, 1000, 1]; a.sort();\nconsole.log(...a);",
+              code: "const a = [10, 5, 40, 25, 1000, 1];\na.sort();\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "Numeric sort comparators",
           explanation:
-            "Use a - b for ascending numbers and b - a for descending numbers. A comparator returns a negative, zero, or positive number to express relative order.",
+            "Use a - b for ascending numbers and b - a for descending numbers.",
           note: "Use a consistent comparator; engine algorithms and time/space complexity are not specified.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1540,19 +1518,19 @@ const handbook = {
             {
               label: "Ascending numeric order",
               language: "javascript",
-              code: "const a = [10, 5, 40, 25, 1000, 1]; a.sort((a, b) => a - b); console.log(...a);",
+              code: "const a = [10, 5, 40, 25, 1000, 1];\na.sort((a, b) => a - b);\nconsole.log(...a);",
             },
             {
               label: "Descending numeric order",
               language: "javascript",
-              code: "const a = [10, 5, 40, 25, 1000, 1]; a.sort((a, b) => b - a); console.log(...a);",
+              code: "const a = [10, 5, 40, 25, 1000, 1];\na.sort((a, b) => b - a);\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "Sort objects by one or several fields",
           explanation:
-            "Compare a numeric property or use localeCompare for names. Chain criteria with a zero-result fallback for deterministic ties.",
+            "Compare a numeric property or use localeCompare for names.",
           note: "localeCompare returns a sign, not necessarily exactly -1 or 1; locale rules can vary.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1560,19 +1538,19 @@ const handbook = {
             {
               label: "Order by age then name",
               language: "javascript",
-              code: 'const users = [{name:"John",age:30},{name:"Jane",age:25},{name:"Bob",age:30}];\nusers.sort((a,b) => a.age - b.age || a.name.localeCompare(b.name, "en"));\nconsole.log(...users.map(u => u.name));',
+              code: 'const users = [\n  { name: "John", age: 30 },\n  { name: "Jane", age: 25 },\n  { name: "Bob", age: 30 },\n];\nusers.sort((a, b) => a.age - b.age || a.name.localeCompare(b.name, "en"));\nconsole.log(...users.map((u) => u.name));',
             },
             {
               label: "Order names independently",
               language: "javascript",
-              code: 'const users = [{name:"John"},{name:"Jane"},{name:"Bob"}];\nusers.sort((a,b) => a.name.localeCompare(b.name, "en"));\nconsole.log(...users.map(u => u.name));',
+              code: 'const users = [{ name: "John" }, { name: "Jane" }, { name: "Bob" }];\nusers.sort((a, b) => a.name.localeCompare(b.name, "en"));\nconsole.log(...users.map((u) => u.name));',
             },
           ],
         },
         {
           name: "Case-insensitive and custom priority sorting",
           explanation:
-            "Compare normalized strings for case-insensitive ordering or map known priority labels to ranks. Put unknown priorities after the known ones explicitly.",
+            "Compare normalized strings for case-insensitive ordering or map known priority labels to ranks.",
           note: "A raw indexOf rank of -1 would incorrectly put unknown labels first.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1580,19 +1558,19 @@ const handbook = {
             {
               label: "Ignore letter case",
               language: "javascript",
-              code: 'const words = ["Cherry", "banana", "Apple"];\nwords.sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase(), "en"));\nconsole.log(...words);',
+              code: 'const words = ["Cherry", "banana", "Apple"];\nwords.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase(), "en"));\nconsole.log(...words);',
             },
             {
               label: "Place unknown priorities last",
               language: "javascript",
-              code: 'const priority = ["high", "medium", "low"];\nconst rank = level => { const i = priority.indexOf(level); return i < 0 ? priority.length : i; };\nconst items = ["low", "unknown", "high", "medium"];\nitems.sort((a,b) => rank(a) - rank(b)); console.log(...items);',
+              code: 'const priority = ["high", "medium", "low"];\nconst rank = (level) => {\n  const i = priority.indexOf(level);\n  return i < 0 ? priority.length : i;\n};\nconst items = ["low", "unknown", "high", "medium"];\nitems.sort((a, b) => rank(a) - rank(b));\nconsole.log(...items);',
             },
           ],
         },
         {
           name: "Stable sorting",
           explanation:
-            "A stable sort preserves the input order of elements whose comparator result is zero. Use it when ties should retain earlier ordering.",
+            "A stable sort preserves the input order of elements whose comparator result is zero.",
           note: "Stable Array sorting has been required since ES2019; comparisons must still be consistent.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1600,19 +1578,18 @@ const handbook = {
             {
               label: "Keep equal-score records in order",
               language: "javascript",
-              code: 'const a = [{id:"A",score:2},{id:"B",score:1},{id:"C",score:2}];\na.sort((a,b) => a.score - b.score); console.log(...a.map(x => x.id));',
+              code: 'const a = [\n  { id: "A", score: 2 },\n  { id: "B", score: 1 },\n  { id: "C", score: 2 },\n];\na.sort((a, b) => a.score - b.score);\nconsole.log(...a.map((x) => x.id));',
             },
             {
               label: "All ties retain their order",
               language: "javascript",
-              code: 'const a = ["first", "second", "third"]; a.sort(() => 0); console.log(...a);',
+              code: 'const a = ["first", "second", "third"];\na.sort(() => 0);\nconsole.log(...a);',
             },
           ],
         },
         {
           name: "reverse() — reverse in place",
-          explanation:
-            "Reverses indexed positions and returns the same array. Use it when changing the existing sequence is intended.",
+          explanation: "Reverses indexed positions and returns the same array.",
           note: "Reversal does not sort values and preserves sparse holes at their mirrored positions.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse",
@@ -1620,19 +1597,19 @@ const handbook = {
             {
               label: "Reverse and inspect identity",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5]; console.log(a.reverse() === a, ...a);",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(a.reverse() === a, ...a);",
             },
             {
               label: "Reverse a sparse array",
               language: "javascript",
-              code: "const a = [1, , 3, 4]; a.reverse(); console.log(a.length, 2 in a, a[0], a[3]);",
+              code: "const a = [1, , 3, 4];\na.reverse();\nconsole.log(a.length, 2 in a, a[0], a[3]);",
             },
           ],
         },
         {
           name: "Reverse string sequences",
           explanation:
-            "Split or spread a string into an array, reverse it, then join it again. Use the ASCII split pattern only when UTF-16 code units are the intended units.",
+            "Split or spread a string into an array, reverse it, then join it again.",
           note: "Spread preserves Unicode code points but can still split multi-code-point grapheme clusters.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse",
@@ -1640,19 +1617,19 @@ const handbook = {
             {
               label: "Reverse ASCII text",
               language: "javascript",
-              code: 'const text = "hello"; console.log(text.split("").reverse().join(""));',
+              code: 'const text = "hello";\nconsole.log(text.split("").reverse().join(""));',
             },
             {
               label: "Preserve a supplementary code point",
               language: "javascript",
-              code: 'const text = "A😀B"; console.log([...text].reverse().join(""));',
+              code: 'const text = "A😀B";\nconsole.log([...text].reverse().join(""));',
             },
           ],
         },
         {
           name: "Sort and reverse copies",
           explanation:
-            "Copy with spread or slice before calling the mutating methods. Use this when other callers must keep the original order.",
+            "Copy with spread or slice before calling the mutating methods.",
           note: "Copies remain shallow; spreading a sparse array fills its holes with undefined, while slice preserves them.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1660,19 +1637,18 @@ const handbook = {
             {
               label: "Sort two copies",
               language: "javascript",
-              code: "const a = [3, 1, 2];\nconsole.log(...[...a].sort((a,b) => a-b)); console.log(...a.slice().sort((a,b) => a-b)); console.log(...a);",
+              code: "const a = [3, 1, 2];\nconsole.log(...[...a].sort((a, b) => a - b));\nconsole.log(...a.slice().sort((a, b) => a - b));\nconsole.log(...a);",
             },
             {
               label: "Reverse copies",
               language: "javascript",
-              code: "const a = [3, 1, 2];\nconsole.log(...[...a].reverse()); console.log(...a.slice().reverse()); console.log(...a);",
+              code: "const a = [3, 1, 2];\nconsole.log(...[...a].reverse());\nconsole.log(...a.slice().reverse());\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "toSorted() and toReversed()",
-          explanation:
-            "These ES2023 methods return reordered copies directly. Use them to retain the input order without an explicit preliminary copy.",
+          explanation: "These ES2023 methods return reordered copies directly.",
           note: "They create dense arrays: missing positions are read as undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted",
@@ -1680,19 +1656,19 @@ const handbook = {
             {
               label: "Sort and reverse without changing the input",
               language: "javascript",
-              code: "const a = [3, 1, 2]; console.log(...a.toSorted((a,b) => a-b)); console.log(...a.toReversed()); console.log(...a);",
+              code: "const a = [3, 1, 2];\nconsole.log(...a.toSorted((a, b) => a - b));\nconsole.log(...a.toReversed());\nconsole.log(...a);",
             },
             {
               label: "Observe sparse-copy semantics",
               language: "javascript",
-              code: "const a = [3, , 1]; const sorted = a.toSorted((a,b) => a-b); const reversed = a.toReversed();\nconsole.log(...sorted); console.log(2 in sorted, 1 in reversed, 1 in a);",
+              code: "const a = [3, , 1];\nconst sorted = a.toSorted((a, b) => a - b);\nconst reversed = a.toReversed();\nconsole.log(...sorted);\nconsole.log(2 in sorted, 1 in reversed, 1 in a);",
             },
           ],
         },
         {
           name: "Reverse with reduce()",
           explanation:
-            "Prepend each visited value to an accumulator to produce reversed values. This illustrates accumulation but is unsuitable for large arrays because each step copies the growing result.",
+            "Builds reversed output by placing each item at the start.",
           note: "Unlike reverse, reduce skips sparse holes; prefer toReversed or a copied reverse for general reversal.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -1700,19 +1676,19 @@ const handbook = {
             {
               label: "Prepend into a new result",
               language: "javascript",
-              code: "const a = [1, 2, 3]; const reversed = a.reduce((acc,value) => [value, ...acc], []);\nconsole.log(...reversed); console.log(...a);",
+              code: "const a = [1, 2, 3];\nconst reversed = a.reduce((acc, value) => [value, ...acc], []);\nconsole.log(...reversed);\nconsole.log(...a);",
             },
             {
               label: "Empty and sparse inputs",
               language: "javascript",
-              code: "console.log([].reduce((acc,value) => [value, ...acc], []).length);\nconsole.log(...[1, , 3].reduce((acc,value) => [value, ...acc], []));",
+              code: "console.log([].reduce((acc, value) => [value, ...acc], []).length);\nconsole.log(...[1, , 3].reduce((acc, value) => [value, ...acc], []));",
             },
           ],
         },
         {
           name: "shuffle() — Fisher–Yates",
           explanation:
-            "Swap each position with a uniformly chosen position from zero through itself. Use this algorithm instead of a random sort comparator.",
+            "Swap each position with a uniformly chosen position from zero through itself.",
           note: "The default Math.random is not cryptographically secure; the injected random function must return values in [0, 1). Tests use deterministic draws.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1720,19 +1696,19 @@ const handbook = {
             {
               label: "Deterministic draws demonstrate swaps",
               language: "javascript",
-              code: "function shuffle(a, random = Math.random) { const copy = [...a]; for (let i = copy.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }\nconst a = [1, 2, 3, 4]; console.log(...shuffle(a, () => 0)); console.log(...a);",
+              code: "function shuffle(a, random = Math.random) {\n  const copy = [...a];\n  for (let i = copy.length - 1; i > 0; i--) {\n    const j = Math.floor(random() * (i + 1));\n    [copy[i], copy[j]] = [copy[j], copy[i]];\n  }\n  return copy;\n}\nconst a = [1, 2, 3, 4];\nconsole.log(...shuffle(a, () => 0));\nconsole.log(...a);",
             },
             {
               label: "Retain every value and handle empty input",
               language: "javascript",
-              code: 'function shuffle(a, random = Math.random) { const copy = [...a]; for (let i = copy.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }\nconst a = [1, 2, 3]; const result = shuffle(a);\nconsole.log(result !== a, result.length, result.slice().sort().join(",") === a.join(","));\nconsole.log(shuffle([]).length);',
+              code: 'function shuffle(a, random = Math.random) {\n  const copy = [...a];\n  for (let i = copy.length - 1; i > 0; i--) {\n    const j = Math.floor(random() * (i + 1));\n    [copy[i], copy[j]] = [copy[j], copy[i]];\n  }\n  return copy;\n}\nconst a = [1, 2, 3];\nconst result = shuffle(a);\nconsole.log(\n  result !== a,\n  result.length,\n  result.slice().sort().join(",") === a.join(","),\n);\nconsole.log(shuffle([]).length);',
             },
           ],
         },
         {
           name: "Natural ordering of numbered strings",
           explanation:
-            "Use localeCompare with numeric: true to compare digit runs by numeric value. Use it for numbered filenames or labels.",
+            "Use localeCompare with numeric: true to compare digit runs by numeric value.",
           note: "Specify a locale for reproducibility; locale-sensitive ordering depends on runtime locale data.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1740,19 +1716,19 @@ const handbook = {
             {
               label: "Order numbered filenames",
               language: "javascript",
-              code: 'const files = ["img10.png", "img2.png", "img1.png"];\nfiles.sort((a,b) => a.localeCompare(b, "en", {numeric:true})); console.log(...files);',
+              code: 'const files = ["img10.png", "img2.png", "img1.png"];\nfiles.sort((a, b) => a.localeCompare(b, "en", { numeric: true }));\nconsole.log(...files);',
             },
             {
               label: "Contrast lexical and numeric ordering",
               language: "javascript",
-              code: 'const a = ["item10", "item2"];\nconsole.log(...a.toSorted());\nconsole.log(...a.toSorted((a,b) => a.localeCompare(b, "en", {numeric:true})));',
+              code: 'const a = ["item10", "item2"];\nconsole.log(...a.toSorted());\nconsole.log(\n  ...a.toSorted((a, b) => a.localeCompare(b, "en", { numeric: true })),\n);',
             },
           ],
         },
         {
           name: "Sort with null and undefined values",
           explanation:
-            "Handle null explicitly in a numeric comparator and return zero when both operands are null. Array sort automatically places undefined after defined values without passing it to the comparator.",
+            "Handle null explicitly in a numeric comparator and return zero when both values are null.",
           note: "Sparse holes follow undefined; the comparator must not return a positive value for both-null comparisons. Define a separate policy if NaN is possible.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort",
@@ -1760,12 +1736,12 @@ const handbook = {
             {
               label: "Place null after numbers",
               language: "javascript",
-              code: "const a = [null, 3, null, 1, undefined, 2];\na.sort((a,b) => a === null ? (b === null ? 0 : 1) : b === null ? -1 : a-b);\nconsole.log(...a);",
+              code: "const a = [null, 3, null, 1, undefined, 2];\na.sort((a, b) => (a === null ? (b === null ? 0 : 1) : b === null ? -1 : a - b));\nconsole.log(...a);",
             },
             {
               label: "Observe undefined and hole handling",
               language: "javascript",
-              code: "let sawUndefined = false; const a = [undefined, 2, , 1];\na.sort((a,b) => { sawUndefined ||= a === undefined || b === undefined; return a-b; });\nconsole.log(a[0], a[1], a[2], 2 in a, 3 in a, sawUndefined);",
+              code: "let sawUndefined = false;\nconst a = [undefined, 2, , 1];\na.sort((a, b) => {\n  sawUndefined ||= a === undefined || b === undefined;\n  return a - b;\n});\nconsole.log(a[0], a[1], a[2], 2 in a, 3 in a, sawUndefined);",
             },
           ],
         },
@@ -1780,7 +1756,7 @@ const handbook = {
         {
           name: "forEach() — execute side effects",
           explanation:
-            "Calls a function for each present indexed element and returns undefined. Use it for logging or updating existing state rather than building a transformed array.",
+            "Runs a function for each existing array item. Returns undefined.",
           note: "Callback return values are discarded; the method cannot be chained as an array result.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1788,19 +1764,19 @@ const handbook = {
             {
               label: "Log each value",
               language: "javascript",
-              code: "const numbers = [1, 2, 3];\nconst result = numbers.forEach(value => console.log(value));\nconsole.log(result);",
+              code: "const numbers = [1, 2, 3];\nconst result = numbers.forEach((value) => console.log(value));\nconsole.log(result);",
             },
             {
               label: "Use value, index, and the source array",
               language: "javascript",
-              code: "const numbers = [10, 20];\nnumbers.forEach((value, index, array) => console.log(index, value, array.length, array === numbers));",
+              code: "const numbers = [10, 20];\nnumbers.forEach((value, index, array) =>\n  console.log(index, value, array.length, array === numbers),\n);",
             },
           ],
         },
         {
           name: "forEach() and mutation",
           explanation:
-            "Reassigning a primitive callback parameter does not update its array position. Modify an object property or explicitly assign through the source array when mutation is intended.",
+            "Reassigning a primitive callback parameter does not update its array position.",
           note: "The initial length is captured; new values appended beyond that length are not visited, and deleted positions are skipped.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1808,19 +1784,19 @@ const handbook = {
             {
               label: "Local assignment versus indexed assignment",
               language: "javascript",
-              code: "const a = [1, 2, 3]; a.forEach(value => { value *= 2; });\nconsole.log(...a);\na.forEach((value, index, array) => { array[index] = value * 2; }); console.log(...a);",
+              code: "const a = [1, 2, 3];\na.forEach((value) => {\n  value *= 2;\n});\nconsole.log(...a);\na.forEach((value, index, array) => {\n  array[index] = value * 2;\n});\nconsole.log(...a);",
             },
             {
               label: "Update objects and inspect visit bounds",
               language: "javascript",
-              code: "const users = [{age:30}, {age:25}]; users.forEach(user => user.age++);\nconsole.log(...users.map(user => user.age));\nconst a = [1, 2, 3]; const seen = [];\na.forEach((value,index) => { seen.push(value); if (index === 0) { a.push(4); delete a[1]; } });\nconsole.log(...seen); console.log(a.length);",
+              code: "const users = [{ age: 30 }, { age: 25 }];\nusers.forEach((user) => user.age++);\nconsole.log(...users.map((user) => user.age));\nconst a = [1, 2, 3];\nconst seen = [];\na.forEach((value, index) => {\n  seen.push(value);\n  if (index === 0) {\n    a.push(4);\n    delete a[1];\n  }\n});\nconsole.log(...seen);\nconsole.log(a.length);",
             },
           ],
         },
         {
           name: "forEach() with thisArg",
           explanation:
-            "Pass a context object as the second argument to bind this inside a normal callback function. Use this when a callback updates state held on another object.",
+            "Pass a context object as the second argument to bind this inside a normal callback function.",
           note: "Arrow functions retain lexical this and ignore thisArg.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1828,19 +1804,19 @@ const handbook = {
             {
               label: "Accumulate into a supplied context",
               language: "javascript",
-              code: "const counter = {count:0};\n[1, 2, 3].forEach(function(value) { this.count += value; }, counter);\nconsole.log(counter.count);",
+              code: "const counter = { count: 0 };\n[1, 2, 3].forEach(function (value) {\n  this.count += value;\n}, counter);\nconsole.log(counter.count);",
             },
             {
               label: "Call a method that passes its own context",
               language: "javascript",
-              code: "const counter = {count:0, increment(values) { values.forEach(function(value) { this.count += value; }, this); }};\ncounter.increment([2, 4]); counter.increment([1]); console.log(counter.count);",
+              code: "const counter = {\n  count: 0,\n  increment(values) {\n    values.forEach(function (value) {\n      this.count += value;\n    }, this);\n  },\n};\ncounter.increment([2, 4]);\ncounter.increment([1]);\nconsole.log(counter.count);",
             },
           ],
         },
         {
           name: "forEach() for DOM updates",
           explanation:
-            "NodeList also provides forEach for updating matched elements. Use it to apply classes or text to each selected node.",
+            "NodeList also provides forEach for updating matched elements.",
           note: "These complete HTML examples run in a browser; NodeList.forEach is a separate API from Array.prototype.forEach.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach",
@@ -1851,7 +1827,7 @@ const handbook = {
                 {
                   path: "index.html",
                   language: "html",
-                  code: '<!doctype html><ul><li class="item">A</li><li class="item">B</li></ul><script>document.querySelectorAll(".item").forEach(el => el.classList.add("active")); console.log(document.querySelectorAll(".item.active").length);</script>',
+                  code: '<!doctype html>\n<ul\n  ><li class="item">A</li\n  ><li class="item">B</li></ul\n><script>\n  document\n    .querySelectorAll(".item")\n    .forEach((el) => el.classList.add("active"));\n  console.log(document.querySelectorAll(".item.active").length);\n</script>',
                 },
               ],
             },
@@ -1861,7 +1837,7 @@ const handbook = {
                 {
                   path: "index.html",
                   language: "html",
-                  code: '<!doctype html><p class="item"></p><p class="item"></p><script>document.querySelectorAll(".item").forEach((el,index) => { el.textContent = `Item ${index + 1}`; }); console.log(...Array.from(document.querySelectorAll(".item"), el => el.textContent));</script>',
+                  code: '<!doctype html><p class="item"></p><p class="item"></p\n><script>\n  document.querySelectorAll(".item").forEach((el, index) => {\n    el.textContent = `Item ${index + 1}`;\n  });\n  console.log(\n    ...Array.from(document.querySelectorAll(".item"), (el) => el.textContent),\n  );\n</script>',
                 },
               ],
             },
@@ -1870,7 +1846,7 @@ const handbook = {
         {
           name: "forEach() does not await async callbacks",
           explanation:
-            "Async callbacks return promises that forEach discards. Use a sequential loop or Promise.all with map when completion and rejection handling matter.",
+            "Runs callbacks without waiting for their promises to finish.",
           note: "The demonstration explicitly collects the promises so no work or rejection is left unobserved.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1878,19 +1854,19 @@ const handbook = {
             {
               label: "Observe completion after forEach returns",
               language: "javascript",
-              code: "(async () => {\n  const done = []; const pending = [];\n  const result = [1, 2].forEach(value => { pending.push((async () => { await Promise.resolve(); done.push(value); })()); });\n  console.log(result, done.length);\n  await Promise.all(pending); console.log(...done);\n})().catch(error => { throw error; });",
+              code: "(async () => {\n  const done = [];\n  const pending = [];\n  const result = [1, 2].forEach((value) => {\n    pending.push(\n      (async () => {\n        await Promise.resolve();\n        done.push(value);\n      })(),\n    );\n  });\n  console.log(result, done.length);\n  await Promise.all(pending);\n  console.log(...done);\n})().catch((error) => {\n  throw error;\n});",
             },
             {
               label: "Fetch sequentially or collect parallel results",
               language: "javascript",
-              code: '(async () => {\n  const urls = ["data:application/json,1", "data:application/json,2"];\n  const sequential = [];\n  for (const url of urls) { const response = await fetch(url); sequential.push(await response.json()); }\n  const parallel = await Promise.all(urls.map(async url => { const response = await fetch(url); return response.json(); }));\n  console.log(...sequential); console.log(...parallel);\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const urls = ["data:application/json,1", "data:application/json,2"];\n  const sequential = [];\n  for (const url of urls) {\n    const response = await fetch(url);\n    sequential.push(await response.json());\n  }\n  const parallel = await Promise.all(\n    urls.map(async (url) => {\n      const response = await fetch(url);\n      return response.json();\n    }),\n  );\n  console.log(...sequential);\n  console.log(...parallel);\n})().catch((error) => {\n  throw error;\n});',
             },
           ],
         },
         {
           name: "forEach() versus map()",
           explanation:
-            "Use forEach for effects such as writing records and map for a new array of transformed values. Define the side-effect function explicitly so the example can run independently.",
+            "Use forEach to perform actions. Use map to build a new array of results.",
           note: "Avoid map when its returned array is unused.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1898,19 +1874,19 @@ const handbook = {
             {
               label: "Write to a local record store",
               language: "javascript",
-              code: 'const records = new Map();\nconst updateDatabase = item => records.set(item.id, item.name);\n[{id:1,name:"John"},{id:2,name:"Jane"}].forEach(updateDatabase);\nconsole.log(records.size, records.get(2));',
+              code: 'const records = new Map();\nconst updateDatabase = (item) => records.set(item.id, item.name);\n[\n  { id: 1, name: "John" },\n  { id: 2, name: "Jane" },\n].forEach(updateDatabase);\nconsole.log(records.size, records.get(2));',
             },
             {
               label: "Choose a transformation result",
               language: "javascript",
-              code: "const a = [1, 2, 3]; const doubled = a.map(value => value * 2);\nconsole.log(...doubled); console.log(...a);",
+              code: "const a = [1, 2, 3];\nconst doubled = a.map((value) => value * 2);\nconsole.log(...doubled);\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "Early exits and callback return",
           explanation:
-            "Returning from a forEach callback skips only the rest of that call; it does not stop iteration. Use for...of for break/continue or some for a boolean early-exit condition.",
+            "Returning from a forEach callback skips only the rest of that call; it does not stop iteration.",
           note: "A break or continue targeting the outer iteration is a syntax error inside a callback.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1918,19 +1894,19 @@ const handbook = {
             {
               label: "Return skips one callback; a loop can break",
               language: "javascript",
-              code: "[1, 2, 3].forEach(value => { if (value === 2) return; console.log(value); });\nfor (const value of [1, 2, 3]) { if (value === 2) break; console.log(value); }",
+              code: "[1, 2, 3].forEach((value) => {\n  if (value === 2) return;\n  console.log(value);\n});\nfor (const value of [1, 2, 3]) {\n  if (value === 2) break;\n  console.log(value);\n}",
             },
             {
               label: "Stop with some and skip with continue",
               language: "javascript",
-              code: "const found = [1, 2, 3, 4].some(value => { if (value === 3) return true; console.log(value); return false; });\nconsole.log(found);\nfor (const value of [1, 2, 3]) { if (value === 2) continue; console.log(value); }",
+              code: "const found = [1, 2, 3, 4].some((value) => {\n  if (value === 3) return true;\n  console.log(value);\n  return false;\n});\nconsole.log(found);\nfor (const value of [1, 2, 3]) {\n  if (value === 2) continue;\n  console.log(value);\n}",
             },
           ],
         },
         {
           name: "Exceptions and iteration choices",
           explanation:
-            "An exception aborts forEach and propagates to its caller. Use ordinary loop control for expected early exits and reserve exceptions for exceptional conditions.",
+            "Stops forEach and passes the error to the caller when a callback throws.",
           note: "If illustrating a sentinel exception, compare its identity so unrelated errors are rethrown. No loop form is universally the fastest; measure representative workloads.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach",
@@ -1938,19 +1914,19 @@ const handbook = {
             {
               label: "Catch only the deliberate sentinel",
               language: "javascript",
-              code: 'const stop = new Error("Stop");\ntry { [1, 2, 3, 4].forEach(value => { if (value === 3) throw stop; console.log(value); }); }\ncatch (error) { if (error !== stop) throw error; console.log("stopped"); }',
+              code: 'const stop = new Error("Stop");\ntry {\n  [1, 2, 3, 4].forEach((value) => {\n    if (value === 3) throw stop;\n    console.log(value);\n  });\n} catch (error) {\n  if (error !== stop) throw error;\n  console.log("stopped");\n}',
             },
             {
               label: "Compare indexed and iterable loops on sparse input",
               language: "javascript",
-              code: "const a = [1, , 3]; let calls = 0;\na.forEach(() => calls++); console.log(calls);\nfor (let i = 0; i < a.length; i++) console.log(i, a[i]);\nfor (const value of a) console.log(value);",
+              code: "const a = [1, , 3];\nlet calls = 0;\na.forEach(() => calls++);\nconsole.log(calls);\nfor (let i = 0; i < a.length; i++) console.log(i, a[i]);\nfor (const value of a) console.log(value);",
             },
           ],
         },
         {
           name: "join() — combine values into a string",
           explanation:
-            "Converts array elements to strings and inserts a separator between positions. Use the default comma, a custom separator, or an empty separator for compact output.",
+            "Converts array elements to strings and inserts a separator between positions.",
           note: "Does not change the array; an empty array joins to an empty string.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -1963,14 +1939,14 @@ const handbook = {
             {
               label: "Numbers and an empty array",
               language: "javascript",
-              code: 'console.log([1, 2, 3].join("+")); console.log([].join("-"));',
+              code: 'console.log([1, 2, 3].join("+"));\nconsole.log([].join("-"));',
             },
           ],
         },
         {
           name: "join() with missing and nested values",
           explanation:
-            "Null, undefined, and holes contribute empty fields, while other values undergo string conversion. Nested arrays stringify with their own comma separators.",
+            "Null, undefined, and holes contribute empty fields, while other values undergo string conversion.",
           note: "join is display formatting rather than a reversible serialization format.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -1990,7 +1966,7 @@ const handbook = {
         {
           name: "Build HTML text with join()",
           explanation:
-            "Join separately formatted list items to produce an HTML string. Escape interpolated text so markup characters remain text.",
+            "Join separately formatted list items to produce an HTML string.",
           note: "These examples log strings; when manipulating a live page, creating nodes and setting textContent also avoids interpreting user text as markup.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -1998,19 +1974,19 @@ const handbook = {
             {
               label: "Build a fixed list",
               language: "javascript",
-              code: 'const items = ["Apple", "Banana", "Orange"];\nconst html = `<ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>`; console.log(html);',
+              code: 'const items = ["Apple", "Banana", "Orange"];\nconst html = `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;\nconsole.log(html);',
             },
             {
               label: "Escape dynamic item text",
               language: "javascript",
-              code: 'const escapeHTML = value => String(value).replace(/[&<>"\']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",\'"\':"&quot;","\'":"&#39;"})[char]);\nconst items = ["<Apple>", "A&B"];\nconsole.log(items.map(item => `<li>${escapeHTML(item)}</li>`).join(""));',
+              code: 'const escapeHTML = (value) =>\n  String(value).replace(\n    /[&<>"\']/g,\n    (char) =>\n      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", \'"\': "&quot;", "\'": "&#39;" })[\n        char\n      ],\n  );\nconst items = ["<Apple>", "A&B"];\nconsole.log(items.map((item) => `<li>${escapeHTML(item)}</li>`).join(""));',
             },
           ],
         },
         {
           name: "Create CSV with join()",
           explanation:
-            "Join escaped cells into rows, then join rows with line endings. Quote cells containing commas, quotes, or newlines and double embedded quotes.",
+            "Join escaped cells into rows, then join rows with line endings.",
           note: "A plain split on comma cannot parse general quoted CSV. Escaping CSV structure is distinct from spreadsheet formula policies.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -2018,19 +1994,19 @@ const handbook = {
             {
               label: "Format simple tabular rows",
               language: "javascript",
-              code: 'const rows = [["Name", "Age", "City"], ["John", 30, "NYC"], ["Jane", 25, "LA"]];\nconsole.log(rows.map(row => row.join(",")).join("\\n"));',
+              code: 'const rows = [\n  ["Name", "Age", "City"],\n  ["John", 30, "NYC"],\n  ["Jane", 25, "LA"],\n];\nconsole.log(rows.map((row) => row.join(",")).join("\\n"));',
             },
             {
               label: "Escape commas, quotes, and line breaks",
               language: "javascript",
-              code: 'const csvCell = value => {\n  const text = String(value ?? "");\n  return /[",\\r\\n]/.test(text) ? \'"\' + text.replace(/"/g, \'""\') + \'"\' : text;\n};\nconst rows = [["Name", "Note"], ["Jane, Jr.", \'Said "Hi"\'], ["John", "two\\nlines"]];\nconsole.log(rows.map(row => row.map(csvCell).join(",")).join("\\r\\n"));',
+              code: 'const csvCell = (value) => {\n  const text = String(value ?? "");\n  return /[",\\r\\n]/.test(text) ? \'"\' + text.replace(/"/g, \'""\') + \'"\' : text;\n};\nconst rows = [\n  ["Name", "Note"],\n  ["Jane, Jr.", \'Said "Hi"\'],\n  ["John", "two\\nlines"],\n];\nconsole.log(rows.map((row) => row.map(csvCell).join(",")).join("\\r\\n"));',
             },
           ],
         },
         {
           name: "split() — string to array",
           explanation:
-            "Splits a string at a string separator or regular-expression matches. Use a limit to cap the number of output fields.",
+            "Splits a string at a string separator or regular-expression matches.",
           note: 'String.prototype.split is a string method. A limit discards remaining fields; split("") divides UTF-16 code units.',
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split",
@@ -2038,7 +2014,7 @@ const handbook = {
             {
               label: "Separate fields, words, and ASCII units",
               language: "javascript",
-              code: 'console.log(..."apple,banana,orange".split(","));\nconsole.log(..."hello world".split(" ")); console.log(..."hello".split(""));',
+              code: 'console.log(..."apple,banana,orange".split(","));\nconsole.log(..."hello world".split(" "));\nconsole.log(..."hello".split(""));',
             },
             {
               label: "Limit output and split digit runs",
@@ -2050,7 +2026,7 @@ const handbook = {
         {
           name: "Array.from() and string spread",
           explanation:
-            'Array.from and spread consume a string’s iterator to produce Unicode code points. Use them instead of split("") when surrogate pairs must remain together.',
+            "Array.from and spread consume a string’s iterator to produce Unicode code points.",
           note: 'Code points are not grapheme clusters: a displayed character may contain multiple code points. Modern browsers still split surrogate pairs with split("").',
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2058,19 +2034,19 @@ const handbook = {
             {
               label: "Copy ASCII characters",
               language: "javascript",
-              code: 'console.log(...Array.from("hello")); console.log(...[..."hello"]);',
+              code: 'console.log(...Array.from("hello"));\nconsole.log(...[..."hello"]);',
             },
             {
               label: "Distinguish code units, points, and visible clusters",
               language: "javascript",
-              code: 'const text = "😀😁"; console.log(text.split("").length, Array.from(text).length, [...text].length);\nconsole.log(...Array.from(text));\nconsole.log(Array.from("é").length);',
+              code: 'const text = "😀😁";\nconsole.log(text.split("").length, Array.from(text).length, [...text].length);\nconsole.log(...Array.from(text));\nconsole.log(Array.from("é").length);',
             },
           ],
         },
         {
           name: "Reverse and deduplicate string units",
           explanation:
-            "Reverse an array of string units and join it, or use a Set to retain first occurrences. Choose code units or code points deliberately.",
+            "Reverse an array of string units and join it, or use a Set to keep first occurrences.",
           note: "These helpers do not preserve multi-code-point grapheme clusters as single units.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -2078,19 +2054,18 @@ const handbook = {
             {
               label: "Reverse ASCII and code points",
               language: "javascript",
-              code: 'const reverse = text => text.split("").reverse().join("");\nconst reversePoints = text => [...text].reverse().join("");\nconsole.log(reverse("hello"), reversePoints("A😀B"));',
+              code: 'const reverse = (text) => text.split("").reverse().join("");\nconst reversePoints = (text) => [...text].reverse().join("");\nconsole.log(reverse("hello"), reversePoints("A😀B"));',
             },
             {
               label: "Retain first occurrences in order",
               language: "javascript",
-              code: 'const unique = text => [...new Set(text)].join("");\nconsole.log(unique("hello"), unique("😀😀😁"));',
+              code: 'const unique = (text) => [...new Set(text)].join("");\nconsole.log(unique("hello"), unique("😀😀😁"));',
             },
           ],
         },
         {
           name: "Count string code points with reduce()",
-          explanation:
-            "Accumulate a frequency for each code point. Use a dictionary without a prototype for a simple counter.",
+          explanation: "Accumulate a frequency for each code point.",
           note: "This counts code points, not visual grapheme clusters, and includes whitespace.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
@@ -2098,19 +2073,19 @@ const handbook = {
             {
               label: "Count repeated letters",
               language: "javascript",
-              code: 'const count = text => Array.from(text).reduce((acc, char) => { acc[char] = (acc[char] ?? 0) + 1; return acc; }, Object.create(null));\nconst counts = count("hello"); console.log(counts.h, counts.e, counts.l, counts.o);',
+              code: 'const count = (text) =>\n  Array.from(text).reduce((acc, char) => {\n    acc[char] = (acc[char] ?? 0) + 1;\n    return acc;\n  }, Object.create(null));\nconst counts = count("hello");\nconsole.log(counts.h, counts.e, counts.l, counts.o);',
             },
             {
               label: "Count emoji and handle an empty string",
               language: "javascript",
-              code: 'const count = text => [...text].reduce((acc, char) => { acc[char] = (acc[char] ?? 0) + 1; return acc; }, Object.create(null));\nconsole.log(count("😀😀😁")["😀"], Object.keys(count("")).length);',
+              code: 'const count = (text) =>\n  [...text].reduce((acc, char) => {\n    acc[char] = (acc[char] ?? 0) + 1;\n    return acc;\n  }, Object.create(null));\nconsole.log(count("😀😀😁")["😀"], Object.keys(count("")).length);',
             },
           ],
         },
         {
           name: "Title case and whitespace cleanup",
           explanation:
-            "Split into nonempty words, transform each word, and join with one space. Use this for simple display cleanup.",
+            "Split into nonempty words, transform each word, and join with one space.",
           note: "This title-case helper uppercases each first code point; it is not a language-aware title-casing algorithm and leaves other letters unchanged.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -2118,19 +2093,19 @@ const handbook = {
             {
               label: "Capitalize words while tolerating extra whitespace",
               language: "javascript",
-              code: 'const titleCase = text => text.trim().split(/\\s+/).filter(Boolean).map(word => {\n  const [first, ...rest] = word;\n  return first.toUpperCase() + rest.join("");\n}).join(" ");\nconsole.log(titleCase("  hello   world  ")); console.log(titleCase(""));',
+              code: 'const titleCase = (text) =>\n  text\n    .trim()\n    .split(/\\s+/)\n    .filter(Boolean)\n    .map((word) => {\n      const [first, ...rest] = word;\n      return first.toUpperCase() + rest.join("");\n    })\n    .join(" ");\nconsole.log(titleCase("  hello   world  "));\nconsole.log(titleCase(""));',
             },
             {
               label: "Collapse spaces, tabs, and line breaks",
               language: "javascript",
-              code: 'const clean = text => text.split(/\\s+/).filter(Boolean).join(" ");\nconsole.log(clean("  hello \\t world\\n "), clean("   "));',
+              code: 'const clean = (text) => text.split(/\\s+/).filter(Boolean).join(" ");\nconsole.log(clean("  hello \\t world\\n "), clean("   "));',
             },
           ],
         },
         {
           name: "Format integer digit groups",
           explanation:
-            "Reverse digit units, insert separators every three positions, then reverse and join. Handle the sign separately so it cannot acquire an extra comma.",
+            "Reverse digit units, insert separators every three positions, then reverse and join.",
           note: "This educational helper accepts safe integers only and uses fixed comma grouping.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join",
@@ -2138,19 +2113,19 @@ const handbook = {
             {
               label: "Format a positive integer",
               language: "javascript",
-              code: 'const format = number => { if (!Number.isSafeInteger(number)) throw new RangeError("Use a safe integer"); const sign = number < 0 ? "-" : ""; return sign + Math.abs(number).toString().split("").reverse().map((digit,i) => i > 0 && i % 3 === 0 ? digit + "," : digit).reverse().join(""); };\nconsole.log(format(1234567), format(0));',
+              code: 'const format = (number) => {\n  if (!Number.isSafeInteger(number)) throw new RangeError("Use a safe integer");\n  const sign = number < 0 ? "-" : "";\n  return (\n    sign +\n    Math.abs(number)\n      .toString()\n      .split("")\n      .reverse()\n      .map((digit, i) => (i > 0 && i % 3 === 0 ? digit + "," : digit))\n      .reverse()\n      .join("")\n  );\n};\nconsole.log(format(1234567), format(0));',
             },
             {
               label: "Handle negative values and reject decimals",
               language: "javascript",
-              code: 'const format = number => { if (!Number.isSafeInteger(number)) throw new RangeError("Use a safe integer"); const sign = number < 0 ? "-" : ""; return sign + Math.abs(number).toString().split("").reverse().map((digit,i) => i > 0 && i % 3 === 0 ? digit + "," : digit).reverse().join(""); };\nconsole.log(format(-123456));\ntry { format(12.5); } catch (error) { console.log(error.name); }',
+              code: 'const format = (number) => {\n  if (!Number.isSafeInteger(number)) throw new RangeError("Use a safe integer");\n  const sign = number < 0 ? "-" : "";\n  return (\n    sign +\n    Math.abs(number)\n      .toString()\n      .split("")\n      .reverse()\n      .map((digit, i) => (i > 0 && i % 3 === 0 ? digit + "," : digit))\n      .reverse()\n      .join("")\n  );\n};\nconsole.log(format(-123456));\ntry {\n  format(12.5);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "flat() — flatten nested arrays",
           explanation:
-            "Returns a shallow copy with array nesting removed through the chosen depth. The default depth is one; Infinity traverses all finite nesting levels.",
+            "Returns a new array with nesting removed up to the chosen depth.",
           note: "Only arrays are flattened; nested object references remain shared. Avoid cyclic input with Infinity.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat",
@@ -2158,19 +2133,19 @@ const handbook = {
             {
               label: "Flatten one level without changing the source",
               language: "javascript",
-              code: "const a = [1, 2, [3, 4]]; console.log(...a.flat()); console.log(Array.isArray(a[2]), a.length);",
+              code: "const a = [1, 2, [3, 4]];\nconsole.log(...a.flat());\nconsole.log(Array.isArray(a[2]), a.length);",
             },
             {
               label: "Choose a depth",
               language: "javascript",
-              code: "const a = [1, [2, [3, [4]]]];\nconsole.log(JSON.stringify(a.flat()), JSON.stringify(a.flat(2)));\nconsole.log(...a.flat(3)); console.log(...a.flat(Infinity));",
+              code: "const a = [1, [2, [3, [4]]]];\nconsole.log(JSON.stringify(a.flat()), JSON.stringify(a.flat(2)));\nconsole.log(...a.flat(3));\nconsole.log(...a.flat(Infinity));",
             },
           ],
         },
         {
           name: "flat() holes and mixed nesting",
           explanation:
-            "flat omits absent slots in every array level that it traverses. Arrays below the chosen depth remain intact, including their holes.",
+            "flat omits absent slots in every array level that it traverses.",
           note: "Explicit undefined values are retained; a hole and undefined are different.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat",
@@ -2178,19 +2153,19 @@ const handbook = {
             {
               label: "Remove holes but retain explicit undefined",
               language: "javascript",
-              code: "console.log(...[1, , 3, , 5].flat());\nconst a = [1, , [2, , undefined]]; console.log(...a.flat());\nconsole.log(a.flat(0).length);",
+              code: "console.log(...[1, , 3, , 5].flat());\nconst a = [1, , [2, , undefined]];\nconsole.log(...a.flat());\nconsole.log(a.flat(0).length);",
             },
             {
               label: "Keep deeper arrays until their depth is reached",
               language: "javascript",
-              code: "const a = [1, [2, 3], [[4]], [[[5]]]];\nconsole.log(JSON.stringify(a.flat())); console.log(JSON.stringify(a.flat(2)));",
+              code: "const a = [1, [2, 3], [[4]], [[[5]]]];\nconsole.log(JSON.stringify(a.flat()));\nconsole.log(JSON.stringify(a.flat(2)));",
             },
           ],
         },
         {
           name: "flatMap() — map and flatten one level",
           explanation:
-            "Calls a mapping function then flattens returned arrays by one level. Use it to emit zero, one, or several output values per input.",
+            "Calls a mapping function then flattens returned arrays by one level.",
           note: "Sparse input holes are skipped; only actual arrays returned by the callback are flattened. Performance relative to map().flat() depends on the workload.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
@@ -2198,19 +2173,19 @@ const handbook = {
             {
               label: "Expand each number",
               language: "javascript",
-              code: "const a = [1, 2, 3]; console.log(...a.flatMap(value => [value, value * 2]));\nconsole.log(...a.map(value => [value, value * 2]).flat());",
+              code: "const a = [1, 2, 3];\nconsole.log(...a.flatMap((value) => [value, value * 2]));\nconsole.log(...a.map((value) => [value, value * 2]).flat());",
             },
             {
               label: "One level only, and callback parameters",
               language: "javascript",
-              code: "const a = [1, 2]; console.log(JSON.stringify(a.flatMap(value => [[value, value * 2]])));\nconsole.log(...a.flatMap((value,index,array) => [value + index + array.length]));",
+              code: "const a = [1, 2];\nconsole.log(JSON.stringify(a.flatMap((value) => [[value, value * 2]])));\nconsole.log(\n  ...a.flatMap((value, index, array) => [value + index + array.length]),\n);",
             },
           ],
         },
         {
           name: "Filter and split with flatMap()",
           explanation:
-            "Return an empty array to omit an item or an array of fields to expand it. Use this to combine selection and expansion in one expression.",
+            "Return an empty array to omit an item or an array of fields to expand it.",
           note: "A returned string is inserted as one value; it is not spread into characters.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
@@ -2218,19 +2193,19 @@ const handbook = {
             {
               label: "Keep only even values",
               language: "javascript",
-              code: "console.log(...[1, 2, 3, 4, 5].flatMap(value => value % 2 === 0 ? [value] : []));\nconsole.log(...[1, , 3].flatMap(value => [value, , value * 2]));",
+              code: "console.log(\n  ...[1, 2, 3, 4, 5].flatMap((value) => (value % 2 === 0 ? [value] : [])),\n);\nconsole.log(...[1, , 3].flatMap((value) => [value, , value * 2]));",
             },
             {
               label: "Split sentences into words",
               language: "javascript",
-              code: 'const sentences = ["Hello world", "How are you"]; console.log(...sentences.flatMap(text => text.split(" ")));\nconsole.log(...[1, 2].flatMap(value => String(value)));',
+              code: 'const sentences = ["Hello world", "How are you"];\nconsole.log(...sentences.flatMap((text) => text.split(" ")));\nconsole.log(...[1, 2].flatMap((value) => String(value)));',
             },
           ],
         },
         {
           name: "Expand task records with flatMap()",
           explanation:
-            "Map each child collection into records carrying the parent identifier, then flatten the groups. Use it for one row per subtask.",
+            "Map each child collection into records carrying the parent identifier, then flatten the groups.",
           note: "Parents with no children contribute no rows.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
@@ -2238,19 +2213,19 @@ const handbook = {
             {
               label: "Carry the task identifier",
               language: "javascript",
-              code: 'const tasks = [{id:1,subtasks:["a","b"]},{id:2,subtasks:["c"]}];\nconst rows = tasks.flatMap(task => task.subtasks.map(subtask => ({taskId:task.id, subtask})));\nconsole.log(JSON.stringify(rows));',
+              code: 'const tasks = [\n  { id: 1, subtasks: ["a", "b"] },\n  { id: 2, subtasks: ["c"] },\n];\nconst rows = tasks.flatMap((task) =>\n  task.subtasks.map((subtask) => ({ taskId: task.id, subtask })),\n);\nconsole.log(JSON.stringify(rows));',
             },
             {
               label: "Skip an empty child collection",
               language: "javascript",
-              code: 'const tasks = [{id:1,subtasks:[]},{id:2,subtasks:["x"]}];\nconsole.log(...tasks.flatMap(task => task.subtasks.map(subtask => `${task.id}:${subtask}`)));',
+              code: 'const tasks = [\n  { id: 1, subtasks: [] },\n  { id: 2, subtasks: ["x"] },\n];\nconsole.log(\n  ...tasks.flatMap((task) =>\n    task.subtasks.map((subtask) => `${task.id}:${subtask}`),\n  ),\n);',
             },
           ],
         },
         {
           name: "Flatten data and object value groups",
           explanation:
-            "Flatten nested values before selecting the values to keep, or flatten arrays collected with Object.values. Choose filtering rules that preserve valid zero and false values.",
+            "Flatten nested values before selecting the values to keep, or flatten arrays collected with Object.values.",
           note: "filter(Boolean) removes every falsy value, not just null and undefined.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat",
@@ -2258,19 +2233,19 @@ const handbook = {
             {
               label: "Contrast falsy removal with nullish removal",
               language: "javascript",
-              code: 'const data = [0, false, "", [1, null], [[2, undefined]], [[[3]]]];\nconsole.log(...data.flat(Infinity).filter(Boolean));\nconsole.log(...data.flat(Infinity).filter(value => value != null));',
+              code: 'const data = [0, false, "", [1, null], [[2, undefined]], [[[3]]]];\nconsole.log(...data.flat(Infinity).filter(Boolean));\nconsole.log(...data.flat(Infinity).filter((value) => value != null));',
             },
             {
               label: "Combine arrays from an object",
               language: "javascript",
-              code: "const nested = {a:[1,2],b:[3,4],c:[5,6]};\nconsole.log(...Object.values(nested).flat());",
+              code: "const nested = { a: [1, 2], b: [3, 4], c: [5, 6] };\nconsole.log(...Object.values(nested).flat());",
             },
           ],
         },
         {
           name: "Generate combinations with flatMap()",
           explanation:
-            "For every value in one list, map all values from a second list. Flatten the groups to produce a Cartesian product.",
+            "For every value in one list, map all values from a second list.",
           note: "The result size is the product of the two input sizes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
@@ -2278,19 +2253,19 @@ const handbook = {
             {
               label: "Combine colors and sizes",
               language: "javascript",
-              code: 'const colors = ["red", "blue"], sizes = ["S", "M", "L"];\nconsole.log(...colors.flatMap(color => sizes.map(size => `${color}-${size}`)));',
+              code: 'const colors = ["red", "blue"],\n  sizes = ["S", "M", "L"];\nconsole.log(\n  ...colors.flatMap((color) => sizes.map((size) => `${color}-${size}`)),\n);',
             },
             {
               label: "An empty dimension produces no combinations",
               language: "javascript",
-              code: 'const colors = ["red"]; const sizes = [];\nconsole.log(colors.flatMap(color => sizes.map(size => `${color}-${size}`)).length);',
+              code: 'const colors = ["red"];\nconst sizes = [];\nconsole.log(\n  colors.flatMap((color) => sizes.map((size) => `${color}-${size}`)).length,\n);',
             },
           ],
         },
         {
           name: "Array-only flat fallback",
           explanation:
-            "Recursively copy present elements and traverse nested arrays only while depth remains. Use this standalone helper to illustrate flattening without changing built-in prototypes.",
+            "Recursively copy present elements and traverse nested arrays only while depth remains.",
           note: "This is not a full standards polyfill: it accepts only arrays and nonnegative integer depths or Infinity, uses recursion, and spread limits the size of intermediate arrays. Depth zero still omits root holes, matching native flat(0).",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat",
@@ -2298,19 +2273,19 @@ const handbook = {
             {
               label: "Respect depth zero and explicit nesting",
               language: "javascript",
-              code: 'function flatFallback(a, depth = 1) { if (!Array.isArray(a) || !(depth === Infinity || (Number.isInteger(depth) && depth >= 0))) throw new TypeError("Use an array and nonnegative integer depth"); const out = []; for (let i = 0, length = a.length; i < length; i++) { if (!(i in a)) continue; const value = a[i]; if (depth > 0 && Array.isArray(value)) out.push(...flatFallback(value, depth - 1)); else out.push(value); } return out; }\nconst a = [1, [2, [3]]]; console.log(JSON.stringify(flatFallback(a, 0)));\nconsole.log(JSON.stringify(flatFallback(a, 1))); console.log(...flatFallback(a, Infinity));',
+              code: 'function flatFallback(a, depth = 1) {\n  if (\n    !Array.isArray(a) ||\n    !(depth === Infinity || (Number.isInteger(depth) && depth >= 0))\n  )\n    throw new TypeError("Use an array and nonnegative integer depth");\n  const out = [];\n  for (let i = 0, length = a.length; i < length; i++) {\n    if (!(i in a)) continue;\n    const value = a[i];\n    if (depth > 0 && Array.isArray(value))\n      out.push(...flatFallback(value, depth - 1));\n    else out.push(value);\n  }\n  return out;\n}\nconst a = [1, [2, [3]]];\nconsole.log(JSON.stringify(flatFallback(a, 0)));\nconsole.log(JSON.stringify(flatFallback(a, 1)));\nconsole.log(...flatFallback(a, Infinity));',
             },
             {
               label: "Match sparse omission at traversed levels",
               language: "javascript",
-              code: 'function flatFallback(a, depth = 1) { if (!Array.isArray(a) || !(depth === Infinity || (Number.isInteger(depth) && depth >= 0))) throw new TypeError("Use an array and nonnegative integer depth"); const out = []; for (let i = 0, length = a.length; i < length; i++) { if (!(i in a)) continue; const value = a[i]; if (depth > 0 && Array.isArray(value)) out.push(...flatFallback(value, depth - 1)); else out.push(value); } return out; }\nconst a = [1, , [2, , 3]];\nconsole.log(JSON.stringify(flatFallback(a)) === JSON.stringify(a.flat()));\nconsole.log(flatFallback([,], 0).length);',
+              code: 'function flatFallback(a, depth = 1) {\n  if (\n    !Array.isArray(a) ||\n    !(depth === Infinity || (Number.isInteger(depth) && depth >= 0))\n  )\n    throw new TypeError("Use an array and nonnegative integer depth");\n  const out = [];\n  for (let i = 0, length = a.length; i < length; i++) {\n    if (!(i in a)) continue;\n    const value = a[i];\n    if (depth > 0 && Array.isArray(value))\n      out.push(...flatFallback(value, depth - 1));\n    else out.push(value);\n  }\n  return out;\n}\nconst a = [1, , [2, , 3]];\nconsole.log(JSON.stringify(flatFallback(a)) === JSON.stringify(a.flat()));\nconsole.log(flatFallback([,], 0).length);',
             },
           ],
         },
         {
           name: "Array-only flatMap fallback",
           explanation:
-            "Map each present input position and append present positions from returned arrays by one level. Use a standalone helper when explaining how mapping and flattening combine.",
+            "Map each present input position and append present positions from returned arrays by one level.",
           note: "This is an array-only teaching implementation, not a generic standards polyfill; it supports callback arguments and thisArg and skips output holes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
@@ -2318,12 +2293,12 @@ const handbook = {
             {
               label: "Map values and flatten a single level",
               language: "javascript",
-              code: 'function flatMapFallback(a, fn, thisArg) { if (!Array.isArray(a) || typeof fn !== "function") throw new TypeError("Use an array and callback"); const out = []; for (let i = 0, length = a.length; i < length; i++) { if (!(i in a)) continue; const mapped = fn.call(thisArg, a[i], i, a); if (Array.isArray(mapped)) { for (let j = 0; j < mapped.length; j++) if (j in mapped) out.push(mapped[j]); } else out.push(mapped); } return out; }\nconsole.log(...flatMapFallback([1, 2, 3], value => [value, value * 2]));\nconsole.log(JSON.stringify(flatMapFallback([1], value => [[value]])));',
+              code: 'function flatMapFallback(a, fn, thisArg) {\n  if (!Array.isArray(a) || typeof fn !== "function")\n    throw new TypeError("Use an array and callback");\n  const out = [];\n  for (let i = 0, length = a.length; i < length; i++) {\n    if (!(i in a)) continue;\n    const mapped = fn.call(thisArg, a[i], i, a);\n    if (Array.isArray(mapped)) {\n      for (let j = 0; j < mapped.length; j++)\n        if (j in mapped) out.push(mapped[j]);\n    } else out.push(mapped);\n  }\n  return out;\n}\nconsole.log(...flatMapFallback([1, 2, 3], (value) => [value, value * 2]));\nconsole.log(JSON.stringify(flatMapFallback([1], (value) => [[value]])));',
             },
             {
               label: "Pass callback context and skip holes",
               language: "javascript",
-              code: 'function flatMapFallback(a, fn, thisArg) { if (!Array.isArray(a) || typeof fn !== "function") throw new TypeError("Use an array and callback"); const out = []; for (let i = 0, length = a.length; i < length; i++) { if (!(i in a)) continue; const mapped = fn.call(thisArg, a[i], i, a); if (Array.isArray(mapped)) { for (let j = 0; j < mapped.length; j++) if (j in mapped) out.push(mapped[j]); } else out.push(mapped); } return out; }\nconst a = [1, , 3]; const context = {offset:10};\nconsole.log(...flatMapFallback(a, function(value,index,array) { return [value + this.offset, , index + array.length]; }, context));\ntry { flatMapFallback([], null); } catch (error) { console.log(error.name); }',
+              code: 'function flatMapFallback(a, fn, thisArg) {\n  if (!Array.isArray(a) || typeof fn !== "function")\n    throw new TypeError("Use an array and callback");\n  const out = [];\n  for (let i = 0, length = a.length; i < length; i++) {\n    if (!(i in a)) continue;\n    const mapped = fn.call(thisArg, a[i], i, a);\n    if (Array.isArray(mapped)) {\n      for (let j = 0; j < mapped.length; j++)\n        if (j in mapped) out.push(mapped[j]);\n    } else out.push(mapped);\n  }\n  return out;\n}\nconst a = [1, , 3];\nconst context = { offset: 10 };\nconsole.log(\n  ...flatMapFallback(\n    a,\n    function (value, index, array) {\n      return [value + this.offset, , index + array.length];\n    },\n    context,\n  ),\n);\ntry {\n  flatMapFallback([], null);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
@@ -2337,8 +2312,7 @@ const handbook = {
       methods: [
         {
           name: "Array.from() — copy an iterable",
-          explanation:
-            "Creates an array from an iterable or array-like input. Use it to materialize strings, Sets, and Maps as arrays.",
+          explanation: "Creates an array from an iterable or array-like input.",
           note: "String iteration produces code points, not grapheme clusters; Map iteration produces entry pairs.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2351,14 +2325,14 @@ const handbook = {
             {
               label: "Convert Map entries and Unicode code points",
               language: "javascript",
-              code: 'const map = new Map([["a", 1], ["b", 2]]);\nconsole.log(JSON.stringify(Array.from(map)));\nconsole.log(...Array.from("😀😁"));',
+              code: 'const map = new Map([\n  ["a", 1],\n  ["b", 2],\n]);\nconsole.log(JSON.stringify(Array.from(map)));\nconsole.log(...Array.from("😀😁"));',
             },
           ],
         },
         {
           name: "Array.from() for NodeList conversion",
           explanation:
-            "Materializes a DOM selection as an array, optionally mapping each node during conversion. Use it when subsequent work needs array methods or extracted node data.",
+            "Copies selected DOM nodes into an array, with an optional change for each node.",
           note: "These complete HTML files run in a browser. The result contains the selected node references; it does not clone DOM nodes.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2369,7 +2343,7 @@ const handbook = {
                 {
                   path: "index.html",
                   language: "html",
-                  code: '<!doctype html><div>A</div><div>B</div><script>const divs = Array.from(document.querySelectorAll("div")); console.log(Array.isArray(divs), divs.length, divs.map(el => el.textContent).join("|"));</script>',
+                  code: '<!doctype html><div>A</div><div>B</div\n><script>\n  const divs = Array.from(document.querySelectorAll("div"));\n  console.log(\n    Array.isArray(divs),\n    divs.length,\n    divs.map((el) => el.textContent).join("|"),\n  );\n</script>',
                 },
               ],
             },
@@ -2379,7 +2353,7 @@ const handbook = {
                 {
                   path: "index.html",
                   language: "html",
-                  code: '<!doctype html><p class="item">One</p><p class="item">Two</p><script>const labels = Array.from(document.querySelectorAll(".item"), el => el.textContent); console.log(...labels);</script>',
+                  code: '<!doctype html><p class="item">One</p><p class="item">Two</p\n><script>\n  const labels = Array.from(\n    document.querySelectorAll(".item"),\n    (el) => el.textContent,\n  );\n  console.log(...labels);\n</script>',
                 },
               ],
             },
@@ -2388,7 +2362,7 @@ const handbook = {
         {
           name: "Convert arguments and array-like objects",
           explanation:
-            "Array.from reads indexed properties through an array-like object’s length. Use it to convert arguments or a plain indexed collection.",
+            "Array.from reads indexed properties through an array-like object’s length.",
           note: "Absent indexed properties become explicit undefined elements; the resulting array is dense.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2396,19 +2370,19 @@ const handbook = {
             {
               label: "Convert arguments in a normal function",
               language: "javascript",
-              code: "function example() { return Array.from(arguments); }\nconsole.log(...example(1, 2, 3));\nconsole.log(example().length);",
+              code: "function example() {\n  return Array.from(arguments);\n}\nconsole.log(...example(1, 2, 3));\nconsole.log(example().length);",
             },
             {
               label: "Read indexed properties and missing positions",
               language: "javascript",
-              code: 'console.log(...Array.from({0:"a",1:"b",length:2}));\nconst a = Array.from({0:"a",length:3});\nconsole.log(a.length, 1 in a, a[1], a[2]);',
+              code: 'console.log(...Array.from({ 0: "a", 1: "b", length: 2 }));\nconst a = Array.from({ 0: "a", length: 3 });\nconsole.log(a.length, 1 in a, a[1], a[2]);',
             },
           ],
         },
         {
           name: "Map while creating with Array.from()",
           explanation:
-            "Pass a mapping function to calculate each new element as it is produced. Use the callback’s value and index to transform inputs or generate sequences.",
+            "Pass a mapping function to calculate each new element as it is produced.",
           note: "The callback receives value and index, without the source-array argument supplied by Array.prototype.map.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2416,19 +2390,19 @@ const handbook = {
             {
               label: "Transform input values",
               language: "javascript",
-              code: "console.log(...Array.from([1, 2, 3], value => value * 2));\nconsole.log(...Array.from({length:5}, (_, index) => index));",
+              code: "console.log(...Array.from([1, 2, 3], (value) => value * 2));\nconsole.log(...Array.from({ length: 5 }, (_, index) => index));",
             },
             {
               label: "Generate independent random draws",
               language: "javascript",
-              code: "const values = Array.from({length:3}, () => Math.random());\nconsole.log(values.length, values.every(value => value >= 0 && value < 1));\nconst draws = [0.1, 0.5, 0.9]; let index = 0;\nconsole.log(...Array.from({length:3}, () => draws[index++]));",
+              code: "const values = Array.from({ length: 3 }, () => Math.random());\nconsole.log(\n  values.length,\n  values.every((value) => value >= 0 && value < 1),\n);\nconst draws = [0.1, 0.5, 0.9];\nlet index = 0;\nconsole.log(...Array.from({ length: 3 }, () => draws[index++]));",
             },
           ],
         },
         {
           name: "Generate ranges and sequences",
           explanation:
-            "Use an array-like length and an index-based mapper to generate values. A start/end range conventionally includes start and excludes end.",
+            "Use an array-like length and an index-based mapper to generate values.",
           note: "This range helper rejects reversed or oversized ranges rather than silently returning an empty array or allocating excessively.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2436,19 +2410,19 @@ const handbook = {
             {
               label: "Generate an exclusive-end range",
               language: "javascript",
-              code: 'const range = (start, end) => { if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || end < start || end - start > 1000000) throw new RangeError("Use ordered safe integers with at most one million values"); return Array.from({length:end-start}, (_, index) => start + index); };\nconsole.log(...range(5, 10)); console.log(range(5, 5).length);',
+              code: 'const range = (start, end) => {\n  if (\n    !Number.isSafeInteger(start) ||\n    !Number.isSafeInteger(end) ||\n    end < start ||\n    end - start > 1000000\n  )\n    throw new RangeError(\n      "Use ordered safe integers with at most one million values",\n    );\n  return Array.from({ length: end - start }, (_, index) => start + index);\n};\nconsole.log(...range(5, 10));\nconsole.log(range(5, 5).length);',
             },
             {
               label: "Generate square values and reject reversed bounds",
               language: "javascript",
-              code: 'const range = (start, end) => { if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || end < start || end - start > 1000000) throw new RangeError("Use ordered safe integers with at most one million values"); return Array.from({length:end-start}, (_, index) => start + index); };\nconsole.log(...Array.from({length:10}, (_, index) => index * index));\ntry { range(10, 5); } catch (error) { console.log(error.name); }',
+              code: 'const range = (start, end) => {\n  if (\n    !Number.isSafeInteger(start) ||\n    !Number.isSafeInteger(end) ||\n    end < start ||\n    end - start > 1000000\n  )\n    throw new RangeError(\n      "Use ordered safe integers with at most one million values",\n    );\n  return Array.from({ length: end - start }, (_, index) => start + index);\n};\nconsole.log(...Array.from({ length: 10 }, (_, index) => index * index));\ntry {\n  range(10, 5);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "Array.from() with thisArg",
           explanation:
-            "Provide a context as the third argument for a normal mapping function. Use it to reuse a method that reads values from this.",
+            "Provide a context as the third argument for a normal mapping function.",
           note: "Arrow functions retain lexical this and do not use the supplied context.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2456,19 +2430,19 @@ const handbook = {
             {
               label: "Reuse an object method",
               language: "javascript",
-              code: "const multiplier = {factor:2, multiply(value) { return value * this.factor; }};\nconsole.log(...Array.from([1, 2, 3], multiplier.multiply, multiplier));",
+              code: "const multiplier = {\n  factor: 2,\n  multiply(value) {\n    return value * this.factor;\n  },\n};\nconsole.log(...Array.from([1, 2, 3], multiplier.multiply, multiplier));",
             },
             {
               label: "Bind context during sequence generation",
               language: "javascript",
-              code: "const context = {start:10, step:3};\nconsole.log(...Array.from({length:4}, function(_, index) { return this.start + index * this.step; }, context));",
+              code: "const context = { start: 10, step: 3 };\nconsole.log(\n  ...Array.from(\n    { length: 4 },\n    function (_, index) {\n      return this.start + index * this.step;\n    },\n    context,\n  ),\n);",
             },
           ],
         },
         {
           name: "Array.of() — elements from arguments",
           explanation:
-            "Creates an array whose elements are exactly the supplied arguments. Use it when a single number must be an element rather than a length.",
+            "Creates an array whose elements are exactly the supplied arguments.",
           note: "Array(7) creates seven holes; Array.of(7) creates one present element containing 7.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of",
@@ -2476,19 +2450,19 @@ const handbook = {
             {
               label: "Distinguish one numeric element from a sparse length",
               language: "javascript",
-              code: "const single = Array.of(7), sparse = Array(7);\nconsole.log(single.length, single[0], 0 in single);\nconsole.log(sparse.length, 0 in sparse);",
+              code: "const single = Array.of(7),\n  sparse = Array(7);\nconsole.log(single.length, single[0], 0 in single);\nconsole.log(sparse.length, 0 in sparse);",
             },
             {
               label: "Zero and several arguments",
               language: "javascript",
-              code: "console.log(Array.of().length, Array().length);\nconsole.log(...Array.of(1, 2, 3)); console.log(...Array(1, 2, 3));",
+              code: "console.log(Array.of().length, Array().length);\nconsole.log(...Array.of(1, 2, 3));\nconsole.log(...Array(1, 2, 3));",
             },
           ],
         },
         {
           name: "Array.of() with mixed values",
           explanation:
-            "Array.of keeps each supplied value as one element without flattening or conversion. Use it for a heterogeneous collection with predictable construction.",
+            "Array.of keeps each supplied value as one element without flattening or conversion.",
           note: "Objects and arrays are retained by reference.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of",
@@ -2496,19 +2470,19 @@ const handbook = {
             {
               label: "Keep mixed types",
               language: "javascript",
-              code: 'const a = Array.of("a", 1, true, null, {x:1});\nconsole.log(a.length, a[0], a[1], a[2], a[3], a[4].x);',
+              code: 'const a = Array.of("a", 1, true, null, { x: 1 });\nconsole.log(a.length, a[0], a[1], a[2], a[3], a[4].x);',
             },
             {
               label: "Keep a nested array and record references",
               language: "javascript",
-              code: "const nested = [1, 2], record = {x:1}; const a = Array.of(nested, record);\nrecord.x = 9; console.log(a.length, a[0] === nested, a[1].x);",
+              code: "const nested = [1, 2],\n  record = { x: 1 };\nconst a = Array.of(nested, record);\nrecord.x = 9;\nconsole.log(a.length, a[0] === nested, a[1].x);",
             },
           ],
         },
         {
           name: "Initialize values with Array() and fill()",
           explanation:
-            "Create a sparse array of the chosen length, then fill its positions with a value. Use it for simple constant initialization.",
+            "Create a sparse array of the chosen length, then fill its positions with a value.",
           note: "fill mutates the array and writes the same supplied value at every selected position.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2521,14 +2495,14 @@ const handbook = {
             {
               label: "Fill converts holes to present elements",
               language: "javascript",
-              code: "const a = new Array(2); console.log(0 in a, a.length);\nconsole.log(a.fill(null) === a, 0 in a, 1 in a);",
+              code: "const a = new Array(2);\nconsole.log(0 in a, a.length);\nconsole.log(a.fill(null) === a, 0 in a, 1 in a);",
             },
           ],
         },
         {
           name: "keys(), values(), and entries() iterators",
           explanation:
-            "These methods return iterators for array indices, values, or index/value pairs. Use spread or Array.from to collect the yielded sequence.",
+            "These methods return iterators for array indices, values, or index/value pairs.",
           note: "Unlike map and forEach, values and entries visit holes as undefined; keys visits every index through length.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries",
@@ -2536,19 +2510,18 @@ const handbook = {
             {
               label: "Collect indices, values, and pairs",
               language: "javascript",
-              code: 'const a = ["a", "b", "c"];\nconsole.log(...a.keys()); console.log(...a.values());\nconsole.log(JSON.stringify([...a.entries()]));',
+              code: 'const a = ["a", "b", "c"];\nconsole.log(...a.keys());\nconsole.log(...a.values());\nconsole.log(JSON.stringify([...a.entries()]));',
             },
             {
               label: "Inspect sparse iterator output",
               language: "javascript",
-              code: 'const a = ["a", , "c"];\nconsole.log(...Array.from(a.keys())); console.log(...Array.from(a.values()));\nconst pairs = Array.from(a.entries()); console.log(pairs[1][0], pairs[1][1]);',
+              code: 'const a = ["a", , "c"];\nconsole.log(...Array.from(a.keys()));\nconsole.log(...Array.from(a.values()));\nconst pairs = Array.from(a.entries());\nconsole.log(pairs[1][0], pairs[1][1]);',
             },
           ],
         },
         {
           name: "Create a matrix with independent rows",
-          explanation:
-            "Call the mapper separately for each row to allocate distinct inner arrays. Use this for a grid whose cells can change independently.",
+          explanation: "Creates a separate inner array for each row.",
           note: "Filling the outer array with one prebuilt row would share that row across every position.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2556,19 +2529,19 @@ const handbook = {
             {
               label: "Build a three-by-three matrix",
               language: "javascript",
-              code: "const matrix = Array.from({length:3}, () => Array.from({length:3}, () => 0));\nconsole.log(JSON.stringify(matrix)); console.log(matrix[0] !== matrix[1]);",
+              code: "const matrix = Array.from({ length: 3 }, () =>\n  Array.from({ length: 3 }, () => 0),\n);\nconsole.log(JSON.stringify(matrix));\nconsole.log(matrix[0] !== matrix[1]);",
             },
             {
               label: "Update only one row",
               language: "javascript",
-              code: "const matrix = Array.from({length:2}, () => Array.from({length:2}, () => 0));\nmatrix[0][0] = 7; console.log(matrix[0][0], matrix[1][0]);",
+              code: "const matrix = Array.from({ length: 2 }, () =>\n  Array.from({ length: 2 }, () => 0),\n);\nmatrix[0][0] = 7;\nconsole.log(matrix[0][0], matrix[1][0]);",
             },
           ],
         },
         {
           name: "Clone an array with Array.from()",
           explanation:
-            "Materializes the input into a new top-level array. Use it for an independent membership list while retaining nested references.",
+            "Copies an array into a new array. Nested objects stay shared.",
           note: "The copy is shallow and dense; holes become present undefined values.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2576,19 +2549,19 @@ const handbook = {
             {
               label: "Copy primitive membership",
               language: "javascript",
-              code: "const original = [1, 2, 3]; const clone = Array.from(original); clone.push(4);\nconsole.log(clone !== original, original.length, clone.length);",
+              code: "const original = [1, 2, 3];\nconst clone = Array.from(original);\nclone.push(4);\nconsole.log(clone !== original, original.length, clone.length);",
             },
             {
               label: "Observe shared records and filled holes",
               language: "javascript",
-              code: "const original = [{count:1}, ,]; const clone = Array.from(original);\nclone[0].count = 2; console.log(original[0].count, 1 in original, 1 in clone);",
+              code: "const original = [{ count: 1 }, ,];\nconst clone = Array.from(original);\nclone[0].count = 2;\nconsole.log(original[0].count, 1 in original, 1 in clone);",
             },
           ],
         },
         {
           name: "Sum converted arguments",
           explanation:
-            "Convert the arguments object and reduce it with an initial total. Use it to demonstrate applying array methods to function arguments.",
+            "Convert the arguments object and reduce it with an initial total.",
           note: "This example expects numeric arguments; JavaScript addition otherwise follows its normal coercion rules.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2596,19 +2569,19 @@ const handbook = {
             {
               label: "Sum several numeric arguments",
               language: "javascript",
-              code: "function sumAll() { return Array.from(arguments).reduce((sum,value) => sum + value, 0); }\nconsole.log(sumAll(1, 2, 3), sumAll(-2, 5));",
+              code: "function sumAll() {\n  return Array.from(arguments).reduce((sum, value) => sum + value, 0);\n}\nconsole.log(sumAll(1, 2, 3), sumAll(-2, 5));",
             },
             {
               label: "Handle no arguments",
               language: "javascript",
-              code: "function sumAll() { return Array.from(arguments).reduce((sum,value) => sum + value, 0); }\nconsole.log(sumAll(), sumAll(7));",
+              code: "function sumAll() {\n  return Array.from(arguments).reduce((sum, value) => sum + value, 0);\n}\nconsole.log(sumAll(), sumAll(7));",
             },
           ],
         },
         {
           name: "Unique values with Set and Array.from()",
           explanation:
-            "Construct a Set and convert it back to an array to retain the first occurrence of each distinct value. Use it for deduplicating membership lists.",
+            "Construct a Set and convert it back to an array to keep the first occurrence of each distinct value.",
           note: "Set uses SameValueZero equality: NaN matches itself, and object identity determines distinct objects.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2616,19 +2589,19 @@ const handbook = {
             {
               label: "Deduplicate numbers in insertion order",
               language: "javascript",
-              code: "const unique = values => Array.from(new Set(values));\nconsole.log(...unique([1, 2, 2, 3, 3, 3]));",
+              code: "const unique = (values) => Array.from(new Set(values));\nconsole.log(...unique([1, 2, 2, 3, 3, 3]));",
             },
             {
               label: "Handle NaN and object identities",
               language: "javascript",
-              code: "const item = {}; const values = Array.from(new Set([NaN, NaN, item, item, {}]));\nconsole.log(values.length, Number.isNaN(values[0]), values[1] === item, values[2] !== item);",
+              code: "const item = {};\nconst values = Array.from(new Set([NaN, NaN, item, item, {}]));\nconsole.log(\n  values.length,\n  Number.isNaN(values[0]),\n  values[1] === item,\n  values[2] !== item,\n);",
             },
           ],
         },
         {
           name: "Character frequency with Array.from()",
           explanation:
-            "Convert a string into code points and accumulate a count for each. Use a dictionary without a prototype for the frequency table.",
+            "Convert a string into code points and accumulate a count for each.",
           note: "Counts code points, including whitespace, rather than user-perceived grapheme clusters.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from",
@@ -2636,19 +2609,19 @@ const handbook = {
             {
               label: "Count repeated letters",
               language: "javascript",
-              code: 'const frequency = text => { const counts = Object.create(null); Array.from(text).forEach(char => { counts[char] = (counts[char] ?? 0) + 1; }); return counts; };\nconst counts = frequency("hello"); console.log(counts.h, counts.e, counts.l, counts.o);',
+              code: 'const frequency = (text) => {\n  const counts = Object.create(null);\n  Array.from(text).forEach((char) => {\n    counts[char] = (counts[char] ?? 0) + 1;\n  });\n  return counts;\n};\nconst counts = frequency("hello");\nconsole.log(counts.h, counts.e, counts.l, counts.o);',
             },
             {
               label: "Count emoji and handle empty input",
               language: "javascript",
-              code: 'const frequency = text => { const counts = Object.create(null); Array.from(text).forEach(char => { counts[char] = (counts[char] ?? 0) + 1; }); return counts; };\nconsole.log(frequency("😀😀😁")["😀"], Object.keys(frequency("")).length);',
+              code: 'const frequency = (text) => {\n  const counts = Object.create(null);\n  Array.from(text).forEach((char) => {\n    counts[char] = (counts[char] ?? 0) + 1;\n  });\n  return counts;\n};\nconsole.log(frequency("😀😀😁")["😀"], Object.keys(frequency("")).length);',
             },
           ],
         },
         {
           name: "fill() — overwrite an array range",
           explanation:
-            "Writes the supplied value from start up to the exclusive end and returns the same array. Omit bounds to fill the entire array.",
+            "Writes the supplied value from start up to the exclusive end and returns the same array.",
           note: "Mutates existing positions and holes without changing length; omitted end means length.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2656,19 +2629,19 @@ const handbook = {
             {
               label: "Fill the entire array, then a tail",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5]; console.log(a.fill(0) === a, ...a);\na.fill(9, 2); console.log(...a);",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(a.fill(0) === a, ...a);\na.fill(9, 2);\nconsole.log(...a);",
             },
             {
               label: "Fill an exclusive-end range",
               language: "javascript",
-              code: "const a = [0, 0, 9, 9, 9]; a.fill(7, 1, 3); console.log(...a);\nconsole.log(...[1, 2, 3].fill(0, 1, 2));",
+              code: "const a = [0, 0, 9, 9, 9];\na.fill(7, 1, 3);\nconsole.log(...a);\nconsole.log(...[1, 2, 3].fill(0, 1, 2));",
             },
           ],
         },
         {
           name: "fill() negative indices and bounds",
           explanation:
-            "Negative bounds count back from the array length and are clamped to its bounds. Use them to overwrite the final few positions.",
+            "Negative bounds count back from the array length and are clamped to its bounds.",
           note: "An empty or reversed interval writes nothing.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2676,19 +2649,19 @@ const handbook = {
             {
               label: "Fill the last two positions",
               language: "javascript",
-              code: "const a = [0, 7, 7, 9, 9]; a.fill(5, -2); console.log(...a);",
+              code: "const a = [0, 7, 7, 9, 9];\na.fill(5, -2);\nconsole.log(...a);",
             },
             {
               label: "Clamp bounds and leave empty intervals alone",
               language: "javascript",
-              code: "console.log(...[1, 2, 3].fill(8, -99, 1));\nconst a = [1, 2, 3]; a.fill(0, 2, 1); a.fill(0, 99); console.log(...a);",
+              code: "console.log(...[1, 2, 3].fill(8, -99, 1));\nconst a = [1, 2, 3];\na.fill(0, 2, 1);\na.fill(0, 99);\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "fill() shares object references",
           explanation:
-            "fill stores a single supplied object reference at each selected position. Use an Array.from factory when every position needs a separate object.",
+            "fill stores a single supplied object reference at each selected position.",
           note: "Changing a shared object affects every reference to it; replacing one array position is a different operation.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2696,19 +2669,19 @@ const handbook = {
             {
               label: "Observe shared objects",
               language: "javascript",
-              code: "const a = new Array(3).fill({}); a[0].x = 1;\nconsole.log(a[0] === a[1], ...a.map(item => item.x));",
+              code: "const a = new Array(3).fill({});\na[0].x = 1;\nconsole.log(a[0] === a[1], ...a.map((item) => item.x));",
             },
             {
               label: "Allocate independent objects",
               language: "javascript",
-              code: "const a = Array.from({length:3}, () => ({})); a[0].x = 1;\nconsole.log(a[0] !== a[1], a[0].x, a[1].x, a[2].x);",
+              code: "const a = Array.from({ length: 3 }, () => ({}));\na[0].x = 1;\nconsole.log(a[0] !== a[1], a[0].x, a[1].x, a[2].x);",
             },
           ],
         },
         {
           name: "fill() stores functions without calling them",
           explanation:
-            "Passing a function to fill stores that function as the value. Use the Array.from mapping callback to calculate a separate value for each index.",
+            "Passing a function to fill stores that function as the value.",
           note: "fill is a value-writing API, not a callback API.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2716,19 +2689,19 @@ const handbook = {
             {
               label: "Store one function reference",
               language: "javascript",
-              code: "const identity = index => index; const a = new Array(3).fill(identity);\nconsole.log(typeof a[0], a[0] === a[1], a[2](7));",
+              code: "const identity = (index) => index;\nconst a = new Array(3).fill(identity);\nconsole.log(typeof a[0], a[0] === a[1], a[2](7));",
             },
             {
               label: "Generate increasing values instead",
               language: "javascript",
-              code: "const a = Array.from({length:5}, (_, index) => index); console.log(...a);",
+              code: "const a = Array.from({ length: 5 }, (_, index) => index);\nconsole.log(...a);",
             },
           ],
         },
         {
           name: "copyWithin() — copy inside the same array",
           explanation:
-            "Copies a source range onto another position in the same array and returns that array. Use it to overwrite positions without changing length.",
+            "Copies a source range onto another position in the same array and returns that array.",
           note: "Source end is exclusive; copying is truncated at the destination boundary and does not insert elements.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin",
@@ -2736,19 +2709,19 @@ const handbook = {
             {
               label: "Copy the tail to the beginning",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5]; console.log(a.copyWithin(0, 3) === a, ...a);",
+              code: "const a = [1, 2, 3, 4, 5];\nconsole.log(a.copyWithin(0, 3) === a, ...a);",
             },
             {
               label: "Copy a single bounded source position",
               language: "javascript",
-              code: "const a = [1, 2, 3, 4, 5]; a.copyWithin(1, 3, 4); console.log(...a);\nconsole.log(a.length);",
+              code: "const a = [1, 2, 3, 4, 5];\na.copyWithin(1, 3, 4);\nconsole.log(...a);\nconsole.log(a.length);",
             },
           ],
         },
         {
           name: "copyWithin() negative and overlapping ranges",
           explanation:
-            "Negative bounds count from the end, and overlapping source/destination ranges are copied safely. Use it when shifting an existing block of values in place.",
+            "Negative bounds count from the end, and overlapping source/destination ranges are copied safely.",
           note: "The result behaves as though source values were preserved before they were overwritten; holes in the source delete corresponding destination properties.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin",
@@ -2761,14 +2734,14 @@ const handbook = {
             {
               label: "Copy holes and truncate at the end",
               language: "javascript",
-              code: "const a = [1, , 3, 4]; a.copyWithin(2, 0, 2);\nconsole.log(a.length, a[2], 3 in a);\nconsole.log(...[1, 2, 3].copyWithin(2, 0));",
+              code: "const a = [1, , 3, 4];\na.copyWithin(2, 0, 2);\nconsole.log(a.length, a[2], 3 in a);\nconsole.log(...[1, 2, 3].copyWithin(2, 0));",
             },
           ],
         },
         {
           name: "shiftRight() — overwrite a block to the right",
           explanation:
-            "Copy an initial block to a later position without inserting elements or clearing the prefix. Use it when duplicate prefix values are acceptable.",
+            "Copy an initial block to a later position without inserting elements or clearing the prefix.",
           note: "This helper is not rotation: overwritten tail values are lost. It accepts integer counts between zero and length.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin",
@@ -2776,19 +2749,19 @@ const handbook = {
             {
               label: "Shift a block while retaining its prefix",
               language: "javascript",
-              code: 'const shiftRight = (a, count) => { if (!Number.isInteger(count) || count < 0 || count > a.length) throw new RangeError("Use a count between zero and length"); return a.copyWithin(count, 0, a.length - count); };\nconst a = [1, 2, 3, 4, 5]; console.log(shiftRight(a, 2) === a, ...a);',
+              code: 'const shiftRight = (a, count) => {\n  if (!Number.isInteger(count) || count < 0 || count > a.length)\n    throw new RangeError("Use a count between zero and length");\n  return a.copyWithin(count, 0, a.length - count);\n};\nconst a = [1, 2, 3, 4, 5];\nconsole.log(shiftRight(a, 2) === a, ...a);',
             },
             {
               label: "Handle zero and reject invalid counts",
               language: "javascript",
-              code: 'const shiftRight = (a, count) => { if (!Number.isInteger(count) || count < 0 || count > a.length) throw new RangeError("Use a count between zero and length"); return a.copyWithin(count, 0, a.length - count); };\nconsole.log(...shiftRight([1, 2, 3], 0));\ntry { shiftRight([1, 2], -1); } catch (error) { console.log(error.name); }',
+              code: 'const shiftRight = (a, count) => {\n  if (!Number.isInteger(count) || count < 0 || count > a.length)\n    throw new RangeError("Use a count between zero and length");\n  return a.copyWithin(count, 0, a.length - count);\n};\nconsole.log(...shiftRight([1, 2, 3], 0));\ntry {\n  shiftRight([1, 2], -1);\n} catch (error) {\n  console.log(error.name);\n}',
             },
           ],
         },
         {
           name: "Create patterns and reset sections with fill()",
           explanation:
-            "Chain fills to create bands of constant values or reset a selected interval. Use explicit exclusive-end bounds for the section to change.",
+            "Chain fills to create bands of constant values or reset a selected interval.",
           note: "All calls mutate and return the same array, making chaining possible.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2796,19 +2769,19 @@ const handbook = {
             {
               label: "Create two constant bands",
               language: "javascript",
-              code: "const pattern = new Array(10).fill(0, 0, 5).fill(1, 5, 10); console.log(...pattern);",
+              code: "const pattern = new Array(10).fill(0, 0, 5).fill(1, 5, 10);\nconsole.log(...pattern);",
             },
             {
               label: "Reset an internal section",
               language: "javascript",
-              code: "const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; data.fill(0, 3, 7); console.log(...data);",
+              code: "const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\ndata.fill(0, 3, 7);\nconsole.log(...data);",
             },
           ],
         },
         {
           name: "Initialize a board with distinct rows",
           explanation:
-            "Fill the outer array so map visits every position, then create a fresh inner array for each row. Use this to initialize a mutable board.",
+            "Fill the outer array so map visits every position, then create a fresh inner array for each row.",
           note: "Array(8).map alone skips its holes; filling first ensures callbacks run. Primitive null cells are safe to repeat.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fill",
@@ -2816,19 +2789,19 @@ const handbook = {
             {
               label: "Create an eight-by-eight board",
               language: "javascript",
-              code: "const board = Array(8).fill(null).map(() => Array(8).fill(null));\nconsole.log(board.length, board.every(row => row.length === 8), board[0] !== board[1]);",
+              code: "const board = Array(8)\n  .fill(null)\n  .map(() => Array(8).fill(null));\nconsole.log(\n  board.length,\n  board.every((row) => row.length === 8),\n  board[0] !== board[1],\n);",
             },
             {
               label: "Change a single cell",
               language: "javascript",
-              code: 'const board = Array(8).fill(null).map(() => Array(8).fill(null));\nboard[0][0] = "rook"; console.log(board[0][0], board[1][0]);',
+              code: 'const board = Array(8)\n  .fill(null)\n  .map(() => Array(8).fill(null));\nboard[0][0] = "rook";\nconsole.log(board[0][0], board[1][0]);',
             },
           ],
         },
         {
           name: "rotateBuffer() — preserve and rotate values",
           explanation:
-            "Save the tail, shift the remaining block, then restore the saved values at the beginning. Positive counts rotate right; negative counts rotate left.",
+            "Save the tail, shift the remaining block, then restore the saved values at the beginning.",
           note: "The screenshot’s chained copies overwrite values before preserving them. This corrected helper mutates and returns the input, handles empty arrays, and assumes a dense array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin",
@@ -2836,12 +2809,12 @@ const handbook = {
             {
               label: "Rotate right without losing the tail",
               language: "javascript",
-              code: 'const rotateBuffer = (buffer, positions) => { if (!Number.isSafeInteger(positions)) throw new RangeError("Use a safe integer rotation"); const length = buffer.length; if (length === 0) return buffer; const count = ((positions % length) + length) % length; if (count === 0) return buffer; const tail = buffer.slice(length - count); buffer.copyWithin(count, 0, length - count); for (let i = 0; i < count; i++) buffer[i] = tail[i]; return buffer; };\nconst a = [1, 2, 3, 4, 5]; console.log(rotateBuffer(a, 2) === a, ...a);\nconsole.log(...rotateBuffer([1, 2, 3, 4, 5], 7));',
+              code: 'const rotateBuffer = (buffer, positions) => {\n  if (!Number.isSafeInteger(positions))\n    throw new RangeError("Use a safe integer rotation");\n  const length = buffer.length;\n  if (length === 0) return buffer;\n  const count = ((positions % length) + length) % length;\n  if (count === 0) return buffer;\n  const tail = buffer.slice(length - count);\n  buffer.copyWithin(count, 0, length - count);\n  for (let i = 0; i < count; i++) buffer[i] = tail[i];\n  return buffer;\n};\nconst a = [1, 2, 3, 4, 5];\nconsole.log(rotateBuffer(a, 2) === a, ...a);\nconsole.log(...rotateBuffer([1, 2, 3, 4, 5], 7));',
             },
             {
               label: "Rotate left, handle empty input, and keep full turns",
               language: "javascript",
-              code: 'const rotateBuffer = (buffer, positions) => { if (!Number.isSafeInteger(positions)) throw new RangeError("Use a safe integer rotation"); const length = buffer.length; if (length === 0) return buffer; const count = ((positions % length) + length) % length; if (count === 0) return buffer; const tail = buffer.slice(length - count); buffer.copyWithin(count, 0, length - count); for (let i = 0; i < count; i++) buffer[i] = tail[i]; return buffer; };\nconsole.log(...rotateBuffer([1, 2, 3, 4, 5], -1));\nconsole.log(rotateBuffer([], 2).length); console.log(...rotateBuffer([1, 2, 3], 3));',
+              code: 'const rotateBuffer = (buffer, positions) => {\n  if (!Number.isSafeInteger(positions))\n    throw new RangeError("Use a safe integer rotation");\n  const length = buffer.length;\n  if (length === 0) return buffer;\n  const count = ((positions % length) + length) % length;\n  if (count === 0) return buffer;\n  const tail = buffer.slice(length - count);\n  buffer.copyWithin(count, 0, length - count);\n  for (let i = 0; i < count; i++) buffer[i] = tail[i];\n  return buffer;\n};\nconsole.log(...rotateBuffer([1, 2, 3, 4, 5], -1));\nconsole.log(rotateBuffer([], 2).length);\nconsole.log(...rotateBuffer([1, 2, 3], 3));',
             },
           ],
         },
@@ -2856,7 +2829,7 @@ const handbook = {
         {
           name: "toSorted() — sort a copy",
           explanation:
-            "Returns a new array in sorted order while retaining the source order. Use a numeric comparator for numbers or a locale-aware comparator for names.",
+            "Returns a new array in sorted order while keeping the source order.",
           note: "ES2023; default ordering compares string representations. The copy is shallow, so record references remain shared.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted",
@@ -2864,19 +2837,18 @@ const handbook = {
             {
               label: "Sort numeric scores",
               language: "javascript",
-              code: "const scores = [3, 1, 4, 1, 5, 9, 2, 6];\nconsole.log(...scores.toSorted((a,b) => a-b)); console.log(...scores);",
+              code: "const scores = [3, 1, 4, 1, 5, 9, 2, 6];\nconsole.log(...scores.toSorted((a, b) => a - b));\nconsole.log(...scores);",
             },
             {
               label: "Replace local state with sorted users",
               language: "javascript",
-              code: 'let users = [{name:"John"},{name:"Jane"}]; const previous = users;\nconst setUsers = next => { users = next; };\nsetUsers(users.toSorted((a,b) => a.name.localeCompare(b.name, "en")));\nconsole.log(...users.map(user => user.name)); console.log(previous !== users, previous[0] === users[1]);',
+              code: 'let users = [{ name: "John" }, { name: "Jane" }];\nconst previous = users;\nconst setUsers = (next) => {\n  users = next;\n};\nsetUsers(users.toSorted((a, b) => a.name.localeCompare(b.name, "en")));\nconsole.log(...users.map((user) => user.name));\nconsole.log(previous !== users, previous[0] === users[1]);',
             },
           ],
         },
         {
           name: "toReversed() — reverse a copy",
-          explanation:
-            "Returns the values in reverse order in a new array. Use it for a reversed view while retaining the original queue or list.",
+          explanation: "Returns the values in reverse order in a new array.",
           note: "ES2023; holes become explicit undefined elements in the dense result.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed",
@@ -2884,19 +2856,18 @@ const handbook = {
             {
               label: "Reverse a queue view",
               language: "javascript",
-              code: 'const queue = ["a", "b", "c"]; const recent = queue.toReversed();\nconsole.log(...recent); console.log(...queue); console.log(recent !== queue);',
+              code: 'const queue = ["a", "b", "c"];\nconst recent = queue.toReversed();\nconsole.log(...recent);\nconsole.log(...queue);\nconsole.log(recent !== queue);',
             },
             {
               label: "Keep record references and fill sparse positions",
               language: "javascript",
-              code: "const record = {id:1}; const a = [record, , 3]; const reversed = a.toReversed();\nconsole.log(reversed[2] === record, 1 in reversed, reversed[1], 1 in a);",
+              code: "const record = { id: 1 };\nconst a = [record, , 3];\nconst reversed = a.toReversed();\nconsole.log(reversed[2] === record, 1 in reversed, reversed[1], 1 in a);",
             },
           ],
         },
         {
           name: "toSpliced() — remove, insert, or replace in a copy",
-          explanation:
-            "Returns the edited array without changing the source. Use start, deleteCount, and optional inserted values to express a membership update.",
+          explanation: "Returns the edited array without changing the source.",
           note: "ES2023; unlike splice, this returns the resulting array rather than the removed elements.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced",
@@ -2904,7 +2875,7 @@ const handbook = {
             {
               label: "Remove or insert a todo",
               language: "javascript",
-              code: 'const todos = ["buy milk", "walk dog", "pay bills"];\nconsole.log(...todos.toSpliced(1, 1)); console.log(...todos.toSpliced(1, 0, "gym"));\nconsole.log(...todos);',
+              code: 'const todos = ["buy milk", "walk dog", "pay bills"];\nconsole.log(...todos.toSpliced(1, 1));\nconsole.log(...todos.toSpliced(1, 0, "gym"));\nconsole.log(...todos);',
             },
             {
               label: "Replace and use a negative starting position",
@@ -2916,7 +2887,7 @@ const handbook = {
         {
           name: "toSpliced() omitted arguments and sparse arrays",
           explanation:
-            "Omitting deleteCount removes the remaining tail; calling with no arguments returns a copy. Use explicit zero when inserting without deletion.",
+            "Omitting deleteCount removes the remaining tail; calling with no arguments returns a copy.",
           note: "An explicit undefined deleteCount converts to zero. The returned array is dense even when the source is sparse.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced",
@@ -2924,19 +2895,18 @@ const handbook = {
             {
               label: "Distinguish omitted and undefined delete counts",
               language: "javascript",
-              code: "const a = [1, 2, 3]; console.log(...a.toSpliced(1)); console.log(...a.toSpliced(1, undefined, 9));\nconsole.log(...a.toSpliced());",
+              code: "const a = [1, 2, 3];\nconsole.log(...a.toSpliced(1));\nconsole.log(...a.toSpliced(1, undefined, 9));\nconsole.log(...a.toSpliced());",
             },
             {
               label: "Copy sparse membership into present positions",
               language: "javascript",
-              code: "const a = [1, , 3]; const copy = a.toSpliced();\nconsole.log(copy !== a, copy.length, 1 in copy, copy[1], 1 in a);",
+              code: "const a = [1, , 3];\nconst copy = a.toSpliced();\nconsole.log(copy !== a, copy.length, 1 in copy, copy[1], 1 in a);",
             },
           ],
         },
         {
           name: "with() — replace one index in a copy",
-          explanation:
-            "Returns a new array with one indexed value replaced. Use a negative index to count backward from the end.",
+          explanation: "Returns a new array with one indexed value replaced.",
           note: "ES2023; unlike bracket assignment, out-of-range indices throw RangeError rather than extending the array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with",
@@ -2944,19 +2914,19 @@ const handbook = {
             {
               label: "Replace by positive and negative index",
               language: "javascript",
-              code: "const row = [10, 20, 30, 40]; console.log(...row.with(2, 999));\nconsole.log(...row.with(-1, 0)); console.log(...row);",
+              code: "const row = [10, 20, 30, 40];\nconsole.log(...row.with(2, 999));\nconsole.log(...row.with(-1, 0));\nconsole.log(...row);",
             },
             {
               label: "Reject an invalid index and densify holes",
               language: "javascript",
-              code: "try { [1, 2].with(2, 9); } catch (error) { console.log(error.name); }\nconst a = [1, , 3]; const next = a.with(0, 9); console.log(...next); console.log(1 in next);",
+              code: "try {\n  [1, 2].with(2, 9);\n} catch (error) {\n  console.log(error.name);\n}\nconst a = [1, , 3];\nconst next = a.with(0, 9);\nconsole.log(...next);\nconsole.log(1 in next);",
             },
           ],
         },
         {
           name: "Copying methods preserve top-level state",
           explanation:
-            "Use these methods to produce a fresh array identity for a state update. Copy the edited record as well when changing object properties.",
+            "Returns a new array without changing the source. Nested objects stay shared.",
           note: "These methods do not freeze data or perform structuredClone-style deep cloning. A callback can still mutate input objects if it explicitly does so.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with",
@@ -2964,19 +2934,19 @@ const handbook = {
             {
               label: "Replace a record without changing its predecessor",
               language: "javascript",
-              code: "const previous = [{id:1,done:false},{id:2,done:false}];\nconst next = previous.with(0, {...previous[0], done:true});\nconsole.log(next !== previous, next[0] !== previous[0], previous[0].done, next[0].done, next[1] === previous[1]);",
+              code: "const previous = [\n  { id: 1, done: false },\n  { id: 2, done: false },\n];\nconst next = previous.with(0, { ...previous[0], done: true });\nconsole.log(\n  next !== previous,\n  next[0] !== previous[0],\n  previous[0].done,\n  next[0].done,\n  next[1] === previous[1],\n);",
             },
             {
               label: "A no-op edit still creates a new array",
               language: "javascript",
-              code: "const a = [{id:1}]; const copies = [a.toSorted(), a.toReversed(), a.toSpliced(0,0), a.with(0,a[0])];\nconsole.log(copies.every(copy => copy !== a), copies.every(copy => copy[0] === a[0]));",
+              code: "const a = [{ id: 1 }];\nconst copies = [\n  a.toSorted(),\n  a.toReversed(),\n  a.toSpliced(0, 0),\n  a.with(0, a[0]),\n];\nconsole.log(\n  copies.every((copy) => copy !== a),\n  copies.every((copy) => copy[0] === a[0]),\n);",
             },
           ],
         },
         {
           name: "findLast() — last matching value",
           explanation:
-            "Searches from the final index toward zero and returns the first matching value in that direction. Use it for the latest record when array order represents recency.",
+            "Searches from the final index toward zero and returns the first matching value in that direction.",
           note: "ES2023; no match returns undefined. It avoids allocating a reversed copy, but timing depends on the data and runtime.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast",
@@ -2984,19 +2954,19 @@ const handbook = {
             {
               label: "Find the latest login",
               language: "javascript",
-              code: 'const events = [{type:"login",at:1},{type:"click",at:2},{type:"login",at:3},{type:"logout",at:4}];\nconst last = events.findLast(event => event.type === "login");\nconsole.log(last.at, last === events[2]);',
+              code: 'const events = [\n  { type: "login", at: 1 },\n  { type: "click", at: 2 },\n  { type: "login", at: 3 },\n  { type: "logout", at: 4 },\n];\nconst last = events.findLast((event) => event.type === "login");\nconsole.log(last.at, last === events[2]);',
             },
             {
               label: "Find the most recent shipped order",
               language: "javascript",
-              code: 'const orders = [{id:1,status:"shipped"},{id:2,status:"pending"},{id:3,status:"shipped"},{id:4,status:"pending"}];\nconst recent = orders.findLast(order => order.status === "shipped");\nconst copiedSearch = [...orders].reverse().find(order => order.status === "shipped");\nconsole.log(recent.id, recent === copiedSearch, orders[0].id); console.log(orders.findLast(order => order.status === "cancelled"));',
+              code: 'const orders = [\n  { id: 1, status: "shipped" },\n  { id: 2, status: "pending" },\n  { id: 3, status: "shipped" },\n  { id: 4, status: "pending" },\n];\nconst recent = orders.findLast((order) => order.status === "shipped");\nconst copiedSearch = [...orders]\n  .reverse()\n  .find((order) => order.status === "shipped");\nconsole.log(recent.id, recent === copiedSearch, orders[0].id);\nconsole.log(orders.findLast((order) => order.status === "cancelled"));',
             },
           ],
         },
         {
           name: "findLastIndex() — last matching position",
           explanation:
-            "Returns the original array index of the last matching element or -1 when none matches. Use it before a guarded indexed replacement or removal.",
+            "Returns the original array index of the last matching element or -1 when none matches.",
           note: "ES2023; a -1 search result must be checked because with(-1, value) would replace the final element.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex",
@@ -3004,19 +2974,19 @@ const handbook = {
             {
               label: "Find a last position and a missing status",
               language: "javascript",
-              code: 'const orders = [{id:1,status:"paid"},{id:2,status:"pending"},{id:3,status:"paid"}];\nconsole.log(orders.findLastIndex(order => order.status === "paid"), orders.findLastIndex(order => order.status === "cancelled"));',
+              code: 'const orders = [\n  { id: 1, status: "paid" },\n  { id: 2, status: "pending" },\n  { id: 3, status: "paid" },\n];\nconsole.log(\n  orders.findLastIndex((order) => order.status === "paid"),\n  orders.findLastIndex((order) => order.status === "cancelled"),\n);',
             },
             {
               label: "Inspect reverse callback order and holes",
               language: "javascript",
-              code: "const a = [1, , 3]; const visited = [];\nconst index = a.findLastIndex((value,index,array) => { visited.push(index); return value === undefined && array === a; });\nconsole.log(index, ...visited);",
+              code: "const a = [1, , 3];\nconst visited = [];\nconst index = a.findLastIndex((value, index, array) => {\n  visited.push(index);\n  return value === undefined && array === a;\n});\nconsole.log(index, ...visited);",
             },
           ],
         },
         {
           name: "Update or remove the last matching record",
           explanation:
-            "Find the matching index, guard -1, then use with or toSpliced. Build replacements from the matched record so all its unrelated fields are retained.",
+            "Find the matching index, guard -1, then use with or toSpliced.",
           note: "Using orders.at(-1) as the replacement source can copy the wrong record if the match is earlier in the array.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex",
@@ -3024,19 +2994,19 @@ const handbook = {
             {
               label: "Update an earlier match without copying the last record",
               language: "javascript",
-              code: 'const markLastPending = orders => { const index = orders.findLastIndex(order => order.status === "pending"); return index === -1 ? orders : orders.with(index, {...orders[index], status:"shipped"}); };\nconst orders = [{id:1,status:"pending",note:"keep"},{id:2,status:"shipped",note:"other"}];\nconst next = markLastPending(orders);\nconsole.log(next[0].id, next[0].status, next[0].note, orders[0].status);\nconsole.log(markLastPending(next) === next);',
+              code: 'const markLastPending = (orders) => {\n  const index = orders.findLastIndex((order) => order.status === "pending");\n  return index === -1\n    ? orders\n    : orders.with(index, { ...orders[index], status: "shipped" });\n};\nconst orders = [\n  { id: 1, status: "pending", note: "keep" },\n  { id: 2, status: "shipped", note: "other" },\n];\nconst next = markLastPending(orders);\nconsole.log(next[0].id, next[0].status, next[0].note, orders[0].status);\nconsole.log(markLastPending(next) === next);',
             },
             {
               label: "Remove a last match with a missing-match guard",
               language: "javascript",
-              code: 'const orders = [{id:1,status:"pending"},{id:2,status:"paid"},{id:3,status:"pending"}];\nconst removeLast = (items,status) => { const index = items.findLastIndex(item => item.status === status); return index === -1 ? items : items.toSpliced(index,1); };\nconsole.log(...removeLast(orders,"pending").map(item => item.id)); console.log(removeLast(orders,"cancelled") === orders);',
+              code: 'const orders = [\n  { id: 1, status: "pending" },\n  { id: 2, status: "paid" },\n  { id: 3, status: "pending" },\n];\nconst removeLast = (items, status) => {\n  const index = items.findLastIndex((item) => item.status === status);\n  return index === -1 ? items : items.toSpliced(index, 1);\n};\nconsole.log(...removeLast(orders, "pending").map((item) => item.id));\nconsole.log(removeLast(orders, "cancelled") === orders);',
             },
           ],
         },
         {
           name: "Array.fromAsync() — collect an async source",
           explanation:
-            "Returns a promise for an array collected from an async iterable, synchronous iterable, or array-like object. Use it to replace a manual for-await/push collection loop.",
+            "Returns a promise for an array collected from an async iterable, synchronous iterable, or array-like object.",
           note: "Unlike the ES2023 copying methods, fromAsync is specified in ES2026. Check runtime support; async iteration and mapping are consumed sequentially.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync",
@@ -3044,19 +3014,19 @@ const handbook = {
             {
               label: "Collect an async generator",
               language: "javascript",
-              code: "(async () => {\nasync function* range(count) { for (let i = 0; i < count; i++) yield i; }\nconsole.log(...await Array.fromAsync(range(5)));\n})().catch(error => { throw error; });",
+              code: "(async () => {\n  async function* range(count) {\n    for (let i = 0; i < count; i++) yield i;\n  }\n  console.log(...(await Array.fromAsync(range(5))));\n})().catch((error) => {\n  throw error;\n});",
             },
             {
               label: "Await synchronous iterable values and array-like fields",
               language: "javascript",
-              code: '(async () => {\nconsole.log(...await Array.fromAsync([Promise.resolve(1), Promise.resolve(2)]));\nconst a = await Array.fromAsync({0:Promise.resolve("a"),length:2});\nconsole.log(a.length, a[0], a[1], 1 in a);\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  console.log(\n    ...(await Array.fromAsync([Promise.resolve(1), Promise.resolve(2)])),\n  );\n  const a = await Array.fromAsync({ 0: Promise.resolve("a"), length: 2 });\n  console.log(a.length, a[0], a[1], 1 in a);\n})().catch((error) => {\n  throw error;\n});',
             },
           ],
         },
         {
           name: "Array.fromAsync() mapping and concurrency",
           explanation:
-            "An async mapper is awaited for each element before the next element is processed. Use Promise.all with map when you deliberately want to start all mapped operations together.",
+            "An async mapper is awaited for each element before the next element is processed.",
           note: "Already-created promises may already be running; sequential consumption does not serialize the creation of those promises or make fromAsync equivalent to Promise.all.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync",
@@ -3064,19 +3034,19 @@ const handbook = {
             {
               label: "Measure sequential mapping without timing assumptions",
               language: "javascript",
-              code: "(async () => {\nlet active = 0, peak = 0;\nconst values = await Array.fromAsync([1,2,3], async value => { active++; peak = Math.max(peak,active); await Promise.resolve(); active--; return value * 2; });\nconsole.log(...values); console.log(peak);\nactive = 0; peak = 0;\nawait Promise.all([1,2,3].map(async () => { active++; peak = Math.max(peak,active); await Promise.resolve(); active--; }));\nconsole.log(peak);\n})().catch(error => { throw error; });",
+              code: "(async () => {\n  let active = 0,\n    peak = 0;\n  const values = await Array.fromAsync([1, 2, 3], async (value) => {\n    active++;\n    peak = Math.max(peak, active);\n    await Promise.resolve();\n    active--;\n    return value * 2;\n  });\n  console.log(...values);\n  console.log(peak);\n  active = 0;\n  peak = 0;\n  await Promise.all(\n    [1, 2, 3].map(async () => {\n      active++;\n      peak = Math.max(peak, active);\n      await Promise.resolve();\n      active--;\n    }),\n  );\n  console.log(peak);\n})().catch((error) => {\n  throw error;\n});",
             },
             {
               label: "Map with index and a supplied context",
               language: "javascript",
-              code: '(async () => {\nconst context = {factor:3};\nconst values = await Array.fromAsync([Promise.resolve(2), 4], async function(value,index) { return value * this.factor + index; }, context);\nconsole.log(...values);\ntry { await Array.fromAsync([1], async () => { throw new Error("mapping failed"); }); } catch (error) { console.log(error.message); }\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const context = { factor: 3 };\n  const values = await Array.fromAsync(\n    [Promise.resolve(2), 4],\n    async function (value, index) {\n      return value * this.factor + index;\n    },\n    context,\n  );\n  console.log(...values);\n  try {\n    await Array.fromAsync([1], async () => {\n      throw new Error("mapping failed");\n    });\n  } catch (error) {\n    console.log(error.message);\n  }\n})().catch((error) => {\n  throw error;\n});',
             },
           ],
         },
         {
           name: "Fetch responses with Array.fromAsync()",
           explanation:
-            "Map URLs to responses and then collect their decoded text. Use defined URLs and check response status before reading bodies.",
+            "Map URLs to responses and then collect their decoded text.",
           note: "Mapping fetch calls this way starts them sequentially; use Promise.all when parallel requests are intended.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync",
@@ -3084,19 +3054,19 @@ const handbook = {
             {
               label: "Collect response objects then their text",
               language: "javascript",
-              code: '(async () => {\nconst urls = ["data:text/plain,alpha", "data:text/plain,beta"];\nconst responses = await Array.fromAsync(urls, async url => { const response = await fetch(url); if (!response.ok) throw new Error(`HTTP ${response.status}`); return response; });\nconst docs = await Array.fromAsync(responses, response => response.text());\nconsole.log(...docs);\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const urls = ["data:text/plain,alpha", "data:text/plain,beta"];\n  const responses = await Array.fromAsync(urls, async (url) => {\n    const response = await fetch(url);\n    if (!response.ok) throw new Error(`HTTP ${response.status}`);\n    return response;\n  });\n  const docs = await Array.fromAsync(responses, (response) => response.text());\n  console.log(...docs);\n})().catch((error) => {\n  throw error;\n});',
             },
             {
               label: "Collect JSON directly in the mapper",
               language: "javascript",
-              code: '(async () => {\nconst urls = ["data:application/json,%7B%22id%22%3A1%7D", "data:application/json,%7B%22id%22%3A2%7D"];\nconst records = await Array.fromAsync(urls, async url => { const response = await fetch(url); if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); });\nconsole.log(...records.map(record => record.id));\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const urls = [\n    "data:application/json,%7B%22id%22%3A1%7D",\n    "data:application/json,%7B%22id%22%3A2%7D",\n  ];\n  const records = await Array.fromAsync(urls, async (url) => {\n    const response = await fetch(url);\n    if (!response.ok) throw new Error(`HTTP ${response.status}`);\n    return response.json();\n  });\n  console.log(...records.map((record) => record.id));\n})().catch((error) => {\n  throw error;\n});',
             },
           ],
         },
         {
           name: "Collect stream chunks with Array.fromAsync()",
           explanation:
-            "Consume a ReadableStream as an async iterable, decoding byte chunks with TextDecoderStream when text is needed. Join decoded chunks before interpreting line boundaries.",
+            "Consume a ReadableStream as an async iterable, decoding byte chunks with TextDecoderStream when text is needed.",
           note: "Stream chunks are not guaranteed to align with lines. Collection buffers the entire result; use incremental processing for large streams.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync",
@@ -3104,19 +3074,19 @@ const handbook = {
             {
               label: "Fetch and parse newline-delimited JSON",
               language: "javascript",
-              code: '(async () => {\nconst response = await fetch("data:application/x-ndjson,%7B%22id%22%3A1%7D%0A%7B%22id%22%3A2%7D%0A");\nif (!response.ok || !response.body) throw new Error("Missing response body");\nconst chunks = await Array.fromAsync(response.body.pipeThrough(new TextDecoderStream()));\nconst records = chunks.join("").trim().split(/\\r?\\n/).map(line => JSON.parse(line));\nconsole.log(...records.map(record => record.id));\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const response = await fetch(\n    "data:application/x-ndjson,%7B%22id%22%3A1%7D%0A%7B%22id%22%3A2%7D%0A",\n  );\n  if (!response.ok || !response.body) throw new Error("Missing response body");\n  const chunks = await Array.fromAsync(\n    response.body.pipeThrough(new TextDecoderStream()),\n  );\n  const records = chunks\n    .join("")\n    .trim()\n    .split(/\\r?\\n/)\n    .map((line) => JSON.parse(line));\n  console.log(...records.map((record) => record.id));\n})().catch((error) => {\n  throw error;\n});',
             },
             {
               label: "Collect a defined file stream",
               language: "javascript",
-              code: '(async () => {\nconst myFile = new File(["hello\\nworld\\n"], "notes.txt", {type:"text/plain"});\nasync function* chunks(file) { for await (const chunk of file.stream().pipeThrough(new TextDecoderStream())) yield chunk; }\nconst decoded = await Array.fromAsync(chunks(myFile));\nconsole.log(decoded.join("") === "hello\\nworld\\n");\n})().catch(error => { throw error; });',
+              code: '(async () => {\n  const myFile = new File(["hello\\nworld\\n"], "notes.txt", {\n    type: "text/plain",\n  });\n  async function* chunks(file) {\n    for await (const chunk of file\n      .stream()\n      .pipeThrough(new TextDecoderStream()))\n      yield chunk;\n  }\n  const decoded = await Array.fromAsync(chunks(myFile));\n  console.log(decoded.join("") === "hello\\nworld\\n");\n})().catch((error) => {\n  throw error;\n});',
             },
           ],
         },
         {
           name: "Object.groupBy() — group by property keys",
           explanation:
-            "Groups an iterable into arrays stored in a new null-prototype object. Use it when the grouping keys are strings or symbols.",
+            "Groups items into arrays under keys in a new object with no inherited properties.",
           note: "ES2024; other callback results are converted to property keys. Use Object.hasOwn to check membership; grouped items retain their original references.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy",
@@ -3124,19 +3094,19 @@ const handbook = {
             {
               label: "Group produce by type",
               language: "javascript",
-              code: 'const items = [{name:"apple",type:"fruit"},{name:"carrot",type:"veg"},{name:"pear",type:"fruit"}];\nconst grouped = Object.groupBy(items,item => item.type);\nconsole.log(...grouped.fruit.map(item => item.name)); console.log(grouped.veg[0].name, Object.getPrototypeOf(grouped) === null);',
+              code: 'const items = [\n  { name: "apple", type: "fruit" },\n  { name: "carrot", type: "veg" },\n  { name: "pear", type: "fruit" },\n];\nconst grouped = Object.groupBy(items, (item) => item.type);\nconsole.log(...grouped.fruit.map((item) => item.name));\nconsole.log(grouped.veg[0].name, Object.getPrototypeOf(grouped) === null);',
             },
             {
               label: "Group orders and check a missing group",
               language: "javascript",
-              code: 'const orders = [{id:1,status:"paid"},{id:2,status:"pending"},{id:3,status:"paid"}];\nconst grouped = Object.groupBy(orders,order => order.status);\nconsole.log(...grouped.paid.map(order => order.id)); console.log(Object.hasOwn(grouped,"cancelled"), grouped.paid[0] === orders[0]);',
+              code: 'const orders = [\n  { id: 1, status: "paid" },\n  { id: 2, status: "pending" },\n  { id: 3, status: "paid" },\n];\nconst grouped = Object.groupBy(orders, (order) => order.status);\nconsole.log(...grouped.paid.map((order) => order.id));\nconsole.log(Object.hasOwn(grouped, "cancelled"), grouped.paid[0] === orders[0]);',
             },
           ],
         },
         {
           name: "Object.groupBy() symbols and key conversion",
           explanation:
-            "A group key may be a symbol or a value converted to a string. Use Map.groupBy when distinct object identities must produce separate groups.",
+            "A group key may be a symbol or a value converted to a string.",
           note: 'Number 1 and string "1" produce the same object property key. A null prototype permits ordinary grouping under keys such as __proto__.',
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy",
@@ -3144,19 +3114,19 @@ const handbook = {
             {
               label: "Keep a symbol key and handle special names",
               language: "javascript",
-              code: 'const key = Symbol("special"); const grouped = Object.groupBy([1,2], value => value === 1 ? key : "__proto__");\nconsole.log(grouped[key][0], grouped.__proto__[0], Object.getPrototypeOf(grouped) === null);',
+              code: 'const key = Symbol("special");\nconst grouped = Object.groupBy([1, 2], (value) =>\n  value === 1 ? key : "__proto__",\n);\nconsole.log(\n  grouped[key][0],\n  grouped.__proto__[0],\n  Object.getPrototypeOf(grouped) === null,\n);',
             },
             {
               label: "Observe property-key coercion and callback indices",
               language: "javascript",
-              code: 'const grouped = Object.groupBy([1,"1"], value => value); console.log(grouped["1"].length);\nconst indexed = Object.groupBy(["a","b","c"], (_,index) => index % 2 ? "odd" : "even");\nconsole.log(...indexed.even);',
+              code: 'const grouped = Object.groupBy([1, "1"], (value) => value);\nconsole.log(grouped["1"].length);\nconst indexed = Object.groupBy(["a", "b", "c"], (_, index) =>\n  index % 2 ? "odd" : "even",\n);\nconsole.log(...indexed.even);',
             },
           ],
         },
         {
           name: "Map.groupBy() — group by arbitrary keys",
           explanation:
-            "Groups an iterable into a Map whose keys may be any values, including objects. Use it for parent or team objects that must retain their identity.",
+            "Groups an iterable into a Map whose keys may be any values, including objects.",
           note: "ES2024; keys follow SameValueZero equality. Distinct objects remain distinct keys even when their properties match.",
           source:
             "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy",
@@ -3164,12 +3134,12 @@ const handbook = {
             {
               label: "Group users by team identity",
               language: "javascript",
-              code: 'const t1 = {name:"Team"}, t2 = {name:"Team"};\nconst users = [{team:t1,name:"a"},{team:t2,name:"b"},{team:t1,name:"c"}];\nconst grouped = Map.groupBy(users,user => user.team);\nconsole.log(grouped.size, ...grouped.get(t1).map(user => user.name));\nconsole.log(grouped.has({name:"Team"}));',
+              code: 'const t1 = { name: "Team" },\n  t2 = { name: "Team" };\nconst users = [\n  { team: t1, name: "a" },\n  { team: t2, name: "b" },\n  { team: t1, name: "c" },\n];\nconst grouped = Map.groupBy(users, (user) => user.team);\nconsole.log(grouped.size, ...grouped.get(t1).map((user) => user.name));\nconsole.log(grouped.has({ name: "Team" }));',
             },
             {
               label: "Group rows by parent and preserve record references",
               language: "javascript",
-              code: "const parentA = {}, parentB = {};\nconst rows = [{id:1,parent:parentA},{id:2,parent:parentB},{id:3,parent:parentA}];\nconst grouped = Map.groupBy(rows,row => row.parent);\nconsole.log(...grouped.get(parentA).map(row => row.id));\nconsole.log(grouped.get(parentB)[0] === rows[1], Map.groupBy([], value => value).size);",
+              code: "const parentA = {},\n  parentB = {};\nconst rows = [\n  { id: 1, parent: parentA },\n  { id: 2, parent: parentB },\n  { id: 3, parent: parentA },\n];\nconst grouped = Map.groupBy(rows, (row) => row.parent);\nconsole.log(...grouped.get(parentA).map((row) => row.id));\nconsole.log(\n  grouped.get(parentB)[0] === rows[1],\n  Map.groupBy([], (value) => value).size,\n);",
             },
           ],
         },
@@ -3211,7 +3181,7 @@ const handbook = {
     const copy = node("button", "Copy");
     copy.type = "button";
     copy.setAttribute("aria-label", "Copy " + example.label);
-    head.append(node("span", example.label), copy);
+    head.append(copy);
     const pre = node("pre");
     pre.tabIndex = 0;
     pre.setAttribute("aria-label", example.label);
@@ -3264,8 +3234,6 @@ const handbook = {
       const link = node("a", category.name);
       link.href = "#" + category.id;
       menu.append(link);
-      for (const intro of [category.intro].flat().filter(Boolean))
-        section.append(node("p", intro));
       for (const example of category.setup || []) codeBlock(section, example);
       const renderedContexts = new Set();
       for (const method of methods) {

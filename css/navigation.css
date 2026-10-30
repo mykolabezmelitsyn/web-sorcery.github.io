@@ -1,3 +1,29 @@
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: .5s linear both zoom-out;
+}
+
+::view-transition-new(root) {
+  animation: .5s linear both zoom-in;
+}
+
+@keyframes zoom-out {
+  to {
+    transform: translateX(-100%) scale(.9);
+    /*opacity: 0;*/
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: translateX(100%);
+    /*opacity: 0;*/
+  }
+}
+
 .site-topbar {
   position: sticky;
   top: 0;
