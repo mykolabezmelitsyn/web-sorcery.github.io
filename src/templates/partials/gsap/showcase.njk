@@ -1,6 +1,7 @@
+{% from "includes/icons.njk" import icon %}
 <div class="gsap-container" role="region" aria-label="GSAP animation showcase">
   <div class="motion-bar">
-    <a class="motion-bar__brand" href="#motion-start">The motion index<span aria-hidden="true"> ↗</span></a>
+    <a class="motion-bar__brand" href="#motion-start">The motion index<span aria-hidden="true"> {{ icon("arrow-up-right") }}</span></a>
     <nav class="motion-bar__nav" aria-label="Animation chapters">
       <a href="#motion-text">Type</a>
       <a href="#motion-physics">Play</a>
@@ -12,12 +13,12 @@
 
   <!-- 01: Transform, opacity, stagger, timeline, easing, mouse interactions, magnetic buttons. -->
   <section class="motion-screen motion-hero" id="motion-start" aria-labelledby="motion-hero-title">
-    <div class="motion-kicker"><span>GSAP / A living collection</span><span>01 — 10</span></div>
+    <div class="motion-kicker"><span>GSAP {{ icon("slash", "icon--separator") }} A living collection</span><span>01 {{ icon("dash", "icon--separator") }} 10</span></div>
     <div class="motion-hero__layout">
       <div>
         <h1 class="motion-display" id="motion-hero-title">Less static.<br><em>More feeling.</em></h1>
         <p class="motion-copy">A small field guide to things that move. Ten studies in rhythm, interaction, and the details that make the web feel alive.</p>
-        <a class="motion-button motion-button--solid" data-magnetic href="#motion-depth">Enter the collection <span aria-hidden="true">↘</span></a>
+        <a class="motion-button motion-button--solid" data-magnetic href="#motion-depth">Enter the collection <span aria-hidden="true">{{ icon("arrow-down-right") }}</span></a>
       </div>
       <div class="motion-hero__art" aria-hidden="true">
         <div class="motion-orbit motion-orbit--one"></div><div class="motion-orbit motion-orbit--two"></div>
@@ -39,40 +40,40 @@
         <span class="motion-orbit-dot"></span>
       </div>
     </div>
-    <div class="motion-footnote"><span>Built to be played with.</span><span>Scroll slowly. Stay curious. ↓</span></div>
+    <div class="motion-footnote"><span>Built to be played with.</span><span>Scroll slowly. Stay curious. {{ icon("arrow-down") }}</span></div>
   </section>
 
   <!-- 02: ScrollTrigger, pinning, scrubbing, parallax, 3D transforms, responsive animation. -->
   <section class="motion-screen motion-depth" id="motion-depth" aria-labelledby="motion-depth-title">
-    <div class="motion-kicker"><span>02 / Space & time</span><span>Scroll to compose</span></div>
+    <div class="motion-kicker"><span>02 {{ icon("slash", "icon--separator") }} Space & time</span><span>Scroll to compose</span></div>
     <div class="motion-depth__scene">
       <div class="motion-depth__layer motion-depth__layer--back" aria-hidden="true">01</div>
       <div class="motion-depth__layer motion-depth__layer--middle" aria-hidden="true"><span>Perspective</span><span>changes everything.</span></div>
-      <div class="motion-depth__layer motion-depth__layer--front" aria-hidden="true">↗</div>
+      <div class="motion-depth__layer motion-depth__layer--front" aria-hidden="true">{{ icon("arrow-up-right") }}</div>
       <h2 class="motion-heading" id="motion-depth-title">Give an idea<br>some depth.</h2>
     </div>
     <p class="motion-copy">One scroll, three different rhythms. Layers drift at different speeds while perspective turns a flat composition into a space.</p>
     <div class="motion-progress" aria-hidden="true"><span></span></div>
-    <p class="motion-tags">ScrollTrigger · Pin · Scrub · Parallax · 3D</p>
+    <p class="motion-tags">ScrollTrigger {{ icon("dot", "icon--separator") }} Pin {{ icon("dot", "icon--separator") }} Scrub {{ icon("dot", "icon--separator") }} Parallax {{ icon("dot", "icon--separator") }} 3D</p>
   </section>
 
   <!-- 03: SplitText reveals, typing with TextPlugin, scrambling, stagger, timeline. -->
   <section class="motion-screen motion-type" id="motion-text" aria-labelledby="motion-type-title">
-    <div class="motion-kicker"><span>03 / Words with character</span><span>Read between the frames</span></div>
+    <div class="motion-kicker"><span>03 {{ icon("slash", "icon--separator") }} Words with character</span><span>Read between the frames</span></div>
     <h2 class="motion-heading" id="motion-type-title" data-split>Good things<br>take a little motion.</h2>
     <div class="motion-type__lines">
-      <p><span class="motion-label">01 / Typing</span><span data-typing aria-hidden="true">Make room for possibility.</span><span class="motion-sr">Make room for possibility.</span></p>
-      <p><span class="motion-label">02 / Scrambling</span><span data-scramble aria-hidden="true">ORDER FROM CURIOSITY</span><span class="motion-sr">Order from curiosity.</span></p>
+      <p><span class="motion-label">01 {{ icon("slash", "icon--separator") }} Typing</span><span data-typing aria-hidden="true">Make room for possibility.</span><span class="motion-sr">Make room for possibility.</span></p>
+      <p><span class="motion-label">02 {{ icon("slash", "icon--separator") }} Scrambling</span><span data-scramble aria-hidden="true">ORDER FROM CURIOSITY</span><span class="motion-sr">Order from curiosity.</span></p>
     </div>
-    <button class="motion-button" data-replay-text type="button" disabled>Replay the words <span aria-hidden="true">↺</span></button>
-    <p class="motion-tags">SplitText · TextPlugin · ScrambleText · Stagger</p>
+    <button class="motion-button" data-replay-text type="button" disabled>Replay the words <span aria-hidden="true">{{ icon("replay") }}</span></button>
+    <p class="motion-tags">SplitText {{ icon("dot", "icon--separator") }} TextPlugin {{ icon("dot", "icon--separator") }} ScrambleText {{ icon("dot", "icon--separator") }} Stagger</p>
   </section>
 
   <!-- 04: SVG path drawing, MorphSVG, MotionPath, synchronized timeline. -->
   <section class="motion-screen motion-paths" id="motion-paths" aria-labelledby="motion-paths-title">
-    <div class="motion-kicker"><span>04 / A line of thought</span><span>From point A to something else</span></div>
+    <div class="motion-kicker"><span>04 {{ icon("slash", "icon--separator") }} A line of thought</span><span>From point A to something else</span></div>
     <div class="motion-two-up">
-      <div><h2 class="motion-heading" id="motion-paths-title">Take the<br>scenic route.</h2><p class="motion-copy">Draw a route. Send a thought along it. Let a circle become something new.</p><button class="motion-button" data-replay-path type="button" disabled>Trace it again ↺</button></div>
+      <div><h2 class="motion-heading" id="motion-paths-title">Take the<br>scenic route.</h2><p class="motion-copy">Draw a route. Send a thought along it. Let a circle become something new.</p><button class="motion-button" data-replay-path type="button" disabled>Trace it again {{ icon("replay") }}</button></div>
       <svg class="motion-route" viewBox="0 0 500 400" role="img" aria-labelledby="motion-route-title">
         <title id="motion-route-title">A curved route with a moving dot and a shape that morphs from a circle to a star.</title>
         <path class="motion-route__guide" d="M40 290C100 40 210 350 270 140S450 60 455 235" />
@@ -83,83 +84,83 @@
         <text x="32" y="335">A</text><text x="450" y="280">B</text>
       </svg>
     </div>
-    <p class="motion-tags">DrawSVG · MorphSVG · MotionPath</p>
+    <p class="motion-tags">DrawSVG {{ icon("dot", "icon--separator") }} MorphSVG {{ icon("dot", "icon--separator") }} MotionPath</p>
   </section>
 
   <!-- 05: FLIP layout transitions, position transitions, responsive grids. -->
   <section class="motion-screen motion-layout" id="motion-layout" aria-labelledby="motion-layout-title">
-    <div class="motion-kicker"><span>05 / A change of arrangement</span><span>Same pieces. New perspective.</span></div>
-    <div class="motion-section-head"><h2 class="motion-heading" id="motion-layout-title">Find your order.</h2><button class="motion-button" data-flip-toggle type="button" aria-pressed="false" disabled>Switch to list ↔</button></div>
+    <div class="motion-kicker"><span>05 {{ icon("slash", "icon--separator") }} A change of arrangement</span><span>Same pieces. New perspective.</span></div>
+    <div class="motion-section-head"><h2 class="motion-heading" id="motion-layout-title">Find your order.</h2><button class="motion-button" data-flip-toggle type="button" aria-pressed="false" disabled><span data-flip-label>Switch to list</span> {{ icon("swap") }}</button></div>
     <div class="motion-tiles" data-flip-grid>
-      <div class="motion-tile"><span aria-hidden="true">◯</span><h3>Form</h3><p>The shape of an idea.</p></div>
-      <div class="motion-tile"><span aria-hidden="true">✳</span><h3>Feeling</h3><p>The space it leaves.</p></div>
-      <div class="motion-tile"><span aria-hidden="true">↗</span><h3>Function</h3><p>A reason to move.</p></div>
-      <div class="motion-tile"><span aria-hidden="true">⌘</span><h3>Flow</h3><p>Everything, connected.</p></div>
+      <div class="motion-tile"><span aria-hidden="true">{{ icon("circle") }}</span><h3>Form</h3><p>The shape of an idea.</p></div>
+      <div class="motion-tile"><span aria-hidden="true">{{ icon("asterisk") }}</span><h3>Feeling</h3><p>The space it leaves.</p></div>
+      <div class="motion-tile"><span aria-hidden="true">{{ icon("arrow-up-right") }}</span><h3>Function</h3><p>A reason to move.</p></div>
+      <div class="motion-tile"><span aria-hidden="true">{{ icon("command") }}</span><h3>Flow</h3><p>Everything, connected.</p></div>
     </div>
-    <p class="motion-tags">Flip · Layout · Position · Responsive</p>
+    <p class="motion-tags">Flip {{ icon("dot", "icon--separator") }} Layout {{ icon("dot", "icon--separator") }} Position {{ icon("dot", "icon--separator") }} Responsive</p>
   </section>
 
   <!-- 06: Physics2D gravity/velocity, Draggable, inertia, throw/snap, keyboard/touch interaction, elastic easing. -->
   <section class="motion-screen motion-physics" id="motion-physics" aria-labelledby="motion-physics-title">
-    <div class="motion-kicker"><span>06 / A little hands-on</span><span>Pick it up. Let it go.</span></div>
-    <div class="motion-section-head"><h2 class="motion-heading" id="motion-physics-title">Follow your impulse.</h2><button class="motion-button" data-launch type="button" disabled>Launch a thought ↗</button></div>
+    <div class="motion-kicker"><span>06 {{ icon("slash", "icon--separator") }} A little hands-on</span><span>Pick it up. Let it go.</span></div>
+    <div class="motion-section-head"><h2 class="motion-heading" id="motion-physics-title">Follow your impulse.</h2><button class="motion-button" data-launch type="button" disabled>Launch a thought {{ icon("arrow-up-right") }}</button></div>
     <p class="motion-copy">Drag and throw the disc; it settles onto a 24px grid. Or focus it and use the arrow keys. Enter returns it home.</p>
     <div class="motion-playground" data-playground>
-      <div class="motion-projectile" aria-hidden="true">✦</div>
-      <button class="motion-disc" data-disc type="button" aria-label="Movable disc. Use arrow keys to move, Enter to reset." disabled>move<br>me ↗</button>
+      <div class="motion-projectile" aria-hidden="true">{{ icon("sparkle") }}</div>
+      <button class="motion-disc" data-disc type="button" aria-label="Movable disc. Use arrow keys to move, Enter to reset." disabled><span>move<br>me {{ icon("arrow-up-right") }}</span></button>
       <span class="motion-playground__note" aria-hidden="true">a space for happy accidents.</span>
     </div>
     <p class="motion-sr" data-drag-status role="status"></p>
-    <p class="motion-tags">Draggable · Inertia · Physics2D · Elastic</p>
+    <p class="motion-tags">Draggable {{ icon("dot", "icon--separator") }} Inertia {{ icon("dot", "icon--separator") }} Physics2D {{ icon("dot", "icon--separator") }} Elastic</p>
   </section>
 
   <!-- 07: Local page enter/exit transitions, menus, modal, accordion, carousel/slider, crossfade, swipe gestures. -->
   <section class="motion-screen motion-interface" id="motion-interface" aria-labelledby="motion-ui-title">
-    <div class="motion-kicker"><span>07 / Small interactions</span><span>A miniature world</span></div>
+    <div class="motion-kicker"><span>07 {{ icon("slash", "icon--separator") }} Small interactions</span><span>A miniature world</span></div>
     <h2 class="motion-heading" id="motion-ui-title">Make it feel natural.</h2>
     <div class="motion-ui">
-      <div class="motion-ui__toolbar"><span>STUDIO / A tiny website</span><button class="motion-button motion-button--small" type="button" data-menu-toggle aria-controls="motion-mini-menu" aria-expanded="false" disabled>Menu +</button></div>
+      <div class="motion-ui__toolbar"><span>STUDIO {{ icon("slash", "icon--separator") }} A tiny website</span><button class="motion-button motion-button--small" type="button" data-menu-toggle aria-controls="motion-mini-menu" aria-expanded="false" disabled>Menu {{ icon("plus") }}</button></div>
       <nav class="motion-mini-menu" id="motion-mini-menu" aria-label="Miniature website navigation" hidden><button type="button" data-scene="0">A fresh perspective</button><button type="button" data-scene="1">A softer landing</button><button type="button" data-scene="2">A new direction</button></nav>
       <div class="motion-slides" aria-roledescription="carousel" aria-label="Miniature website pages" tabindex="0">
         <article class="motion-slide"><span class="motion-label">Page 01</span><h3>A fresh<br><em>perspective.</em></h3><p>Start with a little curiosity.</p></article>
         <article class="motion-slide" hidden><span class="motion-label">Page 02</span><h3>A softer<br><em>landing.</em></h3><p>Make room for a slower rhythm.</p></article>
         <article class="motion-slide" hidden><span class="motion-label">Page 03</span><h3>A new<br><em>direction.</em></h3><p>Follow the idea somewhere new.</p></article>
       </div>
-      <div class="motion-ui__controls"><button class="motion-button motion-button--small" data-slide-prev type="button" aria-label="Previous page" disabled>←</button><span data-slide-status role="status">1 / 3</span><button class="motion-button motion-button--small" data-slide-next type="button" aria-label="Next page" disabled>→</button><button class="motion-button motion-button--small" data-open-modal type="button" disabled>Open a note ↗</button></div>
-      <div class="motion-accordion"><h3><button type="button" data-accordion aria-expanded="false" aria-controls="motion-accordion-panel" disabled>What makes a good interaction? <span aria-hidden="true">+</span></button></h3><div id="motion-accordion-panel" hidden><p>A clear response, a thoughtful pace, and a little room for delight. Motion should always help you understand what just happened.</p></div></div>
+      <div class="motion-ui__controls"><button class="motion-button motion-button--small" data-slide-prev type="button" aria-label="Previous page" disabled>{{ icon("arrow-left") }}</button><span data-slide-status role="status"><span data-slide-current>1</span><span class="motion-sr"> of </span> {{ icon("slash", "icon--separator") }} <span>3</span></span><button class="motion-button motion-button--small" data-slide-next type="button" aria-label="Next page" disabled>{{ icon("arrow-right") }}</button><button class="motion-button motion-button--small" data-open-modal type="button" disabled>Open a note {{ icon("arrow-up-right") }}</button></div>
+      <div class="motion-accordion"><h3><button type="button" data-accordion aria-expanded="false" aria-controls="motion-accordion-panel" disabled>What makes a good interaction? <span aria-hidden="true">{{ icon("plus") }}</span></button></h3><div id="motion-accordion-panel" hidden><p>A clear response, a thoughtful pace, and a little room for delight. Motion should always help you understand what just happened.</p></div></div>
     </div>
-    <dialog class="motion-dialog" aria-labelledby="motion-dialog-title"><div><span class="motion-label">A note on motion</span><h3 id="motion-dialog-title">Less can<br>feel like more.</h3><p>A well-timed detail beats a hundred distractions. Thank you for taking a moment.</p><button class="motion-button" data-close-modal type="button">Back to exploring ↗</button></div></dialog>
-    <p class="motion-tags">Page transitions · Crossfade · UI · Swipe · Carousel</p>
+    <dialog class="motion-dialog" aria-labelledby="motion-dialog-title"><div><span class="motion-label">A note on motion</span><h3 id="motion-dialog-title">Less can<br>feel like more.</h3><p>A well-timed detail beats a hundred distractions. Thank you for taking a moment.</p><button class="motion-button" data-close-modal type="button">Back to exploring {{ icon("arrow-up-right") }}</button></div></dialog>
+    <p class="motion-tags">Page transitions {{ icon("dot", "icon--separator") }} Crossfade {{ icon("dot", "icon--separator") }} UI {{ icon("dot", "icon--separator") }} Swipe {{ icon("dot", "icon--separator") }} Carousel</p>
   </section>
 
   <!-- 08: Image reveals, CSS masks, clipping, zoom, pointer-following effects. Artwork is inline SVG. -->
   <section class="motion-screen motion-images" id="motion-images" aria-labelledby="motion-images-title">
-    <div class="motion-kicker"><span>08 / A window into elsewhere</span><span>Made of simple shapes</span></div>
-    <div class="motion-section-head"><h2 class="motion-heading" id="motion-images-title">Reveal a little more.</h2><button class="motion-button" data-image-replay type="button" disabled>Restart reveal ↑</button></div>
+    <div class="motion-kicker"><span>08 {{ icon("slash", "icon--separator") }} A window into elsewhere</span><span>Made of simple shapes</span></div>
+    <div class="motion-section-head"><h2 class="motion-heading" id="motion-images-title">Reveal a little more.</h2><button class="motion-button" data-image-replay type="button" disabled>Restart reveal {{ icon("arrow-up") }}</button></div>
     <div class="motion-image-frame" tabindex="0" aria-label="Abstract landscape artwork. Move your pointer to explore its depth.">
       <svg class="motion-landscape" viewBox="0 0 1200 600" role="img" aria-labelledby="motion-landscape-title" preserveAspectRatio="xMidYMid slice"><title id="motion-landscape-title">An abstract olive landscape with a warm sun and layered rolling hills.</title><rect class="motion-landscape__sky" width="1200" height="600"/><circle class="motion-landscape__sun" cx="820" cy="190" r="100"/><path class="motion-landscape__back" d="M0 390Q200 100 460 330T900 290T1200 350V600H0Z"/><path class="motion-landscape__front" d="M0 520Q350 220 620 460T1200 380V600H0Z"/><path class="motion-landscape__line" d="M0 540Q350 240 620 480T1200 400"/></svg>
-      <div class="motion-image-caption"><span>Somewhere, imagined.</span><span>Original SVG / 2026</span></div>
-      <span class="motion-image-cursor" aria-hidden="true">look closer ↗</span>
+      <div class="motion-image-caption"><span>Somewhere, imagined.</span><span>Original SVG {{ icon("slash", "icon--separator") }} 2026</span></div>
+      <span class="motion-image-cursor" aria-hidden="true">look closer {{ icon("arrow-up-right") }}</span>
     </div>
-    <p class="motion-tags">Clip-path · Mask · Zoom · Pointer follow</p>
+    <p class="motion-tags">Clip-path {{ icon("dot", "icon--separator") }} Mask {{ icon("dot", "icon--separator") }} Zoom {{ icon("dot", "icon--separator") }} Pointer follow</p>
   </section>
 
   <!-- 09: Canvas rendering, GSAP-animated object properties, particles, physics, mouse/touch attraction. -->
   <section class="motion-screen motion-particles" id="motion-particles" aria-labelledby="motion-particles-title">
-    <div class="motion-kicker"><span>09 / A hundred small possibilities</span><span>A canvas, not an image</span></div>
-    <div class="motion-section-head"><h2 class="motion-heading" id="motion-particles-title">Nothing moves alone.</h2><button class="motion-button" data-particle-burst type="button" disabled>Scatter the field ✳</button></div>
+    <div class="motion-kicker"><span>09 {{ icon("slash", "icon--separator") }} A hundred small possibilities</span><span>A canvas, not an image</span></div>
+    <div class="motion-section-head"><h2 class="motion-heading" id="motion-particles-title">Nothing moves alone.</h2><button class="motion-button" data-particle-burst type="button" disabled>Scatter the field {{ icon("asterisk") }}</button></div>
     <div class="motion-canvas-frame"><canvas data-particles role="img" aria-label="A constellation of particles. Move your pointer or touch the field to attract them.">A field of animated particles connected by fine lines.</canvas><span aria-hidden="true">Move through the field.</span></div>
     <p class="motion-copy">Each dot is an independent object. Together, they form something that feels alive. Touch or point to draw them closer.</p>
-    <p class="motion-tags">Canvas 2D · Particles · Physics · Object properties</p>
+    <p class="motion-tags">Canvas 2D {{ icon("dot", "icon--separator") }} Particles {{ icon("dot", "icon--separator") }} Physics {{ icon("dot", "icon--separator") }} Object properties</p>
   </section>
 
   <!-- 10: Horizontal scroll, infinite marquee, looping/yoyo, easing, responsive matchMedia, scroll navigation. -->
   <section class="motion-screen motion-finale" id="motion-finale" aria-labelledby="motion-finale-title">
-    <div class="motion-kicker"><span>10 / Keep going</span><span>The end is another beginning</span></div>
+    <div class="motion-kicker"><span>10 {{ icon("slash", "icon--separator") }} Keep going</span><span>The end is another beginning</span></div>
     <h2 class="motion-heading" id="motion-finale-title">There’s always<br>another direction.</h2>
-    <div class="motion-horizontal"><div class="motion-horizontal__track"><article class="motion-end-card"><span aria-hidden="true">↗</span><h3>Stay curious.</h3><p>A new direction starts with a small question.</p></article><article class="motion-end-card"><span aria-hidden="true">✳</span><h3>Try something.</h3><p>Not every experiment needs a destination.</p></article><article class="motion-end-card"><span aria-hidden="true">∞</span><h3>Begin again.</h3><p>A good loop always brings you back.</p></article></div></div>
-    <div class="motion-marquee" aria-hidden="true"><div><span>MOVE WITH INTENTION · MAKE ROOM FOR PLAY · </span><span>MOVE WITH INTENTION · MAKE ROOM FOR PLAY · </span></div></div>
-    <div class="motion-footnote"><p>Ten studies. One curious web.</p><a class="motion-button" href="#motion-start">Back to the beginning ↑</a></div>
-    <p class="motion-tags">Horizontal scroll · Marquee · Loop · Yoyo · ScrollTo</p>
+    <div class="motion-horizontal"><div class="motion-horizontal__track"><article class="motion-end-card"><span aria-hidden="true">{{ icon("arrow-up-right") }}</span><h3>Stay curious.</h3><p>A new direction starts with a small question.</p></article><article class="motion-end-card"><span aria-hidden="true">{{ icon("asterisk") }}</span><h3>Try something.</h3><p>Not every experiment needs a destination.</p></article><article class="motion-end-card"><span aria-hidden="true">{{ icon("infinity") }}</span><h3>Begin again.</h3><p>A good loop always brings you back.</p></article></div></div>
+    <div class="motion-marquee" aria-hidden="true"><div><span>MOVE WITH INTENTION {{ icon("dot", "icon--separator") }} MAKE ROOM FOR PLAY {{ icon("dot", "icon--separator") }} </span><span>MOVE WITH INTENTION {{ icon("dot", "icon--separator") }} MAKE ROOM FOR PLAY {{ icon("dot", "icon--separator") }} </span></div></div>
+    <div class="motion-footnote"><p>Ten studies. One curious web.</p><a class="motion-button" href="#motion-start">Back to the beginning {{ icon("arrow-up") }}</a></div>
+    <p class="motion-tags">Horizontal scroll {{ icon("dot", "icon--separator") }} Marquee {{ icon("dot", "icon--separator") }} Loop {{ icon("dot", "icon--separator") }} Yoyo {{ icon("dot", "icon--separator") }} ScrollTo</p>
   </section>
 </div>

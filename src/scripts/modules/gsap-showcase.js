@@ -245,6 +245,7 @@ function initLayout(env) {
   const { $, $$, plugins, on, duration } = env;
   const grid = $("[data-flip-grid]");
   const button = $("[data-flip-toggle]");
+  const label = button.querySelector("[data-flip-label]");
   const tiles = $$(".motion-tile");
   const originalStyles = tiles.map((tile) => tile.getAttribute("style"));
   let tween;
@@ -253,7 +254,7 @@ function initLayout(env) {
     const state = plugins.Flip.getState(tiles);
     const list = grid.classList.toggle("motion-tiles--list");
     button.setAttribute("aria-pressed", String(list));
-    button.textContent = list ? "Switch to grid ↔" : "Switch to list ↔";
+    label.textContent = list ? "Switch to grid" : "Switch to list";
     tween = plugins.Flip.from(state, { duration: duration(0.8), ease: "power3.inOut", stagger: duration(0.05), onComplete: () => plugins.ScrollTrigger.refresh() });
   });
   env.cleanup(() => {
@@ -265,7 +266,7 @@ function initLayout(env) {
       else tile.setAttribute("style", originalStyles[index]);
     });
     grid.classList.remove("motion-tiles--list");
-    button.textContent = "Switch to list ↔";
+    label.textContent = "Switch to list";
     button.setAttribute("aria-pressed", "false");
   });
 }
@@ -327,7 +328,7 @@ function initInterface(env) {
   let index = 0;
   let busy = false;
   slides.forEach((slide, i) => { slide.hidden = i !== 0; });
-  $("[data-slide-status]").textContent = "1 / 3";
+  $("[data-slide-current]").textContent = "1";
   menu.hidden = true;
   menuButton.setAttribute("aria-expanded", "false");
   accordion.setAttribute("aria-expanded", "false");
@@ -351,7 +352,7 @@ function initInterface(env) {
       old.hidden = true;
       index = next;
       busy = false;
-      $("[data-slide-status]").textContent = `${index + 1} / ${slides.length}`;
+      $("[data-slide-current]").textContent = String(index + 1);
       plugins.ScrollTrigger.refresh();
     } })
       .to(old, { xPercent: -8, opacity: 0, duration: duration(0.4) }, 0)
@@ -393,7 +394,6 @@ function initInterface(env) {
   on(accordion, "click", () => {
     const open = accordion.getAttribute("aria-expanded") !== "true";
     accordion.setAttribute("aria-expanded", String(open));
-    accordion.querySelector("span").textContent = open ? "−" : "+";
     gsap.killTweensOf(panel);
     if (open) {
       panel.hidden = false;

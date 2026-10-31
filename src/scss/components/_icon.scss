@@ -1,0 +1,15 @@
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.icon--separator {
+  width: 0.65em;
+  margin-inline: 0.15em;
+}
+
+.menu-toggle[aria-expanded="true"] .icon__vertical,
+.gsap-container [aria-expanded="true"] .icon__vertical {
+  opacity: 0;
+}

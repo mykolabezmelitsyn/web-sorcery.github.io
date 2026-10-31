@@ -47,7 +47,6 @@ export function initPortfolio() {
   const setMenu = (open) => {
     menuToggle.setAttribute("aria-expanded", String(open));
     navigation.hidden = !desktop.matches && !open;
-    menuToggle.querySelector("span").textContent = open ? "−" : "+";
   };
 
   menuToggle.addEventListener("click", () => {

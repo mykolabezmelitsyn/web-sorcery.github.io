@@ -27,6 +27,12 @@
   color: var(--color-accent);
 }
 
+.header__dot .icon {
+  width: 0.4em;
+  height: 0.4em;
+  vertical-align: baseline;
+}
+
 .header__controls {
   display: flex;
   align-items: center;
