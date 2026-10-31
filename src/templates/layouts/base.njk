@@ -28,12 +28,11 @@
     <a class="skip-link" href="#main">Skip to content</a>
     {% include "partials/header.njk" %}
 
-    <main id="main" class="site-main portfolio">
+    <main id="main" class="site-main portfolio{% block mainModifier %}{% endblock %}">
       {% block content %}{% endblock %}
     </main>
 
 
-    <!-- GSAP CDN PLACEHOLDER: add the GSAP CDN script tag here when animation work begins. -->
     {# ES module entry; bundled and minified into dist/assets/ on build. #}
     <script type="module" src="/src/scripts/main.js"></script>
     {% block scripts %}{% endblock %}

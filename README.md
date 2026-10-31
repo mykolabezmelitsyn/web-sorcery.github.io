@@ -20,7 +20,7 @@ Requires Node.js `^20.19.0` or `>=22.12.0`.
 index.html            Generated server-ready home page (do not edit)
 assets/               Generated compiled CSS and JavaScript (do not edit)
 src/
-  pages/              Source pages: index.njk, gsap-animations.njk, gsap-basic.njk
+  pages/              Source pages: index.njk, gsap-animations.njk
   templates/
     layouts/          Page skeletons that pages {% extends %} (base.njk)
     partials/         Visible page sections that layouts {% include %} (header, footer)
@@ -65,3 +65,18 @@ The compiled site uses relative URLs, so it works at a domain root or a GitHub P
 repository path. Run `npm run build`, then deploy the generated HTML pages, `assets/`,
 and static icons together. For deployment from a Git branch, commit these generated
 files together; uploading HTML alone leaves its compiled CSS and JavaScript missing.
+
+## GSAP showcase
+
+`gsap-animations.html` contains ten animation studies inside `.gsap-container`.
+Edit `src/templates/partials/gsap/showcase.njk` for content,
+`src/scss/components/_gsap-showcase.scss` for scoped styles, and
+`src/scripts/modules/gsap-showcase.js` for the section initializers.
+
+The showcase loads GSAP 3.15.0 and its plugins from jsDelivr only when its root
+exists. It requires internet access for interactive animation; if the CDN is
+unavailable, the artwork, text, and chapter links remain readable. No external
+image assets are used. The Pause motion control and the system reduced-motion
+preference disable autoplay, pinning, and scrubbing while preserving interactive
+navigation, layout controls, and the miniature website. Desktop horizontal cards
+become a static stack when motion is paused or the screen is narrow.

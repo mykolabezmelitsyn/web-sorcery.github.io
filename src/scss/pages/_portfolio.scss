@@ -84,3 +84,13 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+.portfolio--full-width {
+  width: 100%;
+  max-width: none;
+  padding: 24px;
+}
+
+.portfolio--full-width .portfolio__intro {
+  padding-block: 24px;
+}
