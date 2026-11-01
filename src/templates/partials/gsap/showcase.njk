@@ -13,11 +13,11 @@
 
   <!-- 01: Transform, opacity, stagger, timeline, easing, mouse interactions, magnetic buttons. -->
   <section class="motion-screen motion-hero" id="motion-start" aria-labelledby="motion-hero-title">
-    <div class="motion-kicker"><span>GSAP {{ icon("slash", "icon--separator") }} A living collection</span><span>01 {{ icon("dash", "icon--separator") }} 10</span></div>
+    <div class="motion-kicker"><span>GSAP {{ icon("slash", "icon--separator") }} A living collection</span><span>01 {{ icon("dash", "icon--separator") }} 11</span></div>
     <div class="motion-hero__layout">
       <div>
         <h1 class="motion-display" id="motion-hero-title">Less static.<br><em>More feeling.</em></h1>
-        <p class="motion-copy">A small field guide to things that move. Ten studies in rhythm, interaction, and the details that make the web feel alive.</p>
+        <p class="motion-copy">A small field guide to things that move. Eleven studies in rhythm, interaction, and the details that make the web feel alive.</p>
         <a class="motion-button motion-button--solid" data-magnetic href="#motion-depth">Enter the collection <span aria-hidden="true">{{ icon("arrow-down-right") }}</span></a>
       </div>
       <div class="motion-hero__art" aria-hidden="true">
@@ -154,13 +154,38 @@
     <p class="motion-tags">Canvas 2D {{ icon("dot", "icon--separator") }} Particles {{ icon("dot", "icon--separator") }} Physics {{ icon("dot", "icon--separator") }} Object properties</p>
   </section>
 
-  <!-- 10: Horizontal scroll, infinite marquee, looping/yoyo, easing, responsive matchMedia, scroll navigation. -->
+  <!-- 10: 3D cube, randomly generated SVG faces, multi-axis rotation, looping timeline. -->
+  <section class="motion-screen motion-cube-section" id="motion-cube" aria-labelledby="motion-cube-title">
+    <div class="motion-kicker"><span>10 {{ icon("slash", "icon--separator") }} Another dimension</span><span>Six sides. Endless possibilities.</span></div>
+    <div class="motion-section-head">
+      <h2 class="motion-heading" id="motion-cube-title">Every side has a story.</h2>
+      <button class="motion-button" data-cube-refresh type="button" disabled>New artwork {{ icon("replay") }}</button>
+    </div>
+    <div class="motion-cube-stage" role="img" aria-label="A three-dimensional cube with six randomly generated geometric SVG artworks, rotating in different directions.">
+      <div class="motion-cube" data-cube aria-hidden="true">
+        {% for face in ["front", "back", "right", "left", "top", "bottom"] %}
+          <div class="motion-cube__face motion-cube__face--{{ face }}" data-cube-face>
+            <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+              <circle cx="100" cy="100" r="60" />
+              <circle cx="100" cy="100" r="{{ 15 + loop.index * 5 }}" />
+            </svg>
+            <span class="motion-cube__number">0{{ loop.index }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="motion-copy">A collection in the round. Each face gets an original little SVG, and every turn offers a new perspective.</p>
+    <p class="motion-sr" data-cube-status role="status"></p>
+    <p class="motion-tags">3D transforms {{ icon("dot", "icon--separator") }} Generative SVG {{ icon("dot", "icon--separator") }} Timeline {{ icon("dot", "icon--separator") }} Loop</p>
+  </section>
+
+  <!-- 11: Horizontal scroll, infinite marquee, looping/yoyo, easing, responsive matchMedia, scroll navigation. -->
   <section class="motion-screen motion-finale" id="motion-finale" aria-labelledby="motion-finale-title">
-    <div class="motion-kicker"><span>10 {{ icon("slash", "icon--separator") }} Keep going</span><span>The end is another beginning</span></div>
+    <div class="motion-kicker"><span>11 {{ icon("slash", "icon--separator") }} Keep going</span><span>The end is another beginning</span></div>
     <h2 class="motion-heading" id="motion-finale-title">There’s always<br>another direction.</h2>
     <div class="motion-horizontal"><div class="motion-horizontal__track"><article class="motion-end-card"><span aria-hidden="true">{{ icon("arrow-up-right") }}</span><h3>Stay curious.</h3><p>A new direction starts with a small question.</p></article><article class="motion-end-card"><span aria-hidden="true">{{ icon("asterisk") }}</span><h3>Try something.</h3><p>Not every experiment needs a destination.</p></article><article class="motion-end-card"><span aria-hidden="true">{{ icon("infinity") }}</span><h3>Begin again.</h3><p>A good loop always brings you back.</p></article></div></div>
     <div class="motion-marquee" aria-hidden="true"><div><span>MOVE WITH INTENTION {{ icon("dot", "icon--separator") }} MAKE ROOM FOR PLAY {{ icon("dot", "icon--separator") }} </span><span>MOVE WITH INTENTION {{ icon("dot", "icon--separator") }} MAKE ROOM FOR PLAY {{ icon("dot", "icon--separator") }} </span></div></div>
-    <div class="motion-footnote"><p>Ten studies. One curious web.</p><a class="motion-button" href="#motion-start">Back to the beginning {{ icon("arrow-up") }}</a></div>
+    <div class="motion-footnote"><p>Eleven studies. One curious web.</p><a class="motion-button" href="#motion-start">Back to the beginning {{ icon("arrow-up") }}</a></div>
     <p class="motion-tags">Horizontal scroll {{ icon("dot", "icon--separator") }} Marquee {{ icon("dot", "icon--separator") }} Loop {{ icon("dot", "icon--separator") }} Yoyo {{ icon("dot", "icon--separator") }} ScrollTo</p>
   </section>
 </div>

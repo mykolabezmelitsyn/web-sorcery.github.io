@@ -21,6 +21,7 @@ function loadScript(root, name) {
 export async function initShowcase(root) {
   if (!root || root.dataset.initialized) return;
   root.dataset.initialized = "true";
+  generateCubeArt(root);
   const status = root.querySelector("[data-load-status]");
   let gsap;
   try {
@@ -88,6 +89,7 @@ export async function initShowcase(root) {
         initInterface(env);
         initImages(env);
         initParticles(env);
+        initCube(env);
         initFinale(env);
       });
       plugins.ScrollTrigger.refresh();
@@ -548,7 +550,93 @@ function initParticles(env) {
   env.cleanup(() => { resize.disconnect(); observer.disconnect(); theme.disconnect(); gsap.ticker.remove(paint); });
 }
 
-// 10 — Pinned horizontal travel on wide screens, stacked cards on mobile/reduced motion.
+// Each visit gets six different, randomized SVG compositions, even without the CDN.
+function generateCubeArt(root) {
+  const kinds = [0, 1, 2, 3, 4, 5];
+  for (let i = kinds.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [kinds[i], kinds[j]] = [kinds[j], kinds[i]];
+  }
+  const random = (min, max) => min + Math.random() * (max - min);
+  root.querySelectorAll("[data-cube-face] svg").forEach((svg, index) => {
+    svg.replaceChildren();
+    const add = (tag, attributes, parent = svg) => {
+      const shape = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      Object.entries(attributes).forEach(([key, value]) => shape.setAttribute(key, String(value)));
+      parent.append(shape);
+      return shape;
+    };
+    const accent = "motion-cube__art-accent";
+    switch (kinds[index]) {
+      case 0: {
+        const cx = random(85, 115);
+        const cy = random(85, 115);
+        [25, 45, 65].forEach((r) => add("circle", { cx, cy, r }));
+        add("circle", { cx: cx + 45, cy, r: 7, fill: "currentColor", class: accent });
+        break;
+      }
+      case 1: {
+        const tips = Math.floor(random(5, 9));
+        const offset = random(0, Math.PI);
+        const points = Array.from({ length: tips * 2 }, (_, i) => {
+          const angle = offset + i * Math.PI / tips;
+          const r = i % 2 ? 30 : 75;
+          return `${100 + Math.cos(angle) * r},${100 + Math.sin(angle) * r}`;
+        });
+        add("polygon", { points: points.join(" "), class: accent });
+        add("circle", { cx: 100, cy: 100, r: random(8, 18) });
+        break;
+      }
+      case 2:
+        for (let row = 0; row < 3; row++) {
+          for (let col = 0; col < 3; col++) {
+            add("circle", { cx: 45 + col * 55, cy: 45 + row * 55, r: random(6, 20), fill: Math.random() > 0.55 ? "currentColor" : "none", class: (row + col) % 2 ? accent : "" });
+          }
+        }
+        break;
+      case 3: {
+        const phase = random(0, Math.PI * 2);
+        [55, 100, 145].forEach((baseline, row) => {
+          const points = Array.from({ length: 41 }, (_, i) => `${i ? "L" : "M"}${20 + i * 4} ${baseline + Math.sin(i * 0.2 + phase) * 18}`);
+          add("path", { d: points.join(" "), class: row === 1 ? accent : "" });
+        });
+        break;
+      }
+      case 4: {
+        const shift = random(-8, 8);
+        [22, 38, 54, 70].forEach((r, i) => add("path", { d: `M${100 - r + shift} 165V100a${r} ${r} 0 0 1 ${r * 2} 0v65`, class: i % 2 ? accent : "" }));
+        break;
+      }
+      case 5: {
+        const offset = random(0, 60);
+        [0, 60, 120].forEach((angle) => add("ellipse", { cx: 100, cy: 100, rx: 75, ry: random(20, 30), transform: `rotate(${angle + offset} 100 100)` }));
+        add("circle", { cx: 100, cy: 100, r: 8, fill: "currentColor", class: accent });
+        break;
+      }
+    }
+  });
+}
+
+// 10 — A continuous 3D timeline changes axes and direction, pausing offscreen.
+function initCube(env) {
+  const { $, root, gsap, on, reduced } = env;
+  const section = $(".motion-cube-section");
+  const cube = $("[data-cube]");
+  on($("[data-cube-refresh]"), "click", () => {
+    generateCubeArt(root);
+    $("[data-cube-status]").textContent = "Six new SVG artworks generated.";
+  });
+  if (reduced) return;
+  gsap.set(cube, { rotationX: -22, rotationY: 32, rotationZ: 0 });
+  const rotation = gsap.timeline({ repeat: -1, paused: true, defaults: { duration: 5, ease: "sine.inOut" } })
+    .to(cube, { rotationX: 115, rotationY: 195, rotationZ: 15 })
+    .to(cube, { rotationX: -70, rotationY: 320, rotationZ: -30 })
+    .to(cube, { rotationX: -200, rotationY: 140, rotationZ: 25 })
+    .to(cube, { rotationX: -22, rotationY: 32, rotationZ: 0 });
+  observeLoop(env, section, rotation);
+}
+
+// 11 — Pinned horizontal travel on wide screens, stacked cards on mobile/reduced motion.
 function initFinale(env) {
   const { $, $$, gsap, plugins, reduced, desktop, roomy } = env;
   if (reduced) return;

@@ -68,7 +68,7 @@ files together; uploading HTML alone leaves its compiled CSS and JavaScript miss
 
 ## GSAP showcase
 
-`gsap-animations.html` contains ten animation studies inside `.gsap-container`.
+`gsap-animations.html` contains eleven animation studies inside `.gsap-container`.
 Edit `src/templates/partials/gsap/showcase.njk` for content,
 `src/scss/components/_gsap-showcase.scss` for scoped styles, and
 `src/scripts/modules/gsap-showcase.js` for the section initializers.
@@ -80,3 +80,7 @@ image assets are used. The Pause motion control and the system reduced-motion
 preference disable autoplay, pinning, and scrubbing while preserving interactive
 navigation, layout controls, and the miniature website. Desktop horizontal cards
 become a static stack when motion is paused or the screen is narrow or short.
+
+The 3D cube has six generated SVG faces. Its rotation changes direction automatically
+and pauses offscreen, in background tabs, or when motion is paused/reduced. Use
+New artwork to regenerate the faces without restarting the rotation.
