@@ -246,29 +246,74 @@ function initPaths(env) {
 
 // 05 — Capture the previous layout, change CSS, then FLIP between the two states.
 function initLayout(env) {
-  const { $, $$, plugins, on, duration } = env;
+  const { $, $$, gsap, plugins, on, reduced } = env;
   const grid = $("[data-flip-grid]");
   const button = $("[data-flip-toggle]");
   const label = button.querySelector("[data-flip-label]");
   const tiles = $$(".motion-tile");
-  const originalStyles = tiles.map((tile) => tile.getAttribute("style"));
+  const content = tiles.flatMap((tile) => [...tile.children]);
+  const originalStyles = [...tiles, ...content].map((element) => element.getAttribute("style"));
   let tween;
-  on(button, "click", () => {
-    if (tween?.isActive()) return;
-    const state = plugins.Flip.getState(tiles);
+  const restoreStyles = (elements, offset = 0) => {
+    elements.forEach((element, index) => {
+      const style = originalStyles[index + offset];
+      if (style === null) element.removeAttribute("style");
+      else element.setAttribute("style", style);
+    });
+  };
+  const revealContent = () => {
+    restoreStyles(content, tiles.length);
+    grid.removeAttribute("aria-busy");
+    button.disabled = false;
+  };
+  const changeLayout = () => {
     const list = grid.classList.toggle("motion-tiles--list");
     button.setAttribute("aria-pressed", String(list));
     label.textContent = list ? "Switch to grid" : "Switch to list";
-    tween = plugins.Flip.from(state, { duration: duration(0.8), ease: "power3.inOut", stagger: duration(0.05), onComplete: () => plugins.ScrollTrigger.refresh() });
+  };
+  on(button, "click", () => {
+    if (button.disabled) return;
+    if (reduced) {
+      changeLayout();
+      plugins.ScrollTrigger.refresh();
+      return;
+    }
+    grid.setAttribute("aria-busy", "true");
+    button.disabled = true;
+    // Finish fading out before changing layout; reveal only after all tiles settle.
+    tween = gsap.to(content, {
+      autoAlpha: 0,
+      duration: 0.16,
+      ease: "power1.out",
+      onInterrupt: revealContent,
+      onComplete: () => {
+        const state = plugins.Flip.getState(tiles);
+        changeLayout();
+        tween = plugins.Flip.from(state, {
+          duration: 0.8,
+          ease: "power3.inOut",
+          stagger: 0.05,
+          onInterrupt: revealContent,
+          onComplete: () => {
+            plugins.ScrollTrigger.refresh();
+            tween = gsap.to(content, {
+              autoAlpha: 1,
+              duration: 0.25,
+              stagger: 0.015,
+              ease: "power2.out",
+              onComplete: revealContent,
+              onInterrupt: revealContent,
+            });
+          },
+        });
+      },
+    });
   });
   env.cleanup(() => {
     tween?.kill();
-    // Flip temporarily writes sizes/transforms outside regular CSS tweens.
-    // Restore those after context.revert(), before the new breakpoint initializes.
-    tiles.forEach((tile, index) => {
-      if (originalStyles[index] === null) tile.removeAttribute("style");
-      else tile.setAttribute("style", originalStyles[index]);
-    });
+    revealContent();
+    // Restore Flip's temporary sizes/transforms after the GSAP context reverts.
+    restoreStyles(tiles);
     grid.classList.remove("motion-tiles--list");
     label.textContent = "Switch to list";
     button.setAttribute("aria-pressed", "false");
