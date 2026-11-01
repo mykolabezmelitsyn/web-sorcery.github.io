@@ -4,24 +4,36 @@
   navigation: auto;
 }
 
-::view-transition-old(root) {
-  animation: .5s linear both zoom-out;
+/* Target only the main content */
+#main {
+  view-transition-name: main;
 }
 
+/* Disable default full-page transition */
+::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: .5s linear both zoom-in;
+  animation: none;
 }
 
-@keyframes zoom-out {
+/* Animate main content */
+::view-transition-old(main) {
+  animation: .5s linear both slide-out;
+}
+
+::view-transition-new(main) {
+  animation: .5s linear both slide-in;
+}
+
+@keyframes slide-out {
   to {
-    transform: translateX(-50%) scale(.9);
+    translate: -5% 0;
     opacity: 0;
   }
 }
 
-@keyframes zoom-in {
+@keyframes slide-in {
   from {
-    transform: translateX(50%);
+    translate: 5% 0;
     opacity: 0;
   }
 }
@@ -34,7 +46,6 @@ html {
 * {
   box-sizing: border-box;
 }
-
 
 body {
   margin: 0;
