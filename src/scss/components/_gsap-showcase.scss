@@ -1,11 +1,11 @@
 .gsap-container {
   // Showcase-only tokens; theme colors inherit from the portfolio.
-  --motion-warm: #bd6040;
-  --motion-sky: #ddd9bd;
-  --motion-hill: #8c9973;
-  --motion-front: #526645;
-  --motion-sun-gold: #f9b94b;
-  --motion-sun-ember: #cf5b2e;
+  --motion-warm: var(--color-accent);
+  --motion-sky: var(--color-art-sky);
+  --motion-hill: var(--color-art-mid);
+  --motion-front: var(--color-art-deep);
+  --motion-sun-gold: var(--color-art-glow);
+  --motion-sun-ember: var(--color-art-core);
   --motion-ink: var(--color-text);
   --motion-paper: var(--color-background);
 
@@ -708,7 +708,7 @@
     justify-content: space-between;
     gap: 0.375rem 1rem;
     font-size: 0.6875rem;
-    color: var(--color-paper);
+    color: var(--color-on-art);
   }
 
   .motion-image-cursor {
