@@ -79,4 +79,4 @@ unavailable, the artwork, text, and chapter links remain readable. No external
 image assets are used. The Pause motion control and the system reduced-motion
 preference disable autoplay, pinning, and scrubbing while preserving interactive
 navigation, layout controls, and the miniature website. Desktop horizontal cards
-become a static stack when motion is paused or the screen is narrow.
+become a static stack when motion is paused or the screen is narrow or short.

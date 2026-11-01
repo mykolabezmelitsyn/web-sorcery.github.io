@@ -74,6 +74,9 @@
   }
 
   .motion-bar__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     padding-block: 0.5rem;
     text-decoration: none;
   }
@@ -94,7 +97,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 1.5rem;
     min-width: 0;
     min-height: calc(100svh - 5rem);
     padding: clamp(1.5rem, 4vw, 4rem) clamp(0.5rem, 3vw, 3rem);
@@ -141,11 +144,11 @@
   }
 
   .motion-display {
-    font-size: clamp(3.5rem, 8.5vw, 9rem);
+    font-size: clamp(2.75rem, 8.5vw, 9rem);
   }
 
   .motion-heading {
-    font-size: clamp(2.75rem, 6vw, 6.5rem);
+    font-size: clamp(2rem, 6vw, 6.5rem);
   }
 
   em {
@@ -170,6 +173,7 @@
     gap: 1.5rem;
     align-self: flex-start;
     min-height: 3rem;
+    max-width: 100%;
     padding: 0.75rem 1.25rem;
     border: 1px solid var(--color-border);
     border-radius: 2rem;
@@ -210,6 +214,13 @@
     grid-template-columns: minmax(0, 1fr);
     align-items: center;
     gap: 2rem;
+  }
+
+  .motion-hero__layout > div,
+  .motion-two-up > div,
+  .motion-section-head > *,
+  .motion-slide {
+    min-width: 0;
   }
 
   .motion-hero__art {
@@ -425,15 +436,22 @@
   }
 
   .motion-tiles--list .motion-tile {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
     align-items: center;
     gap: 1rem;
     padding: 1rem;
   }
 
   .motion-tiles--list .motion-tile > span {
+    grid-row: span 2;
     margin: 0;
     font-size: 2rem;
+  }
+
+  .motion-tiles--list .motion-tile p {
+    grid-column: 2;
+    margin: 0;
   }
 
   .motion-playground {
@@ -540,7 +558,7 @@
 
   .motion-slide h3 {
     margin: 1rem 0;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(2rem, 5vw, 4.5rem);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.05em;
@@ -603,7 +621,7 @@
   .motion-dialog h3 {
     margin-block: 1.5rem;
     font-family: Georgia, serif;
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     font-weight: 400;
     line-height: 1.1;
   }
@@ -614,20 +632,47 @@
     color: var(--color-muted);
   }
 
+  .motion-images {
+    min-height: 0;
+  }
+
+  .motion-images .motion-section-head {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+  }
+
+  .motion-images .motion-heading {
+    font-size: clamp(1.75rem, 6vw, 6.5rem);
+  }
+
+  .motion-images [data-image-replay] {
+    flex-shrink: 0;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.625rem;
+  }
+
+  .motion-image-replay__label {
+    display: none;
+  }
+
   .motion-image-frame {
     position: relative;
     overflow: hidden;
-    min-height: 20rem;
-    aspect-ratio: 2;
+    width: 100%;
+    height: auto;
+    max-height: min(55svh, 34rem);
+    aspect-ratio: 4 / 3;
     background: var(--color-surface);
     clip-path: inset(0% round 0.5rem);
     mask-image: linear-gradient(transparent, var(--color-text) 8%, var(--color-text) 92%, transparent);
   }
 
   .motion-landscape {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    min-height: 20rem;
   }
 
   .motion-landscape__sky {
@@ -656,12 +701,12 @@
   .motion-image-caption {
     position: absolute;
     right: 1rem;
-    bottom: 1.5rem;
+    bottom: 1rem;
     left: 1rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.375rem 1rem;
     font-size: 0.6875rem;
     color: var(--color-paper);
   }
@@ -685,7 +730,7 @@
   .motion-canvas-frame {
     position: relative;
     overflow: hidden;
-    height: clamp(20rem, 45svh, 32rem);
+    height: clamp(12rem, 45svh, 32rem);
     border: 1px solid var(--color-border);
     background: var(--color-surface);
   }
@@ -722,7 +767,7 @@
     justify-content: space-between;
     gap: 1.5rem;
     min-height: 18rem;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     border: 1px solid var(--color-border);
     background: var(--color-surface);
   }
@@ -763,6 +808,10 @@
   }
 
   @media (min-width: 48rem) {
+    .motion-screen {
+      gap: 2rem;
+    }
+
     .motion-hero__layout,
     .motion-two-up {
       grid-template-columns: 1.15fr 1fr;
@@ -772,12 +821,46 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    &[data-motion="active"] .motion-horizontal__track {
-      display: flex;
+    .motion-tiles--list .motion-tile {
+      grid-template-columns: 2rem minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    .motion-tiles--list .motion-tile > span {
+      grid-row: auto;
+    }
+
+    .motion-tiles--list .motion-tile p {
+      grid-column: auto;
     }
 
     .motion-end-card {
       flex: 0 0 65%;
+    }
+  }
+
+  @media (min-width: 48rem) and (min-height: 44rem) {
+    &[data-motion="active"] .motion-horizontal__track {
+      display: flex;
+    }
+
+    .motion-images {
+      min-height: calc(100svh - 5rem);
+    }
+
+    .motion-images .motion-section-head {
+      flex-wrap: wrap;
+    }
+
+    .motion-images [data-image-replay] {
+      padding: 0.75rem 1.25rem;
+    }
+
+    .motion-image-replay__label {
+      display: inline;
+    }
+
+    .motion-image-frame {
+      aspect-ratio: 2;
     }
   }
 

@@ -46,6 +46,7 @@ export async function initShowcase(root) {
     media.add({
       all: "(min-width: 0px)",
       desktop: "(min-width: 48rem)",
+      roomy: "(min-width: 48rem) and (min-height: 44rem)",
       fine: "(hover: hover) and (pointer: fine)",
       reduced: "(prefers-reduced-motion: reduce)",
     }, (match) => {
@@ -64,6 +65,7 @@ export async function initShowcase(root) {
       const env = {
         root, gsap, plugins, reduced,
         desktop: match.conditions.desktop,
+        roomy: match.conditions.roomy,
         fine: match.conditions.fine,
         $: (selector) => root.querySelector(selector),
         $$: (selector) => [...root.querySelectorAll(selector)],
@@ -196,12 +198,12 @@ function initHero(env) {
 
 // 02 — Scrubbed parallax and 3D perspective; desktop pins, mobile flows naturally.
 function initDepth(env) {
-  const { $, gsap, reduced, desktop } = env;
+  const { $, gsap, reduced, desktop, roomy } = env;
   if (reduced) return;
   const section = $(".motion-depth");
   gsap.timeline({ scrollTrigger: {
-    trigger: section, start: "top 90px", end: desktop ? "+=100%" : "bottom 20%",
-    pin: desktop, scrub: 0.8, invalidateOnRefresh: true,
+    trigger: section, start: "top 90px", end: desktop && roomy ? "+=100%" : "bottom 20%",
+    pin: desktop && roomy, scrub: 0.8, invalidateOnRefresh: true,
   } })
     .fromTo($(".motion-depth__layer--back"), { y: 60, rotationY: -20 }, { y: -70, rotationY: 12, ease: "none" }, 0)
     .fromTo($(".motion-depth__layer--middle"), { y: 90, rotationX: 18 }, { y: -35, rotationX: -8, rotation: 5, ease: "none" }, 0)
@@ -413,7 +415,7 @@ function initInterface(env) {
 
 // 08 — Pin the section when the small image reaches center, then scrub it to full size.
 function initImages(env) {
-  const { $, gsap, on, reduced, fine } = env;
+  const { $, gsap, on, reduced, fine, desktop, roomy } = env;
   const section = $(".motion-images");
   const frame = $(".motion-image-frame");
   const artwork = $(".motion-landscape");
@@ -427,8 +429,9 @@ function initImages(env) {
   });
   const timeline = gsap.timeline({ scrollTrigger: {
     trigger: frame,
-    start: "center center",
-    end: () => `+=${Math.max(window.innerHeight * 0.9, 600)}`,
+    // Center in the visible space below the portfolio's sticky 5rem header.
+    start: () => `center ${(window.innerHeight + parseFloat(getComputedStyle(env.root).fontSize) * 5) / 2}px`,
+    end: () => `+=${desktop && roomy ? Math.max(window.innerHeight * 0.9, 600) : Math.max(window.innerHeight * 0.65, 300)}`,
     pin: section,
     pinSpacing: true,
     anticipatePin: 1,
@@ -547,11 +550,11 @@ function initParticles(env) {
 
 // 10 — Pinned horizontal travel on wide screens, stacked cards on mobile/reduced motion.
 function initFinale(env) {
-  const { $, $$, gsap, plugins, reduced, desktop } = env;
+  const { $, $$, gsap, plugins, reduced, desktop, roomy } = env;
   if (reduced) return;
   const section = $(".motion-finale");
   const track = $(".motion-horizontal__track");
-  if (desktop) gsap.to(track, {
+  if (desktop && roomy) gsap.to(track, {
     x: () => -Math.max(0, track.scrollWidth - $(".motion-horizontal").clientWidth),
     ease: "none", scrollTrigger: { trigger: section, start: "top 90px", end: () => `+=${Math.max(600, track.scrollWidth - track.clientWidth)}`, scrub: 0.8, pin: true, invalidateOnRefresh: true },
   });
