@@ -5,8 +5,24 @@
 {% block title %}GSAP Animations — Web Sorcery{% endblock %}
 {% block mainModifier %} portfolio--full-width{% endblock %}
 
+{% block head %}
+  <link rel="stylesheet" href="/animations/soldier-3D/soldier.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"
+      }
+    }
+  </script>
+{% endblock %}
+
 {% block content %}
+  <canvas id="webgl-soldier"></canvas>
   <div class="portfolio__content">
     {% include "partials/gsap/showcase.njk" %}
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="module" src="/animations/soldier-3D/soldier.js"></script>
 {% endblock %}

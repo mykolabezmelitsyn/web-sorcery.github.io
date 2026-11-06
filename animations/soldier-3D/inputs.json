@@ -1,0 +1,104 @@
+{
+  "Soldier.glb": {
+    "type": "glb",
+    "bytes": 2160468,
+    "meshes": 2,
+    "images": 2,
+    "animations": [
+      {
+        "name": "Idle",
+        "duration_s": 1.9666666666666694
+      },
+      {
+        "name": "Run",
+        "duration_s": 0.7
+      },
+      {
+        "name": "TPose",
+        "duration_s": 0.03333333333333333
+      },
+      {
+        "name": "Walk",
+        "duration_s": 1.0333333333333332
+      }
+    ]
+  },
+  "brief": "Create a 3D animation using animations/soldier-3D/Soldier.glb. Put the model on the GSAP animations page inside the webgl-soldier. It should appear as soon as page loaded. For now, it should be fixde at the center of the screen.",
+  "container": "#webgl-soldier (existing canvas in gsap-animations.html)",
+  "assumptions": [
+    "Use embedded Idle clip, without locomotion or entrance delay.",
+    "Use neutral lighting and transparent background; CDN access required.",
+    "Hover means raycasting the visible model, not the canvas rectangle; empty canvas space passes through.",
+    "Touch tap and Enter/Space provide alternatives; reduced motion disables jumping.",
+    "A 0.8-second parabolic jump reaches 20% of model height and lands at the original position; no stacking during a jump.",
+    "Cursor-following is a decorative overlay on the Head and Neck bones, using screen-aligned yaw/pitch relative to the projected head position.",
+    "Limit yaw to 36 degrees; upward tilt to about 14 degrees and downward tilt to about 18 degrees.",
+    "Use frame-rate-independent smoothing, share 25% of the turn with the neck, and return toward Idle when the cursor leaves or the window loses focus.",
+    "Disable head tracking under reduced motion; retain the previous simple hover jump and no visible controls.",
+    "Use the full active scroller range: scrollHeight minus clientHeight. Remove the 2400-pixel duration and easing.",
+    "Scale the measured path coordinate system by scrollRange/sourceArcLength, so one scroll pixel equals one scroll-path unit; project by the inverse scale to preserve the existing bounded canvas endpoints.",
+    "The path is currently a straight diagonal. Use getLength/getPointAt with 2048 arc-length samples so curved replacements use arc distance rather than parameter time.",
+    "Keep reduced-motion positioning centered. Zero-range or zero-length geometry remains static and finite.",
+    "Recolor the existing color atlas in the material shader, preserving luminance/wear, UVs, original normal map, skinning and GLB bytes.",
+    "Use site CSS tokens for steel/slate armor, blue accent markings and pale highlights; deep navy visor/joints remain readable in both themes.",
+    "Refresh palette uniforms on site theme changes and system preference changes, including paused/reduced-motion redraws.",
+    "Scale the real model uniformly from 1 to 4.5 across normalized scroll progress, preserving the existing stage path mapping.",
+    "Blend cursor gaze into a fixed 60-degree leftward head turn at the bottom; fade/suppress hover jumping in the close-up.",
+    "Full page means a fixed, viewport-sized overlay covering the page at every scroll position, with its stage mounted directly under body.",
+    "Move and scale the 3D presentation group inside the full-page canvas; use camera fitting to keep visible geometry inside a 24-pixel inset.",
+    "Keep stage/canvas pointer-events:none. Passive hover uses model raycasting; capture pointer/click events only on visible mesh hits, preserving background page interaction.",
+    "Use an invisible model-sized keyboard action instead of focusing the full-page canvas. Reuse and restore a host-provided soldier-stage if present.",
+    "The body must remain fully opaque throughout scrolling; remove the former head-only dissolve and its alpha-hash mask.",
+    "Keep full-body framing active through the bottom so removing transparency cannot expose cropped limbs. Preserve the final leftward head turn.",
+    "Reserve a responsive final full-body frame of up to 600 CSS pixels / 80% viewport height; leave all original texture and normal detail intact."
+  ],
+  "technology": "Three.js renders the skinned model; bounded head/neck quaternion offsets are layered after each Idle sample, sharing the existing jump/render clock.",
+  "updates": [
+    "Remove threejs controls",
+    "also remove threejs controls pause/play button",
+    "Now let's add some motion to the model. Soldier should jump when user hover it.",
+    "Jump animation should be more realistic. As a real human soldier",
+    "Revert last changes with jumping",
+    "Let's animate the head. It should follow the cursor.",
+    "Now Soldier should move along with page scrolling, slowly, right-bottom direction. Stop when Soldier reaches the right-bottom line of the page.",
+    "The model's movement path must have a length equal to the scroll distance on the page, so that the motion stays precisely synchronized with the scrolling. I'm working on a scroll-driven animation where a model (likely a 3D model or character) moves along a path as the user scrolls. Adjust the path length calculation and the mapping between scroll progress and path position so that the total path length equals the total scroll distance, with a one-to-one correspondence: when the page has scrolled X pixels, the model has traveled exactly X units along its path, and the two stay aligned throughout the scroll, including when scrolling back up.\n\nWork out how to measure the scroll distance (document height minus viewport height, or a specific scroll container's scrollable range) and how to measure the path length accurately, accounting for curves rather than just straight-line distance. Keep the scroll-to-path mapping linear and continuous so the model never jumps, lags, or overshoots at the start or end. Recompute the mapping on resize and when content height changes, so the alignment holds at any viewport size.\n\nPreserve the existing animation framework, scroll library, and rendering setup I'm using, and change only what is needed to enforce this length-to-distance equality. If the path length is fixed and the scroll range is not, or the reverse, propose the minimal adjustment (such as a scale factor) that produces the match, and explain it briefly in code comments.",
+    "Let's update the model texture according to the general color theme",
+    "Now let's add more motion. While moving down, model schould be scaled. The lower it is, the larger the model. So when scroll at it's bottom position I should see only head of the model turned left, on the right-bottom corner of the page.",
+    "I moved soldier-stage outside the portfolio__content. The soldier-stage with canvas should be full page size. Model schould not be cropper while moving. User should be able to interract only with model, not the soldier-stage it self. Update animation.",
+    "I found a bug with model rendering. When model is close to the bottom of the page, the body is blured and disappears. Only body, not head. Check the image [Image #1]",
+    "Now format the code so it should be well readable",
+    "Format all code related to the Soldier animation."
+  ],
+  "theme_reference": {
+    "file": "src/scss/base/_root.scss",
+    "type": "SCSS theme tokens",
+    "bytes": 1234,
+    "light": {
+      "armor": "#5b6980",
+      "accent": "#285bd4",
+      "highlight": "#d6e5ff"
+    },
+    "dark": {
+      "armor": "#a2b0c7",
+      "accent": "#91b4ff",
+      "highlight": "#d6e5ff"
+    },
+    "shadow": "#101722"
+  },
+  "rendering_bug_reference": {
+    "file": "assets/pasted-image-.png",
+    "type": "PNG image",
+    "bytes": 130633,
+    "width": 510,
+    "height": 602,
+    "usage": "Diagnose the prior alpha-hash body dissolve",
+    "inspection": "inspect_inputs.py ran but Pillow is unavailable; file metadata and the supplied image were inspected manually."
+  },
+  "source_formatting": {
+    "javascript_html_css_json_markdown": "Prettier 3.6.2",
+    "python": "Black 24.10.0",
+    "configuration": [".prettierrc.json", ".editorconfig", "pyproject.toml"],
+    "embedded_browser_programs": 52,
+    "verification": "Equivalent runtime/embedded JavaScript ASTs, GLSL token streams and Python AST; syntax, build and browser checks."
+  }
+}

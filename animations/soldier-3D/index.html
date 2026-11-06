@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Centered Soldier</title>
+    <link rel="stylesheet" href="./soldier.css" />
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js" } }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --color-background: #fcfdff;
+        --color-muted: #5b6980;
+        --color-accent: #285bd4;
+        --color-art-glow: #d6e5ff;
+      }
+      :root[data-theme='dark'] {
+        color-scheme: dark;
+        --color-background: #101722;
+        --color-muted: #a2b0c7;
+        --color-accent: #91b4ff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          color-scheme: dark;
+          --color-background: #101722;
+          --color-muted: #a2b0c7;
+          --color-accent: #91b4ff;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--color-background);
+        min-height: 100svh;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="webgl-soldier"></canvas>
+    <script type="module" src="./soldier.js"></script>
+  </body>
+</html>

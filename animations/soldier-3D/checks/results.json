@@ -1,0 +1,422 @@
+{
+  "checks": [
+    {
+      "name": "mobile full-page canvas, opaque full body and unclipped geometry throughout scroll",
+      "passed": true,
+      "overlay": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 667,
+        "parent": "BODY",
+        "insidePortfolio": false,
+        "canvasEvents": "none",
+        "stageEvents": "none",
+        "tabIndex": -1
+      },
+      "samples": [
+        {
+          "fraction": 0,
+          "minX": 119.83260571395068,
+          "minY": 168.77963407988625,
+          "maxX": 261.99807192661683,
+          "maxY": 511.15100548522577,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.25,
+          "minX": 121.10556802915107,
+          "minY": 163.0663581407854,
+          "maxX": 277.1723821423381,
+          "maxY": 541.1497330124214,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1.875,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.5,
+          "minX": 130.82889347080996,
+          "minY": 179.52798261544586,
+          "maxX": 281.9913874987039,
+          "maxY": 544.9644621794125,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.75,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.7,
+          "minX": 138.6266228748572,
+          "minY": 192.72661564096953,
+          "maxX": 285.83934507981616,
+          "maxY": 548.0156255341278,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.4501677048394823,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.8,
+          "minX": 136.8488606257331,
+          "minY": 184.9080143123612,
+          "maxX": 294.7278472787664,
+          "maxY": 567.1795462167873,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.7998322951605177,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.9,
+          "minX": 134.1787058900189,
+          "minY": 175.20611190693097,
+          "maxX": 304.8324123538503,
+          "maxY": 589.5893181632144,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.149916147580259,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 1,
+          "minX": 130.34393940268333,
+          "minY": 163.09199615929052,
+          "maxX": 316.5557991265888,
+          "maxY": 616.4334639787306,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.5,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0.5,
+          "minX": 130.82889347080996,
+          "minY": 179.52798261544586,
+          "maxX": 281.9913874987039,
+          "maxY": 544.9644621794125,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.75,
+          "aspect": 0.5622188905547226
+        },
+        {
+          "fraction": 0,
+          "minX": 119.83260571395068,
+          "minY": 168.77963407988625,
+          "maxX": 261.99807192661683,
+          "maxY": 511.15100548522577,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 0.5622188905547226
+        }
+      ]
+    },
+    {
+      "name": "tablet full-page canvas, opaque full body and unclipped geometry throughout scroll",
+      "passed": true,
+      "overlay": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 1024,
+        "parent": "BODY",
+        "insidePortfolio": false,
+        "canvasEvents": "none",
+        "stageEvents": "none",
+        "tabIndex": -1
+      },
+      "samples": [
+        {
+          "fraction": 0,
+          "minX": 312.7389186708976,
+          "minY": 342.25617711520556,
+          "maxX": 460.04387715197385,
+          "maxY": 690.1408414795598,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.25,
+          "minX": 326.6769555553116,
+          "minY": 290.5896766671773,
+          "maxX": 558.1107905118699,
+          "maxY": 849.983925726003,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1.875,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.5,
+          "minX": 389.1027257517825,
+          "minY": 363.4740584053564,
+          "maxX": 598.5568574156642,
+          "maxY": 866.665987351555,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.75,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.7,
+          "minX": 439.29801008484264,
+          "minY": 422.19881676302026,
+          "maxX": 630.7625870586289,
+          "maxY": 879.8926880948038,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.4498851706036744,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.8,
+          "minX": 457.03768848649923,
+          "minY": 433.1465012287594,
+          "maxX": 655.6646944381037,
+          "maxY": 908.3589909897064,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.8001148293963256,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.9,
+          "minX": 474.08588311701556,
+          "minY": 442.8061333523474,
+          "maxX": 681.3830790027845,
+          "maxY": 938.9264192957801,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.150057414698163,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 1,
+          "minX": 490.2274316204672,
+          "minY": 450.72210727988977,
+          "maxX": 708.2353792493084,
+          "maxY": 972.3927343093915,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.5,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0.5,
+          "minX": 389.1027257517825,
+          "minY": 363.4740584053564,
+          "maxX": 598.5568574156642,
+          "maxY": 866.665987351555,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.75,
+          "aspect": 0.75
+        },
+        {
+          "fraction": 0,
+          "minX": 312.7389186708976,
+          "minY": 342.25617711520556,
+          "maxX": 460.04387715197385,
+          "maxY": 690.1408414795598,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 0.75
+        }
+      ]
+    },
+    {
+      "name": "desktop full-page canvas, opaque full body and unclipped geometry throughout scroll",
+      "passed": true,
+      "overlay": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "parent": "BODY",
+        "insidePortfolio": false,
+        "canvasEvents": "none",
+        "stageEvents": "none",
+        "tabIndex": -1
+      },
+      "samples": [
+        {
+          "fraction": 0,
+          "minX": 649.6999842355658,
+          "minY": 281.57835559612835,
+          "maxX": 795.6398623641796,
+          "maxY": 628.014491499808,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.25,
+          "minX": 758.5361634275606,
+          "minY": 241.8367017187546,
+          "maxX": 965.1266668063547,
+          "maxY": 741.6852465851916,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1.8749253731343285,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.5,
+          "minX": 901.6571387793132,
+          "minY": 290.58561857193024,
+          "maxX": 1093.6191374152668,
+          "maxY": 752.8995858093791,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.750149253731343,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.7,
+          "minX": 1016.2533800714841,
+          "minY": 329.78293374139434,
+          "maxX": 1196.316381260552,
+          "maxY": 761.817712922295,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.450149253731343,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.8,
+          "minX": 1066.5713697582216,
+          "minY": 331.88887579849705,
+          "maxX": 1256.0186422685,
+          "maxY": 787.2364851495624,
+          "count": 7434,
+          "total": 7434,
+          "scale": 3.8,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.9,
+          "minX": 1116.0868537660187,
+          "minY": 332.29970014678315,
+          "maxX": 1316.8533070279896,
+          "maxY": 815.4768632598336,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.150149253731343,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 1,
+          "minX": 1164.4364654308968,
+          "minY": 330.45179815366424,
+          "maxX": 1379.098529068054,
+          "maxY": 847.5179695433707,
+          "count": 7434,
+          "total": 7434,
+          "scale": 4.5,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0.5,
+          "minX": 901.6571387793132,
+          "minY": 290.58561857193024,
+          "maxX": 1093.6191374152668,
+          "maxY": 752.8995858093791,
+          "count": 7434,
+          "total": 7434,
+          "scale": 2.750149253731343,
+          "aspect": 1.6
+        },
+        {
+          "fraction": 0,
+          "minX": 649.6999842355658,
+          "minY": 281.57835559612835,
+          "maxX": 795.6398623641796,
+          "maxY": 628.014491499808,
+          "count": 7434,
+          "total": 7434,
+          "scale": 1,
+          "aspect": 1.6
+        }
+      ]
+    },
+    {
+      "name": "custom scroll range, content-height changes and live resize",
+      "passed": true
+    },
+    {
+      "name": "background clicks pass through, mesh hover/click/keyboard jump work, and clicks on the model do not activate links behind it",
+      "passed": true
+    },
+    {
+      "name": "head tracking, neutral return and final leftward head turn",
+      "passed": true
+    },
+    {
+      "name": "theme palette and original atlas/normal preservation",
+      "passed": true
+    },
+    {
+      "name": "host stage, canvas attributes and placement restored on destroy",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "headTracking": {
+    "left": {
+      "x": -0.37894838312848134,
+      "y": 0.016226270593227333,
+      "z": 0.9252755433390852
+    },
+    "right": {
+      "x": 0.37972637374872553,
+      "y": 0.016249595224618874,
+      "z": 0.924956124273663
+    },
+    "up": {
+      "x": 0.0012640258586649532,
+      "y": 0.11314618895345933,
+      "z": 0.9935775471278321
+    },
+    "down": {
+      "x": 0.0006885876568555275,
+      "y": -0.24712632866501172,
+      "z": 0.9689830253714589
+    },
+    "neutral": {
+      "x": -5.291920521085722e-7,
+      "y": -0.00025855899378467856,
+      "z": 0.9999999665669602
+    },
+    "terminal": {
+      "x": -0.8660260737543838,
+      "y": 0.00001982151897728969,
+      "z": 0.4999988437031264
+    }
+  },
+  "materialPalettes": {
+    "light": {
+      "armor": "5b6980",
+      "accent": "285bd4",
+      "mapsPreserved": true
+    },
+    "dark": {
+      "armor": "a2b0c7",
+      "accent": "91b4ff",
+      "mapsPreserved": true
+    }
+  },
+  "performance": {
+    "drawCallsOver2Seconds": 242,
+    "longTasks": []
+  }
+}

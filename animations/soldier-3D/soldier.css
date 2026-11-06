@@ -1,0 +1,59 @@
+#webgl-soldier {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.soldier-stage {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: #0f172a;
+  font:
+    12px/1.4 Arial,
+    sans-serif;
+  pointer-events: none;
+}
+.soldier-stage canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+.soldier-model-action {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+.soldier-model-action:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+.soldier-status {
+  position: absolute;
+  top: 45%;
+  left: 20%;
+  right: 20%;
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  color: #0f172a;
+  background: #f8fafc;
+}
+.soldier-stage [hidden] {
+  display: none !important;
+}
