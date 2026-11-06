@@ -161,7 +161,7 @@
       <h2 class="motion-heading" id="motion-cube-title">Every side has a story.</h2>
       <button class="motion-button" data-cube-refresh type="button" disabled>New artwork {{ icon("replay") }}</button>
     </div>
-    <div class="motion-cube-stage" role="img" aria-label="A three-dimensional cube with six randomly generated geometric SVG artworks, rotating in different directions.">
+    <div class="motion-cube-stage" role="group" tabindex="0" aria-label="Interactive cube with six geometric SVG artworks. Drag the cube or use the arrow keys to rotate it.">
       <div class="motion-cube" data-cube aria-hidden="true">
         {% for face in ["front", "back", "right", "left", "top", "bottom"] %}
           <div class="motion-cube__face motion-cube__face--{{ face }}" data-cube-face>

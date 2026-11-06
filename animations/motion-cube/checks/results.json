@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "name": "mobile",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "tablet",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "desktop",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "reduced motion",
+      "static": true
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

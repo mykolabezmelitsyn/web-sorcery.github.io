@@ -1,0 +1,31 @@
+{
+  "brief": "Let's work on motion-cube. It should be draggable, so user can rotate it with the mouse",
+  "container": "#motion-cube",
+  "inputs": [
+    {
+      "file": "src/scripts/modules/gsap-showcase.js",
+      "type": "JavaScript",
+      "bytesBefore": 39345,
+      "use": "Preserve GSAP rotation and lifecycle; add pointer and keyboard input."
+    },
+    {
+      "file": "src/templates/partials/gsap/showcase.njk",
+      "type": "Nunjucks",
+      "bytesBefore": 20123,
+      "use": "Make the cube stage keyboard-focusable and describe interaction."
+    },
+    {
+      "file": "src/scss/components/_gsap-showcase.scss",
+      "type": "SCSS",
+      "bytesBefore": 18427,
+      "use": "Add grab cursors, touch handling, and a focus outline."
+    }
+  ],
+  "technology": "Existing GSAP and CSS 3D transforms; no WebGL is needed.",
+  "assumptions": [
+    "The first user rotation stops automatic spinning until the showcase remounts.",
+    "Keep the orientation on release, without inertia.",
+    "Support touch dragging and arrow keys in addition to mouse dragging.",
+    "Explicit user input remains available with reduced motion; automatic spinning is disabled."
+  ]
+}

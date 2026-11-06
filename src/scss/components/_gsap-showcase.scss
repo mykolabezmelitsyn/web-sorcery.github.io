@@ -665,7 +665,12 @@
     aspect-ratio: 4 / 3;
     background: var(--color-surface);
     clip-path: inset(0% round 0.5rem);
-    mask-image: linear-gradient(transparent, var(--color-text) 8%, var(--color-text) 92%, transparent);
+    mask-image: linear-gradient(
+      transparent,
+      var(--color-text) 8%,
+      var(--color-text) 92%,
+      transparent
+    );
   }
 
   .motion-landscape {
@@ -696,7 +701,6 @@
     stroke: var(--motion-sky);
     stroke-width: 1;
   }
-
 
   .motion-image-caption {
     position: absolute;
@@ -769,6 +773,18 @@
     height: var(--cube-size);
     transform: rotateX(-22deg) rotateY(32deg);
     transform-style: preserve-3d;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .motion-cube.is-dragging {
+    cursor: grabbing;
+  }
+
+  .motion-cube-stage:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
   }
 
   .motion-cube__face {

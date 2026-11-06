@@ -1,4 +1,8 @@
 const GSAP_CDN_URL = "https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/";
+const CUBE_CONFIG = {
+  dragDegreesPerPixel: 0.5, // Rotation sensitivity in CSS pixels.
+  keyboardStep: 15, // Degrees per arrow-key press.
+};
 const GSAP_PLUGIN_NAMES = [
   "ScrollTrigger",
   "ScrollToPlugin",
@@ -221,9 +225,10 @@ function saveInlineStyles(elements) {
 }
 
 // Observe looping scenes so offscreen work is paused, including background tabs.
-function observeLoop(environment, element, animation) {
+function observeLoop(environment, element, animation, shouldPlay = () => true) {
   let visible = false;
-  const sync = () => animation.paused(!visible || document.hidden);
+  const sync = () =>
+    animation.paused(!visible || document.hidden || !shouldPlay());
   const observer = new IntersectionObserver(
     ([entry]) => {
       visible = entry.isIntersecting;
@@ -1284,11 +1289,77 @@ function generateCubeArt(root) {
   });
 }
 
-// 10 — A continuous 3D timeline changes axes and direction, pausing offscreen.
+// 10 — Automatic rotation yields to direct dragging or keyboard rotation.
 function initCube(environment) {
   const { select, root, gsap, on, reduceMotion } = environment;
   const section = select(".motion-cube-section");
   const cube = select("[data-cube]");
+  const stage = select(".motion-cube-stage");
+  let rotation;
+  let manual = false;
+  let drag = null;
+  const takeControl = () => {
+    manual = true;
+    rotation?.pause();
+  };
+  on(cube, "pointerdown", (event) => {
+    if (!event.isPrimary || event.button !== 0 || drag) return;
+    takeControl();
+    drag = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      rotationX: Number(gsap.getProperty(cube, "rotationX")),
+      rotationY: Number(gsap.getProperty(cube, "rotationY")),
+    };
+    cube.setPointerCapture(event.pointerId);
+    cube.classList.add("is-dragging");
+    stage.focus({ preventScroll: true });
+    event.preventDefault();
+  });
+  on(cube, "pointermove", (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    // Use the current orientation as the origin to avoid a jump on grab.
+    gsap.set(cube, {
+      rotationX:
+        drag.rotationX -
+        (event.clientY - drag.y) * CUBE_CONFIG.dragDegreesPerPixel,
+      rotationY:
+        drag.rotationY +
+        (event.clientX - drag.x) * CUBE_CONFIG.dragDegreesPerPixel,
+    });
+  });
+  const endDrag = (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const pointerId = drag.id;
+    drag = null;
+    cube.classList.remove("is-dragging");
+    if (cube.hasPointerCapture(pointerId))
+      cube.releasePointerCapture(pointerId);
+  };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((type) =>
+    on(cube, type, endDrag),
+  );
+  on(stage, "keydown", (event) => {
+    const directions = {
+      ArrowLeft: ["rotationY", -1],
+      ArrowRight: ["rotationY", 1],
+      ArrowUp: ["rotationX", -1],
+      ArrowDown: ["rotationX", 1],
+    };
+    const direction = directions[event.key];
+    if (!direction || drag) return;
+    event.preventDefault();
+    takeControl();
+    const [axis, sign] = direction;
+    gsap.set(cube, {
+      [axis]:
+        Number(gsap.getProperty(cube, axis)) + sign * CUBE_CONFIG.keyboardStep,
+    });
+  });
+  environment.cleanup(() => {
+    if (drag) endDrag({ pointerId: drag.id });
+  });
   on(select("[data-cube-refresh]"), "click", () => {
     generateCubeArt(root);
     select("[data-cube-status]").textContent =
@@ -1298,7 +1369,7 @@ function initCube(environment) {
     return;
   }
   gsap.set(cube, { rotationX: -22, rotationY: 32, rotationZ: 0 });
-  const rotation = gsap
+  rotation = gsap
     .timeline({
       repeat: -1,
       paused: true,
@@ -1308,7 +1379,7 @@ function initCube(environment) {
     .to(cube, { rotationX: -70, rotationY: 320, rotationZ: -30 })
     .to(cube, { rotationX: -200, rotationY: 140, rotationZ: 25 })
     .to(cube, { rotationX: -22, rotationY: 32, rotationZ: 0 });
-  observeLoop(environment, section, rotation);
+  observeLoop(environment, section, rotation, () => !manual);
 }
 
 // 11 — Pinned horizontal travel on wide screens, stacked cards on mobile/reduced motion.

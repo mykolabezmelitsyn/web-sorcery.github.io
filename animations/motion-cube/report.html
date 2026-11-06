@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Draggable motion cube report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+      body {
+        font: 12px/1.5 system-ui;
+        color: #172033;
+      }
+      h1,
+      h2 {
+        line-height: 1.2;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font: 10px/1.5 monospace;
+        background: #f1f4f8;
+        padding: 10px;
+      }
+      figure,
+      pre {
+        break-inside: avoid;
+      }
+      img {
+        max-width: 100%;
+        max-height: 240px;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td,
+      th {
+        border: 1px solid #aaa;
+        padding: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Draggable motion cube</h1>
+    <h2>1. Task description</h2>
+    <blockquote>
+      Let&#x27;s work on motion-cube. It should be draggable, so user can rotate
+      it with the mouse
+    </blockquote>
+    <p>
+      Add direct mouse rotation to the existing CSS 3D cube, preserving GSAP,
+      artwork, layout and lifecycle.
+    </p>
+    <h2>2. Input data</h2>
+    <pre>
+{
+  &quot;brief&quot;: &quot;Let&#x27;s work on motion-cube. It should be draggable, so user can rotate it with the mouse&quot;,
+  &quot;container&quot;: &quot;#motion-cube&quot;,
+  &quot;inputs&quot;: [
+    {
+      &quot;file&quot;: &quot;src/scripts/modules/gsap-showcase.js&quot;,
+      &quot;type&quot;: &quot;JavaScript&quot;,
+      &quot;bytesBefore&quot;: 39345,
+      &quot;use&quot;: &quot;Preserve GSAP rotation and lifecycle; add pointer and keyboard input.&quot;
+    },
+    {
+      &quot;file&quot;: &quot;src/templates/partials/gsap/showcase.njk&quot;,
+      &quot;type&quot;: &quot;Nunjucks&quot;,
+      &quot;bytesBefore&quot;: 20123,
+      &quot;use&quot;: &quot;Make the cube stage keyboard-focusable and describe interaction.&quot;
+    },
+    {
+      &quot;file&quot;: &quot;src/scss/components/_gsap-showcase.scss&quot;,
+      &quot;type&quot;: &quot;SCSS&quot;,
+      &quot;bytesBefore&quot;: 18427,
+      &quot;use&quot;: &quot;Add grab cursors, touch handling, and a focus outline.&quot;
+    }
+  ],
+  &quot;technology&quot;: &quot;Existing GSAP and CSS 3D transforms; no WebGL is needed.&quot;,
+  &quot;assumptions&quot;: [
+    &quot;The first user rotation stops automatic spinning until the showcase remounts.&quot;,
+    &quot;Keep the orientation on release, without inertia.&quot;,
+    &quot;Support touch dragging and arrow keys in addition to mouse dragging.&quot;,
+    &quot;Explicit user input remains available with reduced motion; automatic spinning is disabled.&quot;
+  ]
+}</pre
+    >
+    <h2>3. Solution architecture</h2>
+    <p>
+      The existing initShowcase / initCube integration owns events and animation
+      cleanup. CUBE_CONFIG sets drag sensitivity and keyboard step. Pointer
+      capture rotates from the orientation at pointerdown; the first explicit
+      interaction pauses the existing twenty-second, four-segment automatic
+      timeline. The loop observer cannot restart it after user control. No
+      inertia or automatic reset is applied. The CSS perspective, responsive
+      sizes, and generative SVG faces are preserved. Reduced motion disables
+      autonomous rotation while allowing deliberate input. Arrow keys and a
+      visible focus outline provide keyboard access.
+    </p>
+    <h2>4. Key code</h2>
+    <h3>Configuration</h3>
+    <pre>
+const CUBE_CONFIG = {
+  dragDegreesPerPixel: 0.5, // Rotation sensitivity in CSS pixels.
+  keyboardStep: 15, // Degrees per arrow-key press.
+};
+</pre
+    >
+    <h3>Taking control and pointer capture</h3>
+    <pre>
+  const takeControl = () =&gt; {
+    manual = true;
+    rotation?.pause();
+  };
+  on(cube, &quot;pointerdown&quot;, (event) =&gt; {
+    if (!event.isPrimary || event.button !== 0 || drag) return;
+    takeControl();
+    drag = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      rotationX: Number(gsap.getProperty(cube, &quot;rotationX&quot;)),
+      rotationY: Number(gsap.getProperty(cube, &quot;rotationY&quot;)),
+    };
+    cube.setPointerCapture(event.pointerId);
+    cube.classList.add(&quot;is-dragging&quot;);
+    stage.focus({ preventScroll: true });
+    event.preventDefault();
+  });
+</pre
+    >
+    <h3>Rotation relative to grab orientation</h3>
+    <pre>
+  on(cube, &quot;pointermove&quot;, (event) =&gt; {
+    if (!drag || event.pointerId !== drag.id) return;
+    // Use the current orientation as the origin to avoid a jump on grab.
+    gsap.set(cube, {
+      rotationX:
+        drag.rotationX -
+        (event.clientY - drag.y) * CUBE_CONFIG.dragDegreesPerPixel,
+      rotationY:
+        drag.rotationY +
+        (event.clientX - drag.x) * CUBE_CONFIG.dragDegreesPerPixel,
+    });
+  });
+</pre
+    >
+    <h3>Release and cancellation</h3>
+    <pre>
+  const endDrag = (event) =&gt; {
+    if (!drag || event.pointerId !== drag.id) return;
+    const pointerId = drag.id;
+    drag = null;
+    cube.classList.remove(&quot;is-dragging&quot;);
+    if (cube.hasPointerCapture(pointerId))
+      cube.releasePointerCapture(pointerId);
+  };
+  [&quot;pointerup&quot;, &quot;pointercancel&quot;, &quot;lostpointercapture&quot;].forEach((type) =&gt;
+    on(cube, type, endDrag),
+  );
+</pre
+    >
+    <h2>5. Run and customise</h2>
+    <pre>
+python3 -m http.server 8080
+# Open http://localhost:8080/gsap-animations.html#motion-cube
+npm run dev
+npm run build</pre
+    >
+    <p>
+      CUBE_CONFIG.dragDegreesPerPixel defaults to 0.5 degrees per CSS pixel;
+      keyboardStep defaults to 15 degrees. The index.html in this folder links
+      to the existing integrated page. The README describes embedding through
+      the existing showcase rather than adding a second mount API.
+    </p>
+    <h2>6. Verification</h2>
+    <p>
+      JavaScript syntax checks and the production Vite build passed. Browser
+      checks passed at 375×667, 768×1024 and 1440×900: dragging changes rotation
+      at the configured rate, releasing holds the orientation, and arrow keys
+      rotate by the configured step. Reduced motion remains still without input.
+      No console errors or warnings were observed. Screenshots and
+      machine-readable results are in checks/.
+    </p>
+    <figure>
+      <img src="checks/mobile.png" alt="mobile cube check" />
+      <figcaption>mobile</figcaption>
+    </figure>
+    <figure>
+      <img src="checks/desktop.png" alt="desktop cube check" />
+      <figcaption>desktop</figcaption>
+    </figure>
+    <figure>
+      <img src="checks/reduced.png" alt="reduced cube check" />
+      <figcaption>reduced</figcaption>
+    </figure>
+    <h2>7. Assumptions and limitations</h2>
+    <ul>
+      <li>
+        The first user rotation stops automatic spinning until the showcase
+        remounts.
+      </li>
+      <li>Keep the orientation on release, without inertia.</li>
+      <li>
+        Support touch dragging and arrow keys in addition to mouse dragging.
+      </li>
+      <li>
+        Explicit user input remains available with reduced motion; automatic
+        spinning is disabled.
+      </li>
+    </ul>
+    <p>
+      Pointer checks isolate the cube by removing the unrelated Soldier overlay
+      from the test fixture. In normal use, a visible Soldier overlapping the
+      cube retains pointer priority. Physical touch hardware, automated
+      performance profiling, and active-drag cleanup were not independently
+      tested. Existing showcase cleanup owns listeners and pointer capture.
+    </p>
+  </body>
+</html>
