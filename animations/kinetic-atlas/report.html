@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kinetic atlas — implementation report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+      body {
+        font:
+          12px/1.55 Arial,
+          sans-serif;
+        color: #182337;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: Georgia, serif;
+        font-weight: normal;
+        line-height: 1.15;
+      }
+      h1 {
+        font-size: 36px;
+        color: #285bd4;
+      }
+      h2 {
+        font-size: 23px;
+        margin-top: 28px;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font: 9px/1.45 monospace;
+        background: #f0f4fa;
+        padding: 12px;
+        break-inside: avoid;
+      }
+      blockquote {
+        margin: 0;
+        padding: 12px;
+        border-left: 2px solid #285bd4;
+        white-space: pre-wrap;
+        font-size: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 10px;
+      }
+      th,
+      td {
+        text-align: left;
+        border-bottom: 1px solid #d8e1ee;
+        padding: 7px;
+        vertical-align: top;
+      }
+      tr,
+      figure {
+        break-inside: avoid;
+      }
+      img {
+        max-width: 100%;
+        max-height: 280px;
+        width: auto;
+        display: block;
+        margin: auto;
+      }
+      figcaption {
+        font-size: 10px;
+        color: #5b6980;
+        margin-top: 6px;
+      }
+      code {
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Kinetic atlas</h1>
+    <p>Ten studies in rhythm, curiosity, and considered interaction.</p>
+    <h2>1. Task description</h2>
+    <blockquote>
+      You are a senior front-end engineer with deep expertise in GSAP (GreenSock
+      Animation Platform), ScrollTrigger, SplitText, Draggable, Flip,
+      MotionPath, and modern HTML/CSS/JavaScript. Build a complete,
+      self-contained landing page that serves as a showcase of GSAP animation
+      techniques. **Container requirement:** Everything must live inside an
+      element with the class `.gsap-container`. Use it as the single root
+      wrapper for all sections, styles scoping, and script initialization. Scope
+      all selectors and animations to this container so nothing leaks into the
+      global page. **Output requirement:** The landing page should span up to 10
+      distinct screens (full-viewport sections), each demonstrating a cohesive
+      group of the animation categories below. Combine categories freely where
+      they strengthen the showcase. Every category must be represented somewhere
+      on the page: - **Transform:** move, rotate, scale, skew - **Opacity:**
+      fade in/out, crossfade - **Scroll-based:** ScrollTrigger, pinning,
+      scrubbing - **Parallax:** elements moving at different speeds - **Text:**
+      SplitText, typing, scrambling, reveals - **SVG:** path drawing, shape
+      morphing - **Motion Path:** animation along custom paths - **Stagger:**
+      sequential element animations - **Timeline:** complex synchronized
+      sequences - **3D Transforms:** perspective, rotation, depth - **FLIP:**
+      layout and position transitions - **Physics:** gravity, velocity, inertia
+      - **Draggable:** drag, throw, snap - **Mouse interactions:** hover,
+      cursor-following effects - **Touch interactions:** swipe, gesture-based
+      animations - **Page transitions:** enter/exit animations - **UI
+      animations:** menus, modals, accordions, sliders - **Image animations:**
+      reveals, masks, zoom, clipping - **Canvas/WebGL:** animate graphical
+      properties and objects - **Looping:** infinite loops, yoyo, repeat -
+      **Easing:** bounce, elastic, spring-like motion - **Responsive
+      animations:** different animations per breakpoint - **Scroll navigation:**
+      smooth scrolling, scroll-to - **SVG/Canvas particles:** particle movement
+      and effects - **Advanced effects:** magnetic buttons, infinite marquees,
+      carousels, horizontal scrolling **Content:** Generate all required content
+      yourself: headings, body copy, labels, and navigation text; images (use
+      CSS gradients, inline SVG, or generated canvas graphics rather than
+      external URLs that may break); and any SVG icons or shapes needed.
+      **Technical standards:** - Deliver a single, runnable HTML file with
+      embedded CSS and JavaScript, or clearly separated files if that is
+      cleaner. Load GSAP and its plugins from the official CDN (cdnjs or
+      jsDelivr), and register all plugins before use. - Use semantic HTML,
+      accessible markup (proper headings, alt text, keyboard-operable controls,
+      `prefers-reduced-motion` respected by disabling or simplifying motion). -
+      Write modern, well-organized JavaScript: one initialization function per
+      section, no global pollution, clean cleanup of ScrollTrigger instances on
+      resize where needed. - Make layouts responsive across mobile, tablet, and
+      desktop, and use `gsap.matchMedia()` for breakpoint-specific animations. -
+      Handle touch and pointer events so Draggable, swipe, and mouse effects
+      work on both desktop and mobile. - Ensure animations are smooth: animate
+      transform and opacity where possible, and avoid layout thrashing.
+      **Deliverable:** Produce the complete, working code, with a brief comment
+      at the top of each section naming which animation categories it
+      demonstrates. Use the same color theme
+    </blockquote>
+    <p>
+      The standalone landing page and the existing GSAP page share ten semantic
+      sections inside .gsap-container. Every requested technique appears in a
+      cohesive demonstration, with original native artwork, the existing color
+      theme, responsive variations, static reduced-motion compositions and
+      explicit lifecycle cleanup.
+    </p>
+    <h2>2. Input data</h2>
+    <pre>
+{
+  &quot;brief&quot;: &quot;Build a complete, self-contained landing page that serves as a showcase of GSAP animation techniques. Use the same color theme.&quot;,
+  &quot;container&quot;: &quot;.gsap-container&quot;,
+  &quot;screenLimit&quot;: 10,
+  &quot;inputs&quot;: [
+    {
+      &quot;path&quot;: &quot;animations/kinetic-atlas/brief.md&quot;,
+      &quot;type&quot;: &quot;Markdown text brief&quot;,
+      &quot;bytes&quot;: 3514,
+      &quot;use&quot;: &quot;Exact requirements and all 25 technique categories.&quot;
+    },
+    {
+      &quot;path&quot;: &quot;src/scss/base/_root.scss&quot;,
+      &quot;type&quot;: &quot;SCSS&quot;,
+      &quot;bytes&quot;: 1234,
+      &quot;use&quot;: &quot;Existing blue, slate, paper and navy theme tokens, including dark mode.&quot;
+    },
+    {
+      &quot;path&quot;: &quot;src/pages/gsap-animations.njk&quot;,
+      &quot;type&quot;: &quot;Nunjucks&quot;,
+      &quot;bytes&quot;: 293,
+      &quot;use&quot;: &quot;Mount the showcase in the existing GSAP page.&quot;
+    }
+  ],
+  &quot;technology&quot;: &quot;GSAP, CSS perspective, inline SVG and Canvas 2D. No external image assets or Three.js needed.&quot;,
+  &quot;assumptions&quot;: [
+    &quot;Ten cohesive screens cover every requested category; pinning adds scroll distance without adding sections.&quot;,
+    &quot;Page transitions are demonstrated as an accessible miniature site inside the UI screen.&quot;,
+    &quot;A Canvas 2D constellation represents the Canvas/WebGL category.&quot;,
+    &quot;Desktop pinning becomes flowing content on mobile or short viewports.&quot;,
+    &quot;Reduced motion and user pause present static scenes while preserving direct UI interaction.&quot;
+  ],
+  &quot;scenes&quot;: [
+    &quot;Arrival&quot;,
+    &quot;Depth&quot;,
+    &quot;Typography&quot;,
+    &quot;Vector routes&quot;,
+    &quot;Layout&quot;,
+    &quot;Playground&quot;,
+    &quot;Interface&quot;,
+    &quot;Imagery&quot;,
+    &quot;Constellation&quot;,
+    &quot;Horizons&quot;
+  ],
+  &quot;briefFile&quot;: &quot;brief.md&quot;,
+  &quot;dependencyVersion&quot;: &quot;3.15.1&quot;,
+  &quot;categories&quot;: [
+    &quot;Transform&quot;,
+    &quot;Opacity&quot;,
+    &quot;Scroll-based&quot;,
+    &quot;Parallax&quot;,
+    &quot;Text&quot;,
+    &quot;SVG&quot;,
+    &quot;Motion Path&quot;,
+    &quot;Stagger&quot;,
+    &quot;Timeline&quot;,
+    &quot;3D Transforms&quot;,
+    &quot;FLIP&quot;,
+    &quot;Physics&quot;,
+    &quot;Draggable&quot;,
+    &quot;Mouse interactions&quot;,
+    &quot;Touch interactions&quot;,
+    &quot;Page transitions&quot;,
+    &quot;UI animations&quot;,
+    &quot;Image animations&quot;,
+    &quot;Canvas/WebGL&quot;,
+    &quot;Looping&quot;,
+    &quot;Easing&quot;,
+    &quot;Responsive animations&quot;,
+    &quot;Scroll navigation&quot;,
+    &quot;SVG/Canvas particles&quot;,
+    &quot;Advanced effects&quot;
+  ]
+}</pre
+    >
+    <h2>3. Solution architecture</h2>
+    <p>
+      GSAP 3.15.1 and twelve plugins load from pinned jsDelivr URLs and register
+      before use. CSS perspective supplies 3D transforms, while Canvas 2D
+      fulfills the Canvas/WebGL category without adding a WebGL runtime. System
+      fonts, CSS patterns and inline SVG eliminate external image and font
+      dependencies.
+    </p>
+    <p>
+      sections.html is the canonical content. tools/sync-pages.py publishes it
+      into index.html and src/pages/gsap-animations.njk. showcase.css scopes
+      every selector to .gsap-container. showcase.js exports loadLibraries(),
+      mountAnimation(container, options), and getAnimation(container). Each root
+      owns its GSAP context, media conditions, event abort signals, observers
+      and tickers. The returned API supports play(), pause() and idempotent
+      destroy(). CONFIG holds shared timing, breakpoints, particle and snapping
+      defaults; individual scene initializers group their detailed geometry and
+      sequencing.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>Techniques</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01 / Arrival</td>
+          <td>Transform, opacity, stagger, timeline, magnetic button</td>
+        </tr>
+        <tr>
+          <td>02 / Depth</td>
+          <td>Pinning, scrubbing, parallax, perspective and CSS 3D</td>
+        </tr>
+        <tr>
+          <td>03 / Typography</td>
+          <td>SplitText, typing, scrambling, reveals</td>
+        </tr>
+        <tr>
+          <td>04 / Vector routes</td>
+          <td>DrawSVG, MorphSVG, MotionPath</td>
+        </tr>
+        <tr>
+          <td>05 / Layout</td>
+          <td>FLIP, grid/list transitions, stagger</td>
+        </tr>
+        <tr>
+          <td>06 / Playground</td>
+          <td>Draggable, inertia, snapping, physics and bounce</td>
+        </tr>
+        <tr>
+          <td>07 / Interface</td>
+          <td>
+            Page transitions, crossfade, swipe, carousel, menu, modal, accordion
+          </td>
+        </tr>
+        <tr>
+          <td>08 / Imagery</td>
+          <td>SVG artwork, mask, clipping, reveal, zoom, cursor</td>
+        </tr>
+        <tr>
+          <td>09 / Constellation</td>
+          <td>Canvas objects, particles, elastic burst, pointer attraction</td>
+        </tr>
+        <tr>
+          <td>10 / Horizons</td>
+          <td>Horizontal scroll, marquee, repeat/yoyo, scroll navigation</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      At 768px the desktop layout activates. Desktop pinning additionally
+      requires at least 800px viewport height; mobile uses shorter depth travel,
+      fewer particles and stacked finale cards. Container ResizeObserver
+      refreshes layout through one scheduled frame. Fonts finish loading before
+      SplitText runs. Motion is primarily transform/opacity; SVG
+      drawing/morphing, clipping and canvas necessarily involve painting.
+      Reusable pointer tweens, persistent particle data, capped DPR,
+      offscreen/hidden-tab pausing and one GSAP clock bound ongoing work.
+    </p>
+    <p>
+      Semantic headings and real copy remain available without animation.
+      SplitText uses accessible labels, controls support keyboard input,
+      dialog/details remain native, and pointer gestures support touch. Reduced
+      motion and the pause control build a calm static presentation. Source
+      content and original art remain visible if dependencies fail;
+      script-dependent controls stay disabled. Theme aliases inherit the host
+      site; standalone fallbacks follow the system preference.
+    </p>
+    <h2>4. Key code</h2>
+    <h3>Root-scoped media conditions</h3>
+    <pre>
+    media = gsap.matchMedia(container);
+    media.add(
+      {
+        desktop: config.desktop,
+        mobile: config.mobile,
+        reduce: config.reduced,
+        room: config.pinHeight,
+      },
+      (match) =&gt; {
+        const events = new AbortController();
+        const disposers = [];
+        const ctx = gsap.context(() =&gt; {}, container);
+        const calm = match.conditions.reduce || userPaused;
+        const env = {
+          ...libraries,
+          config,
+          root: container,</pre
+    >
+    <h3>A labeled, synchronized sequence</h3>
+    <pre>
+function initArrival(env) {
+  if (env.calm) return;
+  const { gsap, q, qa } = env;
+  const hero = q(&quot;.atlas-hero&quot;);
+  gsap
+    .timeline({
+      defaults: { ease: env.config.ease, duration: env.config.duration },
+    })
+    .addLabel(&quot;hello&quot;)
+    .from(q(&quot;h1&quot;), { y: 28, opacity: 0 }, &quot;hello&quot;)
+    .from(
+      hero.querySelectorAll(&quot;.atlas-copy, .atlas-primary, .atlas-eyebrow&quot;),
+      { y: 18, opacity: 0, stagger: env.config.stagger },
+      &quot;hello+=0.15&quot;,
+    )
+    .from(
+      q(&quot;.atlas-core&quot;),
+      { scale: 0.3, rotation: -80, skewX: 12, opacity: 0, duration: 1.3 },
+      &quot;hello&quot;,
+    );
+  const orbit = gsap.to(q(&quot;.atlas-orbit-a&quot;), {
+    rotation: 360,
+    duration: env.config.loopDuration,
+    repeat: -1,
+    ease: &quot;none&quot;,
+    paused: true,
+  });</pre
+    >
+    <h3>Reduced-motion handling</h3>
+    <pre>
+function initImagery(env) {
+  const { gsap, q } = env;
+  const frame = q(&quot;.atlas-image-frame&quot;);
+  const shutter = q(&quot;.atlas-image-shutter&quot;);
+  if (env.calm) {
+    gsap.set(shutter, { scaleX: 0 });
+    return;
+  }
+  gsap
+    .timeline({
+      scrollTrigger: {
+        trigger: frame,
+        start: &quot;top 85%&quot;,</pre
+    >
+    <h3>Visibility-controlled clock</h3>
+    <pre>
+function observeLoop(env, section, animation, render) {
+  let visible = false;
+  const sync = () =&gt; {
+    const active = visible &amp;&amp; !document.hidden &amp;&amp; !env.calm;
+    animation?.paused(!active);
+    if (render) {
+      env.gsap.ticker.remove(render);
+      if (active) env.gsap.ticker.add(render);
+      else if (visible) render();
+    }
+  };
+  const observer = new IntersectionObserver(
+    ([entry]) =&gt; {
+      visible = entry.isIntersecting;
+      sync();
+    },
+    { threshold: 0.05 },
+  );
+  observer.observe(section);
+  env.on(document, &quot;visibilitychange&quot;, sync);
+  env.clean(() =&gt; {
+    observer.disconnect();
+    if (render) env.gsap.ticker.remove(render);</pre
+    >
+    <h3>Complete teardown</h3>
+    <pre>
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      lifecycle.abort();
+      resize.disconnect();
+      cancelAnimationFrame(resizeFrame);
+      media?.revert();
+      container.innerHTML = originalMarkup;
+      [...container.attributes].forEach(({ name }) =&gt;
+        container.removeAttribute(name),
+      );
+      originalAttributes.forEach(([name, value]) =&gt;
+        container.setAttribute(name, value),
+      );
+      instances.delete(container);
+    },
+  };
+  try {
+    container.querySelectorAll(&quot;button&quot;).forEach((button) =&gt; {
+      button.disabled = false;</pre
+    >
+    <h2>5. Run and customise</h2>
+    <pre>
+From the repository root:
+
+```sh
+python3 -m http.server 8080
+```
+
+Open either:
+
+- `http://localhost:8080/animations/kinetic-atlas/index.html`
+- `http://localhost:8080/gsap-animations.html`
+
+The existing project also supports:
+
+```sh
+npm run dev
+npm run build
+```
+
+An HTTP server is recommended because browser module security can block `file://` imports. The CDN dependencies require an internet connection on a cold cache; content remains readable if loading fails.
+
+</pre
+    >
+    <pre>
+Pass overrides to `mountAnimation(container, options)` or edit `CONFIG` at the top of `showcase.js`.
+
+| Key                | Default                            | Effect                                                           |
+| ------------------ | ---------------------------------- | ---------------------------------------------------------------- |
+| `version`          | `3.15.1`                           | Matching CDN dependency version; selected before library loading |
+| `desktop`          | `(min-width: 768px)`               | Desktop media condition                                          |
+| `mobile`           | `(max-width: 767px)`               | Mobile media condition                                           |
+| `pinHeight`        | `(min-height: 800px)`              | Minimum viewport height for desktop pins                         |
+| `reduced`          | `(prefers-reduced-motion: reduce)` | Static presentation condition                                    |
+| `ease`             | `power2.out`                       | Default entrance curve                                           |
+| `duration`         | `0.7`                              | Default entrance duration                                        |
+| `stagger`          | `0.06`                             | Default entrance stagger                                         |
+| `pinOffset`        | `80`                               | Offset below the host site&#x27;s header                              |
+| `loopDuration`     | `28`                               | Orbit and marquee loop duration                                  |
+| `dragGrid`         | `24`                               | Playground snap distance                                         |
+| `particlesDesktop` | `48`                               | Desktop particle count                                           |
+| `particlesMobile`  | `24`                               | Mobile particle count                                            |
+| `particleDistance` | `100`                              | Maximum connection distance                                      |
+| `pixelRatio`       | `2`                                | Canvas pixel ratio cap                                           |
+| `colors`           | Blue light/dark fallbacks          | Canvas theme fallback; CSS tokens normally supply the color      |
+
+Scene-specific timing and geometry are grouped inside each initializer. The original content and its labels stay in semantic markup. CSS aliases inherit the site&#x27;s `--color-*` tokens; standalone fallbacks follow the system light/dark preference.
+
+</pre
+    >
+    <p>
+      Embedding: await loadLibraries(), then call mountAnimation(root, options).
+      The result exposes play(), pause() and destroy(). Existing data-atlas
+      roots mount automatically. Repeated mounting returns the current instance.
+      Destroy restores initial markup/attributes and replaces descendant nodes,
+      so use a dedicated root.
+    </p>
+    <h2>6. Verification</h2>
+    <p>
+      The production build, JavaScript syntax, Python tool syntax and formatting
+      checks passed. Browser screenshots cover 375×667, 768×1024 and 1440×900.
+      Checks exercise real mouse dragging, touch swipe emulation, keyboard
+      movement, responsive resize, FLIP, physics, carousel, menu, dialog Escape,
+      accordion, pause/play, reduced motion and zero remaining ScrollTriggers
+      after destroy/remount. The integrated production page, light palette and
+      blocked-CDN fallback passed. Runtime console errors: zero; warnings: zero.
+    </p>
+    <pre>
+{
+  &quot;checks&quot;: [
+    {
+      &quot;name&quot;: &quot;mobile&quot;,
+      &quot;tenSections&quot;: true,
+      &quot;noHorizontalOverflow&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;tablet&quot;,
+      &quot;tenSections&quot;: true,
+      &quot;noHorizontalOverflow&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;desktop&quot;,
+      &quot;tenSections&quot;: true,
+      &quot;noHorizontalOverflow&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;interactive scenes&quot;,
+      &quot;flip&quot;: true,
+      &quot;keyboardDrag&quot;: true,
+      &quot;physics&quot;: true,
+      &quot;carousel&quot;: true,
+      &quot;menu&quot;: true,
+      &quot;dialogEscape&quot;: true,
+      &quot;accordion&quot;: true,
+      &quot;pauseResume&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;real pointer, touch and live resize&quot;,
+      &quot;mouseDrag&quot;: true,
+      &quot;touchSwipe&quot;: true,
+      &quot;resize&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;reduced motion&quot;,
+      &quot;noActiveInfiniteLoops&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;cleanup and remount&quot;,
+      &quot;restored&quot;: true,
+      &quot;ready&quot;: true,
+      &quot;triggers&quot;: 0
+    },
+    {
+      &quot;name&quot;: &quot;production integration&quot;,
+      &quot;tenSections&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;light theme&quot;,
+      &quot;readable&quot;: true
+    },
+    {
+      &quot;name&quot;: &quot;offline fallback&quot;,
+      &quot;readableSections&quot;: 10,
+      &quot;disabledControls&quot;: true,
+      &quot;artworkVisible&quot;: true
+    }
+  ],
+  &quot;errors&quot;: [],
+  &quot;warnings&quot;: [],
+  &quot;performance&quot;: {
+    &quot;longTasks&quot;: []
+  }
+}</pre
+    >
+    <p>
+      A DevTools rendering trace was saved to checks/performance-trace.json. The
+      separate 2.2-second steady-state canvas sample reported no long tasks.
+      This short desktop test does not establish low-end-device FPS or field
+      Core Web Vitals.
+    </p>
+    <figure>
+      <img
+        src="checks/image-pin-desktop.png"
+        alt="Centered image at 50% zoom progress, 1440×900"
+      />
+      <figcaption>Centered image at 50% zoom progress, 1440×900</figcaption>
+    </figure>
+    <figure>
+      <img
+        src="checks/cube-mobile.png"
+        alt="Mobile cube: emulated touch drag, 375×667"
+      />
+      <figcaption>Mobile cube: emulated touch drag, 375×667</figcaption>
+    </figure>
+
+    <figure>
+      <img src="checks/reduced.png" alt="Calm reduced-motion composition" />
+      <figcaption>Calm reduced-motion composition</figcaption>
+    </figure>
+    <h3>Route scroll update</h3>
+    <blockquote>
+      For atlas-route svg, move circle along with the scroll. But, it should
+      start only when parent section at the center of the viewport
+    </blockquote>
+    <p>
+      The route timeline now uses ScrollTrigger with CONFIG.routeStart="center
+      center", CONFIG.routeEnd="bottom center", scrub:true and
+      invalidateOnRefresh:true. The circle is initialized at the first path
+      point. Drawing, travel and morph share a single scroll clock; the Travel
+      again control returns the scrollbar to the start. Reduced motion retains
+      the static endpoint. Browser checks verified zero progress before the
+      center, 0.5 progress halfway, the exact endpoint, identical reverse
+      positions, and no autoplay. Existing regression checks and the production
+      build passed.
+    </p>
+    <figure>
+      <img
+        src="checks/route-mid-scroll.png"
+        alt="Route circle halfway through its scroll-driven motion"
+      />
+      <figcaption>Route timeline at 50% scroll progress.</figcaption>
+    </figure>
+    <h3>Interactive cube update</h3>
+    <blockquote>
+      Also, add a section with 3D cibe. User should be able to rotate it with a
+      mousemove
+    </blockquote>
+    <p>
+      A dedicated cube subsection now accompanies the depth screen, preserving
+      the ten primary screens. Six opaque CSS faces use perspective and
+      preserve-3d. Mouse movement over the stage rotates the cube without
+      clicking; touch users drag it, and keyboard users focus the stage and
+      press arrow keys. Two reusable quickTo tweens smooth pitch and yaw without
+      per-event tween allocation. The last orientation is retained on pointer
+      leave. Pause/reduced motion provides a static cube. The existing context
+      aborts pointer listeners, releases active capture and reverts transforms
+      on cleanup.
+    </p>
+    <p>
+      CONFIG.cubePitch=-22, cubeYaw=32, cubeRange=160, cubeDragSensitivity=0.6,
+      cubeKeyboardStep=15 and cubeResponse=0.35 expose the controls.
+      Mouse-follow and arrow-key rotation passed in Chromium. Emulated touch
+      changed yaw from 32 to 68 degrees. The production build and existing
+      route, responsive, UI and lifecycle regression checks passed with no
+      runtime console errors or warnings. Physical touch hardware remains
+      untested.
+    </p>
+    <pre>
+{
+  &quot;touchRotation&quot;: true,
+  &quot;before&quot;: 32,
+  &quot;after&quot;: 68,
+  &quot;errors&quot;: [],
+  &quot;warnings&quot;: []
+}</pre
+    >
+    <h3>Centered image update</h3>
+    <blockquote>
+      atlas-image-frame should stay at the center of the screen while it's
+      scaling.
+    </blockquote>
+    <p>
+      The existing image timeline now pins .atlas-image-frame at center center
+      for its complete scroll-linked zoom, shutter and clipping sequence. Pin
+      spacing reserves the scroll interval, and the frame releases afterward.
+      The same centered pin works when reversing upward.
+      CONFIG.imageScrollFactor=1.2 and imageScrollMinimum=320 determine the
+      responsive scroll range; invalidateOnRefresh recalculates it after layout
+      changes. Reduced motion and user pause retain the static unpinned image.
+    </p>
+    <p>
+      The production build and focused browser checks passed at 375×667,
+      768×1024, 1440×900 and on the integrated site. Samples at 5%, 50%, 95%,
+      and reverse 50% stayed within one CSS pixel of viewport center, with
+      correct scaling and release. Reduced-motion pin removal and zero remaining
+      ScrollTriggers after destroy passed. Console errors and warnings: zero.
+      Results: checks/image-pin-results.json; tool: tools/verify-image-pin.mjs.
+    </p>
+    <h2>7. Assumptions and limitations</h2>
+    <ul>
+      <li>
+        Ten cohesive screens cover every requested category; pinning adds scroll
+        distance without adding sections.
+      </li>
+      <li>
+        Page transitions are demonstrated as an accessible miniature site inside
+        the UI screen.
+      </li>
+      <li>A Canvas 2D constellation represents the Canvas/WebGL category.</li>
+      <li>
+        Desktop pinning becomes flowing content on mobile or short viewports.
+      </li>
+      <li>
+        Reduced motion and user pause present static scenes while preserving
+        direct UI interaction.
+      </li>
+      <li>
+        Sections can grow beyond one viewport on mobile to preserve readable
+        content.
+      </li>
+      <li>
+        Pause presents static scenes; playing restarts transient demonstrations.
+      </li>
+      <li>
+        CDN libraries remain an external dependency, while all artwork and fonts
+        are local/native.
+      </li>
+      <li>
+        Physical touch hardware, Firefox/Safari, older-browser polyfills, field
+        Web Vitals and low-end-device FPS were not verified.
+      </li>
+    </ul>
+    <p>
+      The complete category map, configuration, run commands, embedding
+      instructions and browser notes are in README.md.
+    </p>
+  </body>
+</html>

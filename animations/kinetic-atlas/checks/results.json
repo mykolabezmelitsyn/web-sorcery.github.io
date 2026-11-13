@@ -1,0 +1,110 @@
+{
+  "checks": [
+    {
+      "name": "mobile",
+      "tenSections": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "tablet",
+      "tenSections": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "desktop",
+      "tenSections": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "interactive CSS 3D cube",
+      "mouseFollow": true,
+      "keyboard": true,
+      "sixFaces": 6
+    },
+    {
+      "name": "route scroll synchronization",
+      "centerStart": true,
+      "linear": true,
+      "reversible": true,
+      "noAutoplay": true,
+      "states": [
+        {
+          "progress": 0,
+          "x": 49.9999885559082,
+          "y": 260
+        },
+        {
+          "progress": 0,
+          "x": 49.9999885559082,
+          "y": 260
+        },
+        {
+          "progress": 0.5,
+          "x": 429.41939,
+          "y": 195.46802
+        },
+        {
+          "progress": 1,
+          "x": 850.00008,
+          "y": 89.99999
+        },
+        {
+          "progress": 0.5,
+          "x": 429.41939,
+          "y": 195.46802
+        },
+        {
+          "progress": 0,
+          "x": 49.99999,
+          "y": 260.00001
+        }
+      ]
+    },
+    {
+      "name": "interactive scenes",
+      "flip": true,
+      "keyboardDrag": true,
+      "physics": true,
+      "carousel": true,
+      "menu": true,
+      "dialogEscape": true,
+      "accordion": true,
+      "pauseResume": true
+    },
+    {
+      "name": "real pointer, touch and live resize",
+      "mouseDrag": true,
+      "touchSwipe": true,
+      "resize": true
+    },
+    {
+      "name": "reduced motion",
+      "noActiveInfiniteLoops": true
+    },
+    {
+      "name": "cleanup and remount",
+      "restored": true,
+      "ready": true,
+      "triggers": 0
+    },
+    {
+      "name": "production integration",
+      "tenSections": true
+    },
+    {
+      "name": "light theme",
+      "readable": true
+    },
+    {
+      "name": "offline fallback",
+      "readableSections": 10,
+      "disabledControls": true,
+      "artworkVisible": true
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "performance": {
+    "longTasks": []
+  }
+}

@@ -1,0 +1,836 @@
+/* Everything is scoped to the single showcase wrapper. */
+.gsap-container {
+  --bg: var(--color-background, #fcfdff);
+  --ink: var(--color-text, #182337);
+  --muted: var(--color-muted, #5b6980);
+  --line: var(--color-border, #d8e1ee);
+  --surface: var(--color-surface, #f0f4fa);
+  --paper: var(--color-paper, #fff);
+  --accent: var(--color-accent, #285bd4);
+  --sky: var(--color-art-sky, #e4edfc);
+  --mid: var(--color-art-mid, #9ebbe8);
+  --deep: var(--color-art-deep, #4269a3);
+  --glow: var(--color-art-glow, #d6e5ff);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  overflow: clip;
+  background: var(--bg);
+  color: var(--ink);
+  font:
+    16px/1.55 Arial,
+    Helvetica,
+    sans-serif;
+  text-align: left;
+}
+.gsap-container *,
+.gsap-container *::before,
+.gsap-container *::after {
+  box-sizing: border-box;
+}
+.gsap-container [hidden] {
+  display: none !important;
+}
+.gsap-container :where(h1, h2, h3, p, figure) {
+  margin: 0;
+}
+.gsap-container :where(h1, h2, h3) {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+}
+.gsap-container h1 {
+  font-size: clamp(3.8rem, 8.6vw, 8.4rem);
+}
+.gsap-container h2 {
+  font-size: clamp(2.9rem, 6vw, 6rem);
+}
+.gsap-container h3 {
+  font-size: clamp(2rem, 3.8vw, 4rem);
+}
+.gsap-container em {
+  font-weight: 400;
+  color: var(--accent);
+}
+.gsap-container a {
+  color: inherit;
+  text-decoration: none;
+}
+.gsap-container button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.gsap-container button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.gsap-container :where(a, button, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+.gsap-container .atlas-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.gsap-container .atlas-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem clamp(1.25rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--line);
+}
+.gsap-container .atlas-brand {
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-size: 1.2rem;
+}
+.gsap-container .atlas-brand span {
+  color: var(--accent);
+  padding-left: 0.65rem;
+}
+.gsap-container .atlas-links {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+}
+.gsap-container .atlas-links a:hover {
+  color: var(--accent);
+}
+.gsap-container .atlas-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.85rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  min-height: 44px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-wrap: nowrap;
+}
+.gsap-container .atlas-button:hover {
+  border-color: var(--accent);
+}
+.gsap-container .atlas-small {
+  font-size: 0.7rem;
+  padding: 0.6rem 0.9rem;
+}
+.gsap-container .atlas-primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  margin-top: 1.5rem;
+}
+.gsap-container .atlas-status {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.gsap-container .atlas-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: clamp(1.5rem, 5vw, 5rem);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 5rem;
+  position: relative;
+}
+.gsap-container .atlas-meta,
+.gsap-container .atlas-eyebrow,
+.gsap-container .atlas-tags,
+.gsap-container .atlas-bottom,
+.gsap-container .atlas-art-label {
+  font:
+    0.65rem/1.5 "Courier New",
+    monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.gsap-container .atlas-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.gsap-container .atlas-meta span:first-child {
+  color: var(--accent);
+}
+.gsap-container .atlas-heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.gsap-container .atlas-heading-row > .atlas-copy {
+  max-width: 22rem;
+}
+.gsap-container .atlas-copy {
+  max-width: 28rem;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: var(--muted);
+}
+.gsap-container .atlas-tags {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  font-size: 0.6rem;
+}
+.gsap-container .atlas-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+}
+.gsap-container .atlas-hero-grid {
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+}
+.gsap-container .atlas-hero .atlas-eyebrow {
+  margin-bottom: 1.3rem;
+  color: var(--muted);
+}
+.gsap-container .atlas-hero .atlas-copy {
+  margin-top: 1.5rem;
+}
+.gsap-container .atlas-orbit-art {
+  aspect-ratio: 1;
+  position: relative;
+  min-width: 0;
+  width: min(100%, 30rem);
+  margin: auto;
+}
+.gsap-container .atlas-orbit {
+  position: absolute;
+  inset: 7%;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+.gsap-container .atlas-orbit-b {
+  inset: 21%;
+  border-style: dashed;
+}
+.gsap-container .atlas-orbit-c {
+  inset: 35%;
+  border-color: var(--accent);
+}
+.gsap-container .atlas-orbit-a::after {
+  content: "";
+  width: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  top: 13%;
+  right: 13%;
+}
+.gsap-container .atlas-core {
+  position: absolute;
+  inset: 20%;
+  display: grid;
+  place-items: center;
+  font:
+    clamp(10rem, 22vw, 20rem) / 1 Georgia,
+    serif;
+  color: var(--accent);
+}
+.gsap-container .atlas-orbit-dot {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--mid);
+  top: 72%;
+  left: 18%;
+}
+.gsap-container .atlas-art-label {
+  position: absolute;
+  bottom: 3%;
+  right: 0;
+  color: var(--muted);
+}
+.gsap-container .atlas-depth-stage {
+  height: clamp(20rem, 48vh, 34rem);
+  width: 100%;
+  max-width: 60rem;
+  align-self: center;
+  position: relative;
+  perspective: 1100px;
+}
+.gsap-container .atlas-plane {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.gsap-container .atlas-plane > span:first-child {
+  font: 0.6rem monospace;
+  letter-spacing: 0.12em;
+}
+.gsap-container .atlas-plane b {
+  font:
+    4rem/0.9 Georgia,
+    serif;
+  font-weight: normal;
+  letter-spacing: -0.06em;
+  z-index: 1;
+}
+.gsap-container .atlas-plane-back {
+  inset: 0 28% 5% 0;
+  background: var(--surface);
+  color: var(--muted);
+}
+.gsap-container .atlas-plane-mid {
+  inset: 12% 7% 0 30%;
+  background: var(--sky);
+  color: var(--deep);
+}
+.gsap-container .atlas-plane-front {
+  inset: 34% 0 7% 58%;
+  background: var(--accent);
+  color: var(--bg);
+}
+.gsap-container .atlas-grid-art {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  opacity: 0.5;
+}
+.gsap-container .atlas-disc-art {
+  position: absolute;
+  width: 13rem;
+  aspect-ratio: 1;
+  border: 35px solid var(--mid);
+  border-radius: 50%;
+  align-self: center;
+  top: 15%;
+}
+.gsap-container .atlas-cross {
+  position: absolute;
+  font: 10rem Georgia;
+  right: -1rem;
+  bottom: -3rem;
+  opacity: 0.3;
+}
+.gsap-container .atlas-type-samples {
+  display: grid;
+  gap: 2rem;
+  margin-block: 1rem;
+}
+.gsap-container .atlas-type-samples > div {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.gsap-container .atlas-type-line {
+  font:
+    clamp(1.2rem, 3.2vw, 3.2rem) / 1.4 Georgia,
+    serif;
+  min-height: 3em;
+  margin-top: 1rem;
+  overflow-wrap: anywhere;
+}
+.gsap-container .atlas-route {
+  width: 100%;
+  height: auto;
+  min-height: 15rem;
+  overflow: visible;
+}
+.gsap-container .atlas-route path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.gsap-container .atlas-route .atlas-route-guide {
+  stroke: var(--line);
+  stroke-dasharray: 4 8;
+}
+.gsap-container .atlas-route [data-traveler] {
+  fill: var(--accent);
+}
+.gsap-container .atlas-route [data-morph] {
+  fill: var(--sky);
+}
+.gsap-container .atlas-route text {
+  font: 12px monospace;
+  fill: var(--muted);
+}
+.gsap-container .atlas-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.gsap-container .atlas-tile {
+  position: relative;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.1rem;
+}
+.gsap-container .atlas-tile-number {
+  color: var(--muted);
+  font: 0.65rem monospace;
+}
+.gsap-container .atlas-tile-art {
+  display: block;
+  font:
+    4rem/1.2 Georgia,
+    serif;
+  color: var(--accent);
+  text-align: center;
+}
+.gsap-container .atlas-tile h3 {
+  font:
+    1.1rem Georgia,
+    serif;
+  letter-spacing: -0.02em;
+}
+.gsap-container .atlas-tile p {
+  font-size: 0.7rem;
+  margin-top: 0.4rem;
+  color: var(--muted);
+}
+.gsap-container .atlas-tiles.is-list {
+  grid-template-columns: 1fr;
+}
+.gsap-container .atlas-tiles.is-list .atlas-tile {
+  display: grid;
+  grid-template-columns: 1rem 3rem 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.gsap-container .atlas-tiles.is-list .atlas-tile-art {
+  font-size: 2.5rem;
+}
+.gsap-container .atlas-tiles.is-list .atlas-tile p {
+  display: none;
+}
+.gsap-container .atlas-playground {
+  position: relative;
+  min-height: 20rem;
+  flex: 1;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: radial-gradient(var(--line) 1px, transparent 1px) 0 0 / 24px 24px;
+}
+.gsap-container .atlas-puck {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5.5rem;
+  height: 5.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font: 0.75rem monospace;
+  touch-action: none;
+}
+.gsap-container .atlas-puck span {
+  font-size: 1.5rem;
+}
+.gsap-container .atlas-projectile {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  font: 4rem/1 Georgia;
+  color: var(--accent);
+  pointer-events: none;
+}
+.gsap-container .atlas-field-label {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font: 0.6rem monospace;
+  color: var(--muted);
+  pointer-events: none;
+}
+.gsap-container .atlas-mini-site {
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.gsap-container .atlas-mini-top,
+.gsap-container .atlas-slide-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+.gsap-container .atlas-mini-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--surface);
+}
+.gsap-container .atlas-mini-menu button {
+  border: 0;
+  background: transparent;
+  min-height: 44px;
+  font-size: 0.8rem;
+}
+.gsap-container .atlas-slides {
+  display: grid;
+  min-height: 19rem;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.gsap-container .atlas-slide {
+  grid-area: 1/1;
+  position: relative;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  overflow: hidden;
+}
+.gsap-container .atlas-slide h3 {
+  font-size: clamp(3rem, 6vw, 5rem);
+  margin-block: 1rem;
+  position: relative;
+  z-index: 1;
+}
+.gsap-container .atlas-slide p {
+  max-width: 16rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+.gsap-container .atlas-slide-art {
+  position: absolute;
+  right: 3%;
+  bottom: -2rem;
+  color: var(--mid);
+  opacity: 0.4;
+  font: 18rem/1 Georgia;
+}
+.gsap-container .atlas-accordion {
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+.gsap-container .atlas-accordion summary {
+  cursor: pointer;
+  padding: 0.75rem 0;
+}
+.gsap-container .atlas-accordion p {
+  padding: 1rem 0;
+  max-width: 42rem;
+  color: var(--muted);
+}
+.gsap-container .atlas-dialog {
+  position: fixed;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  max-width: min(32rem, 90vw);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  margin: auto;
+}
+.gsap-container .atlas-dialog::backdrop {
+  background: rgb(16 23 34 / 0.65);
+}
+.gsap-container .atlas-dialog p {
+  margin: 1.5rem 0;
+  color: var(--muted);
+}
+.gsap-container .atlas-dialog h3 {
+  margin-top: 1rem;
+}
+.gsap-container .atlas-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  max-height: 65vh;
+  overflow: hidden;
+  background: var(--surface);
+  clip-path: inset(0 round 1rem);
+}
+.gsap-container .atlas-image-art,
+.gsap-container .atlas-landscape {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gsap-container .atlas-landscape {
+  object-fit: cover;
+}
+.gsap-container .atlas-image-art {
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 7%, #000 93%, transparent);
+}
+.gsap-container .atlas-image-shutter {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transform: scaleX(0);
+  transform-origin: right;
+  pointer-events: none;
+}
+.gsap-container .atlas-image-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 0.55rem;
+  opacity: 0;
+  pointer-events: none;
+}
+.gsap-container .atlas-canvas-wrap {
+  position: relative;
+  height: clamp(18rem, 50vh, 36rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.gsap-container canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+}
+.gsap-container .atlas-horizontal {
+  overflow: hidden;
+}
+.gsap-container .atlas-track {
+  display: grid;
+  gap: 1rem;
+}
+.gsap-container .atlas-end-card {
+  padding: 1.5rem;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.gsap-container .atlas-end-icon {
+  display: block;
+  font:
+    5rem/1.3 Georgia,
+    serif;
+  color: var(--accent);
+}
+.gsap-container .atlas-end-card h3 {
+  font-size: 2.7rem;
+}
+.gsap-container .atlas-end-card p {
+  font-size: 0.8rem;
+  max-width: 20rem;
+  color: var(--muted);
+  margin-top: 1rem;
+}
+.gsap-container .atlas-marquee {
+  overflow: hidden;
+  padding-block: 1.3rem;
+  border-block: 1px solid var(--line);
+}
+.gsap-container .atlas-marquee > div {
+  display: flex;
+  width: max-content;
+  font:
+    italic clamp(2rem, 4vw, 4rem) / 1.1 Georgia,
+    serif;
+  color: var(--accent);
+}
+.gsap-container .atlas-marquee span {
+  padding-right: 2rem;
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .gsap-container .atlas-hero-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .gsap-container .atlas-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gsap-container .atlas-type-samples {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gsap-container .atlas-tile {
+    padding: 1.5rem;
+  }
+  .gsap-container .atlas-tile-art {
+    font-size: 5.5rem;
+  }
+  .gsap-container .atlas-track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gsap-container[data-horizontal="true"] .atlas-track {
+    display: flex;
+  }
+  .gsap-container[data-horizontal="true"] .atlas-end-card {
+    flex: 0 0 58%;
+  }
+  .gsap-container .atlas-image-frame {
+    aspect-ratio: 2/1;
+  }
+}
+@media (max-width: 767px) {
+  .gsap-container .atlas-links {
+    gap: 0.8rem;
+    font-size: 0.7rem;
+  }
+  .gsap-container .atlas-nav > .atlas-button {
+    margin-left: auto;
+  }
+  .gsap-container .atlas-orbit-art {
+    width: min(18rem, 80%);
+  }
+  .gsap-container .atlas-meta span:last-child {
+    display: none;
+  }
+  .gsap-container .atlas-plane {
+    padding: 0.75rem;
+  }
+  .gsap-container .atlas-plane b {
+    font-size: 2.5rem;
+  }
+  .gsap-container .atlas-disc-art {
+    width: 8rem;
+    border-width: 20px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .gsap-container {
+    --bg: var(--color-background, #101722);
+    --ink: var(--color-text, #e8eef8);
+    --muted: var(--color-muted, #a2b0c7);
+    --line: var(--color-border, #303e55);
+    --surface: var(--color-surface, #192436);
+    --paper: var(--color-paper, #263750);
+    --accent: var(--color-accent, #91b4ff);
+    --sky: var(--color-art-sky, #1c2d4b);
+    --mid: var(--color-art-mid, #395e92);
+    --deep: var(--color-art-deep, #203c62);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gsap-container .atlas-image-shutter {
+    display: none;
+  }
+  .gsap-container .atlas-image-cursor {
+    display: none;
+  }
+  .gsap-container .atlas-marquee > div {
+    max-width: 100%;
+    font-size: 1.4rem;
+  }
+  .gsap-container .atlas-marquee span {
+    white-space: normal;
+  }
+  .gsap-container .atlas-marquee span + span {
+    display: none;
+  }
+}
+/* A dedicated interactive subsection keeps the showcase at ten main screens. */
+.gsap-container .atlas-cube-panel {
+  padding-block: 2rem;
+  border-top: 1px solid var(--line);
+}
+.gsap-container .atlas-cube-panel h3 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  margin-top: 0.5rem;
+}
+.gsap-container .atlas-cube-stage {
+  --cube-size: clamp(7rem, 18vw, 12rem);
+  min-height: 24rem;
+  margin-top: 2rem;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  touch-action: pan-y;
+  cursor: grab;
+}
+.gsap-container .atlas-cube {
+  position: relative;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  transform-style: preserve-3d;
+  transform: rotateX(-22deg) rotateY(32deg);
+}
+.gsap-container .atlas-cube-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.8rem;
+  border: 1px solid var(--accent);
+  background: var(--paper);
+  color: var(--accent);
+  backface-visibility: hidden;
+  user-select: none;
+}
+.gsap-container .atlas-cube-face span {
+  font: 0.55rem/1.4 monospace;
+}
+.gsap-container .atlas-cube-face b {
+  font:
+    clamp(3rem, 8vw, 6rem) / 1 Georgia,
+    serif;
+  text-align: center;
+  font-weight: normal;
+}
+.gsap-container .atlas-cube-face-front {
+  transform: translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-face-back {
+  transform: rotateY(180deg) translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-face-right {
+  transform: rotateY(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-face-left {
+  transform: rotateY(-90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-face-top {
+  transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-face-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.gsap-container .atlas-cube-stage:active {
+  cursor: grabbing;
+}
+.gsap-container .atlas-cube {
+  touch-action: none;
+}

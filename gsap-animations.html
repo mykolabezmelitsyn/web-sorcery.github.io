@@ -1,935 +1,645 @@
+
 <!doctype html>
 <html lang="en" class="no-js">
-<head>
+  <head>
 
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description"
-        content="A hands-on collection of ten GSAP animation studies: scroll, typography, SVG, physics, interfaces, and more."/>
-  <link rel="icon" href="./favicon.ico" sizes="any"/>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml"/>
-  <link rel="icon" href="./favicon-32x32.png" type="image/png" sizes="32x32"/>
-  <link rel="icon" href="./favicon-16x16.png" type="image/png" sizes="16x16"/>
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180"/>
-  <link rel="manifest" href="./site.webmanifest"/>
-  <title>GSAP Animations — Web Sorcery</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kinetic atlas: ten studies in motion, curiosity, and considered interaction." />
+<link rel="icon" href="./favicon.ico" sizes="any" />
+<link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="./favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="icon" href="./favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180" />
+<link rel="manifest" href="./site.webmanifest" />
+    <title>GSAP Animations — Web Sorcery</title>
 
 
-  <script>
-    try {
-      const theme = localStorage.getItem("portfolio-theme");
-      if (theme === "light" || theme === "dark") {
-        document.documentElement.dataset.theme = theme;
+
+    <script>
+      try {
+        const theme = localStorage.getItem("portfolio-theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // CSS follows the system preference when storage is unavailable.
       }
-    } catch {
-      // CSS follows the system preference when storage is unavailable.
-    }
-  </script>
-  <link rel="stylesheet" href="./animations/soldier-3D/soldier.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"
-      }
-    }
-  </script>
-  <script type="module" crossorigin src="./assets/main-CP6QIZ5D.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/main-BfRn16nI.css">
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+    </script>
+    <script type="module" crossorigin src="./assets/gsap-animations-B5L-EA2B.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/main-DzvS4wZX.js">
+    <link rel="stylesheet" crossorigin href="./assets/main-9TH5bNLq.css">
+    <link rel="stylesheet" crossorigin href="./assets/gsap-animations-BmScETYg.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 <header class="header">
-  <div class="header__inner">
-    <a class="header__brand" href="./index.html">Web Sorcery<span class="header__dot" aria-hidden="true">  <svg
-      class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
+      <div class="header__inner">
+        <a class="header__brand" href="./index.html">Web Sorcery<span class="header__dot" aria-hidden="true">  <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
   </svg>
 </span></a>
-    <div class="header__controls">
-      <button class="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" hidden>
-            <span class="theme-toggle__icon" aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                       viewBox="0 0 24 24" fill="none"
-                                                                       stroke="currentColor" stroke-width="1.5"
-                                                                       stroke-linecap="round" stroke-linejoin="round"
-                                                                       aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M12 3a9 9 0 0 0 0 18Z" fill="currentColor" stroke="none"/>
+        <div class="header__controls">
+          <button class="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" hidden>
+            <span class="theme-toggle__icon" aria-hidden="true">  <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 3a9 9 0 0 0 0 18Z" fill="currentColor" stroke="none" />
   </svg>
 </span>
-        <span class="theme-toggle__label">Dark mode</span>
-      </button>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" hidden>Menu <span
-        aria-hidden="true">  <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-                                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                  stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="M5 12h14"/>
-      <path class="icon__vertical" d="M12 5v14"/>
+            <span class="theme-toggle__label">Dark mode</span>
+          </button>
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" hidden>Menu <span aria-hidden="true">  <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M5 12h14" />
+      <path class="icon__vertical" d="M12 5v14" />
   </svg>
 </span></button>
-    </div>
-    <nav class="header__nav" id="main-navigation" aria-label="Main navigation">
-      <a class="header__link" href="./index.html#work">Selected work</a>
-    </nav>
-  </div>
-</header>
-
-<main id="main" class="site-main portfolio portfolio--full-width">
-  <canvas id="webgl-soldier"></canvas>
-  <div class="portfolio__content">
-    <div class="gsap-container" role="region" aria-label="GSAP animation showcase">
-      <div class="motion-bar">
-        <a class="motion-bar__brand" href="#motion-start">The motion index<span aria-hidden="true">   <svg class="icon"
-                                                                                                           width="1em"
-                                                                                                           height="1em"
-                                                                                                           viewBox="0 0 24 24"
-                                                                                                           fill="none"
-                                                                                                           stroke="currentColor"
-                                                                                                           stroke-width="1.5"
-                                                                                                           stroke-linecap="round"
-                                                                                                           stroke-linejoin="round"
-                                                                                                           aria-hidden="true"
-                                                                                                           focusable="false">
-      <path d="M7 17 17 7M7 7h10v10"/>
-  </svg>
-</span></a>
-        <nav class="motion-bar__nav" aria-label="Animation chapters">
-          <a href="#motion-text">Type</a>
-          <a href="#motion-physics">Play</a>
-          <a href="#motion-finale">Explore</a>
+        </div>
+        <nav class="header__nav" id="main-navigation" aria-label="Main navigation">
+          <a class="header__link" href="./index.html#work">Selected work</a>
         </nav>
-        <button class="motion-button motion-button--small" data-motion-toggle type="button" aria-pressed="false"
-                disabled>Pause motion
+      </div>
+    </header>
+
+    <main id="main" class="site-main portfolio portfolio--full-width">
+<div class="gsap-container" data-atlas>
+  <nav class="atlas-nav" aria-label="Showcase navigation">
+    <a class="atlas-brand" href="#atlas-arrival"
+      >Kinetic atlas<span aria-hidden="true"> ✳</span></a
+    >
+    <div class="atlas-links">
+      <a href="#atlas-type">Read</a><a href="#atlas-play">Play</a
+      ><a href="#atlas-horizons">Explore ↗</a>
+    </div>
+    <button
+      disabled
+      class="atlas-button atlas-small"
+      type="button"
+      data-pause
+      aria-pressed="false"
+    >
+      Pause animation
+    </button>
+  </nav>
+  <p class="atlas-status" data-status role="status">
+    Ten studies in motion. Interactive controls become available when the studio
+    is ready.
+  </p>
+  <!-- 01: Transform, opacity, stagger, synchronized timeline, easing, magnetic pointer/focus interactions. -->
+  <section
+    class="atlas-screen atlas-hero"
+    id="atlas-arrival"
+    aria-labelledby="atlas-title"
+  >
+    <div class="atlas-meta">
+      <span>01 / The art of almost nothing</span
+      ><span>Web Sorcery / Motion studies</span>
+    </div>
+    <div class="atlas-hero-grid">
+      <div>
+        <p class="atlas-eyebrow">A collection of small wonders</p>
+        <h1 id="atlas-title">Less static.<br /><em>More feeling.</em></h1>
+        <p class="atlas-copy">
+          A field guide to the space between one thing and the next. Ten studies
+          in rhythm, curiosity, and the pleasure of a well-timed detail.
+        </p>
+        <a class="atlas-button atlas-primary" href="#atlas-depth" data-magnetic
+          >Enter the collection <span aria-hidden="true">↘</span></a
+        >
+      </div>
+      <div class="atlas-orbit-art" aria-hidden="true">
+        <div class="atlas-orbit atlas-orbit-a"></div>
+        <div class="atlas-orbit atlas-orbit-b"></div>
+        <div class="atlas-orbit atlas-orbit-c"></div>
+        <div class="atlas-core">✳</div>
+        <span class="atlas-orbit-dot"></span
+        ><span class="atlas-art-label">FORM / 001<br />Always becoming.</span>
+      </div>
+    </div>
+    <div class="atlas-bottom">
+      <span>Scroll to discover</span><span aria-hidden="true">↓</span
+      ><span>Built to be felt.</span>
+    </div>
+    <p class="atlas-tags">
+      Transform · Opacity · Timeline · Stagger · Magnetic
+    </p>
+  </section>
+  <!-- 02: ScrollTrigger pinning and scrubbing, parallax, perspective and multi-axis 3D transforms. -->
+  <section
+    class="atlas-screen atlas-depth"
+    id="atlas-depth"
+    aria-labelledby="atlas-depth-title"
+  >
+    <div class="atlas-meta">
+      <span>02 / A different perspective</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-depth-title">
+        A little depth.<br /><em>A lot of possibility.</em>
+      </h2>
+      <p class="atlas-copy">
+        Three planes. One point of view. Scroll and let the distance do the
+        talking.
+      </p>
+    </div>
+    <div
+      class="atlas-depth-stage"
+      aria-label="Three layered abstract artwork panels"
+    >
+      <div class="atlas-plane atlas-plane-back">
+        <span>01 / DISTANCE</span><b>Far<br />away.</b
+        ><i class="atlas-grid-art"></i>
+      </div>
+      <div class="atlas-plane atlas-plane-mid">
+        <span>02 / CLOSER</span><i class="atlas-disc-art"></i
+        ><b>A new angle.</b>
+      </div>
+      <div class="atlas-plane atlas-plane-front">
+        <span>03 / RIGHT HERE</span><b>Now.</b
+        ><span class="atlas-cross" aria-hidden="true">✳</span>
+      </div>
+    </div>
+    <!-- Interactive CSS 3D cube: pointer-follow rotation, touch dragging and keyboard control. -->
+    <section class="atlas-cube-panel" aria-labelledby="atlas-cube-title">
+      <div class="atlas-heading-row">
+        <div>
+          <p class="atlas-eyebrow">Another dimension</p>
+          <h3 id="atlas-cube-title">Every side has a story.</h3>
+        </div>
+        <p class="atlas-copy" id="atlas-cube-help">
+          Move your mouse to turn the cube. On touch, drag it. Use the arrow
+          keys when focused.
+        </p>
+      </div>
+      <div
+        class="atlas-cube-stage"
+        tabindex="0"
+        role="group"
+        aria-label="Interactive three-dimensional cube"
+        aria-describedby="atlas-cube-help"
+      >
+        <div class="atlas-cube" aria-hidden="true">
+          <div class="atlas-cube-face atlas-cube-face-front">
+            <span>01 / PERSPECTIVE</span><b>◒</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-back">
+            <span>02 / PERSPECTIVE</span><b>✳</b
+            ><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-right">
+            <span>03 / PERSPECTIVE</span><b>◎</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-left">
+            <span>04 / PERSPECTIVE</span><b>↗</b
+            ><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-top">
+            <span>05 / PERSPECTIVE</span><b>◐</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-bottom">
+            <span>06 / PERSPECTIVE</span><b>＋</b
+            ><span>A different angle.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <p class="atlas-tags">ScrollTrigger · Pin · Scrub · Parallax · CSS 3D</p>
+  </section>
+  <!-- 03: SplitText character reveals, typing, scrambling and replayable text timelines. -->
+  <section
+    class="atlas-screen atlas-type"
+    id="atlas-type"
+    aria-labelledby="atlas-type-title"
+  >
+    <div class="atlas-meta">
+      <span>03 / Words with a pulse</span><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-type-title" data-split>
+        Make room<br />for <em>possibility.</em>
+      </h2>
+      <button disabled class="atlas-button" type="button" data-type-replay>
+        Read it again ↻
+      </button>
+    </div>
+    <div class="atlas-type-samples">
+      <div>
+        <span class="atlas-eyebrow">01 / One thought at a time</span>
+        <p class="atlas-type-line" data-typing aria-hidden="true">
+          Good things take a little time.
+        </p>
+        <span class="atlas-sr">Good things take a little time.</span>
+      </div>
+      <div>
+        <span class="atlas-eyebrow">02 / Finding the signal</span>
+        <p class="atlas-type-line" data-scramble aria-hidden="true">
+          ORDER FROM CURIOSITY
+        </p>
+        <span class="atlas-sr">Order from curiosity.</span>
+      </div>
+    </div>
+    <p class="atlas-tags">SplitText · TextPlugin · ScrambleText · Reveal</p>
+  </section>
+  <!-- 04: SVG drawing, MorphSVG, MotionPath and labeled synchronized sequencing. -->
+  <section
+    class="atlas-screen atlas-paths"
+    id="atlas-paths"
+    aria-labelledby="atlas-path-title"
+  >
+    <div class="atlas-meta">
+      <span>04 / Take the scenic route</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-path-title">The journey<br /><em>is the point.</em></h2>
+      <button disabled class="atlas-button" type="button" data-path-replay>
+        Travel again ↻
+      </button>
+    </div>
+    <svg
+      class="atlas-route"
+      viewBox="0 0 900 360"
+      role="img"
+      aria-label="A blue dot traces a winding route while a circle becomes a star"
+    >
+      <path
+        class="atlas-route-guide"
+        d="M50 260C180 260 110 60 280 80S420 330 570 230S670 30 850 90"
+      />
+      <path
+        data-route
+        d="M50 260C180 260 110 60 280 80S420 330 570 230S670 30 850 90"
+      />
+      <circle data-traveler cx="0" cy="0" r="12" />
+      <g transform="translate(710 240)">
+        <path data-morph d="M0 -38C50 -38 50 38 0 38C-50 38 -50 -38 0 -38Z" />
+        <path
+          data-morph-end
+          visibility="hidden"
+          d="M0 -50L14 -15L50 -15L22 7L32 45L0 23L-32 45L-22 7L-50 -15L-14 -15Z"
+        />
+      </g>
+      <text x="38" y="310">A little curiosity</text>
+      <text x="700" y="40">Somewhere new ↗</text>
+    </svg>
+    <p class="atlas-tags">DrawSVG · MorphSVG · MotionPath · Timeline</p>
+  </section>
+  <!-- 05: FLIP transitions, responsive grid/list layouts, stagger and elastic easing. -->
+  <section
+    class="atlas-screen atlas-layout"
+    id="atlas-layout"
+    aria-labelledby="atlas-layout-title"
+  >
+    <div class="atlas-meta">
+      <span>05 / Same pieces, new rhythm</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-layout-title">Rearrange<br /><em>your perspective.</em></h2>
+      <button
+        disabled
+        class="atlas-button"
+        type="button"
+        data-layout-toggle
+        aria-pressed="false"
+      >
+        Switch to list ↗
+      </button>
+    </div>
+    <div class="atlas-tiles" data-tiles>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">01</span
+        ><span class="atlas-tile-art" aria-hidden="true">◒</span>
+        <h3>Balance</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">02</span
+        ><span class="atlas-tile-art" aria-hidden="true">✳</span>
+        <h3>Resonance</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">03</span
+        ><span class="atlas-tile-art" aria-hidden="true">◎</span>
+        <h3>Connection</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">04</span
+        ><span class="atlas-tile-art" aria-hidden="true">↗</span>
+        <h3>Momentum</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">05</span
+        ><span class="atlas-tile-art" aria-hidden="true">◐</span>
+        <h3>Perspective</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">06</span
+        ><span class="atlas-tile-art" aria-hidden="true">＋</span>
+        <h3>Possibility</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+    </div>
+    <p class="atlas-tags">Flip · Layout transitions · Stagger · Responsive</p>
+  </section>
+  <!-- 06: Draggable, inertia, throw/snap, gravity, velocity, keyboard and touch input. -->
+  <section
+    class="atlas-screen atlas-play"
+    id="atlas-play"
+    aria-labelledby="atlas-play-title"
+  >
+    <div class="atlas-meta">
+      <span>06 / A little less serious</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-play-title">Go on.<br /><em>Give it a nudge.</em></h2>
+      <button disabled class="atlas-button" type="button" data-launch>
+        Launch a little joy ↗
+      </button>
+    </div>
+    <p class="atlas-copy">
+      Drag, throw, or use the arrow keys. The circle finds its own place on the
+      grid.
+    </p>
+    <div class="atlas-playground" data-playground>
+      <button
+        disabled
+        class="atlas-puck"
+        type="button"
+        data-puck
+        aria-label="Draggable circle. Use arrow keys to move; Home to reset."
+      >
+        drag<br /><span aria-hidden="true">↔</span></button
+      ><span class="atlas-projectile" aria-hidden="true">✳</span
+      ><span class="atlas-field-label">A safe place to play.</span>
+    </div>
+    <p class="atlas-sr" data-play-status role="status"></p>
+    <p class="atlas-tags">Draggable · Inertia · Physics2D · Gravity · Snap</p>
+  </section>
+  <!-- 07: Enter/exit page transitions, crossfade slider, swipe gestures, menu, modal and accordion. -->
+  <section
+    class="atlas-screen atlas-interface"
+    id="atlas-interface"
+    aria-labelledby="atlas-interface-title"
+  >
+    <div class="atlas-meta">
+      <span>07 / Details make the difference</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-interface-title">
+        An interface<br /><em>with manners.</em>
+      </h2>
+      <p class="atlas-copy">
+        A tiny website inside a website. Swipe its pages, open a thought, or
+        follow a new direction.
+      </p>
+    </div>
+    <div class="atlas-mini-site">
+      <div class="atlas-mini-top">
+        <span>studio / somewhere</span
+        ><button
+          disabled
+          type="button"
+          class="atlas-button atlas-small"
+          data-menu-toggle
+          aria-expanded="false"
+        >
+          Menu ＋
         </button>
       </div>
-      <p class="motion-status" data-load-status role="status">Loading the animation studio…</p>
-
-      <!-- 01: Transform, opacity, stagger, timeline, easing, mouse interactions, magnetic buttons. -->
-      <section class="motion-screen motion-hero" id="motion-start" aria-labelledby="motion-hero-title">
-        <div class="motion-kicker"><span>GSAP   <svg class="icon icon--separator" width="1em" height="1em"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                     aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A living collection</span><span>01   <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24"
-                                           fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                           stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="M4 12h16"/>
-  </svg>
- 11</span></div>
-        <div class="motion-hero__layout">
-          <div>
-            <h1 class="motion-display" id="motion-hero-title">Less static.<br><em>More feeling.</em></h1>
-            <p class="motion-copy">A small field guide to things that move. Eleven studies in rhythm, interaction, and
-              the details that make the web feel alive.</p>
-            <a class="motion-button motion-button--solid" data-magnetic href="#motion-depth">Enter the collection <span
-              aria-hidden="true">  <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="m7 7 10 10M7 17h10V7"/>
-  </svg>
-</span></a>
-          </div>
-          <div class="motion-hero__art" aria-hidden="true">
-            <div class="motion-orbit motion-orbit--one"></div>
-            <div class="motion-orbit motion-orbit--two"></div>
-            <svg class="motion-sun" data-hero-shape viewBox="0 0 360 360" aria-hidden="true" focusable="false">
-              <defs>
-                <linearGradient id="motion-sun-surface" x1="0" y1="0" x2="1" y2="1">
-                  <stop class="motion-sun__gold" offset="0"/>
-                  <stop class="motion-sun__ember" offset="1"/>
-                </linearGradient>
-              </defs>
-              <g class="motion-sun__rays" fill="none" stroke-width="5" stroke-linecap="round">
-                <path d="M180 48V74" transform="rotate(0 180 180)"/>
-                <path d="M180 48V74" transform="rotate(30 180 180)"/>
-                <path d="M180 48V74" transform="rotate(60 180 180)"/>
-                <path d="M180 48V74" transform="rotate(90 180 180)"/>
-                <path d="M180 48V74" transform="rotate(120 180 180)"/>
-                <path d="M180 48V74" transform="rotate(150 180 180)"/>
-                <path d="M180 48V74" transform="rotate(180 180 180)"/>
-                <path d="M180 48V74" transform="rotate(210 180 180)"/>
-                <path d="M180 48V74" transform="rotate(240 180 180)"/>
-                <path d="M180 48V74" transform="rotate(270 180 180)"/>
-                <path d="M180 48V74" transform="rotate(300 180 180)"/>
-                <path d="M180 48V74" transform="rotate(330 180 180)"/>
-              </g>
-              <circle cx="180" cy="180" r="80" fill="url(#motion-sun-surface)"/>
-            </svg>
-            <span class="motion-hero__note">a little movement<br>goes a long way.</span>
-            <span class="motion-orbit-dot"></span>
-          </div>
-        </div>
-        <div class="motion-footnote"><span>Built to be played with.</span><span>Scroll slowly. Stay curious.   <svg
-          class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="M12 4v16m-6-6 6 6 6-6"/>
-  </svg>
-</span></div>
-      </section>
-
-      <!-- 02: ScrollTrigger, pinning, scrubbing, parallax, 3D transforms, responsive animation. -->
-      <section class="motion-screen motion-depth" id="motion-depth" aria-labelledby="motion-depth-title">
-        <div class="motion-kicker"><span>02   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Space & time</span><span>Scroll to compose</span></div>
-        <div class="motion-depth__scene">
-          <div class="motion-depth__layer motion-depth__layer--back" aria-hidden="true">01</div>
-          <div class="motion-depth__layer motion-depth__layer--middle" aria-hidden="true"><span>Perspective</span><span>changes everything.</span>
-          </div>
-          <div class="motion-depth__layer motion-depth__layer--front" aria-hidden="true">
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M7 17 17 7M7 7h10v10"/>
-            </svg>
-          </div>
-          <h2 class="motion-heading" id="motion-depth-title">Give an idea<br>some depth.</h2>
-        </div>
-        <p class="motion-copy">One scroll, three different rhythms. Layers drift at different speeds while perspective
-          turns a flat composition into a space.</p>
-        <div class="motion-progress" aria-hidden="true"><span></span></div>
-        <p class="motion-tags">ScrollTrigger
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Pin
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Scrub
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Parallax
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          3D
-        </p>
-      </section>
-
-      <!-- 03: SplitText reveals, typing with TextPlugin, scrambling, stagger, timeline. -->
-      <section class="motion-screen motion-type" id="motion-text" aria-labelledby="motion-type-title">
-        <div class="motion-kicker"><span>03   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Words with character</span><span>Read between the frames</span></div>
-        <h2 class="motion-heading" id="motion-type-title" data-split>Good things<br>take a little motion.</h2>
-        <div class="motion-type__lines">
-          <p><span class="motion-label">01   <svg class="icon icon--separator" width="1em" height="1em"
-                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                  aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Typing</span><span data-typing aria-hidden="true">Make room for possibility.</span><span class="motion-sr">Make room for possibility.</span>
-          </p>
-          <p><span class="motion-label">02   <svg class="icon icon--separator" width="1em" height="1em"
-                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                  aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Scrambling</span><span data-scramble aria-hidden="true">ORDER FROM CURIOSITY</span><span class="motion-sr">Order from curiosity.</span>
+      <nav
+        class="atlas-mini-menu"
+        aria-label="Miniature site pages"
+        data-mini-menu
+        hidden
+      >
+        <button disabled type="button" data-scene="0">Curiosity</button
+        ><button disabled type="button" data-scene="1">Connection</button
+        ><button disabled type="button" data-scene="2">Possibility</button>
+      </nav>
+      <div
+        class="atlas-slides"
+        data-slides
+        tabindex="0"
+        aria-roledescription="carousel"
+        aria-label="Three miniature pages; swipe or use arrow keys"
+      >
+        <article class="atlas-slide">
+          <span class="atlas-eyebrow">A fresh perspective / 01</span>
+          <h3>Start with<br />curiosity.</h3>
+          <p>There is more than one way to see the world.</p>
+          <span class="atlas-slide-art" aria-hidden="true">◒</span>
+        </article>
+        <article class="atlas-slide" hidden>
+          <span class="atlas-eyebrow">A fresh perspective / 02</span>
+          <h3>Stay for<br />connection.</h3>
+          <p>Good things happen in the space between us.</p>
+          <span class="atlas-slide-art" aria-hidden="true">◎</span>
+        </article>
+        <article class="atlas-slide" hidden>
+          <span class="atlas-eyebrow">A fresh perspective / 03</span>
+          <h3>Leave with<br />possibility.</h3>
+          <p>Every ending makes room for a beginning.</p>
+          <span class="atlas-slide-art" aria-hidden="true">✳</span>
+        </article>
+      </div>
+      <div class="atlas-slide-controls">
+        <button
+          disabled
+          class="atlas-button"
+          type="button"
+          data-prev
+          aria-label="Previous page"
+        >
+          ←</button
+        ><span data-slide-status role="status">1 / 3</span
+        ><button
+          disabled
+          class="atlas-button"
+          type="button"
+          data-next
+          aria-label="Next page"
+        >
+          →</button
+        ><button disabled class="atlas-button" type="button" data-open-dialog>
+          Open a thought ↗
+        </button>
+      </div>
+      <details class="atlas-accordion">
+        <summary>What makes an interaction feel good?</summary>
+        <div data-accordion-content>
+          <p>
+            A clear response, a considered pace, and enough space to find your
+            own way. The smallest details often leave the biggest impression.
           </p>
         </div>
-        <button class="motion-button" data-replay-text type="button" disabled>Replay the words <span aria-hidden="true">  <svg
-          class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="M4 10a8 8 0 1 1 0 5M4 4v6h6"/>
-  </svg>
-</span></button>
-        <p class="motion-tags">SplitText
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          TextPlugin
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          ScrambleText
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Stagger
-        </p>
-      </section>
-
-      <!-- 04: SVG path drawing, MorphSVG, MotionPath, synchronized timeline. -->
-      <section class="motion-screen motion-paths" id="motion-paths" aria-labelledby="motion-paths-title">
-        <div class="motion-kicker"><span>04   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A line of thought</span><span>From point A to something else</span></div>
-        <div class="motion-two-up">
-          <div><h2 class="motion-heading" id="motion-paths-title">Take the<br>scenic route.</h2>
-            <p class="motion-copy">Draw a route. Send a thought along it. Let a circle become something new.</p>
-            <button class="motion-button" data-replay-path type="button" disabled>Trace it again
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M4 10a8 8 0 1 1 0 5M4 4v6h6"/>
-              </svg>
-            </button>
-          </div>
-          <svg class="motion-route" viewBox="0 0 500 400" role="img" aria-labelledby="motion-route-title">
-            <title id="motion-route-title">A curved route with a moving dot and a shape that morphs from a circle to a
-              star.</title>
-            <path class="motion-route__guide" d="M40 290C100 40 210 350 270 140S450 60 455 235"/>
-            <path data-route d="M40 290C100 40 210 350 270 140S450 60 455 235"/>
-            <circle data-traveler cx="0" cy="0" r="9"/>
-            <path data-morph d="M330 300a40 40 0 1 0 80 0a40 40 0 1 0-80 0"/>
-            <path data-morph-end d="M370 250L382 283L417 285L390 307L399 342L370 322L341 342L350 307L323 285L358 283Z"
-                  visibility="hidden"/>
-            <text x="32" y="335">A</text>
-            <text x="450" y="280">B</text>
-          </svg>
-        </div>
-        <p class="motion-tags">DrawSVG
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          MorphSVG
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          MotionPath
-        </p>
-      </section>
-
-      <!-- 05: FLIP layout transitions, position transitions, responsive grids. -->
-      <section class="motion-screen motion-layout" id="motion-layout" aria-labelledby="motion-layout-title">
-        <div class="motion-kicker"><span>05   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A change of arrangement</span><span>Same pieces. New perspective.</span></div>
-        <div class="motion-section-head"><h2 class="motion-heading" id="motion-layout-title">Find your order.</h2>
-          <button class="motion-button" data-flip-toggle type="button" aria-pressed="false" disabled><span
-            data-flip-label>Switch to list</span>
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M3 8h18m-4-4 4 4-4 4M21 16H3m4-4-4 4 4 4"/>
-            </svg>
-          </button>
-        </div>
-        <div class="motion-tiles" data-flip-grid>
-          <div class="motion-tile"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                   stroke-width="1.5" stroke-linecap="round"
-                                                                   stroke-linejoin="round" aria-hidden="true"
-                                                                   focusable="false">
-      <circle cx="12" cy="12" r="8"/>
-  </svg>
-</span>
-            <h3>Form</h3>
-            <p>The shape of an idea.</p></div>
-          <div class="motion-tile"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                   stroke-width="1.5" stroke-linecap="round"
-                                                                   stroke-linejoin="round" aria-hidden="true"
-                                                                   focusable="false">
-      <path d="M12 2v20M2 12h20M5 5l14 14M5 19 19 5"/>
-  </svg>
-</span>
-            <h3>Feeling</h3>
-            <p>The space it leaves.</p></div>
-          <div class="motion-tile"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                   stroke-width="1.5" stroke-linecap="round"
-                                                                   stroke-linejoin="round" aria-hidden="true"
-                                                                   focusable="false">
-      <path d="M7 17 17 7M7 7h10v10"/>
-  </svg>
-</span>
-            <h3>Function</h3>
-            <p>A reason to move.</p></div>
-          <div class="motion-tile"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                   stroke-width="1.5" stroke-linecap="round"
-                                                                   stroke-linejoin="round" aria-hidden="true"
-                                                                   focusable="false">
-      <path
-        d="M9 9V5.5A2.5 2.5 0 1 0 6.5 8H18a2.5 2.5 0 1 0-2.5-2.5V18a2.5 2.5 0 1 0 2.5-2.5H6a2.5 2.5 0 1 0 2.5 2.5V8"/>
-  </svg>
-</span>
-            <h3>Flow</h3>
-            <p>Everything, connected.</p></div>
-        </div>
-        <p class="motion-tags">Flip
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Layout
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Position
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Responsive
-        </p>
-      </section>
-
-      <!-- 06: Physics2D gravity/velocity, Draggable, inertia, throw/snap, keyboard/touch interaction, elastic easing. -->
-      <section class="motion-screen motion-physics" id="motion-physics" aria-labelledby="motion-physics-title">
-        <div class="motion-kicker"><span>06   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A little hands-on</span><span>Pick it up. Let it go.</span></div>
-        <div class="motion-section-head"><h2 class="motion-heading" id="motion-physics-title">Follow your impulse.</h2>
-          <button class="motion-button" data-launch type="button" disabled>Launch a thought
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M7 17 17 7M7 7h10v10"/>
-            </svg>
-          </button>
-        </div>
-        <p class="motion-copy">Drag and throw the disc; it settles onto a 24px grid. Or focus it and use the arrow keys.
-          Enter returns it home.</p>
-        <div class="motion-playground" data-playground>
-          <div class="motion-projectile" aria-hidden="true">
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z" fill="currentColor" stroke="none"/>
-            </svg>
-          </div>
-          <button class="motion-disc" data-disc type="button"
-                  aria-label="Movable disc. Use arrow keys to move, Enter to reset." disabled><span>move<br>me   <svg
-            class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="M7 17 17 7M7 7h10v10"/>
-  </svg>
-</span></button>
-          <span class="motion-playground__note" aria-hidden="true">a space for happy accidents.</span>
-        </div>
-        <p class="motion-sr" data-drag-status role="status"></p>
-        <p class="motion-tags">Draggable
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Inertia
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Physics2D
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Elastic
-        </p>
-      </section>
-
-      <!-- 07: Local page enter/exit transitions, menus, modal, accordion, carousel/slider, crossfade, swipe gestures. -->
-      <section class="motion-screen motion-interface" id="motion-interface" aria-labelledby="motion-ui-title">
-        <div class="motion-kicker"><span>07   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Small interactions</span><span>A miniature world</span></div>
-        <h2 class="motion-heading" id="motion-ui-title">Make it feel natural.</h2>
-        <div class="motion-ui">
-          <div class="motion-ui__toolbar"><span>STUDIO   <svg class="icon icon--separator" width="1em" height="1em"
-                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                              stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round" aria-hidden="true"
-                                                              focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A tiny website</span>
-            <button class="motion-button motion-button--small" type="button" data-menu-toggle
-                    aria-controls="motion-mini-menu" aria-expanded="false" disabled>Menu
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M5 12h14"/>
-                <path class="icon__vertical" d="M12 5v14"/>
-              </svg>
-            </button>
-          </div>
-          <nav class="motion-mini-menu" id="motion-mini-menu" aria-label="Miniature website navigation" hidden>
-            <button type="button" data-scene="0">A fresh perspective</button>
-            <button type="button" data-scene="1">A softer landing</button>
-            <button type="button" data-scene="2">A new direction</button>
-          </nav>
-          <div class="motion-slides" aria-roledescription="carousel" aria-label="Miniature website pages" tabindex="0">
-            <article class="motion-slide"><span class="motion-label">Page 01</span>
-              <h3>A fresh<br><em>perspective.</em></h3>
-              <p>Start with a little curiosity.</p></article>
-            <article class="motion-slide" hidden><span class="motion-label">Page 02</span>
-              <h3>A softer<br><em>landing.</em></h3>
-              <p>Make room for a slower rhythm.</p></article>
-            <article class="motion-slide" hidden><span class="motion-label">Page 03</span>
-              <h3>A new<br><em>direction.</em></h3>
-              <p>Follow the idea somewhere new.</p></article>
-          </div>
-          <div class="motion-ui__controls">
-            <button class="motion-button motion-button--small" data-slide-prev type="button" aria-label="Previous page"
-                    disabled>
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M20 12H4m6-6-6 6 6 6"/>
-              </svg>
-            </button>
-            <span data-slide-status role="status"><span data-slide-current>1</span><span class="motion-sr"> of </span>   <svg
-              class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-              focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- <span>3</span></span>
-            <button class="motion-button motion-button--small" data-slide-next type="button" aria-label="Next page"
-                    disabled>
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M4 12h16m-6-6 6 6-6 6"/>
-              </svg>
-            </button>
-            <button class="motion-button motion-button--small" data-open-modal type="button" disabled>Open a note
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M7 17 17 7M7 7h10v10"/>
-              </svg>
-            </button>
-          </div>
-          <div class="motion-accordion">
-            <h3>
-              <button type="button" data-accordion aria-expanded="false" aria-controls="motion-accordion-panel"
-                      disabled>What makes a good interaction? <span aria-hidden="true">  <svg class="icon" width="1em"
-                                                                                              height="1em"
-                                                                                              viewBox="0 0 24 24"
-                                                                                              fill="none"
-                                                                                              stroke="currentColor"
-                                                                                              stroke-width="1.5"
-                                                                                              stroke-linecap="round"
-                                                                                              stroke-linejoin="round"
-                                                                                              aria-hidden="true"
-                                                                                              focusable="false">
-      <path d="M5 12h14"/>
-      <path class="icon__vertical" d="M12 5v14"/>
-  </svg>
-</span></button>
-            </h3>
-            <div id="motion-accordion-panel" hidden><p>A clear response, a thoughtful pace, and a little room for
-              delight. Motion should always help you understand what just happened.</p></div>
-          </div>
-        </div>
-        <dialog class="motion-dialog" aria-labelledby="motion-dialog-title">
-          <div><span class="motion-label">A note on motion</span>
-            <h3 id="motion-dialog-title">Less can<br>feel like more.</h3>
-            <p>A well-timed detail beats a hundred distractions. Thank you for taking a moment.</p>
-            <button class="motion-button" data-close-modal type="button">Back to exploring
-              <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                   focusable="false">
-                <path d="M7 17 17 7M7 7h10v10"/>
-              </svg>
-            </button>
-          </div>
-        </dialog>
-        <p class="motion-tags">Page transitions
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Crossfade
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          UI
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Swipe
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Carousel
-        </p>
-      </section>
-
-      <!-- 08: Image reveals, CSS masks, clipping, zoom, pointer-following effects. Artwork is inline SVG. -->
-      <section class="motion-screen motion-images" id="motion-images" aria-labelledby="motion-images-title">
-        <div class="motion-kicker"><span>08   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A window into elsewhere</span><span>Made of simple shapes</span></div>
-        <div class="motion-section-head"><h2 class="motion-heading" id="motion-images-title">Reveal a little more.</h2>
-          <button class="motion-button" data-image-replay type="button" aria-label="Restart image reveal" disabled><span
-            class="motion-image-replay__label">Restart reveal</span>
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M12 20V4m-6 6 6-6 6 6"/>
-            </svg>
-          </button>
-        </div>
-        <div class="motion-image-frame" tabindex="0"
-             aria-label="Abstract landscape artwork. Move your pointer to explore its depth.">
-          <svg class="motion-landscape" viewBox="0 0 1200 600" role="img" aria-labelledby="motion-landscape-title"
-               preserveAspectRatio="xMidYMid slice"><title id="motion-landscape-title">An abstract blue landscape with a
-            soft sun and layered rolling hills.</title>
-            <rect class="motion-landscape__sky" width="1200" height="600"/>
-            <circle class="motion-landscape__sun" cx="820" cy="190" r="100"/>
-            <path class="motion-landscape__back" d="M0 390Q200 100 460 330T900 290T1200 350V600H0Z"/>
-            <path class="motion-landscape__front" d="M0 520Q350 220 620 460T1200 380V600H0Z"/>
-            <path class="motion-landscape__line" d="M0 540Q350 240 620 480T1200 400"/>
-          </svg>
-          <div class="motion-image-caption"><span>Somewhere, imagined.</span><span>Original SVG   <svg
-            class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- 2026</span></div>
-          <span class="motion-image-cursor" aria-hidden="true">look closer   <svg class="icon" width="1em" height="1em"
-                                                                                  viewBox="0 0 24 24" fill="none"
-                                                                                  stroke="currentColor"
-                                                                                  stroke-width="1.5"
-                                                                                  stroke-linecap="round"
-                                                                                  stroke-linejoin="round"
-                                                                                  aria-hidden="true" focusable="false">
-      <path d="M7 17 17 7M7 7h10v10"/>
-  </svg>
-</span>
-        </div>
-        <p class="motion-tags">Clip-path
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Mask
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Zoom
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Pointer follow
-        </p>
-      </section>
-
-      <!-- 09: Canvas rendering, GSAP-animated object properties, particles, physics, mouse/touch attraction. -->
-      <section class="motion-screen motion-particles" id="motion-particles" aria-labelledby="motion-particles-title">
-        <div class="motion-kicker"><span>09   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- A hundred small possibilities</span><span>A canvas, not an image</span></div>
-        <div class="motion-section-head"><h2 class="motion-heading" id="motion-particles-title">Nothing moves
-          alone.</h2>
-          <button class="motion-button" data-particle-burst type="button" disabled>Scatter the field
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M12 2v20M2 12h20M5 5l14 14M5 19 19 5"/>
-            </svg>
-          </button>
-        </div>
-        <div class="motion-canvas-frame">
-          <canvas data-particles role="img"
-                  aria-label="A constellation of particles. Move your pointer or touch the field to attract them.">A
-            field of animated particles connected by fine lines.
-          </canvas>
-          <span aria-hidden="true">Move through the field.</span></div>
-        <p class="motion-copy">Each dot is an independent object. Together, they form something that feels alive. Touch
-          or point to draw them closer.</p>
-        <p class="motion-tags">Canvas 2D
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Particles
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Physics
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Object properties
-        </p>
-      </section>
-
-      <!-- 10: 3D cube, randomly generated SVG faces, multi-axis rotation, looping timeline. -->
-      <section class="motion-screen motion-cube-section" id="motion-cube" aria-labelledby="motion-cube-title">
-        <div class="motion-kicker"><span>10   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Another dimension</span><span>Six sides. Endless possibilities.</span></div>
-        <div class="motion-section-head">
-          <h2 class="motion-heading" id="motion-cube-title">Every side has a story.</h2>
-          <button class="motion-button" data-cube-refresh type="button" disabled>New artwork
-            <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M4 10a8 8 0 1 1 0 5M4 4v6h6"/>
-            </svg>
-          </button>
-        </div>
-        <div class="motion-cube-stage" role="group" tabindex="0"
-             aria-label="Interactive cube with six geometric SVG artworks. Drag the cube or use the arrow keys to rotate it.">
-          <div class="motion-cube" data-cube aria-hidden="true">
-            <div class="motion-cube__face motion-cube__face--front" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="20"/>
-              </svg>
-              <span class="motion-cube__number">01</span>
-            </div>
-            <div class="motion-cube__face motion-cube__face--back" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="25"/>
-              </svg>
-              <span class="motion-cube__number">02</span>
-            </div>
-            <div class="motion-cube__face motion-cube__face--right" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="30"/>
-              </svg>
-              <span class="motion-cube__number">03</span>
-            </div>
-            <div class="motion-cube__face motion-cube__face--left" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="35"/>
-              </svg>
-              <span class="motion-cube__number">04</span>
-            </div>
-            <div class="motion-cube__face motion-cube__face--top" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="40"/>
-              </svg>
-              <span class="motion-cube__number">05</span>
-            </div>
-            <div class="motion-cube__face motion-cube__face--bottom" data-cube-face>
-              <svg class="motion-cube__art" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2"
-                   aria-hidden="true" focusable="false">
-                <circle cx="100" cy="100" r="60"/>
-                <circle cx="100" cy="100" r="45"/>
-              </svg>
-              <span class="motion-cube__number">06</span>
-            </div>
-          </div>
-        </div>
-        <p class="motion-copy">A collection in the round. Each face gets an original little SVG, and every turn offers a
-          new perspective.</p>
-        <p class="motion-sr" data-cube-status role="status"></p>
-        <p class="motion-tags">3D transforms
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Generative SVG
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Timeline
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Loop
-        </p>
-      </section>
-
-      <!-- 11: Horizontal scroll, infinite marquee, looping/yoyo, easing, responsive matchMedia, scroll navigation. -->
-      <section class="motion-screen motion-finale" id="motion-finale" aria-labelledby="motion-finale-title">
-        <div class="motion-kicker"><span>11   <svg class="icon icon--separator" width="1em" height="1em"
-                                                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                                   aria-hidden="true" focusable="false">
-      <path d="m15 4-6 16"/>
-  </svg>
- Keep going</span><span>The end is another beginning</span></div>
-        <h2 class="motion-heading" id="motion-finale-title">There’s always<br>another direction.</h2>
-        <div class="motion-horizontal">
-          <div class="motion-horizontal__track">
-            <article class="motion-end-card"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                             viewBox="0 0 24 24" fill="none"
-                                                                             stroke="currentColor" stroke-width="1.5"
-                                                                             stroke-linecap="round"
-                                                                             stroke-linejoin="round" aria-hidden="true"
-                                                                             focusable="false">
-      <path d="M7 17 17 7M7 7h10v10"/>
-  </svg>
-</span>
-              <h3>Stay curious.</h3>
-              <p>A new direction starts with a small question.</p></article>
-            <article class="motion-end-card"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                             viewBox="0 0 24 24" fill="none"
-                                                                             stroke="currentColor" stroke-width="1.5"
-                                                                             stroke-linecap="round"
-                                                                             stroke-linejoin="round" aria-hidden="true"
-                                                                             focusable="false">
-      <path d="M12 2v20M2 12h20M5 5l14 14M5 19 19 5"/>
-  </svg>
-</span>
-              <h3>Try something.</h3>
-              <p>Not every experiment needs a destination.</p></article>
-            <article class="motion-end-card"><span aria-hidden="true">  <svg class="icon" width="1em" height="1em"
-                                                                             viewBox="0 0 24 24" fill="none"
-                                                                             stroke="currentColor" stroke-width="1.5"
-                                                                             stroke-linecap="round"
-                                                                             stroke-linejoin="round" aria-hidden="true"
-                                                                             focusable="false">
-      <path d="M12 12c-3-5-9-5-9 0s6 5 9 0 9-5 9 0-6 5-9 0Z"/>
-  </svg>
-</span>
-              <h3>Begin again.</h3>
-              <p>A good loop always brings you back.</p></article>
-          </div>
-        </div>
-        <div class="motion-marquee" aria-hidden="true">
-          <div><span>MOVE WITH INTENTION   <svg class="icon icon--separator" width="1em" height="1em"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                                                focusable="false">
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-  </svg>
- MAKE ROOM FOR PLAY   <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                           aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-  </svg>
- </span><span>MOVE WITH INTENTION   <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                         stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-  </svg>
- MAKE ROOM FOR PLAY   <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                           aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-  </svg>
- </span></div>
-        </div>
-        <div class="motion-footnote"><p>Eleven studies. One curious web.</p><a class="motion-button"
-                                                                               href="#motion-start">Back to the
-          beginning
-          <svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <path d="M12 20V4m-6 6 6-6 6 6"/>
-          </svg>
-        </a></div>
-        <p class="motion-tags">Horizontal scroll
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Marquee
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Loop
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          Yoyo
-          <svg class="icon icon--separator" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-          </svg>
-          ScrollTo
-        </p>
-      </section>
+      </details>
     </div>
-  </div>
-</main>
+    <dialog class="atlas-dialog" aria-labelledby="atlas-dialog-title">
+      <span class="atlas-eyebrow">A small thought</span>
+      <h3 id="atlas-dialog-title">Less can<br /><em>feel like more.</em></h3>
+      <p>
+        Motion is a conversation. Sometimes the most thoughtful thing it can do
+        is pause.
+      </p>
+      <button disabled class="atlas-button" type="button" data-close-dialog>
+        Back to exploring ↙
+      </button>
+    </dialog>
+    <p class="atlas-tags">
+      Page transitions · Swipe · Carousel · Menu · Modal · Accordion
+    </p>
+  </section>
+  <!-- 08: Original SVG imagery, mask, clipping reveal, scroll-driven zoom and cursor following. -->
+  <section
+    class="atlas-screen atlas-images"
+    id="atlas-images"
+    aria-labelledby="atlas-image-title"
+  >
+    <div class="atlas-meta">
+      <span>08 / An imagined somewhere</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-image-title">See a little<br /><em>more.</em></h2>
+      <p class="atlas-copy">
+        No photograph. Just light, layers, and an invitation to look closer.
+      </p>
+    </div>
+    <div
+      class="atlas-image-frame"
+      tabindex="0"
+      aria-label="An original landscape illustration. Scroll to reveal it."
+    >
+      <div class="atlas-image-art">
+        <svg
+          class="atlas-landscape"
+          viewBox="0 0 800 600"
+          preserveAspectRatio="xMidYMid slice"
+          role="img"
+          aria-label="An imagined blue landscape with a luminous sun, mountains and rippling water"
+        >
+          <rect width="800" height="600" fill="var(--sky)" />
+          <circle cx="550" cy="185" r="100" fill="var(--glow)" />
+          <path
+            d="M0 420L180 180L390 420L620 250L800 410V600H0Z"
+            fill="var(--mid)"
+          />
+          <path
+            d="M0 470L240 320L450 490L680 380L800 450V600H0Z"
+            fill="var(--deep)"
+          />
+          <path
+            d="M0 520Q200 460 400 520T800 520V600H0Z"
+            fill="var(--accent)"
+            opacity=".65"
+          />
+          <g fill="none" stroke="var(--glow)" opacity=".5">
+            <path d="M70 540Q220 510 370 540T730 540" />
+            <path d="M120 565Q280 540 440 565T800 565" />
+          </g>
+        </svg>
+      </div>
+      <div class="atlas-image-shutter"></div>
+      <span class="atlas-image-cursor" aria-hidden="true">Look closer ↗</span>
+    </div>
+    <div class="atlas-bottom">
+      <span>Somewhere, imagined.</span><span>Original SVG / 2026</span>
+    </div>
+    <p class="atlas-tags">
+      Image reveal · Mask · Clip · Zoom · Pointer following
+    </p>
+  </section>
+  <!-- 09: Canvas particles, GSAP object tweens, pointer attraction, staggered burst and looping. -->
+  <section
+    class="atlas-screen atlas-particles"
+    id="atlas-particles"
+    aria-labelledby="atlas-particles-title"
+  >
+    <div class="atlas-meta">
+      <span>09 / Everything is connected</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-particles-title">
+        A constellation<br /><em>of little moments.</em>
+      </h2>
+      <button disabled class="atlas-button" type="button" data-burst>
+        Make a ripple ◎
+      </button>
+    </div>
+    <div class="atlas-canvas-wrap">
+      <canvas
+        data-particles
+        role="img"
+        aria-label="A constellation of blue particles with connecting lines; move or touch to attract them."
+      ></canvas
+      ><span class="atlas-field-label">Move through the field.</span>
+    </div>
+    <p class="atlas-tags">
+      Canvas 2D · Particles · GSAP object motion · Loop · Stagger
+    </p>
+  </section>
+  <!-- 10: Responsive pinned horizontal scrolling, infinite marquee, repeat/yoyo and scroll navigation. -->
+  <section
+    class="atlas-screen atlas-horizons"
+    id="atlas-horizons"
+    aria-labelledby="atlas-horizons-title"
+  >
+    <div class="atlas-meta">
+      <span>10 / Keep the good things moving</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <h2 id="atlas-horizons-title">
+      There is always<br /><em>another angle.</em>
+    </h2>
+    <div class="atlas-horizontal">
+      <div class="atlas-track">
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">01 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">✳</span>
+          <h3>Be curious.</h3>
+          <p>Follow the detail that makes you look twice.</p>
+        </article>
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">02 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">◒</span>
+          <h3>Make space.</h3>
+          <p>A little breathing room can change the whole rhythm.</p>
+        </article>
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">03 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">↗</span>
+          <h3>Keep moving.</h3>
+          <p>Good ideas rarely arrive in a straight line.</p>
+        </article>
+      </div>
+    </div>
+    <div class="atlas-marquee" aria-label="Stay curious. Make something move.">
+      <div aria-hidden="true">
+        <span>Stay curious. Make something move. ✳ </span
+        ><span>Stay curious. Make something move. ✳ </span>
+      </div>
+    </div>
+    <div class="atlas-bottom">
+      <a class="atlas-button" href="#atlas-arrival">Back to the beginning ↑</a
+      ><span>Made with a little Web Sorcery.</span>
+    </div>
+    <p class="atlas-tags">
+      Horizontal scroll · Infinite marquee · Repeat · Yoyo · ScrollTo
+    </p>
+  </section>
+</div>
+
+    </main>
 
 
-  <script type="module" src="./animations/soldier-3D/soldier.js"></script>
-</body>
+
+  </body>
 </html>

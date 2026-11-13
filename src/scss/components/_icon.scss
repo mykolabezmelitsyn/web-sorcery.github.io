@@ -9,7 +9,6 @@
   margin-inline: 0.15em;
 }
 
-.menu-toggle[aria-expanded="true"] .icon__vertical,
-.gsap-container [aria-expanded="true"] .icon__vertical {
+.menu-toggle[aria-expanded="true"] .icon__vertical {
   opacity: 0;
 }

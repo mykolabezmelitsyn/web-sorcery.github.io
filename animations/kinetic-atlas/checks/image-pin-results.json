@@ -1,0 +1,124 @@
+{
+  "checks": [
+    {
+      "name": "image-pin-mobile",
+      "centeredThroughout": true,
+      "scales": true,
+      "reversible": true,
+      "releases": true,
+      "states": [
+        {
+          "center": 334.28125,
+          "viewport": 333.5,
+          "scale": 1.19
+        },
+        {
+          "center": 334.28125,
+          "viewport": 333.5,
+          "scale": 1.1
+        },
+        {
+          "center": 334.28125,
+          "viewport": 333.5,
+          "scale": 1.01
+        },
+        {
+          "center": 334.28125,
+          "viewport": 333.5,
+          "scale": 1.1
+        }
+      ]
+    },
+    {
+      "name": "image-pin-tablet",
+      "centeredThroughout": true,
+      "scales": true,
+      "reversible": true,
+      "releases": true,
+      "states": [
+        {
+          "center": 512.65625,
+          "viewport": 512,
+          "scale": 1.1899
+        },
+        {
+          "center": 512.65625,
+          "viewport": 512,
+          "scale": 1.1
+        },
+        {
+          "center": 512.65625,
+          "viewport": 512,
+          "scale": 1.0101
+        },
+        {
+          "center": 512.65625,
+          "viewport": 512,
+          "scale": 1.1
+        }
+      ]
+    },
+    {
+      "name": "image-pin-desktop",
+      "centeredThroughout": true,
+      "scales": true,
+      "reversible": true,
+      "releases": true,
+      "states": [
+        {
+          "center": 449.5,
+          "viewport": 450,
+          "scale": 1.19
+        },
+        {
+          "center": 449.5,
+          "viewport": 450,
+          "scale": 1.1
+        },
+        {
+          "center": 449.5,
+          "viewport": 450,
+          "scale": 1.01
+        },
+        {
+          "center": 449.5,
+          "viewport": 450,
+          "scale": 1.1
+        }
+      ]
+    },
+    {
+      "name": "image-pin-integrated",
+      "centeredThroughout": true,
+      "scales": true,
+      "reversible": true,
+      "releases": true,
+      "states": [
+        {
+          "center": 450.296875,
+          "viewport": 450,
+          "scale": 1.19
+        },
+        {
+          "center": 450.296875,
+          "viewport": 450,
+          "scale": 1.1
+        },
+        {
+          "center": 450.296875,
+          "viewport": 450,
+          "scale": 1.01
+        },
+        {
+          "center": 450.296875,
+          "viewport": 450,
+          "scale": 1.1
+        }
+      ]
+    }
+  ],
+  "reducedMotionUnpinned": true,
+  "cleanupTriggers": 0,
+  "errors": [],
+  "warnings": []
+}

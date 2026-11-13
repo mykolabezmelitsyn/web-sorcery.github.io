@@ -1,28 +1,589 @@
 {% extends "layouts/base.njk" %}
 {% set portfolioHome = "./index.html" %}
-{% set description = "A hands-on collection of ten GSAP animation studies: scroll, typography, SVG, physics, interfaces, and more." %}
-
+{% set description = "Kinetic atlas: ten studies in motion, curiosity, and considered interaction." %}
 {% block title %}GSAP Animations — Web Sorcery{% endblock %}
 {% block mainModifier %} portfolio--full-width{% endblock %}
-
 {% block head %}
-  <link rel="stylesheet" href="/animations/soldier-3D/soldier.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="/animations/kinetic-atlas/showcase.css" />
 {% endblock %}
-
 {% block content %}
-  <canvas id="webgl-soldier"></canvas>
-  <div class="portfolio__content">
-    {% include "partials/gsap/showcase.njk" %}
-  </div>
-{% endblock %}
+<div class="gsap-container" data-atlas>
+  <nav class="atlas-nav" aria-label="Showcase navigation">
+    <a class="atlas-brand" href="#atlas-arrival"
+      >Kinetic atlas<span aria-hidden="true"> ✳</span></a
+    >
+    <div class="atlas-links">
+      <a href="#atlas-type">Read</a><a href="#atlas-play">Play</a
+      ><a href="#atlas-horizons">Explore ↗</a>
+    </div>
+    <button
+      disabled
+      class="atlas-button atlas-small"
+      type="button"
+      data-pause
+      aria-pressed="false"
+    >
+      Pause animation
+    </button>
+  </nav>
+  <p class="atlas-status" data-status role="status">
+    Ten studies in motion. Interactive controls become available when the studio
+    is ready.
+  </p>
+  <!-- 01: Transform, opacity, stagger, synchronized timeline, easing, magnetic pointer/focus interactions. -->
+  <section
+    class="atlas-screen atlas-hero"
+    id="atlas-arrival"
+    aria-labelledby="atlas-title"
+  >
+    <div class="atlas-meta">
+      <span>01 / The art of almost nothing</span
+      ><span>Web Sorcery / Motion studies</span>
+    </div>
+    <div class="atlas-hero-grid">
+      <div>
+        <p class="atlas-eyebrow">A collection of small wonders</p>
+        <h1 id="atlas-title">Less static.<br /><em>More feeling.</em></h1>
+        <p class="atlas-copy">
+          A field guide to the space between one thing and the next. Ten studies
+          in rhythm, curiosity, and the pleasure of a well-timed detail.
+        </p>
+        <a class="atlas-button atlas-primary" href="#atlas-depth" data-magnetic
+          >Enter the collection <span aria-hidden="true">↘</span></a
+        >
+      </div>
+      <div class="atlas-orbit-art" aria-hidden="true">
+        <div class="atlas-orbit atlas-orbit-a"></div>
+        <div class="atlas-orbit atlas-orbit-b"></div>
+        <div class="atlas-orbit atlas-orbit-c"></div>
+        <div class="atlas-core">✳</div>
+        <span class="atlas-orbit-dot"></span
+        ><span class="atlas-art-label">FORM / 001<br />Always becoming.</span>
+      </div>
+    </div>
+    <div class="atlas-bottom">
+      <span>Scroll to discover</span><span aria-hidden="true">↓</span
+      ><span>Built to be felt.</span>
+    </div>
+    <p class="atlas-tags">
+      Transform · Opacity · Timeline · Stagger · Magnetic
+    </p>
+  </section>
+  <!-- 02: ScrollTrigger pinning and scrubbing, parallax, perspective and multi-axis 3D transforms. -->
+  <section
+    class="atlas-screen atlas-depth"
+    id="atlas-depth"
+    aria-labelledby="atlas-depth-title"
+  >
+    <div class="atlas-meta">
+      <span>02 / A different perspective</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-depth-title">
+        A little depth.<br /><em>A lot of possibility.</em>
+      </h2>
+      <p class="atlas-copy">
+        Three planes. One point of view. Scroll and let the distance do the
+        talking.
+      </p>
+    </div>
+    <div
+      class="atlas-depth-stage"
+      aria-label="Three layered abstract artwork panels"
+    >
+      <div class="atlas-plane atlas-plane-back">
+        <span>01 / DISTANCE</span><b>Far<br />away.</b
+        ><i class="atlas-grid-art"></i>
+      </div>
+      <div class="atlas-plane atlas-plane-mid">
+        <span>02 / CLOSER</span><i class="atlas-disc-art"></i
+        ><b>A new angle.</b>
+      </div>
+      <div class="atlas-plane atlas-plane-front">
+        <span>03 / RIGHT HERE</span><b>Now.</b
+        ><span class="atlas-cross" aria-hidden="true">✳</span>
+      </div>
+    </div>
+    <!-- Interactive CSS 3D cube: pointer-follow rotation, touch dragging and keyboard control. -->
+    <section class="atlas-cube-panel" aria-labelledby="atlas-cube-title">
+      <div class="atlas-heading-row">
+        <div>
+          <p class="atlas-eyebrow">Another dimension</p>
+          <h3 id="atlas-cube-title">Every side has a story.</h3>
+        </div>
+        <p class="atlas-copy" id="atlas-cube-help">
+          Move your mouse to turn the cube. On touch, drag it. Use the arrow
+          keys when focused.
+        </p>
+      </div>
+      <div
+        class="atlas-cube-stage"
+        tabindex="0"
+        role="group"
+        aria-label="Interactive three-dimensional cube"
+        aria-describedby="atlas-cube-help"
+      >
+        <div class="atlas-cube" aria-hidden="true">
+          <div class="atlas-cube-face atlas-cube-face-front">
+            <span>01 / PERSPECTIVE</span><b>◒</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-back">
+            <span>02 / PERSPECTIVE</span><b>✳</b
+            ><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-right">
+            <span>03 / PERSPECTIVE</span><b>◎</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-left">
+            <span>04 / PERSPECTIVE</span><b>↗</b
+            ><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-top">
+            <span>05 / PERSPECTIVE</span><b>◐</b><span>A different angle.</span>
+          </div>
+          <div class="atlas-cube-face atlas-cube-face-bottom">
+            <span>06 / PERSPECTIVE</span><b>＋</b
+            ><span>A different angle.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <p class="atlas-tags">ScrollTrigger · Pin · Scrub · Parallax · CSS 3D</p>
+  </section>
+  <!-- 03: SplitText character reveals, typing, scrambling and replayable text timelines. -->
+  <section
+    class="atlas-screen atlas-type"
+    id="atlas-type"
+    aria-labelledby="atlas-type-title"
+  >
+    <div class="atlas-meta">
+      <span>03 / Words with a pulse</span><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-type-title" data-split>
+        Make room<br />for <em>possibility.</em>
+      </h2>
+      <button disabled class="atlas-button" type="button" data-type-replay>
+        Read it again ↻
+      </button>
+    </div>
+    <div class="atlas-type-samples">
+      <div>
+        <span class="atlas-eyebrow">01 / One thought at a time</span>
+        <p class="atlas-type-line" data-typing aria-hidden="true">
+          Good things take a little time.
+        </p>
+        <span class="atlas-sr">Good things take a little time.</span>
+      </div>
+      <div>
+        <span class="atlas-eyebrow">02 / Finding the signal</span>
+        <p class="atlas-type-line" data-scramble aria-hidden="true">
+          ORDER FROM CURIOSITY
+        </p>
+        <span class="atlas-sr">Order from curiosity.</span>
+      </div>
+    </div>
+    <p class="atlas-tags">SplitText · TextPlugin · ScrambleText · Reveal</p>
+  </section>
+  <!-- 04: SVG drawing, MorphSVG, MotionPath and labeled synchronized sequencing. -->
+  <section
+    class="atlas-screen atlas-paths"
+    id="atlas-paths"
+    aria-labelledby="atlas-path-title"
+  >
+    <div class="atlas-meta">
+      <span>04 / Take the scenic route</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-path-title">The journey<br /><em>is the point.</em></h2>
+      <button disabled class="atlas-button" type="button" data-path-replay>
+        Travel again ↻
+      </button>
+    </div>
+    <svg
+      class="atlas-route"
+      viewBox="0 0 900 360"
+      role="img"
+      aria-label="A blue dot traces a winding route while a circle becomes a star"
+    >
+      <path
+        class="atlas-route-guide"
+        d="M50 260C180 260 110 60 280 80S420 330 570 230S670 30 850 90"
+      />
+      <path
+        data-route
+        d="M50 260C180 260 110 60 280 80S420 330 570 230S670 30 850 90"
+      />
+      <circle data-traveler cx="0" cy="0" r="12" />
+      <g transform="translate(710 240)">
+        <path data-morph d="M0 -38C50 -38 50 38 0 38C-50 38 -50 -38 0 -38Z" />
+        <path
+          data-morph-end
+          visibility="hidden"
+          d="M0 -50L14 -15L50 -15L22 7L32 45L0 23L-32 45L-22 7L-50 -15L-14 -15Z"
+        />
+      </g>
+      <text x="38" y="310">A little curiosity</text>
+      <text x="700" y="40">Somewhere new ↗</text>
+    </svg>
+    <p class="atlas-tags">DrawSVG · MorphSVG · MotionPath · Timeline</p>
+  </section>
+  <!-- 05: FLIP transitions, responsive grid/list layouts, stagger and elastic easing. -->
+  <section
+    class="atlas-screen atlas-layout"
+    id="atlas-layout"
+    aria-labelledby="atlas-layout-title"
+  >
+    <div class="atlas-meta">
+      <span>05 / Same pieces, new rhythm</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-layout-title">Rearrange<br /><em>your perspective.</em></h2>
+      <button
+        disabled
+        class="atlas-button"
+        type="button"
+        data-layout-toggle
+        aria-pressed="false"
+      >
+        Switch to list ↗
+      </button>
+    </div>
+    <div class="atlas-tiles" data-tiles>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">01</span
+        ><span class="atlas-tile-art" aria-hidden="true">◒</span>
+        <h3>Balance</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">02</span
+        ><span class="atlas-tile-art" aria-hidden="true">✳</span>
+        <h3>Resonance</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">03</span
+        ><span class="atlas-tile-art" aria-hidden="true">◎</span>
+        <h3>Connection</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">04</span
+        ><span class="atlas-tile-art" aria-hidden="true">↗</span>
+        <h3>Momentum</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">05</span
+        ><span class="atlas-tile-art" aria-hidden="true">◐</span>
+        <h3>Perspective</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+      <article class="atlas-tile">
+        <span class="atlas-tile-number">06</span
+        ><span class="atlas-tile-art" aria-hidden="true">＋</span>
+        <h3>Possibility</h3>
+        <p>A small shift changes everything.</p>
+      </article>
+    </div>
+    <p class="atlas-tags">Flip · Layout transitions · Stagger · Responsive</p>
+  </section>
+  <!-- 06: Draggable, inertia, throw/snap, gravity, velocity, keyboard and touch input. -->
+  <section
+    class="atlas-screen atlas-play"
+    id="atlas-play"
+    aria-labelledby="atlas-play-title"
+  >
+    <div class="atlas-meta">
+      <span>06 / A little less serious</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-play-title">Go on.<br /><em>Give it a nudge.</em></h2>
+      <button disabled class="atlas-button" type="button" data-launch>
+        Launch a little joy ↗
+      </button>
+    </div>
+    <p class="atlas-copy">
+      Drag, throw, or use the arrow keys. The circle finds its own place on the
+      grid.
+    </p>
+    <div class="atlas-playground" data-playground>
+      <button
+        disabled
+        class="atlas-puck"
+        type="button"
+        data-puck
+        aria-label="Draggable circle. Use arrow keys to move; Home to reset."
+      >
+        drag<br /><span aria-hidden="true">↔</span></button
+      ><span class="atlas-projectile" aria-hidden="true">✳</span
+      ><span class="atlas-field-label">A safe place to play.</span>
+    </div>
+    <p class="atlas-sr" data-play-status role="status"></p>
+    <p class="atlas-tags">Draggable · Inertia · Physics2D · Gravity · Snap</p>
+  </section>
+  <!-- 07: Enter/exit page transitions, crossfade slider, swipe gestures, menu, modal and accordion. -->
+  <section
+    class="atlas-screen atlas-interface"
+    id="atlas-interface"
+    aria-labelledby="atlas-interface-title"
+  >
+    <div class="atlas-meta">
+      <span>07 / Details make the difference</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-interface-title">
+        An interface<br /><em>with manners.</em>
+      </h2>
+      <p class="atlas-copy">
+        A tiny website inside a website. Swipe its pages, open a thought, or
+        follow a new direction.
+      </p>
+    </div>
+    <div class="atlas-mini-site">
+      <div class="atlas-mini-top">
+        <span>studio / somewhere</span
+        ><button
+          disabled
+          type="button"
+          class="atlas-button atlas-small"
+          data-menu-toggle
+          aria-expanded="false"
+        >
+          Menu ＋
+        </button>
+      </div>
+      <nav
+        class="atlas-mini-menu"
+        aria-label="Miniature site pages"
+        data-mini-menu
+        hidden
+      >
+        <button disabled type="button" data-scene="0">Curiosity</button
+        ><button disabled type="button" data-scene="1">Connection</button
+        ><button disabled type="button" data-scene="2">Possibility</button>
+      </nav>
+      <div
+        class="atlas-slides"
+        data-slides
+        tabindex="0"
+        aria-roledescription="carousel"
+        aria-label="Three miniature pages; swipe or use arrow keys"
+      >
+        <article class="atlas-slide">
+          <span class="atlas-eyebrow">A fresh perspective / 01</span>
+          <h3>Start with<br />curiosity.</h3>
+          <p>There is more than one way to see the world.</p>
+          <span class="atlas-slide-art" aria-hidden="true">◒</span>
+        </article>
+        <article class="atlas-slide" hidden>
+          <span class="atlas-eyebrow">A fresh perspective / 02</span>
+          <h3>Stay for<br />connection.</h3>
+          <p>Good things happen in the space between us.</p>
+          <span class="atlas-slide-art" aria-hidden="true">◎</span>
+        </article>
+        <article class="atlas-slide" hidden>
+          <span class="atlas-eyebrow">A fresh perspective / 03</span>
+          <h3>Leave with<br />possibility.</h3>
+          <p>Every ending makes room for a beginning.</p>
+          <span class="atlas-slide-art" aria-hidden="true">✳</span>
+        </article>
+      </div>
+      <div class="atlas-slide-controls">
+        <button
+          disabled
+          class="atlas-button"
+          type="button"
+          data-prev
+          aria-label="Previous page"
+        >
+          ←</button
+        ><span data-slide-status role="status">1 / 3</span
+        ><button
+          disabled
+          class="atlas-button"
+          type="button"
+          data-next
+          aria-label="Next page"
+        >
+          →</button
+        ><button disabled class="atlas-button" type="button" data-open-dialog>
+          Open a thought ↗
+        </button>
+      </div>
+      <details class="atlas-accordion">
+        <summary>What makes an interaction feel good?</summary>
+        <div data-accordion-content>
+          <p>
+            A clear response, a considered pace, and enough space to find your
+            own way. The smallest details often leave the biggest impression.
+          </p>
+        </div>
+      </details>
+    </div>
+    <dialog class="atlas-dialog" aria-labelledby="atlas-dialog-title">
+      <span class="atlas-eyebrow">A small thought</span>
+      <h3 id="atlas-dialog-title">Less can<br /><em>feel like more.</em></h3>
+      <p>
+        Motion is a conversation. Sometimes the most thoughtful thing it can do
+        is pause.
+      </p>
+      <button disabled class="atlas-button" type="button" data-close-dialog>
+        Back to exploring ↙
+      </button>
+    </dialog>
+    <p class="atlas-tags">
+      Page transitions · Swipe · Carousel · Menu · Modal · Accordion
+    </p>
+  </section>
+  <!-- 08: Original SVG imagery, mask, clipping reveal, scroll-driven zoom and cursor following. -->
+  <section
+    class="atlas-screen atlas-images"
+    id="atlas-images"
+    aria-labelledby="atlas-image-title"
+  >
+    <div class="atlas-meta">
+      <span>08 / An imagined somewhere</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-image-title">See a little<br /><em>more.</em></h2>
+      <p class="atlas-copy">
+        No photograph. Just light, layers, and an invitation to look closer.
+      </p>
+    </div>
+    <div
+      class="atlas-image-frame"
+      tabindex="0"
+      aria-label="An original landscape illustration. Scroll to reveal it."
+    >
+      <div class="atlas-image-art">
+        <svg
+          class="atlas-landscape"
+          viewBox="0 0 800 600"
+          preserveAspectRatio="xMidYMid slice"
+          role="img"
+          aria-label="An imagined blue landscape with a luminous sun, mountains and rippling water"
+        >
+          <rect width="800" height="600" fill="var(--sky)" />
+          <circle cx="550" cy="185" r="100" fill="var(--glow)" />
+          <path
+            d="M0 420L180 180L390 420L620 250L800 410V600H0Z"
+            fill="var(--mid)"
+          />
+          <path
+            d="M0 470L240 320L450 490L680 380L800 450V600H0Z"
+            fill="var(--deep)"
+          />
+          <path
+            d="M0 520Q200 460 400 520T800 520V600H0Z"
+            fill="var(--accent)"
+            opacity=".65"
+          />
+          <g fill="none" stroke="var(--glow)" opacity=".5">
+            <path d="M70 540Q220 510 370 540T730 540" />
+            <path d="M120 565Q280 540 440 565T800 565" />
+          </g>
+        </svg>
+      </div>
+      <div class="atlas-image-shutter"></div>
+      <span class="atlas-image-cursor" aria-hidden="true">Look closer ↗</span>
+    </div>
+    <div class="atlas-bottom">
+      <span>Somewhere, imagined.</span><span>Original SVG / 2026</span>
+    </div>
+    <p class="atlas-tags">
+      Image reveal · Mask · Clip · Zoom · Pointer following
+    </p>
+  </section>
+  <!-- 09: Canvas particles, GSAP object tweens, pointer attraction, staggered burst and looping. -->
+  <section
+    class="atlas-screen atlas-particles"
+    id="atlas-particles"
+    aria-labelledby="atlas-particles-title"
+  >
+    <div class="atlas-meta">
+      <span>09 / Everything is connected</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <div class="atlas-heading-row">
+      <h2 id="atlas-particles-title">
+        A constellation<br /><em>of little moments.</em>
+      </h2>
+      <button disabled class="atlas-button" type="button" data-burst>
+        Make a ripple ◎
+      </button>
+    </div>
+    <div class="atlas-canvas-wrap">
+      <canvas
+        data-particles
+        role="img"
+        aria-label="A constellation of blue particles with connecting lines; move or touch to attract them."
+      ></canvas
+      ><span class="atlas-field-label">Move through the field.</span>
+    </div>
+    <p class="atlas-tags">
+      Canvas 2D · Particles · GSAP object motion · Loop · Stagger
+    </p>
+  </section>
+  <!-- 10: Responsive pinned horizontal scrolling, infinite marquee, repeat/yoyo and scroll navigation. -->
+  <section
+    class="atlas-screen atlas-horizons"
+    id="atlas-horizons"
+    aria-labelledby="atlas-horizons-title"
+  >
+    <div class="atlas-meta">
+      <span>10 / Keep the good things moving</span
+      ><span>An experiment in feeling</span>
+    </div>
+    <h2 id="atlas-horizons-title">
+      There is always<br /><em>another angle.</em>
+    </h2>
+    <div class="atlas-horizontal">
+      <div class="atlas-track">
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">01 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">✳</span>
+          <h3>Be curious.</h3>
+          <p>Follow the detail that makes you look twice.</p>
+        </article>
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">02 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">◒</span>
+          <h3>Make space.</h3>
+          <p>A little breathing room can change the whole rhythm.</p>
+        </article>
+        <article class="atlas-end-card">
+          <span class="atlas-eyebrow">03 / A note to take with you</span
+          ><span class="atlas-end-icon" aria-hidden="true">↗</span>
+          <h3>Keep moving.</h3>
+          <p>Good ideas rarely arrive in a straight line.</p>
+        </article>
+      </div>
+    </div>
+    <div class="atlas-marquee" aria-label="Stay curious. Make something move.">
+      <div aria-hidden="true">
+        <span>Stay curious. Make something move. ✳ </span
+        ><span>Stay curious. Make something move. ✳ </span>
+      </div>
+    </div>
+    <div class="atlas-bottom">
+      <a class="atlas-button" href="#atlas-arrival">Back to the beginning ↑</a
+      ><span>Made with a little Web Sorcery.</span>
+    </div>
+    <p class="atlas-tags">
+      Horizontal scroll · Infinite marquee · Repeat · Yoyo · ScrollTo
+    </p>
+  </section>
+</div>
 
+{% endblock %}
 {% block scripts %}
-  <script type="module" src="/animations/soldier-3D/soldier.js"></script>
+  <script type="module" src="/animations/kinetic-atlas/showcase.js"></script>
 {% endblock %}
