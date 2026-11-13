@@ -1,0 +1,13 @@
+{
+  "brief": "Apply your recommendations to improve site performance. Current functionality should stay as it is now.",
+  "source": "src/scripts/modules/gsap-showcase.js",
+  "type": "JavaScript ES module",
+  "bytesBefore": 41602,
+  "bytesAfter": 43706,
+  "technology": "Existing GSAP 3.15.0 and plugins",
+  "assumptions": [
+    "Preserve scenes, artwork, timing, controls and reduced motion.",
+    "Preserve eager plugin loading and pause/reset behavior.",
+    "Measure regression behavior and allocation retention; do not claim field performance improvements."
+  ]
+}

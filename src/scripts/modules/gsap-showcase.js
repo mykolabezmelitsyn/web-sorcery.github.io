@@ -18,21 +18,31 @@ const GSAP_PLUGIN_NAMES = [
   "Physics2DPlugin",
 ];
 
+// Share pending downloads across mounts; allow a failed request to be retried.
+const libraryLoads = new Map();
+
 function loadScript(root, libraryName) {
-  return new Promise((resolve, reject) => {
-    if (window[libraryName]) {
-      return resolve(window[libraryName]);
-    }
+  if (window[libraryName]) return Promise.resolve(window[libraryName]);
+  if (libraryLoads.has(libraryName)) return libraryLoads.get(libraryName);
+  const request = new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = `${GSAP_CDN_URL}${libraryName}.min.js`;
     script.async = true;
-    script.onload = () =>
-      window[libraryName]
-        ? resolve(window[libraryName])
-        : reject(new Error(`${libraryName} unavailable`));
-    script.onerror = () => reject(new Error(`${libraryName} could not load`));
-    root.append(script);
+    script.onload = () => {
+      script.onload = script.onerror = null;
+      if (window[libraryName]) resolve(window[libraryName]);
+      else reject(new Error(`${libraryName} unavailable`));
+    };
+    script.onerror = () => {
+      script.onload = script.onerror = null;
+      script.remove();
+      reject(new Error(`${libraryName} could not load`));
+    };
+    document.head.append(script);
   });
+  libraryLoads.set(libraryName, request);
+  request.catch(() => libraryLoads.delete(libraryName));
+  return request;
 }
 
 // Only this root starts the CDN loader. Home pages do not load animation libraries.
@@ -50,20 +60,18 @@ export async function initShowcase(root) {
   } catch (error) {
     loadStatus.textContent =
       "The animation studio is offline. All artwork and chapter links are still here; reload to try again.";
-    console.warn("Motion showcase:", error.message);
+    root.dataset.initialized = "";
     return;
   }
 
+  await document.fonts?.ready;
   if (!root.isConnected) {
+    root.dataset.initialized = "";
     return;
   }
-  await document.fonts.ready;
 
   const { gsap, plugins } = libraries;
-  loadStatus.hidden = true;
-  root.querySelectorAll("button[disabled]").forEach((button) => {
-    button.disabled = false;
-  });
+  const disabledButtons = [...root.querySelectorAll("button[disabled]")];
   const motionToggle = root.querySelector("[data-motion-toggle]");
   let isMotionPaused = false;
   let mediaContext;
@@ -113,26 +121,35 @@ export async function initShowcase(root) {
             );
           },
         };
-        animationContext.add(() => {
-          initNavigation(environment);
-          initHero(environment);
-          initDepth(environment);
-          initText(environment);
-          initPaths(environment);
-          initLayout(environment);
-          initPhysics(environment);
-          initInterface(environment);
-          initImages(environment);
-          initParticles(environment);
-          initCube(environment);
-          initFinale(environment);
-        });
-        plugins.ScrollTrigger.refresh();
-        return () => {
+        let disposed = false;
+        const dispose = () => {
+          if (disposed) return;
+          disposed = true;
           eventController.abort();
           animationContext.revert();
-          cleanupCallbacks.forEach((dispose) => dispose());
+          cleanupCallbacks.forEach((cleanup) => cleanup());
         };
+        try {
+          animationContext.add(() => {
+            initNavigation(environment);
+            initHero(environment);
+            initDepth(environment);
+            initText(environment);
+            initPaths(environment);
+            initLayout(environment);
+            initPhysics(environment);
+            initInterface(environment);
+            initImages(environment);
+            initParticles(environment);
+            initCube(environment);
+            initFinale(environment);
+          });
+          plugins.ScrollTrigger.refresh();
+        } catch (error) {
+          dispose();
+          throw error;
+        }
+        return dispose;
       },
     );
   };
@@ -141,24 +158,40 @@ export async function initShowcase(root) {
     mediaContext.revert();
     mountAnimations();
   };
+  // Enable controls before mounting so reduced-motion rules can disable their subset.
+  disabledButtons.forEach((button) => {
+    button.disabled = false;
+  });
+  try {
+    mountAnimations();
+  } catch (error) {
+    mediaContext?.revert();
+    disabledButtons.forEach((button) => {
+      button.disabled = true;
+    });
+    root.dataset.initialized = "";
+    loadStatus.hidden = false;
+    loadStatus.textContent =
+      "The animation studio could not start. Reload to try again.";
+    return;
+  }
+  loadStatus.hidden = true;
   motionToggle.addEventListener("click", toggleMotion);
-  mountAnimations();
 
+  let destroyed = false;
+  const onPageHide = (event) => {
+    if (!event.persisted) teardown();
+  };
   // Revert only this studio's contexts; never kill another page's ScrollTriggers.
   const teardown = () => {
+    if (destroyed) return;
+    destroyed = true;
+    window.removeEventListener("pagehide", onPageHide);
     mediaContext.revert();
     motionToggle.removeEventListener("click", toggleMotion);
     root.dataset.initialized = "";
   };
-  window.addEventListener(
-    "pagehide",
-    (event) => {
-      if (!event.persisted) {
-        teardown();
-      }
-    },
-    { once: true },
-  );
+  window.addEventListener("pagehide", onPageHide);
   return teardown;
 }
 
@@ -357,23 +390,29 @@ function initHero(environment) {
     on(hero, "pointercancel", centerSun);
 
     selectAll("[data-magnetic]").forEach((button) => {
+      const moveX = gsap.quickTo(button, "x", { duration: 0.35 });
+      const moveY = gsap.quickTo(button, "y", { duration: 0.35 });
+      const returnX = gsap.quickTo(button, "x", {
+        duration: 0.7,
+        ease: "elastic.out(1, 0.4)",
+      });
+      const returnY = gsap.quickTo(button, "y", {
+        duration: 0.7,
+        ease: "elastic.out(1, 0.4)",
+      });
       on(button, "pointermove", (event) => {
         const bounds = button.getBoundingClientRect();
-        gsap.to(button, {
-          x: (event.clientX - bounds.left - bounds.width / 2) * 0.16,
-          y: (event.clientY - bounds.top - bounds.height / 2) * 0.25,
-          duration: 0.35,
-          overwrite: "auto",
-        });
+        returnX.tween.pause();
+        returnY.tween.pause();
+        moveX((event.clientX - bounds.left - bounds.width / 2) * 0.16);
+        moveY((event.clientY - bounds.top - bounds.height / 2) * 0.25);
       });
-      on(button, "pointerleave", () =>
-        gsap.to(button, {
-          x: 0,
-          y: 0,
-          duration: 0.7,
-          ease: "elastic.out(1, 0.4)",
-        }),
-      );
+      on(button, "pointerleave", () => {
+        moveX.tween.pause();
+        moveY.tween.pause();
+        returnX(0);
+        returnY(0);
+      });
     });
   }
 }
@@ -998,30 +1037,29 @@ function initImages(environment) {
     return;
   }
   const cursor = select(".motion-image-cursor");
+  const cursorX = gsap.quickTo(cursor, "x", { duration: 0.2 });
+  const cursorY = gsap.quickTo(cursor, "y", { duration: 0.2 });
+  const cursorOpacity = gsap.quickTo(cursor, "opacity", { duration: 0.2 });
+  const artworkX = gsap.quickTo(artwork, "x", { duration: 0.5 });
+  const artworkY = gsap.quickTo(artwork, "y", { duration: 0.5 });
   on(frame, "pointermove", (event) => {
     const bounds = frame.getBoundingClientRect();
-    // Convert pointer coordinates into the frame's unscaled coordinate space.
-    const x =
-      ((event.clientX - bounds.left) * frame.clientWidth) / bounds.width;
-    const y =
-      ((event.clientY - bounds.top) * frame.clientHeight) / bounds.height;
-    gsap.to(cursor, {
-      x: x - 40,
-      y: y - 40,
-      opacity: 1,
-      duration: 0.2,
-      overwrite: "auto",
-    });
-    gsap.to(artwork, {
-      x: (x / frame.clientWidth - 0.5) * 14,
-      y: (y / frame.clientHeight - 0.5) * 10,
-      duration: 0.5,
-      overwrite: "auto",
-    });
+    const width = frame.clientWidth;
+    const height = frame.clientHeight;
+    if (!bounds.width || !bounds.height || !width || !height) return;
+    // Read geometry before writing transforms, preserving the scaled-frame mapping.
+    const x = ((event.clientX - bounds.left) * width) / bounds.width;
+    const y = ((event.clientY - bounds.top) * height) / bounds.height;
+    cursorX(x - 40);
+    cursorY(y - 40);
+    cursorOpacity(1);
+    artworkX((x / width - 0.5) * 14);
+    artworkY((y / height - 0.5) * 10);
   });
   on(frame, "pointerleave", () => {
-    gsap.to(cursor, { opacity: 0, duration: 0.2 });
-    gsap.to(artwork, { x: 0, y: 0, duration: 0.5 });
+    cursorOpacity(0);
+    artworkX(0);
+    artworkY(0);
   });
 }
 
@@ -1048,6 +1086,7 @@ function initParticles(environment) {
       spread: 1,
     }),
   );
+  const points = particles.map(() => ({ x: 0, y: 0 }));
   const renderParticles = () => {
     if (!isVisible && !reduceMotion) {
       return;
@@ -1055,7 +1094,7 @@ function initParticles(environment) {
     drawingContext.clearRect(0, 0, width, height);
     drawingContext.fillStyle = color;
     drawingContext.strokeStyle = color;
-    const points = particles.map((particle) => {
+    particles.forEach((particle, index) => {
       let x =
         width / 2 +
         ((particle.normalizedX - 0.5) * width * 0.9 +
@@ -1074,14 +1113,15 @@ function initParticles(environment) {
       drawingContext.beginPath();
       drawingContext.arc(x, y, particle.radius, 0, Math.PI * 2);
       drawingContext.fill();
-      return { x, y };
+      points[index].x = x;
+      points[index].y = y;
     });
     drawingContext.globalAlpha = 0.18;
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 1; j < points.length; j++) {
-        if (
-          Math.hypot(points[i].x - points[j].x, points[i].y - points[j].y) > 85
-        ) {
+        const dx = points[i].x - points[j].x;
+        const dy = points[i].y - points[j].y;
+        if (dx * dx + dy * dy > 85 * 85) {
           continue;
         }
         drawingContext.beginPath();
@@ -1295,6 +1335,10 @@ function initCube(environment) {
   const section = select(".motion-cube-section");
   const cube = select("[data-cube]");
   const stage = select(".motion-cube-stage");
+  const restoreCubeStyles = saveInlineStyles([cube]);
+  const setRotationX = gsap.quickSetter(cube, "rotationX", "deg");
+  const setRotationY = gsap.quickSetter(cube, "rotationY", "deg");
+  environment.cleanup(restoreCubeStyles);
   let rotation;
   let manual = false;
   let drag = null;
@@ -1320,14 +1364,14 @@ function initCube(environment) {
   on(cube, "pointermove", (event) => {
     if (!drag || event.pointerId !== drag.id) return;
     // Use the current orientation as the origin to avoid a jump on grab.
-    gsap.set(cube, {
-      rotationX:
-        drag.rotationX -
+    setRotationX(
+      drag.rotationX -
         (event.clientY - drag.y) * CUBE_CONFIG.dragDegreesPerPixel,
-      rotationY:
-        drag.rotationY +
+    );
+    setRotationY(
+      drag.rotationY +
         (event.clientX - drag.x) * CUBE_CONFIG.dragDegreesPerPixel,
-    });
+    );
   });
   const endDrag = (event) => {
     if (!drag || event.pointerId !== drag.id) return;
@@ -1444,6 +1488,5 @@ function initFinale(environment) {
     paused: true,
   });
   observeLoop(environment, section, icons);
-  // Refresh after responsive layout changes is owned by matchMedia, not a global killAll().
-  plugins.ScrollTrigger.refresh();
+  // The mounting context refreshes once after all sections are ready.
 }

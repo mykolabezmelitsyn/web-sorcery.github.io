@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Showcase performance report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+      body {
+        font: 12px/1.5 system-ui;
+        color: #172033;
+      }
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font: 10px/1.4 monospace;
+        background: #f1f4f8;
+        padding: 10px;
+        break-inside: avoid;
+      }
+      figure {
+        break-inside: avoid;
+      }
+      img {
+        max-width: 100%;
+        max-height: 240px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Showcase performance improvements</h1>
+    <h2>1. Task description</h2>
+    <blockquote>
+      Apply your recommendations to improve site performance. Current
+      functionality should stay as it is now.
+    </blockquote>
+    <p>
+      Optimize the existing showcase without changing its scenes, artwork,
+      interaction controls or timing. Concentrate on per-event allocation,
+      canvas calculation and initialization lifecycle.
+    </p>
+    <h2>2. Input data</h2>
+    <pre>
+{
+  &quot;brief&quot;: &quot;Apply your recommendations to improve site performance. Current functionality should stay as it is now.&quot;,
+  &quot;source&quot;: &quot;src/scripts/modules/gsap-showcase.js&quot;,
+  &quot;type&quot;: &quot;JavaScript ES module&quot;,
+  &quot;bytesBefore&quot;: 41602,
+  &quot;bytesAfter&quot;: 43706,
+  &quot;technology&quot;: &quot;Existing GSAP 3.15.0 and plugins&quot;,
+  &quot;assumptions&quot;: [
+    &quot;Preserve scenes, artwork, timing, controls and reduced motion.&quot;,
+    &quot;Preserve eager plugin loading and pause/reset behavior.&quot;,
+    &quot;Measure regression behavior and allocation retention; do not claim field performance improvements.&quot;
+  ]
+}</pre
+    >
+    <h2>3. Solution architecture</h2>
+    <p>
+      The existing ES module, GSAP contexts, media queries and eleven scene
+      initializers are retained. Pointer animations reuse quickTo tweens or
+      direct setters; canvas connections use squared distances and persistent
+      points. Script requests share pending promises. Failed setup reverts
+      partial work; teardown is idempotent. Existing scene timelines, plugin
+      availability, responsive behavior, offscreen pausing and reduced motion
+      remain. The integrated page is gsap-animations.html; index.html in this
+      folder links to it. Existing initShowcase(root) returns teardown
+      asynchronously; a second mount API is not introduced.
+    </p>
+    <h2>4. Key code</h2>
+    <h3>Shared library requests</h3>
+    <pre>
+const libraryLoads = new Map();
+
+function loadScript(root, libraryName) {
+  if (window[libraryName]) return Promise.resolve(window[libraryName]);
+  if (libraryLoads.has(libraryName)) return libraryLoads.get(libraryName);
+  const request = new Promise((resolve, reject) =&gt; {
+    const script = document.createElement(&quot;script&quot;);
+    script.src = `${GSAP_CDN_URL}${libraryName}.min.js`;
+    script.async = true;
+    script.onload = () =&gt; {
+      script.onload = script.onerror = null;
+      if (window[libraryName]) resolve(window[libraryName]);
+      else reject(new Error(`${libraryName} unavailable`));
+    };
+    script.onerror = () =&gt; {
+      script.onload = script.onerror = null;
+      script.remove();
+      reject(new Error(`${libraryName} could not load`));
+    };
+    document.head.append(script);
+  });
+  libraryLoads.set(libraryName, request);
+  request.catch(() =&gt; libraryLoads.delete(libraryName));
+  return request;
+}
+
+</pre
+    >
+    <h3>Reusable image updates</h3>
+    <pre>
+  const cursor = select(&quot;.motion-image-cursor&quot;);
+  const cursorX = gsap.quickTo(cursor, &quot;x&quot;, { duration: 0.2 });
+  const cursorY = gsap.quickTo(cursor, &quot;y&quot;, { duration: 0.2 });
+  const cursorOpacity = gsap.quickTo(cursor, &quot;opacity&quot;, { duration: 0.2 });
+  const artworkX = gsap.quickTo(artwork, &quot;x&quot;, { duration: 0.5 });
+  const artworkY = gsap.quickTo(artwork, &quot;y&quot;, { duration: 0.5 });
+  on(frame, &quot;pointermove&quot;, (event) =&gt; {
+    const bounds = frame.getBoundingClientRect();
+    const width = frame.clientWidth;
+    const height = frame.clientHeight;
+    if (!bounds.width || !bounds.height || !width || !height) return;
+    // Read geometry before writing transforms, preserving the scaled-frame mapping.
+    const x = ((event.clientX - bounds.left) * width) / bounds.width;
+    const y = ((event.clientY - bounds.top) * height) / bounds.height;
+    cursorX(x - 40);
+    cursorY(y - 40);
+    cursorOpacity(1);
+    artworkX((x / width - 0.5) * 14);
+    artworkY((y / height - 0.5) * 10);
+  });
+  on(frame, &quot;pointerleave&quot;, () =&gt; {
+    cursorOpacity(0);
+    artworkX(0);
+    artworkY(0);
+  });
+}
+
+</pre
+    >
+    <h3>Squared particle distances</h3>
+    <pre>
+    drawingContext.globalAlpha = 0.18;
+    for (let i = 0; i &lt; points.length; i++) {
+      for (let j = i + 1; j &lt; points.length; j++) {
+        const dx = points[i].x - points[j].x;
+        const dy = points[i].y - points[j].y;
+        if (dx * dx + dy * dy &gt; 85 * 85) {
+          continue;
+        }
+        drawingContext.beginPath();
+        drawingContext.moveTo(points[i].x, points[i].y);
+        drawingContext.lineTo(points[j].x, points[j].y);
+        drawingContext.stroke();
+      }
+    }
+</pre
+    >
+    <h3>Idempotent teardown</h3>
+    <pre>
+  let destroyed = false;
+  const onPageHide = (event) =&gt; {
+    if (!event.persisted) teardown();
+  };
+  // Revert only this studio&#x27;s contexts; never kill another page&#x27;s ScrollTriggers.
+  const teardown = () =&gt; {
+    if (destroyed) return;
+    destroyed = true;
+    window.removeEventListener(&quot;pagehide&quot;, onPageHide);
+    mediaContext.revert();
+    motionToggle.removeEventListener(&quot;click&quot;, toggleMotion);
+    root.dataset.initialized = &quot;&quot;;
+  };
+  window.addEventListener(&quot;pagehide&quot;, onPageHide);
+  return teardown;
+}
+</pre
+    >
+    <h2>5. Run and customise</h2>
+    <pre>
+npm run dev
+npm run build
+# Or serve the existing generated page:
+python3 -m http.server 8080
+# http://localhost:8080/gsap-animations.html</pre
+    >
+    <p>
+      CUBE_CONFIG.dragDegreesPerPixel=0.5 and keyboardStep=15 remain unchanged.
+      Particle counts remain 60 desktop / 34 mobile, with 85px connection
+      distance. Existing durations and breakpoints remain unchanged. See
+      README.md for lifecycle and verification commands.
+    </p>
+    <h2>6. Verification</h2>
+    <p>
+      Production Vite build and JavaScript syntax check passed. Browser checks
+      passed at 375×667, 768×1024 and 1440×900 for cube dragging, orientation
+      retention and keyboard input. Reduced motion stayed static. Carousel,
+      accordion, modal, Flip, pause/resume and repeated teardown passed. After
+      1,000 updates on both magnetic and image pointer targets, context entries
+      stayed at 181 instead of accumulating. Browser console errors and
+      warnings: zero.
+    </p>
+    <figure>
+      <img src="checks/mobile.png" alt="mobile regression screenshot" />
+      <figcaption>mobile</figcaption>
+    </figure>
+    <figure>
+      <img src="checks/desktop.png" alt="desktop regression screenshot" />
+      <figcaption>desktop</figcaption>
+    </figure>
+    <figure>
+      <img src="checks/reduced.png" alt="reduced regression screenshot" />
+      <figcaption>reduced</figcaption>
+    </figure>
+    <h2>7. Assumptions and limitations</h2>
+    <p>
+      Eager plugin loading, responsive remounts, pause/reset semantics and
+      layout-driven effects are intentionally preserved. The separate Soldier
+      overlay is removed in the pointer fixture. Physical touch hardware,
+      older-browser testing, field Web Vitals, low-end-device FPS and actual
+      transfer timings were not measured. The context-entry check validates
+      retained allocation behavior rather than a numeric speedup. The production
+      entry was rebuilt and the generated page updated.
+    </p>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "mobile",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "tablet",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "desktop",
+      "drag": true,
+      "holdsAfterRelease": true,
+      "keyboard": true
+    },
+    {
+      "name": "reduced motion",
+      "static": true
+    },
+    {
+      "name": "context retention and interaction lifecycle",
+      "retention": {
+        "before": [
+          181
+        ],
+        "after": [
+          181
+        ]
+      },
+      "carousel": true,
+      "accordion": true,
+      "modal": true,
+      "flip": true,
+      "pauseResume": true,
+      "idempotentCleanup": true
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}
