@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "theme": "light",
+      "home": {
+        "background": "#fcfdff",
+        "text": "#182337",
+        "accent": "#285bd4",
+        "border": "#d8e1ee"
+      },
+      "showcase": {
+        "paper": "#fcfdff",
+        "ink": "#182337",
+        "orange": "#285bd4",
+        "line": "#d8e1ee"
+      },
+      "canvasUpdates": true
+    },
+    {
+      "theme": "dark",
+      "home": {
+        "background": "#101722",
+        "text": "#e8eef8",
+        "accent": "#91b4ff",
+        "border": "#303e55"
+      },
+      "showcase": {
+        "paper": "#101722",
+        "ink": "#e8eef8",
+        "orange": "#91b4ff",
+        "line": "#303e55"
+      },
+      "canvasUpdates": true
+    }
+  ],
+  "standaloneSystemTheme": true,
+  "errors": []
+}

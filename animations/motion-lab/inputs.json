@@ -1,0 +1,57 @@
+{
+  "inputs": [
+    {
+      "type": "text brief",
+      "source": "User message",
+      "container": ".gsap-container",
+      "files": [],
+      "maximum_screens": 15,
+      "required_categories": [
+        "Transform",
+        "Opacity",
+        "Scroll-based",
+        "Parallax",
+        "Text",
+        "SVG",
+        "Motion Path",
+        "Stagger",
+        "Timeline",
+        "3D Transforms",
+        "FLIP",
+        "Physics",
+        "Draggable",
+        "Mouse interactions",
+        "Touch interactions",
+        "Page transitions",
+        "UI animations",
+        "Image animations",
+        "Canvas/WebGL",
+        "Looping",
+        "Easing",
+        "Responsive animations",
+        "Scroll navigation",
+        "SVG/Canvas particles",
+        "Advanced effects"
+      ]
+    }
+  ],
+  "assumptions": [
+    "Ten full-viewport chapters",
+    "Generated SVG/CSS/canvas artwork only",
+    "CSS 3D and Canvas 2D satisfy depth and graphical animation requirements",
+    "Integrate with the cleared gsap-animations page",
+    "Local GSAP 3.15.0 modules provide offline operation"
+  ],
+  "technology": "GSAP and plugins; Canvas 2D; CSS 3D",
+  "inventory": [
+    {
+      "file": "brief.md",
+      "type": "text/markdown",
+      "bytes": 2317
+    },
+    {
+      "container": ".gsap-container",
+      "integration": "src/pages/gsap-animations.njk"
+    }
+  ]
+}

@@ -6,13 +6,13 @@ Requires Node.js `^20.19.0` or `>=22.12.0`.
 
 ## Commands
 
-| Command           | What it does                                                                 |
-| ----------------- | ---------------------------------------------------------------------------- |
-| `npm install`     | Installs Vite, the Nunjucks plugin and Sass into `node_modules/`.             |
-| `npm run dev`     | Starts the dev server at http://localhost:5173 with live reload.             |
-| `npm run build`   | Renders the pages, compiles SCSS and writes a minified site to `dist/` and the project root.      |
-| `npm run watch`   | Same as `build`, then rebuilds `dist/` every time a source file is saved.    |
-| `npm run preview` | Serves the built `dist/` folder locally to check the production output.      |
+| Command           | What it does                                                                                 |
+| ----------------- | -------------------------------------------------------------------------------------------- |
+| `npm install`     | Installs Vite, the Nunjucks plugin and Sass into `node_modules/`.                            |
+| `npm run dev`     | Starts the dev server at http://localhost:5173 with live reload.                             |
+| `npm run build`   | Renders the pages, compiles SCSS and writes a minified site to `dist/` and the project root. |
+| `npm run watch`   | Same as `build`, then rebuilds `dist/` every time a source file is saved.                    |
+| `npm run preview` | Serves the built `dist/` folder locally to check the production output.                      |
 
 ## Structure
 
@@ -66,21 +66,14 @@ repository path. Run `npm run build`, then deploy the generated HTML pages, `ass
 and static icons together. For deployment from a Git branch, commit these generated
 files together; uploading HTML alone leaves its compiled CSS and JavaScript missing.
 
-## GSAP showcase
+## GSAP animations page
 
-`gsap-animations.html` contains eleven animation studies inside `.gsap-container`.
-Edit `src/templates/partials/gsap/showcase.njk` for content,
-`src/scss/components/_gsap-showcase.scss` for scoped styles, and
-`src/scripts/modules/gsap-showcase.js` for the section initializers.
+`gsap-animations.html` presents ten interactive GSAP chapters inside `.gsap-container`.
+The standalone source, local GSAP modules, documentation, and verification artifacts
+are in `animations/motion-lab/`. See its README for the category map and controls.
+Edit `animations/motion-lab/sections.html`, then run:
 
-The showcase loads GSAP 3.15.0 and its plugins from jsDelivr only when its root
-exists. It requires internet access for interactive animation; if the CDN is
-unavailable, the artwork, text, and chapter links remain readable. No external
-image assets are used. The Pause motion control and the system reduced-motion
-preference disable autoplay, pinning, and scrubbing while preserving interactive
-navigation, layout controls, and the miniature website. Desktop horizontal cards
-become a static stack when motion is paused or the screen is narrow or short.
-
-The 3D cube has six generated SVG faces. Its rotation changes direction automatically
-and pauses offscreen, in background tabs, or when motion is paused/reduced. Use
-New artwork to regenerate the faces without restarting the rotation.
+```bash
+python3 animations/motion-lab/tools/sync-page.py
+npm run build
+```

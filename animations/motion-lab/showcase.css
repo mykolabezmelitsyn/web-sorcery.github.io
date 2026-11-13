@@ -1,0 +1,842 @@
+.gsap-container {
+  --paper: var(--color-background, #fcfdff);
+  --ink: var(--color-text, #182337);
+  --orange: var(--color-accent, #285bd4);
+  --line: var(--color-border, #d8e1ee);
+  --surface: var(--color-surface, #f0f4fa);
+  --surface-alt: var(--color-surface-alt, #e5edf9);
+  --art-sky: var(--color-art-sky, #e4edfc);
+  --art-mid: var(--color-art-mid, #9ebbe8);
+  --art-deep: var(--color-art-deep, #4269a3);
+  --art-glow: var(--color-art-glow, #d6e5ff);
+  --art-core: var(--color-art-core, #7299eb);
+  width: 100%;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  isolation: isolate;
+  container-type: inline-size;
+  position: relative;
+}
+.gsap-container *,
+.gsap-container *::before,
+.gsap-container *::after {
+  box-sizing: border-box;
+}
+.gsap-container :is(h1, h2, h3, p) {
+  margin: 0;
+}
+.gsap-container a {
+  color: inherit;
+  text-decoration: none;
+}
+.gsap-container button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+.gsap-container button:disabled {
+  cursor: wait;
+}
+.gsap-container :is(button, a, [tabindex]):focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 6px;
+}
+.gsap-container button:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.gsap-container [hidden] {
+  display: none !important;
+}
+.gsap-container .ml-orange {
+  color: var(--orange);
+}
+.gsap-container .ml-serif,
+.gsap-container em {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+.gsap-container .ml-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 5%;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  min-height: 76px;
+}
+.gsap-container .ml-wordmark {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.09em;
+}
+.gsap-container .ml-mark {
+  font-size: 0.7rem;
+  vertical-align: top;
+  margin-left: 6px;
+  letter-spacing: 0;
+}
+.gsap-container .ml-nav-note {
+  display: none;
+  font-size: 0.75rem;
+}
+.gsap-container .ml-nav-actions {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+}
+.gsap-container .ml-navigation {
+  position: sticky;
+  top: 76px;
+  z-index: 29;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2rem 5%;
+  max-height: 70svh;
+  overflow: auto;
+}
+.gsap-container .ml-index-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.gsap-container .ml-index-links a {
+  border-bottom: 1px solid var(--line);
+  padding-block: 0.5rem;
+  font-size: 0.85rem;
+}
+.gsap-container .ml-screen {
+  min-height: calc(100svh - 76px);
+  position: relative;
+  padding: 2rem 6% 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 76px;
+  overflow: clip;
+}
+.gsap-container .ml-meta,
+.gsap-container .ml-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.61rem;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+.gsap-container .ml-meta {
+  align-items: center;
+}
+.gsap-container .ml-meta > :last-child {
+  text-align: right;
+  max-width: 48%;
+}
+.gsap-container .ml-meta button {
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+.gsap-container .ml-foot {
+  margin-top: auto;
+  padding-top: 1.2rem;
+  border-top: 1px solid currentColor;
+}
+.gsap-container .ml-foot span:nth-child(2) {
+  display: none;
+}
+.gsap-container h1 {
+  font-weight: 500;
+  font-size: clamp(3.7rem, 10.6cqw, 10.7rem);
+  letter-spacing: -0.075em;
+  line-height: 0.94;
+  max-width: 13ch;
+}
+.gsap-container h2 {
+  font-weight: 500;
+  font-size: clamp(2.8rem, 6.5cqw, 6.8rem);
+  letter-spacing: -0.065em;
+  line-height: 1.02;
+}
+.gsap-container .ml-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.gsap-container .ml-heading > p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 24rem;
+}
+.gsap-container .ml-kicker {
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+}
+.gsap-container .ml-hero {
+  padding-top: 2rem;
+}
+.gsap-container .ml-hero h1 {
+  position: relative;
+  z-index: 2;
+  margin-top: 1rem;
+}
+.gsap-container .ml-hero h1 .ml-serif {
+  color: var(--orange);
+}
+.gsap-container .ml-hero-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+}
+.gsap-container .ml-hero-bottom p {
+  max-width: 24rem;
+  font-size: 0.8rem;
+}
+.gsap-container .ml-circle-link {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  font-size: 2rem;
+}
+.gsap-container .ml-hero-art {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  align-self: flex-end;
+  margin-top: -1rem;
+}
+.gsap-container .ml-flower {
+  color: var(--orange);
+  font-size: 210px;
+  line-height: 0.9;
+  text-align: center;
+}
+.gsap-container .ml-orbit-label {
+  position: absolute;
+  bottom: -1rem;
+  right: 0;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+}
+.gsap-container .ml-dark {
+  background: var(--surface);
+  color: var(--ink);
+}
+.gsap-container .ml-depth-art {
+  position: relative;
+  min-height: 370px;
+  perspective: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 780px;
+}
+.gsap-container .ml-poster {
+  width: 48%;
+  height: 285px;
+  position: absolute;
+  top: 30px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  box-shadow: 0 20px 35px #0003;
+}
+.gsap-container .ml-poster span,
+.gsap-container .ml-poster small {
+  font-size: 0.53rem;
+  letter-spacing: 0.08em;
+}
+.gsap-container .ml-poster b {
+  font-size: 7rem;
+  line-height: 1;
+  font-weight: 400;
+  align-self: center;
+}
+.gsap-container .ml-back {
+  left: 4%;
+  background: var(--surface-alt);
+  transform: rotate(-12deg);
+}
+.gsap-container .ml-middle {
+  left: 26%;
+  background: var(--surface-alt);
+  transform: rotate(6deg);
+}
+.gsap-container .ml-front {
+  left: 47%;
+  background: var(--surface-alt);
+  transform: rotate(16deg);
+}
+.gsap-container .ml-type {
+  background: var(--surface);
+}
+.gsap-container .ml-type h2 {
+  font-size: clamp(3.7rem, 9cqw, 9rem);
+  margin-block: auto;
+}
+.gsap-container .ml-type-samples {
+  display: grid;
+  gap: 2rem;
+}
+.gsap-container .ml-type-samples p {
+  font-family: Georgia, serif;
+  font-size: clamp(1.2rem, 2.5cqw, 2rem);
+  min-height: 3rem;
+  margin-top: 0.8rem;
+}
+.gsap-container .ml-route-section {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-route {
+  width: 100%;
+  min-height: 200px;
+  overflow: visible;
+  margin-block: auto;
+}
+.gsap-container .ml-route path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.gsap-container .ml-route .ml-route-guide {
+  stroke: color-mix(in srgb, var(--ink) 20%, transparent);
+  stroke-dasharray: 4 8;
+}
+.gsap-container .ml-route [data-path] {
+  stroke: var(--orange);
+  stroke-width: 4;
+}
+.gsap-container .ml-route [data-traveler],
+.gsap-container .ml-route [data-morph] {
+  fill: var(--orange);
+  stroke: none;
+}
+.gsap-container .ml-route text {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  fill: var(--ink);
+}
+.gsap-container .ml-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.gsap-container .ml-tile {
+  padding: 1rem;
+  min-height: 220px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+.gsap-container .ml-tile:nth-child(2) {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-tile:nth-child(3) {
+  background: var(--art-sky);
+}
+.gsap-container .ml-tile:nth-child(4) {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-tile > span {
+  font-size: 0.65rem;
+}
+.gsap-container .ml-tile b {
+  font-weight: 400;
+  font-size: 5rem;
+  line-height: 1.2;
+  text-align: center;
+  margin: auto 0;
+}
+.gsap-container .ml-tile h3 {
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+.gsap-container .ml-tile p {
+  font-size: 0.67rem;
+}
+.gsap-container .ml-tiles.ml-list {
+  grid-template-columns: 1fr;
+}
+.gsap-container .ml-list .ml-tile {
+  min-height: 90px;
+  display: grid;
+  grid-template-columns: 30px 70px 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.gsap-container .ml-list .ml-tile b {
+  font-size: 3rem;
+}
+.gsap-container .ml-list .ml-tile p {
+  display: none;
+}
+.gsap-container .ml-orange-screen {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-playground {
+  height: 320px;
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--ink) 40%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.gsap-container .ml-field-label {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+.gsap-container .ml-puck {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  touch-action: none;
+  z-index: 2;
+}
+.gsap-container .ml-projectile {
+  position: absolute;
+  left: 45%;
+  top: 25%;
+  font-size: 5rem;
+  line-height: 1;
+  pointer-events: none;
+}
+.gsap-container .ml-mini {
+  background: var(--surface);
+  width: 100%;
+  max-width: 980px;
+  margin: auto;
+  border: 1px solid var(--line);
+  position: relative;
+}
+.gsap-container .ml-mini-bar,
+.gsap-container .ml-slider-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+}
+.gsap-container .ml-mini-links {
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+}
+.gsap-container .ml-slides {
+  display: grid;
+  position: relative;
+  touch-action: pan-y;
+  overflow: hidden;
+}
+.gsap-container .ml-slide {
+  grid-area: 1 / 1;
+  position: relative;
+  padding: 2rem 1.5rem;
+  min-height: 290px;
+}
+.gsap-container .ml-slide h3 {
+  font-size: clamp(2.5rem, 5cqw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  margin-block: 1rem;
+  position: relative;
+  z-index: 1;
+}
+.gsap-container .ml-slide > b {
+  position: absolute;
+  right: 6%;
+  top: 30%;
+  font-size: clamp(5rem, 14cqw, 12rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--orange);
+  opacity: 0.7;
+}
+.gsap-container .ml-slide button {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  position: relative;
+  z-index: 2;
+}
+.gsap-container .ml-slide:nth-child(2) {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-slide:nth-child(3) {
+  background: var(--art-sky);
+}
+.gsap-container .ml-slider-nav {
+  border-block: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
+}
+.gsap-container .ml-slider-nav button {
+  font-size: 1.2rem;
+  padding: 0.3rem 1rem;
+}
+.gsap-container .ml-accordion-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+}
+.gsap-container .ml-answer {
+  padding: 0 1.5rem 1.5rem;
+  font-size: 0.85rem;
+  max-width: 40rem;
+}
+.gsap-container .ml-dialog {
+  border: 0;
+  padding: 3rem 2rem;
+  width: min(90vw, 560px);
+  background: var(--paper);
+  color: var(--ink);
+}
+.gsap-container .ml-dialog::backdrop {
+  background: #111b;
+}
+.gsap-container .ml-dialog > button {
+  position: absolute;
+  right: 1.5rem;
+  top: 0.7rem;
+  font-size: 2rem;
+}
+.gsap-container .ml-dialog h3 {
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin: 1.5rem 0;
+}
+.gsap-container .ml-dialog p {
+  max-width: 25rem;
+}
+.gsap-container .ml-image-frame {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.gsap-container .ml-image-stage {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  min-height: 250px;
+  max-height: 70svh;
+}
+.gsap-container .ml-image {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+}
+.gsap-container .ml-image svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.gsap-container .ml-image-caption {
+  display: block;
+  padding-top: 0.75rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+}
+.gsap-container .ml-canvas-stage {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.gsap-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+.gsap-container .ml-marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  padding-block: 0.5rem;
+}
+.gsap-container .ml-marquee > div {
+  width: max-content;
+  font-size: clamp(2rem, 5cqw, 4rem);
+  letter-spacing: -0.04em;
+}
+.gsap-container .ml-finale {
+  background: var(--surface-alt);
+}
+.gsap-container .ml-horizontal-window {
+  overflow: hidden;
+  width: 100%;
+}
+.gsap-container .ml-horizontal-track {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.gsap-container .ml-cube-panel {
+  display: grid;
+  place-items: center;
+  min-height: 340px;
+  flex: 0 0 100%;
+}
+.gsap-container .ml-cube-stage {
+  width: 240px;
+  height: 240px;
+  perspective: 900px;
+  touch-action: pan-y;
+  cursor: grab;
+  display: grid;
+  place-items: center;
+}
+.gsap-container .ml-cube-stage:active {
+  cursor: grabbing;
+}
+.gsap-container .ml-cube {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  transform-style: preserve-3d;
+  transform: rotateX(-20deg) rotateY(30deg);
+}
+.gsap-container .ml-cube-face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--ink) 53%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--surface-alt);
+  font-size: 5rem;
+  backface-visibility: hidden;
+}
+.gsap-container .ml-cube-face small {
+  font:
+    0.55rem Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.gsap-container .ml-face-front {
+  transform: translateZ(80px);
+}
+.gsap-container .ml-face-back {
+  transform: rotateY(180deg) translateZ(80px);
+  background: var(--surface-alt);
+}
+.gsap-container .ml-face-right {
+  transform: rotateY(90deg) translateZ(80px);
+  background: var(--surface-alt);
+}
+.gsap-container .ml-face-left {
+  transform: rotateY(-90deg) translateZ(80px);
+  background: var(--surface-alt);
+}
+.gsap-container .ml-face-top {
+  transform: rotateX(90deg) translateZ(80px);
+  background: var(--paper);
+}
+.gsap-container .ml-face-bottom {
+  transform: rotateX(-90deg) translateZ(80px);
+  background: var(--paper);
+}
+.gsap-container .ml-final-card {
+  flex: 0 0 100%;
+  padding: 2rem 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+}
+.gsap-container .ml-final-card h3 {
+  font-size: clamp(4rem, 10cqw, 9rem);
+  line-height: 0.9;
+  font-weight: 400;
+  letter-spacing: -0.07em;
+}
+.gsap-container .ml-final-card p {
+  font-size: 0.75rem;
+}
+.gsap-container .ml-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@container (min-width: 768px) {
+  .gsap-container .ml-nav-note {
+    display: block;
+  }
+  .gsap-container .ml-nav-actions {
+    font-size: 0.75rem;
+    gap: 2rem;
+  }
+  .gsap-container .ml-screen {
+    padding: 2rem 5% 1.5rem;
+    gap: 2.5rem;
+  }
+  .gsap-container .ml-meta,
+  .gsap-container .ml-foot {
+    font-size: 0.65rem;
+  }
+  .gsap-container .ml-foot span:nth-child(2) {
+    display: inline;
+  }
+  .gsap-container .ml-heading {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .gsap-container .ml-heading > p {
+    padding-bottom: 0.6rem;
+    font-size: 0.95rem;
+  }
+  .gsap-container .ml-hero h1 {
+    margin-block: 2rem 1rem;
+  }
+  .gsap-container .ml-hero-art {
+    position: absolute;
+    right: 8%;
+    top: 30%;
+    width: 280px;
+    height: 280px;
+  }
+  .gsap-container .ml-flower {
+    font-size: 330px;
+  }
+  .gsap-container .ml-hero-bottom {
+    margin-top: auto;
+    padding-bottom: 1rem;
+  }
+  .gsap-container .ml-hero-bottom p {
+    font-size: 0.95rem;
+  }
+  .gsap-container .ml-circle-link {
+    width: 84px;
+    height: 84px;
+    font-size: 2.6rem;
+  }
+  .gsap-container .ml-depth-art {
+    min-height: 390px;
+  }
+  .gsap-container .ml-poster {
+    height: 330px;
+    width: 38%;
+  }
+  .gsap-container .ml-poster b {
+    font-size: 10rem;
+  }
+  .gsap-container .ml-type-samples {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gsap-container .ml-tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .gsap-container .ml-tile {
+    min-height: 290px;
+    padding: 1.5rem;
+  }
+  .gsap-container .ml-tile b {
+    font-size: 7rem;
+  }
+  .gsap-container .ml-list .ml-tile {
+    grid-template-columns: 30px 80px 1fr 1fr;
+  }
+  .gsap-container .ml-list .ml-tile p {
+    display: block;
+  }
+  .gsap-container .ml-playground {
+    height: 350px;
+  }
+  .gsap-container .ml-horizontal-track {
+    flex-direction: row;
+    gap: 0;
+  }
+  .gsap-container .ml-cube-panel {
+    min-height: 370px;
+  }
+  .gsap-container .ml-final-card {
+    padding-block: 0;
+  }
+  .gsap-container .ml-index-links {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gsap-container *,
+  .gsap-container *::before,
+  .gsap-container *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Standalone fallbacks mirror the home page; inherited site tokens take priority. */
+:root[data-theme="dark"] .gsap-container {
+  --paper: var(--color-background, #101722);
+  --ink: var(--color-text, #e8eef8);
+  --orange: var(--color-accent, #91b4ff);
+  --line: var(--color-border, #303e55);
+  --surface: var(--color-surface, #192436);
+  --surface-alt: var(--color-surface-alt, #22324b);
+  --art-sky: var(--color-art-sky, #1c2d4b);
+  --art-mid: var(--color-art-mid, #395e92);
+  --art-deep: var(--color-art-deep, #203c62);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .gsap-container {
+    --paper: var(--color-background, #101722);
+    --ink: var(--color-text, #e8eef8);
+    --orange: var(--color-accent, #91b4ff);
+    --line: var(--color-border, #303e55);
+    --surface: var(--color-surface, #192436);
+    --surface-alt: var(--color-surface-alt, #22324b);
+    --art-sky: var(--color-art-sky, #1c2d4b);
+    --art-mid: var(--color-art-mid, #395e92);
+    --art-deep: var(--color-art-deep, #203c62);
+  }
+}
