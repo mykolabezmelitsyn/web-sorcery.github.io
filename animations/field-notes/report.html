@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Field Notes — implementation and verification report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+      body {
+        color: #182337;
+        font:
+          11px/1.6 Arial,
+          sans-serif;
+      }
+      h1 {
+        font:
+          48px/1 Georgia,
+          serif;
+        letter-spacing: -2px;
+        margin-bottom: 12px;
+      }
+      h2 {
+        font:
+          24px/1.2 Georgia,
+          serif;
+        border-top: 1px solid #d8e1ee;
+        padding-top: 18px;
+        margin-top: 30px;
+      }
+      h3 {
+        font-size: 13px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9px;
+        margin-block: 18px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid #d8e1ee;
+        padding: 7px 5px;
+        overflow-wrap: anywhere;
+      }
+      thead {
+        display: table-header-group;
+      }
+      tr,
+      article,
+      figure {
+        break-inside: avoid;
+      }
+      pre {
+        background: #f0f4fa;
+        padding: 12px;
+        font: 9px/1.5 monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .brief {
+        background: none;
+        padding: 0;
+        font:
+          10px/1.6 Arial,
+          sans-serif;
+      }
+      code {
+        font: 10px monospace;
+      }
+      figure {
+        margin: 20px 0;
+      }
+      img {
+        max-width: 100%;
+        max-height: 155mm;
+        object-fit: contain;
+        border: 1px solid #d8e1ee;
+      }
+      figcaption,
+      .eyebrow {
+        color: #5b6980;
+        font-size: 10px;
+      }
+      .eyebrow {
+        letter-spacing: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="eyebrow">WEB SORCERY / VISUAL JOURNAL / VOL. 01</p>
+    <h1>Field Notes.</h1>
+    <p>Implementation and verification report • 14 November 2026</p>
+    <h2>1. Task description</h2>
+    <p>
+      A cohesive visual landing page adapts seven supplied GSAP examples to the
+      user's photographs. The site theme is preserved exactly, with no external
+      assets or extra runtime build step. The brief follows verbatim.
+    </p>
+    <pre class="brief">
+You are a senior front-end developer with deep expertise in GSAP (GreenSock Animation Platform) and modern landing-page construction.
+
+Build a single animated web page using GSAP. The page should be production-ready and run in a modern browser with no build step required beyond what the existing project already uses.
+
+**Reference material**
+
+- Use the GSAP demo examples in the `GSAP-Demos` directory as the source for animation techniques. Each example has a video demonstrating the motion and a `.md` description explaining how it works. Study both the video and the description for every example you draw from, and reproduce the behavior they show, adapting it to this page&#x27;s content.
+- Use images from the `source-images` directory wherever imagery is needed on the page. Do not introduce external or placeholder images.
+
+**Animation requirements**
+
+- Combine animations from the `GSAP-Demos` examples in any order and arrangement that makes the page feel cohesive. You are free to sequence, layer, and pace them as you see fit, but every animation should serve the page&#x27;s flow rather than feel like an isolated demo.
+- Use GSAP&#x27;s timeline and ScrollTrigger capabilities where they make the motion cleaner, and keep the total animation duration and easing consistent so the page feels like one piece.
+
+**Visual constraints**
+
+- Keep the existing color theme exactly as it currently is. Do not introduce new brand colors, change the palette, or alter the existing color tokens. Inspect the current styles in the project and match them.
+
+**Output**
+
+- Deliver the complete page: markup, styles, and the GSAP script, wired to the referenced assets and the existing theme.
+- Make sure every animation you use is traceable to an example in `GSAP-Demos`, and that all `source-images` paths resolve correctly.
+</pre>
+    <h2>2. Input data</h2>
+    <p>
+      Seven video/description pairs and their assets descriptions were studied.
+      Reference contact sheets were inspected at 2fps for the original examples
+      and 20fps for Curve swipe. Video streams are 60fps; the tilt recording is
+      1500×846 and the other selected recordings are 1500×844. Full extracted
+      parameters, normalized motion paths, palettes, and file sizes are in
+      inputs.json.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Extracted parameters</th>
+          <th>Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Scrubbed bento gallery</td>
+          <td>
+            1,905,661 bytes; 1500×844; 5.516667s; 60/1fps; 10 motion samples
+          </td>
+          <td>
+            The collage expands around its central lake photograph, then
+            releases into editorial copy.
+          </td>
+        </tr>
+        <tr>
+          <td>Cursor-driven perspective tilt</td>
+          <td>
+            457,004 bytes; 1500×846; 5.850000s; 60/1fps; 11 motion samples
+          </td>
+          <td>
+            Hero photograph follows the pointer with shallow eased X/Y rotation.
+          </td>
+        </tr>
+        <tr>
+          <td>Horizontal Text</td>
+          <td>
+            1,559,458 bytes; 1500×844; 17.050000s; 60/1fps; 33 motion samples
+          </td>
+          <td>
+            A sentence travels left; its live glyphs roll through a wave and
+            settle at the end.
+          </td>
+        </tr>
+        <tr>
+          <td>Image Mask On Scroll</td>
+          <td>
+            887,360 bytes; 1500×844; 7.533333s; 60/1fps; 14 motion samples
+          </td>
+          <td>
+            A right-to-left reveal changes the forest photograph into an open
+            lake view.
+          </td>
+        </tr>
+        <tr>
+          <td>Horizontal scrolling gallery</td>
+          <td>
+            1,368,406 bytes; 1500×844; 7.616667s; 60/1fps; 14 motion samples
+          </td>
+          <td>
+            Staggered-height cards arrive from below, travel sideways, and
+            depart upward.
+          </td>
+        </tr>
+        <tr>
+          <td>FLIP Carousel</td>
+          <td>
+            825,750 bytes; 1500×844; 9.516667s; 60/1fps; 17 motion samples
+          </td>
+          <td>
+            Four equal-width notes reorder; an end note wraps to the opposite
+            side.
+          </td>
+        </tr>
+        <tr>
+          <td>Curve swipe</td>
+          <td>
+            120,749 bytes; 1500×844; 3.183333s; 60/1fps; 19 motion samples
+          </td>
+          <td>
+            Scrolling through the pinned footer drives a bowed SVG panel rise,
+            full cover, hold, and downward return using the existing blue theme.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The ten original JPEG files are copied without edits and retain their
+      original names. No supplied photograph is replaced or recolored.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Source image</th>
+          <th>Dimensions and size</th>
+          <th>Extracted palette (photo content only)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>oboinastol.com_97.jpg</td>
+          <td>2560×1598; 221,538 bytes</td>
+          <td>#3f2f34, #312226, #876738, #221b25, #5e1a0f</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_130.jpg</td>
+          <td>1920×1200; 122,307 bytes</td>
+          <td>#054a85, #0660a4, #043163, #0f69a6, #135088</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_416.jpg</td>
+          <td>2048×1151; 594,355 bytes</td>
+          <td>#8caecb, #161c38, #606987, #263562, #443e53</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_484.jpg</td>
+          <td>1920×1268; 347,823 bytes</td>
+          <td>#636a69, #2d2e2d, #e1e8f2, #afb5b6, #edf2fa</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_822.jpg</td>
+          <td>1920×1200; 79,744 bytes</td>
+          <td>#ab8d79, #c7b39f, #4d2f29, #e3dacf, #dcd0c4</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_931.jpg</td>
+          <td>1920×1080; 199,463 bytes</td>
+          <td>#140508, #b97a56, #6f321e, #310d0a, #55140c</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_1344.jpg</td>
+          <td>2048×1365; 196,633 bytes</td>
+          <td>#181823, #363d55, #55628a, #7181b1, #92a1cf</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_1645.jpg</td>
+          <td>2560×1600; 385,811 bytes</td>
+          <td>#a1a28d, #161817, #4c4f3d, #2f2c1a, #1f2521</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_2301.jpg</td>
+          <td>1920×1080; 389,236 bytes</td>
+          <td>#4e4414, #272d1c, #647b9e, #5c625b, #aea28b</td>
+        </tr>
+        <tr>
+          <td>oboinastol.com_2331.jpg</td>
+          <td>1920×1200; 401,451 bytes</td>
+          <td>#343f31, #161e1d, #5fa7e7, #53727d, #aabec1</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Theme source: src/scss/base/_root.scss, unchanged. The integrated page
+      inherits its color tokens; theme.css mirrors them for standalone use. The
+      user brief and .gsap-container root contract are recorded in inputs.json.
+    </p>
+    <h2>3. Solution architecture</h2>
+    <p>
+      GSAP 3.15.0, ScrollTrigger, Flip and SplitText are local ES modules,
+      copied from the installed repository package. GSAP 3.15.1 was checked as
+      the current release; dependencies were not changed. DOM, CSS perspective
+      and image clipping are sufficient. The existing Vite pipeline bundles the
+      integrated page; a standalone HTTP-served page needs no build.
+    </p>
+    <p>
+      sections.html is shared content; style.css scopes every rule to the
+      component; animation.js exports CONFIG and mountAnimation(container,
+      options), returning play, pause, destroy. vendor/ contains the required
+      GSAP modules, assets/ contains original-name copies of source-images.
+      sync-page.py writes the standalone index and the named Nunjucks page,
+      converting image paths for Vite.
+    </p>
+    <p>
+      The motion is paced by scroll rather than autonomous loops. Bento, mask,
+      wave and gallery use labeled, scrubbed timelines with linear scroll
+      mapping. Pointer tilt uses a 0.5s power2.out lag; direct carousel
+      transitions use a consistent 0.6s power2.inOut ease. Gallery entry spans
+      timeline units 0–0.66, lateral travel 0.35–2.55, departure 2.55–3.21.
+      These units are normalized against scroll distance, not wall-clock
+      seconds.
+    </p>
+    <p>
+      ResizeObserver measures the container. Compact motion shortens pin ranges
+      and retains native access to all cards. Reduced motion and Pause remove
+      pins and restore readable static layouts. Keyboard controls, alt text,
+      real-text wave alternatives, visible focus rings and live carousel status
+      are included. No ambient ticker, shader, external font or network library
+      is used. Geometry is cached for per-frame glyph movement; image dimensions
+      cap central bento enlargement.
+    </p>
+    <h2>4. Key code</h2>
+    <article>
+      <h3>Bento timeline and native-resolution limit</h3>
+      <pre>
+      // Source: Scrubbed bento gallery — scale the whole collage around its central tile.
+      gsap
+        .timeline({
+          scrollTrigger: {
+            id: &quot;fn-bento&quot;,
+            trigger: bentoStage,
+            start: pinStart,
+            end: () =&gt; `+=${innerHeight * config.bentoScroll * scrollFactor()}`,
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        })
+        .addLabel(&quot;closer&quot;)
+        .fromTo(
+          bentoGrid,
+          { scale: 1 },
+          {
+            scale: () =&gt;
+              Math.min(
+                config.bentoScale,
+                $(&quot;.fn-bento-center img&quot;).width
+                  ? Number($(&quot;.fn-bento-center img&quot;).getAttribute(&quot;width&quot;)) /
+                      $(&quot;.fn-bento-center&quot;).clientWidth
+                  : config.bentoScale,
+                Number($(&quot;.fn-bento-center img&quot;).getAttribute(&quot;height&quot;)) /
+                  $(&quot;.fn-bento-center&quot;).clientHeight,
+              ),
+// Remaining setup omitted from this excerpt.</pre>
+    </article>
+    <article>
+      <h3>Reversible image wipe</h3>
+      <pre>
+      // Source: Image Mask On Scroll — a full-frame wipe, reversible with scrolling.
+      gsap
+        .timeline({
+          scrollTrigger: {
+            id: &quot;fn-mask&quot;,
+            trigger: maskStage,
+            start: pinStart,
+            end: () =&gt; `+=${innerHeight * config.maskScroll * scrollFactor()}`,
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        })
+        .addLabel(&quot;another-view&quot;)
+        .fromTo(
+          maskImage,
+          { clipPath: &quot;inset(0% 0% 0% 100%)&quot; },
+          { clipPath: &quot;inset(0% 0% 0% 0%)&quot;, duration: 1, ease: &quot;none&quot; },
+          &quot;another-view&quot;,
+        )
+        .fromTo(
+          maskLine,
+          { x: () =&gt; maskStage.clientWidth },
+// Remaining setup omitted from this excerpt.</pre>
+    </article>
+    <article>
+      <h3>Reduced motion and pause</h3>
+      <pre>
+    if (calm()) {
+      resetCurve();
+      queuedDirection = 0;
+      if (busy) carouselTimeline?.progress(1).pause();
+      rotateX.tween.pause();
+      rotateY.tween.pause();
+      context.add(() =&gt; gsap.set(tiltCard, { rotationX: 0, rotationY: 0 }));
+      ScrollTrigger.refresh();
+      return;
+    }
+// Remaining setup omitted from this excerpt.</pre>
+    </article>
+    <article>
+      <h3>Container-based resize handling</h3>
+      <pre>
+  const refreshSize = () =&gt; {
+    if (destroyed) return;
+    const width = container.clientWidth;
+    const height = innerHeight;
+    if (width === lastWidth &amp;&amp; height === lastHeight) return;
+    queuedDirection = 0;
+    if (busy) carouselTimeline?.progress(1).pause();
+    lastWidth = width;
+    lastHeight = height;
+    compact = width &lt; config.compactBreakpoint;
+    renderMotion();
+  };
+  const scheduleResize = () =&gt; {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(refreshSize);
+  };
+  const resize = new ResizeObserver(scheduleResize);
+// Remaining setup omitted from this excerpt.</pre>
+    </article>
+    <article>
+      <h3>Scoped cleanup</h3>
+      <pre>
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      abort.abort();
+      cleanups.forEach((cleanup) =&gt; cleanup());
+      heroContext?.revert();
+      heroSplits.forEach((part) =&gt; part.revert());
+      media.revert();
+      motionContext?.revert();
+      split?.revert();
+      context.revert();
+      container.innerHTML = originalHTML;
+      if (originalCalm === null) container.removeAttribute(&quot;data-calm&quot;);
+      else container.setAttribute(&quot;data-calm&quot;, originalCalm);
+      mounts.delete(container);
+    },
+  };
+  mounts.set(container, api);
+// Remaining setup omitted from this excerpt.</pre>
+    </article>
+    <h2>5. Run and customise</h2>
+    <pre>
+python3 animations/field-notes/tools/serve.py
+# http://localhost:8080/gsap-animations.html
+# http://localhost:8080/animations/field-notes/index.html
+
+# After editing sections.html:
+python3 animations/field-notes/tools/sync-page.py
+npm run build</pre>
+    <p>
+      The normal npm run dev / npm run build workflow is unchanged. The
+      standalone folder can be copied to any static server. Local ES modules
+      require HTTP; file:// is unsupported.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>CONFIG key</th>
+          <th>Default</th>
+          <th>Effect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>heroTitleDuration</code></td>
+          <td><code>0.85</code></td>
+          <td>Each title character unfolds into its line on initial load.</td>
+        </tr>
+        <tr>
+          <td><code>heroCharStagger</code></td>
+          <td><code>0.025</code></td>
+          <td>Character spacing in the hero title reveal.</td>
+        </tr>
+        <tr>
+          <td><code>heroParagraphDuration</code></td>
+          <td><code>0.55</code></td>
+          <td>Eyebrow and introductory copy reveal duration.</td>
+        </tr>
+        <tr>
+          <td><code>heroWordStagger</code></td>
+          <td><code>0.04</code></td>
+          <td>Word spacing in the introductory paragraph reveal.</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td><code>0.6</code></td>
+          <td>
+            FLIP transition duration, matching the reference’s roughly
+            half-second reorder.
+          </td>
+        </tr>
+        <tr>
+          <td><code>carouselWrapScale</code></td>
+          <td><code>0.45</code></td>
+          <td>Wrapping card shrinks at the edge as shown in the reference.</td>
+        </tr>
+        <tr>
+          <td><code>curveScroll</code></td>
+          <td><code>1.4</code></td>
+          <td>Footer scroll distance in viewport heights.</td>
+        </tr>
+        <tr>
+          <td><code>curveCoverDuration</code></td>
+          <td><code>0.65</code></td>
+          <td>
+            Relative scroll-timeline weight for panel rise and straightening.
+          </td>
+        </tr>
+        <tr>
+          <td><code>curveHoldDuration</code></td>
+          <td><code>0.8</code></td>
+          <td>Relative scroll-timeline weight for the covered state.</td>
+        </tr>
+        <tr>
+          <td><code>curveExitDuration</code></td>
+          <td><code>0.5</code></td>
+          <td>Relative scroll-timeline weight for the downward exit.</td>
+        </tr>
+        <tr>
+          <td><code>curveBend</code></td>
+          <td><code>0.6</code></td>
+          <td>Maximum curve control-point offset relative to stage height.</td>
+        </tr>
+        <tr>
+          <td><code>ease</code></td>
+          <td><code>&quot;power2.inOut&quot;</code></td>
+          <td>Shared smooth transition easing without overshoot.</td>
+        </tr>
+        <tr>
+          <td><code>tiltDuration</code></td>
+          <td><code>0.5</code></td>
+          <td>Cursor-following lag from the perspective card reference.</td>
+        </tr>
+        <tr>
+          <td><code>tiltAngle</code></td>
+          <td><code>8</code></td>
+          <td>Maximum pointer-driven rotation on each axis in degrees.</td>
+        </tr>
+        <tr>
+          <td><code>bentoScale</code></td>
+          <td><code>2.55</code></td>
+          <td>Whole-collage scale at the end of the bento sequence.</td>
+        </tr>
+        <tr>
+          <td><code>bentoScroll</code></td>
+          <td><code>1.5</code></td>
+          <td>Bento scroll distance in viewport heights.</td>
+        </tr>
+        <tr>
+          <td><code>maskScroll</code></td>
+          <td><code>1.2</code></td>
+          <td>Image wipe scroll distance in viewport heights.</td>
+        </tr>
+        <tr>
+          <td><code>waveScroll</code></td>
+          <td><code>1.8</code></td>
+          <td>Minimum horizontal text scroll distance in viewport heights.</td>
+        </tr>
+        <tr>
+          <td><code>waveAmplitude</code></td>
+          <td><code>45</code></td>
+          <td>Maximum glyph displacement in CSS pixels.</td>
+        </tr>
+        <tr>
+          <td><code>waveRotation</code></td>
+          <td><code>28</code></td>
+          <td>Maximum glyph rotation in degrees.</td>
+        </tr>
+        <tr>
+          <td><code>waveBand</code></td>
+          <td><code>0.22</code></td>
+          <td>Width of the moving wave region relative to the container.</td>
+        </tr>
+        <tr>
+          <td><code>galleryScroll</code></td>
+          <td><code>1.1</code></td>
+          <td>Gallery scroll distance relative to horizontal overflow.</td>
+        </tr>
+        <tr>
+          <td><code>galleryEnter</code></td>
+          <td><code>100</code></td>
+          <td>Gallery card entry distance as a percentage of card height.</td>
+        </tr>
+        <tr>
+          <td><code>compactBreakpoint</code></td>
+          <td><code>768</code></td>
+          <td>Compact motion threshold measured from the container.</td>
+        </tr>
+        <tr>
+          <td><code>compactScrollFactor</code></td>
+          <td><code>0.7</code></td>
+          <td>Shorter pin distances for compact containers.</td>
+        </tr>
+        <tr>
+          <td><code>pauseLabel</code></td>
+          <td><code>&quot;Pause animation&quot;</code></td>
+          <td>Accessible running-state label.</td>
+        </tr>
+        <tr>
+          <td><code>playLabel</code></td>
+          <td><code>&quot;Play animation&quot;</code></td>
+          <td>Accessible paused-state label.</td>
+        </tr>
+      </tbody>
+    </table>
+    <pre>
+import { mountAnimation } from "./animation.js";
+const root = document.querySelector(".gsap-container.field-notes");
+const animation = mountAnimation(root);
+animation.pause();
+animation.play();
+// On component or route removal:
+animation.destroy();</pre>
+    <p>
+      The module auto-mounts the first component; repeated mounting returns its
+      existing instance. Supply options on the first mount when customizing.
+      Cleanup aborts listeners, removes observers, reverts media/GSAP contexts
+      and SplitText, removes pinning, and restores the original markup without
+      killing unrelated animations. Copy and image choices live in
+      sections.html; geometry lives in style.css; the existing palette has no
+      new override tokens.
+    </p>
+    <h2>6. Verification</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Check</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Production Vite build, JS syntax, authored-file formatting</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>375×667, 768×1024, 1440×900; resize</td>
+          <td>
+            No horizontal document overflow; component responds to container
+            size
+          </td>
+        </tr>
+        <tr>
+          <td>Four scrubbed scenes and reverse scroll</td>
+          <td>
+            Passed at 10%, 50%, and 90% progress; max pin drift 0.000px; max
+            progress error 0.00063
+          </td>
+        </tr>
+        <tr>
+          <td>FLIP next, previous, keyboard and equal widths</td>
+          <td>Passed; no remaining temporary wrapping copy</td>
+        </tr>
+        <tr>
+          <td>Pause, reduced motion, cleanup</td>
+          <td>
+            Pins removed; text/images readable; original markup restored;
+            component triggers removed
+          </td>
+        </tr>
+        <tr>
+          <td>Assets and theme</td>
+          <td>
+            All ten supplied files match copied bytes; standalone/root/dist
+            paths resolve; current theme tokens unchanged
+          </td>
+        </tr>
+        <tr>
+          <td>Console errors</td>
+          <td>0 recorded</td>
+        </tr>
+        <tr>
+          <td>Playback long tasks</td>
+          <td>0 over 50ms in the sampled image-wipe playback; trace saved</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Six original reference and adaptation comparison sheets are in
+      .reanimate/field-notes/compare-4. Final clone videos are in clone-4;
+      earlier rounds are preserved. Round 4 corrects the mask direction,
+      preloads the collage, settles the final text baseline, and removes a
+      capture-induced carousel viewport shift.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Reference behavior</th>
+          <th>Adaptation result</th>
+          <th>Timing/easing limitation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pointer tilt</td>
+          <td>
+            Shallow X/Y rotations verified at ±6.4° for the sampled 80% pointer
+            offsets
+          </td>
+          <td>
+            0.5s eased lag; reference pointer coordinates were not recorded
+          </td>
+        </tr>
+        <tr>
+          <td>Bento expansion</td>
+          <td>
+            Center image grows, outer tiles leave, reverse restores collage
+          </td>
+          <td>
+            Linear scroll mapping; source manual scroll time cannot be aligned
+            exactly
+          </td>
+        </tr>
+        <tr>
+          <td>Image mask</td>
+          <td>
+            Right-to-left boundary and reverse restoration match observed
+            behavior
+          </td>
+          <td>Still-photo adaptation; no moving footage inside the image</td>
+        </tr>
+        <tr>
+          <td>Horizontal text/gallery</td>
+          <td>
+            Leftward travel, glyph wave, card entry and departure verified
+          </td>
+          <td>
+            New text length and composition intentionally change total travel
+          </td>
+        </tr>
+        <tr>
+          <td>FLIP reorder</td>
+          <td>Equal-size four-card order changes and external wrap verified</td>
+          <td>
+            0.6s smooth transition; reference click timing is estimated, not
+            instrumented
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Pixel mismatch and ±80ms temporal equivalence are not claimed: content,
+      composition and palette are intentionally adapted, and the supplied videos
+      have no scroll-position trace. The checks establish normalized progress,
+      stable pinning, reversal, visual sequence and functional controls. Chrome
+      was tested; physical touch hardware, assistive technology sessions and
+      other engines were not manually tested.
+    </p>
+    <figure>
+      <img
+        src="checks/desktop.png"
+        alt="Desktop landing page, existing light palette / 1440×900"
+      />
+      <figcaption>
+        Desktop landing page, existing light palette / 1440×900
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="checks/mobile.png" alt="Compact layout / 375×667" />
+      <figcaption>Compact layout / 375×667</figcaption>
+    </figure>
+    <figure>
+      <img
+        src="checks/final-mask.png"
+        alt="Right-to-left image reveal at its midpoint / 1500×844"
+      />
+      <figcaption>
+        Right-to-left image reveal at its midpoint / 1500×844
+      </figcaption>
+    </figure>
+    <figure>
+      <img
+        src="checks/curve-scroll-0.5.png"
+        alt="Scroll-driven Curve swipe footer at 50% progress / 1440×900"
+      />
+      <figcaption>
+        Scroll-driven Curve swipe footer at 50% progress / 1440×900
+      </figcaption>
+    </figure>
+    <h3>Requested wave entrance adjustment</h3>
+    <p>
+      The horizontal sentence now starts beyond the right edge of its stage and
+      enters from the right as scrolling advances. Its scroll range includes the
+      entrance distance, and the final baseline still settles. This
+      user-requested variation was checked at all three viewport sizes; see
+      checks/wave-results.json. Earlier comparison captures document the
+      preceding reference adaptation.
+    </p>
+    <h3>Carousel continuity correction</h3>
+    <p>
+      A frame-by-frame comparison with the first transition in the reference
+      video identified a 984px next-transition snap caused by removing three
+      cards from grid flow. The correction keeps all cards in flow, positions
+      the wrapping copy relative to its window, and drives FLIP, the outgoing
+      copy, and incoming card on one timeline. It includes the card gap in
+      travel distance and reproduces the temporary edge shrink. Duration is
+      0.6s. Desktop maximum visible frame displacement fell to about 33px;
+      normalized displacement fell from 3.21 to 0.11 card widths per 16.67ms.
+      The row height stays fixed. Both directions, rapid queued input,
+      mid-transition pause and resize, and reduced motion were tested at 375px,
+      768px, and 1440px. Traces are in checks/carousel-before-results.json and
+      checks/carousel-after-results.json; 50ms reference/adaptation sheets are
+      in .reanimate/field-notes/carousel-comparison. The earlier page-wide
+      captures predate this correction.
+    </p>
+    <h3>Curve swipe footer</h3>
+    <p>
+      The Curve swipe recording and descriptions were studied at 20fps. The
+      footer now pins and scrubs the curved SVG panel through its rise, covered
+      hold, and downward return. The action button has been removed. Its
+      0.65/0.8/0.5 phase weights map onto 1.4 viewport heights of scroll; the
+      end is clamped so the full sequence is reachable. Stopping scroll holds
+      the shape and reverse scrolling reverses the sequence. The reference
+      colors are replaced with existing theme tokens; no brand palette changes
+      were made. Scroll progress, idle hold, reverse behavior, pause, reduced
+      motion, lifecycle cleanup, responsive layouts, and the integrated route
+      are checked in checks/curve-results.json. Reference frames and adapted
+      recordings are retained separately.
+    </p>
+    <h3>Custom load-time hero text reveal</h3>
+    <p>
+      The user additionally requested a custom reveal for the h1 and paragraphs
+      inside fn-hero-copy. A one-time timeline unfolds the heading characters
+      through line masks with a subtle 3D roll; the eyebrow reveals first and
+      the introductory paragraph follows word by word. Total duration is about
+      1.7 seconds. The original markup and accessible text are restored after
+      completion. The heading height remains stable; resize does not replay it.
+      Pause, reduced motion, a hidden tab, or destruction settles or removes the
+      reveal safely. No-script content remains visible. All three viewport sizes
+      and the integrated page passed checks in checks/hero-results.json. This
+      user-requested addition is separately attributed, rather than claimed as
+      part of a supplied demo.
+    </p>
+    <h2>7. Assumptions and limitations</h2>
+    <ul>
+      <li>
+        Seven examples selected; remaining three unused to maintain a coherent
+        editorial narrative.
+      </li>
+      <li>
+        Field Notes is a fictional visual journal, not a travel booking service.
+      </li>
+      <li>
+        Scroll behavior is adapted to the page proportions; video scroll speed
+        is user-controlled, not a fixed playback duration.
+      </li>
+      <li>
+        Existing theme tokens are inherited unchanged. Photographic colors are
+        retained from supplied images.
+      </li>
+      <li>
+        Image Mask uses two supplied still photographs in place of the reference
+        moving action footage.
+      </li>
+      <li>No external image, font, library, or API requests are required.</li>
+      <li>
+        Compact containers use shorter pin distances; reduced motion and Pause
+        remove pinning and show all content.
+      </li>
+    </ul>
+    <p>
+      Unused demo directories: MotionPath Waypoints, Pinned panels with
+      overscroll, Shader on Scroll. They are not part of this page. Long-task
+      results are a short headless-Chrome sample, not a guarantee for every
+      device. All work remains local; no deployment or commit was performed.
+      Full details and commands are in README.md.
+    </p>
+  </body>
+</html>

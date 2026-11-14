@@ -25,3 +25,5 @@ AGENTS.md
 *.njsproj
 *.sln
 *.sw?
+
+.reanimate/

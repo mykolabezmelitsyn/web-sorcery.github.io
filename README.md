@@ -68,12 +68,14 @@ files together; uploading HTML alone leaves its compiled CSS and JavaScript miss
 
 ## GSAP animations page
 
-`gsap-animations.html` presents ten interactive GSAP chapters inside `.gsap-container`.
-The standalone source, local GSAP modules, documentation, and verification artifacts
-are in `animations/motion-lab/`. See its README for the category map and controls.
-Edit `animations/motion-lab/sections.html`, then run:
+`gsap-animations.html` contains Field Notes, a visual landing page adapted from seven
+video/Markdown examples in `GSAP-Demos`. It uses only photography copied from
+`source-images` and inherits the existing light/dark theme tokens unchanged.
+
+Source, reference mapping, configuration, checks, and a PDF report are in
+`animations/field-notes/`. Edit its `sections.html`, then run:
 
 ```bash
-python3 animations/motion-lab/tools/sync-page.py
+python3 animations/field-notes/tools/sync-page.py
 npm run build
 ```

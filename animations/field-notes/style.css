@@ -1,0 +1,595 @@
+.gsap-container.field-notes {
+  width: 100%;
+  max-width: 1920px;
+  margin-inline: auto;
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  line-height: 1.5;
+  --fn-gutter: clamp(20px, 5cqw, 88px);
+}
+.field-notes *,
+.field-notes *::before,
+.field-notes *::after {
+  box-sizing: border-box;
+}
+.field-notes :is(h1, h2, h3, p, figure) {
+  margin: 0;
+}
+.field-notes img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.field-notes a {
+  color: inherit;
+  text-decoration: none;
+}
+.field-notes button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.field-notes a:hover {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.field-notes :is(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+}
+.field-notes [hidden] {
+  display: none !important;
+}
+.field-notes .fn-pad {
+  padding-inline: var(--fn-gutter);
+}
+.field-notes .fn-nav {
+  padding: 20px var(--fn-gutter);
+  border-block: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-background);
+  min-height: 76px;
+}
+.field-notes .fn-brand {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+.field-notes .fn-brand span {
+  color: var(--color-accent);
+  font-family: system-ui, sans-serif;
+  padding-left: 5px;
+}
+.field-notes .fn-edition {
+  display: none;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+.field-notes .fn-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 11px;
+}
+.field-notes .fn-nav-links a {
+  display: none;
+}
+.field-notes [data-pause] {
+  border: 0;
+  background: transparent;
+  padding: 8px 0;
+}
+.field-notes [data-pause]:hover {
+  text-decoration: underline;
+}
+.field-notes .fn-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+.field-notes .fn-hero {
+  min-height: calc(100svh - 76px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 44px;
+  padding-top: 42px;
+  padding-bottom: 24px;
+}
+.field-notes h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(64px, 10.5cqw, 150px);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+  font-weight: 400;
+  margin: 25px 0;
+}
+.field-notes h1 em {
+  color: var(--color-accent);
+}
+.field-notes em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+.field-notes .fn-intro {
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+.field-notes .fn-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--color-text);
+  padding-bottom: 8px;
+}
+.field-notes .fn-text-link span {
+  color: var(--color-accent);
+  font-size: 22px;
+}
+.field-notes .fn-hero-figure {
+  align-self: center;
+  width: 100%;
+  min-width: 0;
+}
+.field-notes .fn-tilt-stage {
+  perspective: 1000px;
+  padding: 12px;
+}
+.field-notes .fn-tilt-card {
+  height: clamp(330px, 42cqw, 570px);
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 2px;
+  background: var(--color-surface);
+}
+.field-notes .fn-tilt-card img {
+  border-radius: inherit;
+  object-position: 60% center;
+}
+.field-notes .fn-image-index {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: var(--color-paper);
+  color: var(--color-text);
+  font-size: 9px;
+  padding: 8px 12px;
+  letter-spacing: 0.1em;
+}
+.field-notes .fn-hero-figure figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 12px 0;
+  font-size: 10px;
+  color: var(--color-muted);
+}
+.field-notes .fn-hero-figure figcaption span:last-child {
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+.field-notes .fn-hero-foot {
+  grid-column: 1/-1;
+  border-top: 1px solid var(--color-border);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-muted);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  align-self: end;
+}
+.field-notes .fn-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-block: 80px 45px;
+}
+.field-notes h2 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(38px, 5.4cqw, 78px);
+  line-height: 1.06;
+  letter-spacing: -0.05em;
+  margin-top: 20px;
+}
+.field-notes h2 em {
+  color: var(--color-accent);
+}
+.field-notes .fn-section-heading > p {
+  font-size: 13px;
+  color: var(--color-muted);
+  line-height: 1.8;
+  max-width: 360px;
+}
+.field-notes .fn-bento-stage {
+  height: min(76svh, 850px);
+  min-height: 420px;
+  overflow: hidden;
+  position: relative;
+  background: var(--color-background);
+}
+.field-notes .fn-bento-grid {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 1fr;
+  grid-template-rows: 1fr 1.35fr 1fr;
+  gap: 6px;
+  transform-origin: 50% 50%;
+}
+.field-notes .fn-bento-tile {
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  background: var(--color-surface);
+}
+.field-notes .fn-bento-a {
+  grid-area: 1/1;
+}
+.field-notes .fn-bento-b {
+  grid-area: 1/2;
+}
+.field-notes .fn-bento-c {
+  grid-area: 1/3;
+}
+.field-notes .fn-bento-d {
+  grid-area: 2/1;
+}
+.field-notes .fn-bento-center {
+  grid-area: 2/2;
+}
+.field-notes .fn-bento-e {
+  grid-area: 2/3;
+}
+.field-notes .fn-bento-f {
+  grid-area: 3/1;
+}
+.field-notes .fn-bento-g {
+  grid-area: 3/2;
+}
+.field-notes .fn-bento-h {
+  grid-area: 3/3;
+}
+.field-notes .fn-afterword {
+  padding-block: 75px 90px;
+  text-align: center;
+}
+.field-notes .fn-afterword > p:nth-child(2) {
+  font-family: Georgia, serif;
+  font-size: clamp(32px, 4.3cqw, 64px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin: 25px auto;
+}
+.field-notes .fn-afterword > span {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+.field-notes .fn-mask-section {
+  background: var(--color-surface);
+}
+.field-notes .fn-mask-stage {
+  height: calc(100svh - 76px);
+  max-height: 900px;
+  position: relative;
+  overflow: hidden;
+}
+.field-notes .fn-mask-stage figure {
+  position: absolute;
+  inset: 0;
+}
+.field-notes .fn-mask-line {
+  position: absolute;
+  width: 2px;
+  inset: 0 auto 0 0;
+  background: var(--color-paper);
+}
+.field-notes .fn-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 25px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+.field-notes .fn-wave-stage {
+  height: 55svh;
+  min-height: 300px;
+  max-height: 600px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-block: 1px solid var(--color-border);
+}
+.field-notes .fn-wave-text {
+  white-space: nowrap;
+  font-family: Georgia, serif;
+  font-size: clamp(50px, 8cqw, 110px);
+  letter-spacing: -0.04em;
+  line-height: 1.4;
+  padding-inline: var(--fn-gutter);
+  color: var(--color-accent);
+}
+.field-notes .fn-gallery-stage {
+  height: min(86svh, 850px);
+  min-height: 540px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.field-notes .fn-gallery-track {
+  display: flex;
+  gap: clamp(18px, 2.4cqw, 40px);
+  width: max-content;
+  padding-inline: var(--fn-gutter);
+  align-items: center;
+}
+.field-notes .fn-gallery-card {
+  flex: 0 0 auto;
+  width: clamp(260px, 31cqw, 460px);
+}
+.field-notes .fn-gallery-card > div {
+  height: clamp(350px, 48svh, 530px);
+  overflow: hidden;
+}
+.field-notes .fn-gallery-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  gap: 12px;
+  padding-top: 16px;
+}
+.field-notes .fn-gallery-card figcaption span:last-child {
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+.field-notes .fn-gallery-card:nth-child(even) {
+  padding-top: 70px;
+}
+.field-notes .fn-saved {
+  padding-bottom: 90px;
+}
+.field-notes .fn-carousel-window {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 2px 24px;
+}
+.field-notes .fn-carousel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 880px;
+}
+.field-notes .fn-note {
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  padding: 15px;
+  background: var(--color-background);
+}
+.field-notes .fn-note-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
+.field-notes .fn-note-top > :last-child {
+  font-size: 18px;
+  color: var(--color-accent);
+}
+.field-notes .fn-note img {
+  height: 230px;
+}
+.field-notes .fn-note h3 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  margin: 22px 0 10px;
+}
+.field-notes .fn-note > p {
+  font-size: 10px;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+.field-notes .fn-carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 18px;
+}
+.field-notes .fn-carousel-status {
+  color: var(--color-muted);
+  font-size: 10px;
+}
+.field-notes .fn-carousel-controls > div {
+  display: flex;
+  gap: 10px;
+}
+.field-notes .fn-carousel-controls button {
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  background: var(--color-background);
+  font-size: 20px;
+}
+.field-notes .fn-carousel-controls button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.field-notes .fn-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 85svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  padding-block: 65px 25px;
+}
+.field-notes .fn-footer > :not(.fn-curve-panel) {
+  position: relative;
+  z-index: 1;
+}
+.field-notes .fn-footer > .fn-eyebrow {
+  color: var(--color-text);
+}
+.field-notes .fn-footer > .fn-eyebrow,
+.field-notes .fn-footer-title {
+  text-align: center;
+}
+.field-notes .fn-curve-panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.field-notes .fn-curve-start {
+  stop-color: var(--color-surface-alt);
+}
+.field-notes .fn-curve-end {
+  stop-color: var(--color-art-mid);
+}
+.field-notes .fn-footer-title {
+  font-family: Georgia, serif;
+  font-size: clamp(50px, 9cqw, 130px);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin: 30px 0 40px;
+}
+.field-notes .fn-footer em {
+  color: var(--color-accent);
+}
+.field-notes .fn-footer-meta {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+.field-notes .fn-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.field-notes[data-calm="true"] .fn-gallery-stage {
+  height: auto;
+  min-height: 0;
+  overflow-x: auto;
+  padding-block: 30px;
+}
+.field-notes[data-calm="true"] .fn-wave-stage {
+  height: auto;
+  min-height: 0;
+  padding-block: 55px;
+}
+.field-notes[data-calm="true"] .fn-wave-text {
+  white-space: normal;
+}
+.field-notes[data-calm="true"] .fn-mask-line {
+  display: none;
+}
+@container (min-width: 768px) {
+  .field-notes .fn-nav-links a {
+    display: inline;
+  }
+  .field-notes .fn-hero {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px 5%;
+    padding-top: 55px;
+  }
+  .field-notes .fn-hero-figure {
+    max-width: 560px;
+    justify-self: end;
+  }
+  .field-notes .fn-hero-copy {
+    align-self: center;
+  }
+  .field-notes .fn-section-heading {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-block: 110px 60px;
+  }
+  .field-notes .fn-section-heading > p {
+    padding-bottom: 5px;
+  }
+  .field-notes .fn-carousel {
+    gap: 20px;
+    min-width: 0;
+  }
+  .field-notes .fn-note {
+    padding: 20px;
+  }
+}
+@container (min-width: 1100px) {
+  .field-notes .fn-edition {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-notes .fn-gallery-stage {
+    height: auto;
+    min-height: 0;
+    overflow-x: auto;
+    padding-block: 30px;
+  }
+  .field-notes .fn-wave-stage {
+    height: auto;
+    min-height: 0;
+    padding-block: 55px;
+  }
+  .field-notes .fn-wave-text {
+    white-space: normal;
+  }
+}
+
+/* Room for italic descenders without changing the heading's measured line stack. */
+.field-notes .fn-hero-line-mask {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/* Keep the mask's descender allowance inside the heading, avoiding a completion-time jump. */
+.field-notes .fn-hero-copy h1 {
+  display: flow-root;
+}

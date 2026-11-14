@@ -1,0 +1,1128 @@
+{
+  "brief": "Build a single cohesive animated page using GSAP-Demos videos and descriptions, source-images photography, and the unchanged project theme.",
+  "container": ".gsap-container",
+  "destination": "src/pages/gsap-animations.njk",
+  "references": {
+    "Scrubbed bento gallery": {
+      "file": "GSAP-Demos/Scrubbed bento gallery/Scrubbed bento gallery.mp4",
+      "bytes": 1905661,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "5.516667"
+        }
+      },
+      "description": "GSAP-Demos/Scrubbed bento gallery/Scrubbed bento gallery.md",
+      "sample_fps": 2,
+      "frames": 11,
+      "palette": ["#596336", "#b0a87d", "#0d1110", "#232b19", "#0a110d"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.464,
+          "y": 0.5,
+          "area": 0.5278
+        },
+        {
+          "t": 1.0,
+          "x": 0.469,
+          "y": 0.524,
+          "area": 0.6388
+        },
+        {
+          "t": 1.5,
+          "x": 0.525,
+          "y": 0.526,
+          "area": 0.4085
+        },
+        {
+          "t": 2.0,
+          "x": 0.443,
+          "y": 0.59,
+          "area": 0.4855
+        },
+        {
+          "t": 2.5,
+          "x": 0.448,
+          "y": 0.508,
+          "area": 0.5108
+        },
+        {
+          "t": 3.0,
+          "x": 0.47,
+          "y": 0.677,
+          "area": 0.214
+        },
+        {
+          "t": 3.5,
+          "x": 0.488,
+          "y": 0.493,
+          "area": 0.7676
+        },
+        {
+          "t": 4.0,
+          "x": 0.47,
+          "y": 0.534,
+          "area": 0.5489
+        },
+        {
+          "t": 4.5,
+          "x": 0.475,
+          "y": 0.512,
+          "area": 0.5679
+        },
+        {
+          "t": 5.0,
+          "x": 0.482,
+          "y": 0.473,
+          "area": 0.3327
+        }
+      ],
+      "description_bytes": 333,
+      "assets_description": "GSAP-Demos/Scrubbed bento gallery/assets.md",
+      "assets_description_bytes": 798
+    },
+    "Cursor-driven perspective tilt": {
+      "file": "GSAP-Demos/Cursor-driven perspective tilt/Cursor-driven perspective tilt.mp4",
+      "bytes": 457004,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 846,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "5.850000"
+        }
+      },
+      "description": "GSAP-Demos/Cursor-driven perspective tilt/Cursor-driven perspective tilt.md",
+      "sample_fps": 2,
+      "frames": 12,
+      "palette": ["#0d1110", "#81cf77", "#0e1110", "#090c0b", "#0b110d"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.494,
+          "y": 0.497,
+          "area": 0.0883
+        },
+        {
+          "t": 1.0,
+          "x": 0.495,
+          "y": 0.495,
+          "area": 0.0953
+        },
+        {
+          "t": 1.5,
+          "x": 0.491,
+          "y": 0.489,
+          "area": 0.0867
+        },
+        {
+          "t": 2.0,
+          "x": 0.494,
+          "y": 0.492,
+          "area": 0.1155
+        },
+        {
+          "t": 2.5,
+          "x": 0.484,
+          "y": 0.491,
+          "area": 0.0809
+        },
+        {
+          "t": 3.0,
+          "x": 0.491,
+          "y": 0.49,
+          "area": 0.1044
+        },
+        {
+          "t": 3.5,
+          "x": 0.492,
+          "y": 0.487,
+          "area": 0.0897
+        },
+        {
+          "t": 4.0,
+          "x": 0.492,
+          "y": 0.483,
+          "area": 0.1123
+        },
+        {
+          "t": 4.5,
+          "x": 0.492,
+          "y": 0.49,
+          "area": 0.0942
+        },
+        {
+          "t": 5.0,
+          "x": 0.492,
+          "y": 0.485,
+          "area": 0.0865
+        },
+        {
+          "t": 5.5,
+          "x": 0.493,
+          "y": 0.492,
+          "area": 0.0508
+        }
+      ],
+      "description_bytes": 319,
+      "assets_description": "GSAP-Demos/Cursor-driven perspective tilt/assets.md",
+      "assets_description_bytes": 319
+    },
+    "Horizontal Text": {
+      "file": "GSAP-Demos/Horizontal Text/Horizontal Text.mp4",
+      "bytes": 1559458,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "17.050000"
+        }
+      },
+      "description": "GSAP-Demos/Horizontal Text/Horizontal Text.md",
+      "sample_fps": 2,
+      "frames": 34,
+      "palette": ["#0d1110", "#6e7164", "#080b0a", "#0e110e", "#0c1110"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.525,
+          "y": 0.514,
+          "area": 0.0987
+        },
+        {
+          "t": 1.0,
+          "x": 0.539,
+          "y": 0.504,
+          "area": 0.1005
+        },
+        {
+          "t": 1.5,
+          "x": 0.551,
+          "y": 0.495,
+          "area": 0.095
+        },
+        {
+          "t": 2.0,
+          "x": 0.517,
+          "y": 0.495,
+          "area": 0.0988
+        },
+        {
+          "t": 2.5,
+          "x": 0.531,
+          "y": 0.518,
+          "area": 0.095
+        },
+        {
+          "t": 3.0,
+          "x": 0.516,
+          "y": 0.542,
+          "area": 0.0876
+        },
+        {
+          "t": 3.5,
+          "x": 0.537,
+          "y": 0.506,
+          "area": 0.0906
+        },
+        {
+          "t": 4.0,
+          "x": 0.567,
+          "y": 0.495,
+          "area": 0.0946
+        },
+        {
+          "t": 4.5,
+          "x": 0.563,
+          "y": 0.513,
+          "area": 0.0953
+        },
+        {
+          "t": 5.0,
+          "x": 0.555,
+          "y": 0.49,
+          "area": 0.1024
+        },
+        {
+          "t": 5.5,
+          "x": 0.551,
+          "y": 0.504,
+          "area": 0.1065
+        },
+        {
+          "t": 6.0,
+          "x": 0.527,
+          "y": 0.526,
+          "area": 0.1067
+        },
+        {
+          "t": 6.5,
+          "x": 0.488,
+          "y": 0.522,
+          "area": 0.1051
+        },
+        {
+          "t": 7.0,
+          "x": 0.517,
+          "y": 0.489,
+          "area": 0.1034
+        },
+        {
+          "t": 7.5,
+          "x": 0.534,
+          "y": 0.482,
+          "area": 0.0974
+        },
+        {
+          "t": 8.0,
+          "x": 0.518,
+          "y": 0.499,
+          "area": 0.0951
+        },
+        {
+          "t": 8.5,
+          "x": 0.531,
+          "y": 0.502,
+          "area": 0.0943
+        },
+        {
+          "t": 9.0,
+          "x": 0.538,
+          "y": 0.493,
+          "area": 0.0992
+        },
+        {
+          "t": 9.5,
+          "x": 0.525,
+          "y": 0.482,
+          "area": 0.095
+        },
+        {
+          "t": 10.0,
+          "x": 0.513,
+          "y": 0.501,
+          "area": 0.0938
+        },
+        {
+          "t": 10.5,
+          "x": 0.541,
+          "y": 0.493,
+          "area": 0.0963
+        },
+        {
+          "t": 11.0,
+          "x": 0.545,
+          "y": 0.49,
+          "area": 0.096
+        },
+        {
+          "t": 11.5,
+          "x": 0.55,
+          "y": 0.512,
+          "area": 0.101
+        },
+        {
+          "t": 12.0,
+          "x": 0.531,
+          "y": 0.514,
+          "area": 0.0991
+        },
+        {
+          "t": 12.5,
+          "x": 0.523,
+          "y": 0.501,
+          "area": 0.0932
+        },
+        {
+          "t": 13.0,
+          "x": 0.532,
+          "y": 0.496,
+          "area": 0.0947
+        },
+        {
+          "t": 13.5,
+          "x": 0.52,
+          "y": 0.5,
+          "area": 0.0975
+        },
+        {
+          "t": 14.0,
+          "x": 0.516,
+          "y": 0.504,
+          "area": 0.097
+        },
+        {
+          "t": 14.5,
+          "x": 0.522,
+          "y": 0.507,
+          "area": 0.0978
+        },
+        {
+          "t": 15.0,
+          "x": 0.527,
+          "y": 0.506,
+          "area": 0.0989
+        },
+        {
+          "t": 15.5,
+          "x": 0.542,
+          "y": 0.514,
+          "area": 0.102
+        },
+        {
+          "t": 16.0,
+          "x": 0.52,
+          "y": 0.52,
+          "area": 0.0953
+        },
+        {
+          "t": 16.5,
+          "x": 0.412,
+          "y": 0.511,
+          "area": 0.08
+        }
+      ],
+      "description_bytes": 331,
+      "assets_description": "GSAP-Demos/Horizontal Text/assets.md",
+      "assets_description_bytes": 247
+    },
+    "Image Mask On Scroll": {
+      "file": "GSAP-Demos/Image Mask On Scroll/Image Mask On Scroll.mp4",
+      "bytes": 887360,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "7.533333"
+        }
+      },
+      "description": "GSAP-Demos/Image Mask On Scroll/Image Mask On Scroll.md",
+      "sample_fps": 2,
+      "frames": 15,
+      "palette": ["#18231f", "#0f1713", "#22302c", "#2c3f38", "#205440"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.994,
+          "y": 0.144,
+          "area": 0.0001
+        },
+        {
+          "t": 1.0,
+          "x": 0.517,
+          "y": 0.751,
+          "area": 0.3312
+        },
+        {
+          "t": 1.5,
+          "x": 0.527,
+          "y": 0.386,
+          "area": 0.6948
+        },
+        {
+          "t": 2.0,
+          "x": 0.867,
+          "y": 0.472,
+          "area": 0.2023
+        },
+        {
+          "t": 2.5,
+          "x": 0.649,
+          "y": 0.356,
+          "area": 0.1386
+        },
+        {
+          "t": 3.0,
+          "x": 0.445,
+          "y": 0.297,
+          "area": 0.0701
+        },
+        {
+          "t": 3.5,
+          "x": 0.218,
+          "y": 0.329,
+          "area": 0.094
+        },
+        {
+          "t": 4.0,
+          "x": 0.071,
+          "y": 0.358,
+          "area": 0.0765
+        },
+        {
+          "t": 4.5,
+          "x": 0.028,
+          "y": 0.371,
+          "area": 0.0083
+        },
+        {
+          "t": 5.0,
+          "x": 0.125,
+          "y": 0.349,
+          "area": 0.1237
+        },
+        {
+          "t": 5.5,
+          "x": 0.38,
+          "y": 0.298,
+          "area": 0.1071
+        },
+        {
+          "t": 6.0,
+          "x": 0.695,
+          "y": 0.401,
+          "area": 0.2147
+        },
+        {
+          "t": 6.5,
+          "x": 0.578,
+          "y": 0.414,
+          "area": 0.4144
+        },
+        {
+          "t": 7.0,
+          "x": 0.529,
+          "y": 0.473,
+          "area": 0.599
+        }
+      ],
+      "description_bytes": 303,
+      "assets_description": "GSAP-Demos/Image Mask On Scroll/assets.md",
+      "assets_description_bytes": 651
+    },
+    "Horizontal scrolling gallery": {
+      "file": "GSAP-Demos/Horizontal scrolling gallery/Horizontal scrolling gallery.mp4",
+      "bytes": 1368406,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "7.616667"
+        }
+      },
+      "description": "GSAP-Demos/Horizontal scrolling gallery/Horizontal scrolling gallery.md",
+      "sample_fps": 2,
+      "frames": 15,
+      "palette": ["#0d1110", "#404749", "#070909", "#0f1110", "#0a1118"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.556,
+          "y": 0.785,
+          "area": 0.213
+        },
+        {
+          "t": 1.0,
+          "x": 0.535,
+          "y": 0.634,
+          "area": 0.3843
+        },
+        {
+          "t": 1.5,
+          "x": 0.497,
+          "y": 0.524,
+          "area": 0.4476
+        },
+        {
+          "t": 2.0,
+          "x": 0.468,
+          "y": 0.49,
+          "area": 0.4012
+        },
+        {
+          "t": 2.5,
+          "x": 0.464,
+          "y": 0.481,
+          "area": 0.3769
+        },
+        {
+          "t": 3.0,
+          "x": 0.484,
+          "y": 0.482,
+          "area": 0.3747
+        },
+        {
+          "t": 3.5,
+          "x": 0.521,
+          "y": 0.469,
+          "area": 0.3617
+        },
+        {
+          "t": 4.0,
+          "x": 0.534,
+          "y": 0.479,
+          "area": 0.4153
+        },
+        {
+          "t": 4.5,
+          "x": 0.54,
+          "y": 0.487,
+          "area": 0.4415
+        },
+        {
+          "t": 5.0,
+          "x": 0.517,
+          "y": 0.481,
+          "area": 0.442
+        },
+        {
+          "t": 5.5,
+          "x": 0.5,
+          "y": 0.478,
+          "area": 0.4654
+        },
+        {
+          "t": 6.0,
+          "x": 0.49,
+          "y": 0.481,
+          "area": 0.4653
+        },
+        {
+          "t": 6.5,
+          "x": 0.498,
+          "y": 0.39,
+          "area": 0.6426
+        },
+        {
+          "t": 7.0,
+          "x": 0.483,
+          "y": 0.195,
+          "area": 0.2965
+        }
+      ],
+      "description_bytes": 355,
+      "assets_description": "GSAP-Demos/Horizontal scrolling gallery/assets.md",
+      "assets_description_bytes": 758
+    },
+    "FLIP Carousel": {
+      "file": "GSAP-Demos/FLIP Carousel/FLIP Carousel.mp4",
+      "bytes": 825750,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "9.516667"
+        }
+      },
+      "description": "GSAP-Demos/FLIP Carousel/FLIP Carousel.md",
+      "sample_fps": 2,
+      "frames": 19,
+      "palette": ["#0d1110", "#282b2d", "#0e1110", "#0c0e0d", "#0b110f"],
+      "motion_path": [
+        {
+          "t": 0.5,
+          "x": 0.521,
+          "y": 0.458,
+          "area": 0.121
+        },
+        {
+          "t": 1.0,
+          "x": 0.484,
+          "y": 0.461,
+          "area": 0.1287
+        },
+        {
+          "t": 1.5,
+          "x": 0.496,
+          "y": 0.458,
+          "area": 0.1291
+        },
+        {
+          "t": 2.0,
+          "x": 0.497,
+          "y": 0.459,
+          "area": 0.1355
+        },
+        {
+          "t": 2.5,
+          "x": 0.481,
+          "y": 0.46,
+          "area": 0.1316
+        },
+        {
+          "t": 3.0,
+          "x": 0.477,
+          "y": 0.456,
+          "area": 0.1241
+        },
+        {
+          "t": 3.5,
+          "x": 0.501,
+          "y": 0.459,
+          "area": 0.0895
+        },
+        {
+          "t": 4.0,
+          "x": 0.565,
+          "y": 0.441,
+          "area": 0.0498
+        },
+        {
+          "t": 4.5,
+          "x": 0.523,
+          "y": 0.456,
+          "area": 0.1371
+        },
+        {
+          "t": 5.0,
+          "x": 0.489,
+          "y": 0.451,
+          "area": 0.1324
+        },
+        {
+          "t": 5.5,
+          "x": 0.466,
+          "y": 0.448,
+          "area": 0.1286
+        },
+        {
+          "t": 6.0,
+          "x": 0.475,
+          "y": 0.452,
+          "area": 0.1314
+        },
+        {
+          "t": 6.5,
+          "x": 0.474,
+          "y": 0.449,
+          "area": 0.1182
+        },
+        {
+          "t": 7.0,
+          "x": 0.492,
+          "y": 0.429,
+          "area": 0.1007
+        },
+        {
+          "t": 7.5,
+          "x": 0.501,
+          "y": 0.448,
+          "area": 0.1049
+        },
+        {
+          "t": 8.0,
+          "x": 0.55,
+          "y": 0.421,
+          "area": 0.0779
+        },
+        {
+          "t": 9.0,
+          "x": 0.466,
+          "y": 0.806,
+          "area": 0.0005
+        }
+      ],
+      "description_bytes": 309,
+      "assets_description": "GSAP-Demos/FLIP Carousel/assets.md",
+      "assets_description_bytes": 485
+    },
+    "Curve swipe": {
+      "file": "GSAP-Demos/Curve swipe/Curve swipe.mp4",
+      "bytes": 120749,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 1500,
+            "height": 844,
+            "r_frame_rate": "60/1"
+          }
+        ],
+        "format": {
+          "duration": "3.183333"
+        }
+      },
+      "description": "GSAP-Demos/Curve swipe/Curve swipe.md",
+      "description_bytes": 319,
+      "assets_description": "GSAP-Demos/Curve swipe/assets.md",
+      "assets_description_bytes": 377,
+      "sample_fps": 20,
+      "frames": 64,
+      "palette": ["#0d1110", "#e28a7a", "#0f110f", "#0a1111", "#0c0e0e"],
+      "motion_path": [
+        {
+          "t": 0.05,
+          "x": 0.496,
+          "y": 0.422,
+          "area": 0.1482
+        },
+        {
+          "t": 0.1,
+          "x": 0.497,
+          "y": 0.291,
+          "area": 0.1181
+        },
+        {
+          "t": 0.15,
+          "x": 0.497,
+          "y": 0.188,
+          "area": 0.0938
+        },
+        {
+          "t": 0.2,
+          "x": 0.497,
+          "y": 0.112,
+          "area": 0.0678
+        },
+        {
+          "t": 0.25,
+          "x": 0.496,
+          "y": 0.059,
+          "area": 0.0508
+        },
+        {
+          "t": 0.3,
+          "x": 0.498,
+          "y": 0.022,
+          "area": 0.0349
+        },
+        {
+          "t": 0.35,
+          "x": 0.499,
+          "y": 0.004,
+          "area": 0.0166
+        },
+        {
+          "t": 0.4,
+          "x": 0.79,
+          "y": 0.0,
+          "area": 0.0003
+        },
+        {
+          "t": 1.25,
+          "x": 0.497,
+          "y": 0.002,
+          "area": 0.0129
+        },
+        {
+          "t": 1.3,
+          "x": 0.5,
+          "y": 0.014,
+          "area": 0.0303
+        },
+        {
+          "t": 1.35,
+          "x": 0.496,
+          "y": 0.046,
+          "area": 0.0428
+        },
+        {
+          "t": 1.4,
+          "x": 0.495,
+          "y": 0.092,
+          "area": 0.0626
+        },
+        {
+          "t": 1.45,
+          "x": 0.497,
+          "y": 0.161,
+          "area": 0.0838
+        },
+        {
+          "t": 1.5,
+          "x": 0.497,
+          "y": 0.253,
+          "area": 0.1092
+        },
+        {
+          "t": 1.55,
+          "x": 0.496,
+          "y": 0.374,
+          "area": 0.1374
+        },
+        {
+          "t": 1.6,
+          "x": 0.496,
+          "y": 0.527,
+          "area": 0.1699
+        },
+        {
+          "t": 1.65,
+          "x": 0.5,
+          "y": 0.721,
+          "area": 0.3203
+        },
+        {
+          "t": 1.7,
+          "x": 0.502,
+          "y": 0.917,
+          "area": 0.1009
+        },
+        {
+          "t": 3.15,
+          "x": 0.502,
+          "y": 0.873,
+          "area": 0.1872
+        }
+      ],
+      "adaptation": "Footer scroll pins the panel while its curved edge rises, holds, and recedes; reverse scrolling reverses the sequence. No action button. Existing blue theme tokens retained."
+    }
+  },
+  "images": {
+    "oboinastol.com_97.jpg": {
+      "type": "image",
+      "width": 2560,
+      "height": 1598,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#3f2f34", "#312226", "#876738", "#221b25", "#5e1a0f"],
+      "bytes": 221538,
+      "source": "source-images/oboinastol.com_97.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_97.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_130.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1200,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#054a85", "#0660a4", "#043163", "#0f69a6", "#135088"],
+      "bytes": 122307,
+      "source": "source-images/oboinastol.com_130.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_130.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_416.jpg": {
+      "type": "image",
+      "width": 2048,
+      "height": 1151,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#8caecb", "#161c38", "#606987", "#263562", "#443e53"],
+      "bytes": 594355,
+      "source": "source-images/oboinastol.com_416.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_416.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_484.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1268,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#636a69", "#2d2e2d", "#e1e8f2", "#afb5b6", "#edf2fa"],
+      "bytes": 347823,
+      "source": "source-images/oboinastol.com_484.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_484.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_822.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1200,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#ab8d79", "#c7b39f", "#4d2f29", "#e3dacf", "#dcd0c4"],
+      "bytes": 79744,
+      "source": "source-images/oboinastol.com_822.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_822.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_931.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1080,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#140508", "#b97a56", "#6f321e", "#310d0a", "#55140c"],
+      "bytes": 199463,
+      "source": "source-images/oboinastol.com_931.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_931.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_1344.jpg": {
+      "type": "image",
+      "width": 2048,
+      "height": 1365,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#181823", "#363d55", "#55628a", "#7181b1", "#92a1cf"],
+      "bytes": 196633,
+      "source": "source-images/oboinastol.com_1344.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_1344.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_1645.jpg": {
+      "type": "image",
+      "width": 2560,
+      "height": 1600,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#a1a28d", "#161817", "#4c4f3d", "#2f2c1a", "#1f2521"],
+      "bytes": 385811,
+      "source": "source-images/oboinastol.com_1645.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_1645.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_2301.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1080,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#4e4414", "#272d1c", "#647b9e", "#5c625b", "#aea28b"],
+      "bytes": 389236,
+      "source": "source-images/oboinastol.com_2301.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_2301.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "oboinastol.com_2331.jpg": {
+      "type": "image",
+      "width": 1920,
+      "height": 1200,
+      "mode": "RGB",
+      "alpha": false,
+      "palette": ["#343f31", "#161e1d", "#5fa7e7", "#53727d", "#aabec1"],
+      "bytes": 401451,
+      "source": "source-images/oboinastol.com_2331.jpg",
+      "copy": "animations/field-notes/assets/oboinastol.com_2331.jpg",
+      "classification": "photography supplied by user; colors retained"
+    },
+    "_image_set": {
+      "order": [
+        "oboinastol.com_97.jpg",
+        "oboinastol.com_130.jpg",
+        "oboinastol.com_416.jpg",
+        "oboinastol.com_484.jpg",
+        "oboinastol.com_822.jpg",
+        "oboinastol.com_931.jpg",
+        "oboinastol.com_1344.jpg",
+        "oboinastol.com_1645.jpg",
+        "oboinastol.com_2301.jpg",
+        "oboinastol.com_2331.jpg"
+      ],
+      "same_size": false,
+      "likely_frame_sequence": false
+    }
+  },
+  "theme_source": "src/scss/base/_root.scss",
+  "technology": "GSAP 3.15.0, ScrollTrigger, Flip, SplitText; local ES modules",
+  "assumptions": [
+    "Seven examples selected; remaining three unused to maintain a coherent editorial narrative.",
+    "Field Notes is a fictional visual journal, not a travel booking service.",
+    "Scroll behavior is adapted to the page proportions; video scroll speed is user-controlled, not a fixed playback duration.",
+    "Existing theme tokens are inherited unchanged. Photographic colors are retained from supplied images.",
+    "Image Mask uses two supplied still photographs in place of the reference moving action footage.",
+    "No external image, font, library, or API requests are required.",
+    "Compact containers use shorter pin distances; reduced motion and Pause remove pinning and show all content."
+  ],
+  "inventory": {
+    "brief": {
+      "file": "brief.md",
+      "type": "text/markdown",
+      "bytes": 1805
+    },
+    "container": ".gsap-container",
+    "videos_used": 7,
+    "images_used": 10,
+    "descriptions_read": 14
+  },
+  "unused_reference_inventory": {
+    "MotionPath Waypoints": [
+      {
+        "file": "GSAP-Demos/MotionPath Waypoints/MotionPath Waypoints.md",
+        "bytes": 322,
+        "type": "md"
+      },
+      {
+        "file": "GSAP-Demos/MotionPath Waypoints/MotionPath Waypoints.mp4",
+        "bytes": 1233267,
+        "type": "mp4"
+      },
+      {
+        "file": "GSAP-Demos/MotionPath Waypoints/assets.md",
+        "bytes": 425,
+        "type": "md"
+      }
+    ],
+    "Pinned panels with overscroll": [
+      {
+        "file": "GSAP-Demos/Pinned panels with overscroll/Pinned panels with overscroll.md",
+        "bytes": 357,
+        "type": "md"
+      },
+      {
+        "file": "GSAP-Demos/Pinned panels with overscroll/Pinned panels with overscroll.mp4",
+        "bytes": 6784732,
+        "type": "mp4"
+      },
+      {
+        "file": "GSAP-Demos/Pinned panels with overscroll/assets.md",
+        "bytes": 486,
+        "type": "md"
+      }
+    ],
+    "Shader on Scroll": [
+      {
+        "file": "GSAP-Demos/Shader on Scroll/Shader on Scroll.md",
+        "bytes": 315,
+        "type": "md"
+      },
+      {
+        "file": "GSAP-Demos/Shader on Scroll/Shader on Scroll.mp4",
+        "bytes": 2927687,
+        "type": "mp4"
+      },
+      {
+        "file": "GSAP-Demos/Shader on Scroll/assets.md",
+        "bytes": 622,
+        "type": "md"
+      }
+    ]
+  },
+  "user_requested_extensions": {
+    "hero_text_reveal": {
+      "target": ".fn-hero-copy h1 and p",
+      "trigger": "initial page load; once per mount",
+      "source": "Explicit user request for a custom text effect",
+      "effect": "Masked character unfolding on the heading, character eyebrow reveal, word-staggered introductory paragraph",
+      "reduced_motion": "Static original text",
+      "duration_s_approx": 1.7
+    }
+  }
+}

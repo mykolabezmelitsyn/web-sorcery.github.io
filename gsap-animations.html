@@ -5,14 +5,14 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Ten interactive experiments in motion, made with GSAP." />
+<meta name="description" content="Field Notes: a slower way of seeing. An animated visual journal." />
 <link rel="icon" href="./favicon.ico" sizes="any" />
 <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="./favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="icon" href="./favicon-16x16.png" type="image/png" sizes="16x16" />
 <link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180" />
 <link rel="manifest" href="./site.webmanifest" />
-    <title>Motion, by design — Web Sorcery</title>
+    <title>Field Notes — Web Sorcery</title>
 
 
 
@@ -26,10 +26,10 @@
         // CSS follows the system preference when storage is unavailable.
       }
     </script>
-    <script type="module" crossorigin src="./assets/gsap-animations-WCQHIO8y.js"></script>
+    <script type="module" crossorigin src="./assets/gsap-animations-DdLCWceQ.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/main-DzvS4wZX.js">
     <link rel="stylesheet" crossorigin href="./assets/main-9TH5bNLq.css">
-    <link rel="stylesheet" crossorigin href="./assets/gsap-animations-BS_pPtai.css">
+    <link rel="stylesheet" crossorigin href="./assets/gsap-animations-CnV_JPDU.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -61,495 +61,451 @@
     </header>
 
     <main id="main" class="site-main portfolio portfolio--full-width">
-<div class="gsap-container">
-  <nav class="ml-nav" aria-label="Motion laboratory">
-    <a class="ml-wordmark" href="#ml-start"
-      >m<span class="ml-orange">o</span>tion<span class="ml-mark">®</span></a
+<div class="gsap-container field-notes">
+  <nav class="fn-nav" aria-label="Field Notes">
+    <a class="fn-brand" href="#fn-home"
+      >Field Notes<span aria-hidden="true"> ↗</span></a
     >
-    <span class="ml-nav-note">A small studio for big moves.</span>
-    <div class="ml-nav-actions">
-      <button type="button" data-pause aria-pressed="false">
-        Pause animation</button
-      ><button
-        type="button"
-        data-nav-toggle
-        aria-expanded="false"
-        aria-controls="ml-navigation"
-      >
-        Index <span aria-hidden="true">＋</span>
+    <span class="fn-edition">A JOURNAL OF EVERYDAY WONDER / VOL. 01</span>
+    <div class="fn-nav-links">
+      <a href="#fn-collection">Collection</a><a href="#fn-horizons">Horizons</a
+      ><button type="button" data-pause aria-pressed="false">
+        Pause animation
       </button>
     </div>
   </nav>
-  <div class="ml-navigation" id="ml-navigation" hidden>
-    <p class="ml-kicker">Choose your experiment</p>
-    <div class="ml-index-links"></div>
-  </div>
+
   <section
-    class="ml-screen ml-hero"
-    id="ml-start"
-    data-name="First impressions"
+    class="fn-hero fn-pad"
+    id="fn-home"
+    data-reference="Cursor-driven perspective tilt"
   >
-    <div class="ml-meta">
-      <span>THE MOTION LAB / VOL. 01</span><span>SCROLL. PLAY. REPEAT.</span>
-    </div>
-    <h1>Good things<br />come to <span class="ml-serif">motion.</span></h1>
-    <div class="ml-hero-bottom">
-      <p>
-        An interactive field guide to the art of moving things.<br />Ten
-        experiments. Endless possibilities.
+    <div class="fn-hero-copy" data-custom-motion="hero-text-reveal">
+      <p class="fn-eyebrow">LOOK A LITTLE LONGER.</p>
+      <h1>A slower<br />way of<br /><em>seeing.</em></h1>
+      <p class="fn-intro">
+        Some places ask you to stop.<br />Some details ask you to stay.
       </p>
-      <a
-        href="#ml-depth"
-        class="ml-circle-link"
-        data-magnetic
-        aria-label="Explore the experiments"
-        >↘</a
+      <a class="fn-text-link" href="#fn-collection"
+        >Explore the collection <span aria-hidden="true">↘</span></a
       >
     </div>
-    <div class="ml-hero-art" aria-hidden="true">
-      <div class="ml-flower">✳</div>
-      <span class="ml-orbit-label">MADE TO MOVE</span>
-    </div>
-    <div class="ml-foot">
-      <span>01 — FIRST IMPRESSIONS</span
-      ><span>TRANSFORM / TIMELINE / STAGGER</span><span>↓ KEEP GOING</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-dark"
-    id="ml-depth"
-    data-name="A little perspective"
-  >
-    <div class="ml-meta">
-      <span>02 / SPACE & DEPTH</span
-      ><span>SCROLL TO CHANGE YOUR POINT OF VIEW</span>
-    </div>
-    <div class="ml-heading">
-      <h2>A little<br /><span class="ml-serif">perspective.</span></h2>
-      <p>
-        Same shapes. A different dimension.<br />Three layers move at their own
-        pace.
-      </p>
-    </div>
-    <div class="ml-depth-art" aria-label="Three overlapping abstract posters">
-      <div class="ml-poster ml-back">
-        <span>THE DISTANCE BETWEEN</span><b>01</b><i></i>
-      </div>
-      <div class="ml-poster ml-middle">
-        <span>CLOSER THAN YOU THINK</span><b>◒</b>
-      </div>
-      <div class="ml-poster ml-front">
-        <span>A NEW POINT OF VIEW</span><b>↗</b><small>LOOK AGAIN.</small>
-      </div>
-    </div>
-    <div class="ml-foot">
-      <span>PIN / SCRUB / PARALLAX</span
-      ><span>DEPTH IS A MATTER OF PERSPECTIVE.</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-type"
-    id="ml-words"
-    data-name="Words with rhythm"
-  >
-    <div class="ml-meta">
-      <span>03 / TYPE IN MOTION</span
-      ><button type="button" data-type-replay>Replay the words ↻</button>
-    </div>
-    <p class="ml-kicker">A few carefully chosen words.</p>
-    <h2 class="ml-split">
-      Less static.<br />More <span class="ml-serif">feeling.</span>
-    </h2>
-    <div class="ml-type-samples">
-      <div>
-        <span class="ml-kicker">01 / ONE LETTER AT A TIME</span>
-        <p data-typing aria-hidden="true">Make a little room for wonder.</p>
-        <span class="ml-sr">Make a little room for wonder.</span>
-      </div>
-      <div>
-        <span class="ml-kicker">02 / FINDING THE SIGNAL</span>
-        <p data-scramble aria-hidden="true">ORDER FROM CURIOSITY</p>
-        <span class="ml-sr">Order from curiosity.</span>
-      </div>
-    </div>
-    <div class="ml-foot">
-      <span>SPLITTEXT / TYPING / SCRAMBLE / REVEAL</span
-      ><span>EVERY LETTER HAS ITS MOMENT.</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-route-section"
-    id="ml-path"
-    data-name="The scenic route"
-  >
-    <div class="ml-meta">
-      <span>04 / LINES OF POSSIBILITY</span
-      ><button type="button" data-route-replay>Take another trip ↻</button>
-    </div>
-    <div class="ml-heading">
-      <h2>Take the<br /><span class="ml-serif">scenic route.</span></h2>
-      <p>
-        Progress doesn’t have to be a straight line.<br />Follow a thought
-        somewhere unexpected.
-      </p>
-    </div>
-    <svg
-      class="ml-route"
-      viewBox="0 0 1000 350"
-      role="img"
-      aria-label="An blue dot follows a winding line as a circle becomes a star"
-    >
-      <path
-        class="ml-route-guide"
-        d="M40 260C210 260 80 40 280 65S390 340 560 235S690 5 945 100"
-      />
-      <path
-        data-path
-        d="M40 260C210 260 80 40 280 65S390 340 560 235S690 5 945 100"
-      />
-      <circle data-traveler r="14" cx="40" cy="260" />
-      <g transform="translate(800 255)">
-        <path data-morph d="M0 -38C50 -38 50 38 0 38C-50 38 -50 -38 0 -38Z" />
-        <path
-          data-morph-target
-          visibility="hidden"
-          d="M0 -55L14 -17L52 -17L23 7L34 46L0 23L-34 46L-23 7L-52 -17L-14 -17Z"
-        />
-      </g>
-      <text x="40" y="320">A SMALL BEGINNING</text>
-      <text x="750" y="45">SOMEWHERE NEW ↗</text>
-    </svg>
-    <div class="ml-foot">
-      <span>DRAWSVG / MORPHSVG / MOTIONPATH</span><span>ENJOY THE DETOUR.</span>
-    </div>
-  </section>
-  <section class="ml-screen" id="ml-layout" data-name="A change of pace">
-    <div class="ml-meta">
-      <span>05 / SAME PIECES, NEW POSSIBILITIES</span
-      ><button type="button" data-layout aria-pressed="false">
-        Switch to list ↗
-      </button>
-    </div>
-    <div class="ml-heading">
-      <h2>A change<br />of <span class="ml-serif">pace.</span></h2>
-      <p>
-        Great things happen when the familiar<br />finds a different place to
-        be.
-      </p>
-    </div>
-    <div class="ml-tiles">
-      <article class="ml-tile">
-        <span>01</span><b>◒</b>
-        <h3>Balance</h3>
-        <p>A little give. A little take.</p>
-      </article>
-      <article class="ml-tile">
-        <span>02</span><b>✳</b>
-        <h3>Energy</h3>
-        <p>Something waiting to happen.</p>
-      </article>
-      <article class="ml-tile">
-        <span>03</span><b>↗</b>
-        <h3>Direction</h3>
-        <p>Keep your curiosity close.</p>
-      </article>
-      <article class="ml-tile">
-        <span>04</span><b>◎</b>
-        <h3>Connection</h3>
-        <p>Better things, together.</p>
-      </article>
-    </div>
-    <div class="ml-foot">
-      <span>FLIP / LAYOUT / STAGGER / ELASTIC</span
-      ><span>GO AHEAD. REARRANGE THINGS.</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-orange-screen"
-    id="ml-play"
-    data-name="Serious about play"
-  >
-    <div class="ml-meta">
-      <span>06 / AN EXERCISE IN LETTING GO</span
-      ><button type="button" data-launch>Launch a little joy ↗</button>
-    </div>
-    <div class="ml-heading">
-      <h2>Serious<br />about <span class="ml-serif">play.</span></h2>
-      <p>
-        Drag it. Throw it. Let it find its feet.<br />Or focus the circle and
-        use your arrow keys.
-      </p>
-    </div>
-    <div class="ml-playground">
-      <span class="ml-field-label">A SAFE PLACE TO MAKE A MOVE.</span
-      ><button
-        class="ml-puck"
-        type="button"
-        aria-label="Draggable circle. Arrow keys move, Home resets."
-      >
-        drag me<br />↔</button
-      ><span class="ml-projectile" aria-hidden="true">✳</span>
-    </div>
-    <div class="ml-foot">
-      <span>DRAGGABLE / INERTIA / SNAP / GRAVITY / BOUNCE</span
-      ><span>NO WRONG MOVES.</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-interface"
-    id="ml-interface"
-    data-name="Small gestures"
-  >
-    <div class="ml-meta">
-      <span>07 / THE LITTLE THINGS</span
-      ><span>SWIPE OR USE THE ARROW BUTTONS</span>
-    </div>
-    <div class="ml-heading">
-      <h2>
-        Small gestures.<br /><span class="ml-serif">Big difference.</span>
-      </h2>
-      <p>
-        A tiny website inside a website.<br />Open a menu. Turn a page. Stay a
-        while.
-      </p>
-    </div>
-    <div class="ml-mini">
-      <div class="ml-mini-bar">
-        <span>SOMEWHERE STUDIO</span
-        ><button
-          type="button"
-          data-mini-menu
-          aria-expanded="false"
-          aria-controls="ml-mini-links"
-        >
-          Menu ＋
-        </button>
-      </div>
-      <nav
-        class="ml-mini-links"
-        id="ml-mini-links"
-        hidden
-        aria-label="Miniature website"
-      >
-        <button type="button" data-slide="0">Wonder</button
-        ><button type="button" data-slide="1">Together</button
-        ><button type="button" data-slide="2">Forward</button>
-      </nav>
-      <div
-        class="ml-slides"
-        tabindex="0"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Studio pages; swipe or use arrow keys"
-      >
-        <article class="ml-slide">
-          <span class="ml-kicker">01 / BEGIN SOMEWHERE</span>
-          <h3>Leave room<br />for <em>wonder.</em></h3>
-          <b aria-hidden="true">✳</b
-          ><button type="button" data-modal-open>Open a thought ↗</button>
-        </article>
-        <article class="ml-slide" hidden>
-          <span class="ml-kicker">02 / BETTER TOGETHER</span>
-          <h3>Good things<br />come in <em>pairs.</em></h3>
-          <b aria-hidden="true">◒</b
-          ><button type="button" data-modal-open>Open a thought ↗</button>
-        </article>
-        <article class="ml-slide" hidden>
-          <span class="ml-kicker">03 / KEEP EXPLORING</span>
-          <h3>Onward.<br /><em>Always.</em></h3>
-          <b aria-hidden="true">↗</b
-          ><button type="button" data-modal-open>Open a thought ↗</button>
-        </article>
-      </div>
-      <div class="ml-slider-nav">
-        <button type="button" data-prev aria-label="Previous page">←</button
-        ><span data-slide-status aria-live="polite">01 / 03</span
-        ><button type="button" data-next aria-label="Next page">→</button>
-      </div>
-      <button
-        class="ml-accordion-button"
-        type="button"
-        data-accordion
-        aria-expanded="false"
-        aria-controls="ml-answer"
-      >
-        What makes a good interaction? <span>＋</span>
-      </button>
-      <div id="ml-answer" class="ml-answer" hidden>
-        Clarity first. A little personality second. Motion should make the next
-        step feel natural.
-      </div>
-    </div>
-    <dialog class="ml-dialog" aria-labelledby="ml-dialog-title">
-      <button type="button" data-modal-close aria-label="Close thought">
-        ×</button
-      ><span class="ml-kicker">A THOUGHT TO TAKE WITH YOU</span>
-      <h3 id="ml-dialog-title">Make space<br />for <em>possibility.</em></h3>
-      <p>
-        A small moment of delight can change the way an entire experience feels.
-      </p>
-    </dialog>
-    <div class="ml-foot">
-      <span>ENTER / EXIT / CROSSFADE / MENU / MODAL / ACCORDION / SWIPE</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-dark"
-    id="ml-images"
-    data-name="Beyond the surface"
-  >
-    <div class="ml-meta">
-      <span>08 / LOOK A LITTLE CLOSER</span
-      ><button type="button" data-image-replay>Reveal again ↻</button>
-    </div>
-    <div class="ml-heading">
-      <h2>Beyond<br />the <span class="ml-serif">surface.</span></h2>
-      <p>
-        Nothing downloaded. Everything imagined.<br />An abstract landscape,
-        made of light.
-      </p>
-    </div>
-    <div class="ml-image-frame">
-      <div class="ml-image-stage">
+    <figure class="fn-hero-figure">
+      <div class="fn-tilt-stage">
         <div
-          class="ml-image"
+          class="fn-tilt-card"
+          tabindex="0"
           role="img"
-          aria-label="Generated abstract sunset over layered blue dunes"
+          aria-label="Sunlight between snow-covered trees. Move your pointer to change the perspective."
         >
-          <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="ml-sky" x2="0" y2="1">
-                <stop style="stop-color: var(--art-deep)" />
-                <stop offset="1" style="stop-color: var(--art-sky)" />
-              </linearGradient>
-              <linearGradient id="ml-dune" x2="1" y2="1">
-                <stop style="stop-color: var(--art-core)" />
-                <stop offset="1" style="stop-color: var(--art-deep)" />
-              </linearGradient>
-            </defs>
-            <path fill="url(#ml-sky)" d="M0 0H1200V520H0Z" />
-            <circle cx="780" cy="215" r="120" style="fill: var(--art-glow)" />
-            <path
-              style="fill: var(--art-mid)"
-              d="M0 400Q300 100 650 370T1200 240V520H0Z"
-            />
-            <path
-              fill="url(#ml-dune)"
-              d="M0 380Q200 550 600 300T1200 360V520H0Z"
-            />
-            <path
-              style="fill: var(--art-deep)"
-              d="M0 450Q450 310 1200 470V520H0Z"
-            />
-          </svg>
+          <img
+            src="./assets/oboinastol.com_416-DTWXa76w.jpg"
+            width="2048"
+            height="1151"
+            alt=""
+            fetchpriority="high"
+          /><span class="fn-image-index" aria-hidden="true"
+            >01 / STILLNESS</span
+          >
         </div>
       </div>
-      <span class="ml-image-caption"
-        >OTHER PLACES / NO. 008 — AN IMAGINED LANDSCAPE</span
-      >
-    </div>
-    <div class="ml-foot">
-      <span>MASK / CLIP / REVEAL / ZOOM / POINTER FOLLOW</span
-      ><span>CREATED ENTIRELY IN SVG.</span>
+      <figcaption>
+        <span>A moment between the trees.</span><span>FIELD NOTE / 001</span>
+      </figcaption>
+    </figure>
+    <div class="fn-hero-foot">
+      <span>A COLLECTION FOR THE CURIOUS.</span><span>SCROLL TO WANDER ↓</span>
     </div>
   </section>
+
   <section
-    class="ml-screen ml-particle-section"
-    id="ml-particles"
-    data-name="Organized chaos"
+    id="fn-collection"
+    class="fn-collection"
+    data-reference="Scrubbed bento gallery"
   >
-    <div class="ml-meta">
-      <span>09 / A FIELD OF POSSIBILITIES</span
-      ><button type="button" data-burst>Make some waves ↗</button>
-    </div>
-    <div class="ml-heading">
-      <h2>Organized<br /><span class="ml-serif">chaos.</span></h2>
-      <p>
-        A hundred small movements.<br />One living canvas. Move your pointer to
-        explore.
-      </p>
-    </div>
-    <div class="ml-canvas-stage">
-      <canvas
-        role="img"
-        aria-label="A field of animated blue particles responding to pointer movement"
-      ></canvas
-      ><span class="ml-field-label">TOUCH TO MAKE A RIPPLE.</span>
-    </div>
-    <div class="ml-marquee" aria-hidden="true">
+    <div class="fn-section-heading fn-pad">
       <div>
-        MAKE WAVES ✳ STAY CURIOUS ✳ KEEP MOVING ✳ MAKE WAVES ✳ STAY CURIOUS ✳
-        KEEP MOVING ✳
+        <p class="fn-eyebrow">01 / THE BIGGER PICTURE</p>
+        <h2>Many moments.<br /><em>One point of view.</em></h2>
       </div>
-    </div>
-    <div class="ml-foot">
-      <span>CANVAS / PARTICLES / VELOCITY / INFINITE MARQUEE / YOYO</span>
-    </div>
-  </section>
-  <section
-    class="ml-screen ml-finale"
-    id="ml-finish"
-    data-name="Every side of the story"
-  >
-    <div class="ml-meta">
-      <span>10 / THERE’S ALWAYS ANOTHER ANGLE</span
-      ><span>DRAG THE CUBE / ARROW KEYS TO TURN</span>
-    </div>
-    <div class="ml-heading">
-      <h2>Every side<br />of the <span class="ml-serif">story.</span></h2>
       <p>
-        Perspective is an invitation.<br />Give it a spin. See what changes.
+        From the smallest detail to the widest horizon.<br />Let your eye find
+        its own way in.
       </p>
     </div>
-    <div class="ml-horizontal-window">
-      <div class="ml-horizontal-track">
-        <div class="ml-cube-panel">
-          <div
-            class="ml-cube-stage"
-            tabindex="0"
-            role="group"
-            aria-label="Interactive 3D cube. Drag or use arrow keys."
-          >
-            <div class="ml-cube" aria-hidden="true">
-              <div class="ml-cube-face ml-face-front">
-                ✳<small>CURIOSITY</small>
-              </div>
-              <div class="ml-cube-face ml-face-back">
-                ↗<small>POSSIBILITY</small>
-              </div>
-              <div class="ml-cube-face ml-face-right">
-                ◒<small>BALANCE</small>
-              </div>
-              <div class="ml-cube-face ml-face-left">
-                ◎<small>CONNECTION</small>
-              </div>
-              <div class="ml-cube-face ml-face-top">＋<small>MORE</small></div>
-              <div class="ml-cube-face ml-face-bottom">
-                ≈<small>FLOW</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="ml-final-card">
-          <span class="ml-kicker">THE END IS ANOTHER BEGINNING.</span>
-          <h3>Keep<br /><em>moving.</em></h3>
-          <a
-            href="#ml-start"
-            class="ml-circle-link"
-            data-magnetic
-            aria-label="Back to the beginning"
-            >↑</a
-          >
-          <p>Made with GSAP. Built for curiosity.</p>
-        </div>
+    <div class="fn-bento-stage">
+      <div class="fn-bento-grid">
+        <figure class="fn-bento-tile fn-bento-a">
+          <img
+            src="./assets/oboinastol.com_1344-BUMiGv55.jpg"
+            width="2048"
+            height="1365"
+            alt="Dew drops on deep blue berries"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-b">
+          <img
+            src="./assets/oboinastol.com_484-eSGSqJkR.jpg"
+            width="1920"
+            height="1268"
+            alt="Curving architecture on a city street"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-c">
+          <img
+            src="./assets/oboinastol.com_130-CoxunPI_.jpg"
+            width="1920"
+            height="1200"
+            alt="An orange chameleon resting on a blue textured surface"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-d">
+          <img
+            src="./assets/oboinastol.com_97-Cb7J_Ba3.jpg"
+            width="2560"
+            height="1598"
+            alt="A close view of a dragonfly's face"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-center">
+          <img
+            src="./assets/oboinastol.com_2301-DujOSWs7.jpg"
+            width="1920"
+            height="1080"
+            alt="Autumn trees and mountains reflected in a still lake"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-e">
+          <img
+            src="./assets/oboinastol.com_822-Df3D_qE7.jpg"
+            width="1920"
+            height="1200"
+            alt="Soft pale flowers beside a reflective circular frame"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-f">
+          <img
+            src="./assets/oboinastol.com_1645-vkG20kWl.jpg"
+            width="2560"
+            height="1600"
+            alt="A dramatic mountain valley beneath clouds"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-g">
+          <img
+            src="./assets/oboinastol.com_931-CMpbveom.jpg"
+            width="1920"
+            height="1080"
+            alt="A fantastical small figure carrying colorful balloons in a warmly lit room"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+        <figure class="fn-bento-tile fn-bento-h">
+          <img
+            src="./assets/oboinastol.com_2331-D59BWTVf.jpg"
+            width="1920"
+            height="1200"
+            alt="Green forest and distant mountains reflected in water"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
       </div>
     </div>
-    <div class="ml-foot">
-      <span>CSS 3D / CAROUSEL / HORIZONTAL SCROLL / SCROLL-TO</span
-      ><span>MOTION, BY DESIGN. © 2026</span>
+    <div class="fn-afterword fn-pad">
+      <p class="fn-eyebrow">THE WORLD DOESN’T NEED TO MOVE FASTER.</p>
+      <p>Sometimes, all it takes<br />is a <em>closer look.</em></p>
+      <span>Details become landscapes. Landscapes become a feeling.</span>
     </div>
   </section>
-  <p class="ml-sr" role="status" data-status>Motion laboratory ready.</p>
+
+  <section
+    class="fn-mask-section"
+    id="fn-perspective"
+    data-reference="Image Mask On Scroll"
+  >
+    <div class="fn-section-heading fn-pad">
+      <div>
+        <p class="fn-eyebrow">02 / ANOTHER SIDE OF STILLNESS</p>
+        <h2>Change the view.<br /><em>Keep the feeling.</em></h2>
+      </div>
+      <p>Two kinds of quiet.<br />A small shift opens a different world.</p>
+    </div>
+    <div class="fn-mask-stage">
+      <figure class="fn-mask-base">
+        <img
+          src="./assets/oboinastol.com_416-DTWXa76w.jpg"
+          width="2048"
+          height="1151"
+          alt="Warm light falling through a snowy forest"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <figure class="fn-mask-reveal">
+        <img
+          src="./assets/oboinastol.com_2331-D59BWTVf.jpg"
+          width="1920"
+          height="1200"
+          alt="A sunlit forest reflected in an alpine lake"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <span class="fn-mask-line" aria-hidden="true"></span>
+    </div>
+    <div class="fn-caption fn-pad">
+      <span>FROM WINTER LIGHT TO OPEN WATER.</span
+      ><span>THE SAME INVITATION: STAY A WHILE.</span>
+    </div>
+  </section>
+
+  <section
+    class="fn-wave-section"
+    data-reference="Horizontal Text"
+    aria-labelledby="fn-wave-title"
+  >
+    <h2 class="fn-sr" id="fn-wave-title">
+      There is more to see when you take your time.
+    </h2>
+    <div class="fn-wave-stage">
+      <p class="fn-wave-text" aria-hidden="true">
+        There is more to see when you take your time.
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="fn-gallery-section"
+    id="fn-horizons"
+    data-reference="Horizontal scrolling gallery"
+  >
+    <div class="fn-section-heading fn-pad">
+      <div>
+        <p class="fn-eyebrow">03 / OPEN HORIZONS</p>
+        <h2>Take the<br /><em>long way round.</em></h2>
+      </div>
+      <p>
+        No itinerary. Just a series of small discoveries.<br />Keep scrolling.
+        See where your eye takes you.
+      </p>
+    </div>
+    <div class="fn-gallery-stage">
+      <div class="fn-gallery-track">
+        <figure class="fn-gallery-card">
+          <div>
+            <img
+              src="./assets/oboinastol.com_1645-vkG20kWl.jpg"
+              width="2560"
+              height="1600"
+              alt="Light breaking into a deep mountain valley"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>01 / Into the open</span><span>WONDER</span>
+          </figcaption>
+        </figure>
+        <figure class="fn-gallery-card">
+          <div>
+            <img
+              src="./assets/oboinastol.com_416-DTWXa76w.jpg"
+              width="2048"
+              height="1151"
+              alt="A snow-covered forest in low sunlight"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>02 / Winter, quietly</span><span>STILLNESS</span>
+          </figcaption>
+        </figure>
+        <figure class="fn-gallery-card">
+          <div>
+            <img
+              src="./assets/oboinastol.com_484-eSGSqJkR.jpg"
+              width="1920"
+              height="1268"
+              alt="Two sculptural buildings leaning into the city skyline"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>03 / A different angle</span><span>PERSPECTIVE</span>
+          </figcaption>
+        </figure>
+        <figure class="fn-gallery-card">
+          <div>
+            <img
+              src="./assets/oboinastol.com_2301-DujOSWs7.jpg"
+              width="1920"
+              height="1080"
+              alt="Autumn colors around a mountain lake"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>04 / Between seasons</span><span>REFLECTION</span>
+          </figcaption>
+        </figure>
+        <figure class="fn-gallery-card">
+          <div>
+            <img
+              src="./assets/oboinastol.com_2331-D59BWTVf.jpg"
+              width="1920"
+              height="1200"
+              alt="Green trees beside clear reflective water"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>05 / Nothing to add</span><span>ENOUGH</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="fn-saved fn-pad" id="fn-saved" data-reference="FLIP Carousel">
+    <div class="fn-section-heading">
+      <div>
+        <p class="fn-eyebrow">04 / LITTLE THINGS, KEPT CLOSE</p>
+        <h2>A few things<br /><em>worth keeping.</em></h2>
+      </div>
+      <p>
+        A detail. A daydream. A change of perspective.<br />Turn the collection.
+        Find a new favorite.
+      </p>
+    </div>
+    <div
+      class="fn-carousel-window"
+      tabindex="0"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Four visual field notes. Use the Previous and Next buttons or arrow keys."
+    >
+      <div class="fn-carousel">
+        <article class="fn-note" data-note="01">
+          <div class="fn-note-top">
+            <span>FIELD NOTE / 01</span><span aria-hidden="true">↗</span>
+          </div>
+          <img
+            src="./assets/oboinastol.com_130-CoxunPI_.jpg"
+            width="1920"
+            height="1200"
+            alt="An orange chameleon on blue"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>A little unexpected.</h3>
+          <p>Curiosity comes in every size.</p>
+        </article>
+        <article class="fn-note" data-note="02">
+          <div class="fn-note-top">
+            <span>FIELD NOTE / 02</span><span aria-hidden="true">↗</span>
+          </div>
+          <img
+            src="./assets/oboinastol.com_822-Df3D_qE7.jpg"
+            width="1920"
+            height="1200"
+            alt="Delicate flowers in soft light"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>Room to breathe.</h3>
+          <p>Some details ask for less.</p>
+        </article>
+        <article class="fn-note" data-note="03">
+          <div class="fn-note-top">
+            <span>FIELD NOTE / 03</span><span aria-hidden="true">↗</span>
+          </div>
+          <img
+            src="./assets/oboinastol.com_931-CMpbveom.jpg"
+            width="1920"
+            height="1080"
+            alt="An imaginative scene with colorful balloons"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>Keep a little magic.</h3>
+          <p>Leave space for the improbable.</p>
+        </article>
+        <article class="fn-note" data-note="04">
+          <div class="fn-note-top">
+            <span>FIELD NOTE / 04</span><span aria-hidden="true">↗</span>
+          </div>
+          <img
+            src="./assets/oboinastol.com_97-Cb7J_Ba3.jpg"
+            width="2560"
+            height="1598"
+            alt="A dragonfly seen up close"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>Closer than you think.</h3>
+          <p>A whole world in one small thing.</p>
+        </article>
+      </div>
+    </div>
+    <div class="fn-carousel-controls">
+      <span class="fn-carousel-status" aria-live="polite"
+        >First in view: field note 01</span
+      >
+      <div>
+        <button type="button" data-prev aria-label="Previous field note">
+          ←</button
+        ><button type="button" data-next aria-label="Next field note">→</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fn-footer fn-pad" data-reference="Curve swipe">
+    <svg
+      class="fn-curve-panel"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <linearGradient id="fn-curve-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop class="fn-curve-start" offset="0" />
+          <stop class="fn-curve-end" offset="1" />
+        </linearGradient>
+      </defs>
+      <path
+        data-curve-path
+        d="M0 1100Q500 1100 1000 1100L1000 1100L0 1100Z"
+        fill="url(#fn-curve-gradient)"
+      />
+    </svg>
+    <p class="fn-eyebrow">THERE’S ALWAYS SOMETHING ELSE TO NOTICE.</p>
+    <p class="fn-footer-title">Stay <em>curious.</em></p>
+    <div class="fn-footer-meta">
+      <span>FIELD NOTES / A VISUAL JOURNAL</span
+      ><a href="#fn-home">Back to the beginning ↑</a><span>WEB SORCERY</span>
+    </div>
+  </footer>
 </div>
 
     </main>
