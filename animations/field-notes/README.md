@@ -39,7 +39,7 @@ The unused examples are `MotionPath Waypoints`, `Pinned panels with overscroll`,
 | `oboinastol.com_931.jpg`           | Imaginative bento tile and third collectible card |
 | `oboinastol.com_97.jpg`            | Dragonfly bento tile and fourth collectible card  |
 
-All files are copied byte-for-byte from `source-images/` into `assets/`, retaining their names. `tools/sync-page.py` converts the local paths into Vite source paths for the site template, so production builds copy and hash the images automatically. No external images, placeholders, generated substitutes, web fonts, or network libraries are loaded. Image width/height attributes reserve their dimensions, meaningful alt text is supplied, and the collage images preload to avoid empty tiles during a fast scroll; other below-fold images load lazily.
+All files are copied byte-for-byte from `source-images/` into `assets/`, retaining their names. `tools/sync-page.py` converts the local paths into Vite source paths for the site template, so production builds copy and hash the images automatically. No external images, placeholders, generated substitutes, web fonts, or network libraries are loaded. Image width/height attributes reserve their dimensions, meaningful alt text is supplied, and all images below the first screen load lazily; the hero image remains eager and high priority.
 
 The integrated page inherits `--color-*` directly from `src/scss/base/_root.scss`. That file and its tokens are unchanged. `style.css` defines no color literals. `theme.css` mirrors the existing tokens for the standalone demo. The existing site theme toggle and saved theme work on the integrated page; the standalone version follows system light/dark preference. Photographic colors are the original asset colors, not added brand tokens.
 
@@ -163,3 +163,7 @@ On initial load, the heading in `.fn-hero-copy` unfolds character by character t
 The sequence finishes in about 1.7 seconds and runs once per mount. Completed text is restored to its original markup, including the italic word and explicit line breaks; SplitText masks and temporary accessibility attributes are removed. Resizing, pausing, reduced motion, or hiding the tab settles active text to its readable final state. It does not restart when scroll animations are rebuilt. Without JavaScript, the text remains visible.
 
 `heroTitleDuration` (`0.85`), `heroCharStagger` (`0.025`), `heroParagraphDuration` (`0.55`), and `heroWordStagger` (`0.04`) control its pacing. Heading line masks reserve descender room inside a flow-root, so cleanup does not change the heading’s height. `checks/hero-results.json` records three screen sizes, height stability, text restoration, once-only behavior, pause, reduced motion, no-script fallback, and destruction during playback.
+
+## Image loading
+
+The first-screen hero photograph uses `loading="eager"` and `fetchpriority="high"`. All 20 remaining image elements use native `loading="lazy"` and `decoding="async"`, retaining their intrinsic dimensions. The startup collage decode/preload request has been removed. Existing image-load listeners refresh ScrollTrigger after lazy images arrive; the browser chooses its near-viewport loading threshold.

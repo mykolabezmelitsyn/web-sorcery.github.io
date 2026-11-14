@@ -657,10 +657,6 @@ export function mountAnimation(container, options = {}) {
   };
   $$("img").forEach((image) => on(image, "load", refresh, { once: true }));
   document.fonts.ready.then(refresh);
-  // Prepare every collage texture before a fast scroll brings the zoom into view.
-  Promise.all(
-    $$(".fn-bento-tile img").map((image) => image.decode().catch(() => {})),
-  ).then(refresh);
   cleanups.push(() => {
     resize.disconnect();
     visible.disconnect();
