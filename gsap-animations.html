@@ -26,10 +26,11 @@
         // CSS follows the system preference when storage is unavailable.
       }
     </script>
-    <script type="module" crossorigin src="./assets/gsap-animations-C_1g94dn.js"></script>
+    <script type="module" crossorigin src="./assets/gsap-animations-B7QHygXa.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/main-DzvS4wZX.js">
+    <link rel="modulepreload" crossorigin href="./assets/three.module-Coigo4Ul.js">
     <link rel="stylesheet" crossorigin href="./assets/main-9TH5bNLq.css">
-    <link rel="stylesheet" crossorigin href="./assets/gsap-animations-CnV_JPDU.css">
+    <link rel="stylesheet" crossorigin href="./assets/gsap-animations-UQ5VNxfd.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -383,6 +384,51 @@
             <span>05 / Nothing to add</span><span>ENOUGH</span>
           </figcaption>
         </figure>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="falling-leaves"
+    class="falling-leaves"
+    aria-label="Falling autumn leaves"
+  >
+    <div class="leaves-stage"></div>
+    <div class="leaves-controls" hidden>
+      <button type="button" data-action="pause" aria-pressed="false">
+        Pause animation
+      </button>
+      <button type="button" data-action="inspect" aria-pressed="false">
+        Inspect leaf
+      </button>
+    </div>
+    <div
+      class="leaves-inspector"
+      role="group"
+      aria-label="Leaf inspection controls"
+      hidden
+    >
+      <p>Drag to rotate · Scroll or pinch to zoom</p>
+      <div class="leaves-actions">
+        <button type="button" data-action="left" aria-label="Rotate left">
+          ←
+        </button>
+        <button type="button" data-action="right" aria-label="Rotate right">
+          →
+        </button>
+        <button type="button" data-action="up" aria-label="Rotate up">
+          ↑
+        </button>
+        <button type="button" data-action="down" aria-label="Rotate down">
+          ↓
+        </button>
+        <button type="button" data-action="closer" aria-label="Zoom in">
+          +
+        </button>
+        <button type="button" data-action="farther" aria-label="Zoom out">
+          −
+        </button>
+        <button type="button" data-action="reset">Reset view</button>
       </div>
     </div>
   </section>

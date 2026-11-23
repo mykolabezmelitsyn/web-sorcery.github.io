@@ -1,0 +1,54 @@
+{
+  "input": {
+    "file": "atlas.md",
+    "type": "Markdown brief",
+    "bytes": 42010
+  },
+  "stage": "full viewport, no shared site layout",
+  "breakpoint": 720,
+  "introSeconds": 1.8,
+  "flySeconds": 1.3,
+  "idMap": [4096, 2048],
+  "technology": "Three.js, GSAP, CSS",
+  "assets": {
+    "countries.geojson": {
+      "bytes": 3083490,
+      "features": 242
+    },
+    "earth-day.jpg": {
+      "bytes": 1126273,
+      "pixelWidth": 3840,
+      "pixelHeight": 1920
+    },
+    "earth_clouds_1024.png": {
+      "bytes": 226113,
+      "pixelWidth": 1024,
+      "pixelHeight": 512
+    },
+    "earth_lights_2048.png": {
+      "bytes": 410160,
+      "pixelWidth": 2048,
+      "pixelHeight": 1024
+    },
+    "earth_specular_2048.jpg": {
+      "bytes": 223421,
+      "pixelWidth": 2048,
+      "pixelHeight": 1024
+    },
+    "great-wall.jpg": {
+      "bytes": 211405,
+      "pixelWidth": 960,
+      "pixelHeight": 638
+    },
+    "highlights.json": {
+      "bytes": 213730,
+      "countryCodes": 175,
+      "sites": 530
+    },
+    "taj-mahal.jpg": {
+      "bytes": 283562,
+      "pixelWidth": 1280,
+      "pixelHeight": 885
+    }
+  }
+}

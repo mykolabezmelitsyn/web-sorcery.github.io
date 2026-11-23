@@ -1,0 +1,65 @@
+{
+  "brief": {
+    "stage": "100vw × 100vh",
+    "motion": "continuous fall, independent scale, speed, rotation and sway",
+    "pointer": "distance-based hover repulsion and damped return"
+  },
+  "model": {
+    "file": "leaves.glb",
+    "bytes": 9825968,
+    "scene": "Web Leaf Assets",
+    "nodes": [
+      {
+        "name": "Leaf_Copper_Oak",
+        "vertices": 157,
+        "min": [
+          -0.03539001941680908, -0.010821828618645668, -0.07771338522434235
+        ],
+        "max": [0.03539001941680908, 0.010821828618645668, 0.07771338522434235]
+      },
+      {
+        "name": "Leaf_Crimson_Maple",
+        "vertices": 157,
+        "min": [
+          -0.05687607824802399, -0.01484042126685381, -0.07520079612731934
+        ],
+        "max": [0.05687607824802399, 0.014840420335531235, 0.07520079612731934]
+      },
+      {
+        "name": "Leaf_Golden_Birch",
+        "vertices": 157,
+        "min": [
+          -0.028394311666488647, -0.009991111233830452, -0.053733453154563904
+        ],
+        "max": [
+          0.028394311666488647, 0.009991112165153027, 0.053733453154563904
+        ]
+      },
+      {
+        "name": "Leaf_Olive_Aspen",
+        "vertices": 157,
+        "min": [
+          -0.033065393567085266, -0.012053225189447403, -0.04891449213027954
+        ],
+        "max": [0.033065393567085266, 0.012053225189447403, 0.04891449213027954]
+      },
+      {
+        "name": "Leaf_Russet_Beech",
+        "vertices": 157,
+        "min": [
+          -0.03332967311143875, -0.010438123717904091, -0.0704943835735321
+        ],
+        "max": [0.03332967311143875, 0.010438123717904091, 0.0704943835735321]
+      }
+    ],
+    "packedClips": 145
+  },
+  "background": {
+    "file": "oboinastol.com_2301.jpg",
+    "bytes": 389236,
+    "width": 1920,
+    "height": 1080,
+    "reason": "Still water and amber woodland suit the autumn palette."
+  },
+  "technology": "Three.js"
+}

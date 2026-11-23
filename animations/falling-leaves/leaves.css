@@ -1,0 +1,109 @@
+.falling-leaves {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #26291f;
+  /* The still lake and amber woodland in 2301 give the foliage a calm autumn palette. */
+  background-image: url("./assets/oboinastol.com_2301.jpg");
+  background-position: center;
+  background-size: cover;
+  color: #fcf6e8;
+  font:
+    500 0.875rem / 1.4 system-ui,
+    sans-serif;
+}
+
+/* Extend through the portfolio layout's 24px gutters. */
+.portfolio--full-width #falling-leaves {
+  width: calc(100% + 48px);
+  margin-inline: -24px;
+}
+
+.falling-leaves::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, #221b1012 50%, #19160963);
+  pointer-events: none;
+}
+
+.falling-leaves.is-inspecting::before {
+  background: #201b15a8;
+}
+
+.leaves-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.leaves-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.is-inspecting .leaves-stage {
+  pointer-events: auto;
+}
+
+.leaves-controls,
+.leaves-inspector {
+  position: absolute;
+  z-index: 1;
+  bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.leaves-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  right: 16px;
+}
+
+.leaves-inspector {
+  left: 16px;
+  right: 16px;
+  bottom: max(67px, calc(env(safe-area-inset-bottom) + 51px));
+}
+
+.leaves-inspector p {
+  display: table;
+  background: #211c16;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 0 0 8px;
+}
+
+.leaves-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.falling-leaves button {
+  min-height: 40px;
+  padding: 7px 12px;
+  border: 1px solid #fff6;
+  border-radius: 8px;
+  background: #211c16ed;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.falling-leaves button:hover {
+  background: #483a29;
+}
+
+.falling-leaves button:focus-visible {
+  outline: 2px solid #ffdc99;
+  outline-offset: 3px;
+}
+
+.falling-leaves [hidden] {
+  display: none;
+}

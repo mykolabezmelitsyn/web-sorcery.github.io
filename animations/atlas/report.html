@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Atlas implementation report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+
+      body {
+        margin: 0;
+        color: #172237;
+        font:
+          10.5pt / 1.5 system-ui,
+          sans-serif;
+      }
+
+      h1 {
+        margin: 0 0 0.4rem;
+        font-size: 28pt;
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin: 1.2rem 0 0.35rem;
+        font-size: 14pt;
+        break-after: avoid;
+      }
+
+      h3 {
+        margin: 0.7rem 0 0.25rem;
+        font-size: 11pt;
+        break-after: avoid;
+      }
+
+      p,
+      ul {
+        margin: 0.35rem 0 0.65rem;
+      }
+
+      pre,
+      code {
+        font:
+          9pt / 1.45 ui-monospace,
+          monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      blockquote,
+      pre {
+        margin: 0.5rem 0;
+        padding: 0.55rem 0.7rem;
+        background: #eef3fa;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #16427b;
+      }
+
+      .screenshots {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr;
+        gap: 12px;
+        align-items: start;
+        break-inside: avoid;
+      }
+
+      figure {
+        margin: 0 0 12px;
+        break-inside: avoid;
+      }
+
+      figure img {
+        display: block;
+        width: 100%;
+      }
+
+      figcaption {
+        margin-top: 3px;
+        color: #43516a;
+        font-size: 9pt;
+      }
+
+      @media screen {
+        body {
+          max-width: 760px;
+          margin: 32px auto;
+          padding: 0 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Atlas</h1>
+
+    <h2>Task description</h2>
+    <blockquote>
+      Create a blank page without header and footer. Name it "atlas" and
+      implement it according to instructions in atlas.md
+    </blockquote>
+    <p>
+      Atlas is a standalone full-viewport Earth explorer. The globe fills the O
+      in WORLD, responds to pointer and wheel input, and shifts aside for
+      country highlights and full-bleed landmark photos.
+    </p>
+
+    <h2>Input data</h2>
+    <ul>
+      <li>
+        <code>atlas.md</code> (42,010 bytes) provided the layout, interactions,
+        timing, shaders, and asset references.
+      </li>
+      <li>
+        The 3840×1920 NASA Blue Marble day map, 2048×1024 night and specular
+        maps, and 1024×512 cloud map supply surface detail, city lights, glint
+        and drifting clouds.
+      </li>
+      <li>
+        The
+        <a
+          href="https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_admin_0_countries.geojson"
+          >Natural Earth 1:50m country map</a
+        >
+        contributes 242 named features, polygons and label points.
+      </li>
+      <li>
+        The cached catalog includes 530 highlights across 175 country codes,
+        drawing on <a href="https://qlever.dev/wikidata">Wikidata</a> and
+        <a href="https://data.unesco.org/explore/dataset/whc001/"
+          >UNESCO DataHub</a
+        >. Curated Great Wall and Taj Mahal thumbnails are stored locally with
+        credits and links.
+      </li>
+    </ul>
+
+    <h2>Solution architecture</h2>
+    <p>
+      Vite builds <code>src/pages/atlas.njk</code> into <code>atlas.html</code>.
+      <code>mountAnimation(container, options)</code> wires the UI and exposes
+      <code>play</code>, <code>pause</code> and <code>destroy</code>.
+      <code>CONFIG</code> contains the scene and motion settings.
+    </p>
+    <p>
+      Three.js renders the lit Earth, drifting clouds and a separate fixed
+      starfield. The CPU ray and the fragment shader sample the same 4096×2048
+      country raster. A single render loop advances ambient motion and stops
+      offscreen, in hidden tabs, when paused or under reduced motion. A
+      container observer updates the camera and canvas size.
+    </p>
+    <p>
+      GSAP scales the Earth in over 1.8 seconds, rotates and shifts it when a
+      country opens over 1.3 seconds, and returns it over 0.95 seconds. CSS
+      animates the interface. The desktop panel becomes a scrollable mobile
+      sheet below 720 pixels. Search, the panel controls and the photo dialog
+      are keyboard accessible.
+    </p>
+
+    <h2>Key code</h2>
+    <h3>Exact ray intersection against the Earth sphere</h3>
+    <pre><code>ray.setFromCamera(ndc, camera);
+inverse.copy(earth.matrixWorld).invert();
+localRay.copy(ray.ray).applyMatrix4(inverse);
+if (!localRay.intersectSphere(unitSphere, local)) return null;</code></pre>
+    <h3>One GLSL raster for hover and selection</h3>
+    <pre><code>float sid = texture2D(uIdMap, vUv).r * 255.0;
+float sel = step(0.5, uSelectId) *
+            (1.0 - step(0.5, abs(sid - uSelectId)));</code></pre>
+    <h3>Interruptible fly-to and lateral glide</h3>
+    <pre><code>flight.to(spin.rotation, { y: yaw }, 0);
+flight.to(tilt.rotation, { x: pitch }, 0);
+glide = gsap.to(world.position, { x, duration, ease: "power2.inOut" });</code></pre>
+    <h3>Reduced-motion and on-demand rendering</h3>
+    <pre><code>if (animated()) frame = requestAnimationFrame(tick);
+else render();</code></pre>
+
+    <h2>Run and customise</h2>
+    <pre><code>npm ci
+npm run build
+python3 -m http.server 8080</code></pre>
+    <p>
+      Open <code>http://localhost:8080/atlas.html</code>. Edit
+      <code>initialYaw</code>, <code>autoSpin</code>, <code>sun</code>,
+      <code>flySeconds</code> and <code>dpr</code> in
+      <code>animations/atlas/index.js</code>.
+    </p>
+
+    <h2>Verification</h2>
+    <p id="checks">
+      The Vite build and JavaScript syntax checks passed. Chrome verified
+      1440×900, 768×1024, 390×844 and 375×667; mouse hover, drag and wheel;
+      alias search and Enter; local image decode and full-bleed; Escape and
+      touch; keyboard pause and reduced motion; and canvas removal after
+      explicit destroy. No application console errors were observed. A
+      1.1-second steady-state desktop sample recorded zero long tasks.
+    </p>
+
+    <div class="screenshots">
+      <div>
+        <figure>
+          <img
+            src="checks/desktop.jpg"
+            alt="Atlas desktop wordmark with the Earth in the O"
+          />
+          <figcaption>Desktop browse state, 1440×900</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="checks/landmark.jpg"
+            alt="Full-bleed Great Wall photograph with its caption"
+          />
+          <figcaption>Full-bleed Great Wall highlight</figcaption>
+        </figure>
+      </div>
+      <div>
+        <figure>
+          <img
+            src="checks/mobile.jpg"
+            alt="Atlas mobile browse state with centered globe and search below"
+          />
+          <figcaption>Mobile browse state, 390×844</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="checks/mobile-country.jpg"
+            alt="China highlights in the mobile bottom sheet"
+          />
+          <figcaption>Mobile country sheet</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <h2>Assumptions and limitations</h2>
+    <ul>
+      <li>
+        The detailed responsive specification determines mobile search
+        placement. The camera pulls back on portrait tablets to preserve both
+        sides of the desktop wordmark. The transparent, visually inactive
+        atmosphere shell was omitted.
+      </li>
+      <li>
+        Picking coverage is limited by Natural Earth’s source geometries and the
+        raster resolution. Ocean labels are approximate.
+      </li>
+      <li>
+        Remote landmark photos and typefaces depend on network availability. A
+        high-resolution photo is capped by the original image’s dimensions.
+        Browser verification sampled selected regions and photos.
+      </li>
+    </ul>
+  </body>
+</html>

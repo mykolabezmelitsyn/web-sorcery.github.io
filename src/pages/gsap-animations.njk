@@ -5,6 +5,7 @@
 {% block mainModifier %} portfolio--full-width{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="/animations/field-notes/style.css">
+<link rel="stylesheet" href="/animations/falling-leaves/leaves.css">
 {% endblock %}
 {% block content %}
 <div class="gsap-container field-notes">
@@ -333,6 +334,51 @@
     </div>
   </section>
 
+  <section
+    id="falling-leaves"
+    class="falling-leaves"
+    aria-label="Falling autumn leaves"
+  >
+    <div class="leaves-stage"></div>
+    <div class="leaves-controls" hidden>
+      <button type="button" data-action="pause" aria-pressed="false">
+        Pause animation
+      </button>
+      <button type="button" data-action="inspect" aria-pressed="false">
+        Inspect leaf
+      </button>
+    </div>
+    <div
+      class="leaves-inspector"
+      role="group"
+      aria-label="Leaf inspection controls"
+      hidden
+    >
+      <p>Drag to rotate · Scroll or pinch to zoom</p>
+      <div class="leaves-actions">
+        <button type="button" data-action="left" aria-label="Rotate left">
+          ←
+        </button>
+        <button type="button" data-action="right" aria-label="Rotate right">
+          →
+        </button>
+        <button type="button" data-action="up" aria-label="Rotate up">
+          ↑
+        </button>
+        <button type="button" data-action="down" aria-label="Rotate down">
+          ↓
+        </button>
+        <button type="button" data-action="closer" aria-label="Zoom in">
+          +
+        </button>
+        <button type="button" data-action="farther" aria-label="Zoom out">
+          −
+        </button>
+        <button type="button" data-action="reset">Reset view</button>
+      </div>
+    </div>
+  </section>
+
   <section class="fn-saved fn-pad" id="fn-saved" data-reference="FLIP Carousel">
     <div class="fn-section-heading">
       <div>
@@ -458,4 +504,8 @@
 {% endblock %}
 {% block scripts %}
 <script type="module" src="/animations/field-notes/animation.js"></script>
+<script type="module">
+  import { mountAnimation } from "/animations/falling-leaves/leaves.js";
+  mountAnimation(document.querySelector("#falling-leaves"));
+</script>
 {% endblock %}

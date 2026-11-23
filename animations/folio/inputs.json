@@ -1,0 +1,105 @@
+{
+  "input": {
+    "file": "folio.md",
+    "type": "Markdown",
+    "bytes": 44686
+  },
+  "layout": {
+    "breakpoint": 768,
+    "desktop": "two columns",
+    "mobile": "two 50dvh strips"
+  },
+  "reel": {
+    "copies": 3,
+    "minimumItems": 9,
+    "direction": "titles up and photos down on forward navigation"
+  },
+  "motion": {
+    "introSeconds": 1.7,
+    "openSeconds": 0.95,
+    "closeSeconds": 0.85,
+    "wheelSnapMs": 90
+  },
+  "technology": "React, TypeScript, GSAP and CSS",
+  "assets": [
+    {
+      "file": "photo-1495474472287-4d71bcdd2085.jpg",
+      "type": "image/jpeg",
+      "bytes": 152318,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1500530855697-b586d89ba3ee.jpg",
+      "type": "image/jpeg",
+      "bytes": 212134,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1502877338535-766e1452684a.jpg",
+      "type": "image/jpeg",
+      "bytes": 201447,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1503602642458-232111445657.jpg",
+      "type": "image/jpeg",
+      "bytes": 48925,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1503602642458-232111445657?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1516035069371-29a1b244cc32.jpg",
+      "type": "image/jpeg",
+      "bytes": 93160,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1523275335684-37898b6baf30.jpg",
+      "type": "image/jpeg",
+      "bytes": 42067,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1529139574466-a303027c1d8b.jpg",
+      "type": "image/jpeg",
+      "bytes": 121462,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1541701494587-cb58502866ab.jpg",
+      "type": "image/jpeg",
+      "bytes": 195411,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "photo-1542291026-7eec264c27ff.jpg",
+      "type": "image/jpeg",
+      "bytes": 197210,
+      "width": 900,
+      "height": 1125,
+      "source": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&h=1125&fit=crop&q=80&auto=format"
+    },
+    {
+      "file": "Geist.woff2",
+      "type": "font/woff2",
+      "bytes": 58512,
+      "source": "https://github.com/vercel/geist-font",
+      "license": "SIL OFL 1.1"
+    }
+  ]
+}

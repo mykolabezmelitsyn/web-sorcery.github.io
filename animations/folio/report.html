@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Folio implementation report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+
+      body {
+        margin: 0;
+        color: #172237;
+        font:
+          10.5pt / 1.5 system-ui,
+          sans-serif;
+      }
+
+      h1 {
+        margin: 0 0 0.4rem;
+        font-size: 28pt;
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin: 1.2rem 0 0.35rem;
+        font-size: 14pt;
+        break-after: avoid;
+      }
+
+      h3 {
+        margin: 0.7rem 0 0.25rem;
+        font-size: 11pt;
+        break-after: avoid;
+      }
+
+      p,
+      ul {
+        margin: 0.35rem 0 0.65rem;
+      }
+
+      pre,
+      code {
+        font:
+          9pt / 1.45 ui-monospace,
+          monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      blockquote,
+      pre {
+        margin: 0.5rem 0;
+        padding: 0.55rem 0.7rem;
+        background: #eef3fa;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #16427b;
+      }
+
+      .screenshots {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr;
+        gap: 12px;
+        align-items: start;
+        break-inside: avoid;
+      }
+
+      figure {
+        margin: 0 0 12px;
+        break-inside: avoid;
+      }
+
+      figure img {
+        display: block;
+        width: 100%;
+      }
+
+      figcaption {
+        margin-top: 3px;
+        color: #43516a;
+        font-size: 9pt;
+      }
+
+      @media screen {
+        body {
+          max-width: 760px;
+          margin: 32px auto;
+          padding: 0 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Folio</h1>
+
+    <h2>Task description</h2>
+    <blockquote>
+      Create a blank page without header and footer. Name it "folio" and
+      implement it according to instructions in folio.md
+    </blockquote>
+    <p>
+      Folio is a standalone, full-viewport portfolio reel. Titles and portraits
+      move in opposite directions and pair at the active position. Each project
+      opens into a detail panel that returns to the same position when closed.
+    </p>
+
+    <h2>Input data</h2>
+    <ul>
+      <li>
+        <code>folio.md</code> (44,686 bytes) specified the three-copy loop, two
+        responsive layouts, variable type, timers, input rules and
+        shared-element transitions.
+      </li>
+      <li>
+        Nine <a href="https://unsplash.com/">Unsplash</a> portraits are cached
+        locally at 900×1125. Each project uses the same image bytes in the reel,
+        flight and detail panel. Asset IDs and URLs are in
+        <code>inputs.json</code>.
+      </li>
+      <li>
+        <a href="https://github.com/vercel/geist-font">Geist Variable</a>
+        supplies the weight axis for the titles. The local font ships with its
+        SIL Open Font License.
+      </li>
+    </ul>
+
+    <h2>Solution architecture</h2>
+    <p>
+      Vite builds <code>src/pages/folio.njk</code> into <code>folio.html</code>.
+      <code>index.tsx</code> renders the React interface;
+      <code>reel.ts</code> updates the strips and coordinates the detail states;
+      <code>config.ts</code> holds the layouts and timings.
+    </p>
+    <p>
+      The active position is maintained in the middle set of projects. When it
+      crosses a boundary, the draw step shifts both the current coordinate and
+      its target by a whole copy. The frame loop idles when motion has settled
+      or the page is hidden.
+    </p>
+    <p>
+      The 1.7-second entrance locks page scroll and can be interrupted by input.
+      A click navigates to the chosen project along the shorter direction. GSAP
+      moves shared title and image proxies into detail over 0.95 seconds and
+      returns them over 0.85 seconds, with separate scrim and accessory timing.
+      The proxies share the original image, crop, type metrics and rendered
+      corner radius.
+    </p>
+    <p>
+      A container resize updates both strips. Below 768 pixels the reel stacks
+      and the detail view scrolls as one column. The page supports keyboard
+      navigation, focus restoration and an immediate reduced-motion path.
+    </p>
+
+    <h2>Key code</h2>
+    <h3>Rebase both coordinates while crossing the loop seam</h3>
+    <pre><code>const anchored = count + wrap(pos - count, count);
+target += anchored - pos;
+pos = anchored;</code></pre>
+
+    <h3>Round the target after the input-quiet period</h3>
+    <pre><code>snapTimer = setTimeout(() => {
+  if (touch) return;
+  target = Math.round(target);
+  requestDraw();
+}, config.snapMs);</code></pre>
+
+    <h3>Animate the shared proxies from measured rectangles</h3>
+    <pre><code>from.concat(to).forEach((item) => {
+  item.style.visibility = "hidden";
+});
+flights.forEach(({ proxy, tween }) =>
+  time.to(proxy, { ...tween, duration, ease }, at),
+);</code></pre>
+
+    <h3>Interrupt an opening flight without jumping to its endpoint</h3>
+    <pre><code>opening.eventCallback("onComplete", null);
+opening.eventCallback("onReverseComplete", finalizeClose);
+opening.reverse();</code></pre>
+
+    <h2>Run and customise</h2>
+    <pre><code>npm ci
+npm run build
+python3 -m http.server 8080</code></pre>
+    <p>
+      Open <code>http://localhost:8080/folio.html</code>. Edit project copy in
+      <code>items.ts</code>. Adjust <code>smoothing</code>, <code>snapMs</code>,
+      <code>entranceSeconds</code>, <code>openSeconds</code> and
+      <code>closeSeconds</code> in <code>config.ts</code>.
+    </p>
+
+    <h2>Verification</h2>
+    <p>
+      The production build and strict TypeScript check passed. Chrome verified
+      the reel at 1440×900, 768×1024, 390×844 and 375×667. Checks covered the
+      entrance interrupt, forward and backward wrapping, snap alignment, counter
+      pairing, local image loads, cursor ring, inactive-item navigation, reverse
+      detail, page scroll lock, mobile scrolling, touch, keyboard, reduced
+      motion, and both colour schemes. The first shared title and image
+      rectangles matched their sources with zero measured geometric offset on
+      the sampled desktop open.
+    </p>
+    <p id="playback">
+      An uninterrupted entrance restored page scroll. The explicit mount, pause,
+      play and destroy API passed, including teardown during an open detail. A
+      1.25-second desktop reel sample recorded zero long tasks. The browser runs
+      recorded no application console errors.
+    </p>
+
+    <div class="screenshots">
+      <div>
+        <figure>
+          <img
+            src="checks/desktop.jpg"
+            alt="Folio desktop reel with the Afterglow project centered"
+          />
+          <figcaption>Desktop reel, 1440×900</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="checks/detail.jpg"
+            alt="First Light coffee project with details and its shared image"
+          />
+          <figcaption>Desktop project detail</figcaption>
+        </figure>
+      </div>
+      <div>
+        <figure>
+          <img
+            src="checks/folio-390.jpg"
+            alt="Stacked project titles and portrait on a phone"
+          />
+          <figcaption>Mobile reel, 390×844</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="checks/light-detail.jpg"
+            alt="A project detail in the light theme on a phone"
+          />
+          <figcaption>Mobile detail, light appearance</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <h2>Assumptions and limitations</h2>
+    <ul>
+      <li>
+        The projects and reviews are fictional sample content. The email link
+        needs a real recipient configured.
+      </li>
+      <li>
+        The mobile counter is raised slightly to clear the first title. Portrait
+        desktop widths use size caps so the two-column layout fits.
+      </li>
+      <li>
+        The supplied samples use photos. Optional video playback has no supplied
+        reference clip.
+      </li>
+    </ul>
+  </body>
+</html>

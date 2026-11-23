@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Explore Earth and its cultural highlights country by country.">
+    <title>Atlas</title>
+    <link rel="stylesheet" href="/animations/atlas/atlas.css">
+    <script type="module" src="/animations/atlas/index.js"></script>
+  </head>
+  <body>
+    <main id="animation-root" class="atlas" aria-label="Atlas">
+      <h1 class="atlas-word" aria-label="WORLD">
+        <span class="atlas-w" aria-hidden="true">W</span>
+        <span class="atlas-rld" aria-hidden="true">RLD</span>
+        <span class="atlas-mobile-word" aria-hidden="true">WORLD</span>
+      </h1>
+      <div class="atlas-stage"></div>
+      <div class="atlas-vignette" aria-hidden="true"></div>
+      <div class="atlas-loader" aria-hidden="true"></div>
+      <p class="atlas-status" role="status" hidden></p>
+      <span class="atlas-hover" aria-hidden="true"></span>
+      <section class="atlas-country" aria-label="Country highlights" hidden>
+        <button class="atlas-back" type="button">← Globe</button>
+        <div class="atlas-panel"></div>
+      </section>
+      <form class="atlas-search" role="search" inert>
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="10" cy="10" r="6"></circle>
+            <path d="m15 15 5 5"></path>
+          </svg>
+          <input aria-label="Search countries" type="search" placeholder="Search countries" autocomplete="off">
+        </label>
+        <div class="atlas-results" hidden></div>
+      </form>
+      <button class="atlas-pause" type="button" aria-pressed="false" hidden>Pause animation</button>
+      <div class="atlas-veil" aria-hidden="true"></div>
+      <noscript>Enable JavaScript to explore Atlas.</noscript>
+    </main>
+  </body>
+</html>

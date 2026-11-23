@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Falling Leaves implementation report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 16mm;
+      }
+
+      body {
+        margin: 0;
+        color: #172237;
+        font:
+          10.5pt / 1.5 system-ui,
+          sans-serif;
+      }
+
+      h1 {
+        margin: 0 0 0.4rem;
+        font-size: 28pt;
+        line-height: 1.05;
+      }
+
+      h2 {
+        margin: 1.2rem 0 0.35rem;
+        font-size: 14pt;
+        break-after: avoid;
+      }
+
+      h3 {
+        margin: 0.7rem 0 0.25rem;
+        font-size: 11pt;
+        break-after: avoid;
+      }
+
+      p,
+      ul {
+        margin: 0.35rem 0 0.65rem;
+      }
+
+      pre,
+      code {
+        font:
+          9pt / 1.45 ui-monospace,
+          monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      blockquote,
+      pre {
+        margin: 0.5rem 0;
+        padding: 0.55rem 0.7rem;
+        background: #eef3fa;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #16427b;
+      }
+
+      .screenshots {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr;
+        gap: 12px;
+        align-items: start;
+        break-inside: avoid;
+      }
+
+      figure {
+        margin: 0 0 12px;
+        break-inside: avoid;
+      }
+
+      figure img {
+        display: block;
+        width: 100%;
+      }
+
+      figcaption {
+        margin-top: 3px;
+        color: #43516a;
+        font-size: 9pt;
+      }
+
+      @media screen {
+        body {
+          max-width: 760px;
+          margin: 32px auto;
+          padding: 0 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Falling Leaves</h1>
+
+    <h2>Task description</h2>
+    <blockquote>
+      You are a senior front-end engineer with strong experience in Three.js and
+      interactive WebGL scenes. Build a full-screen section for a web page with
+      a falling-leaf effect using the 3D model <code>leaves.glb</code>, which is
+      attached.
+    </blockquote>
+    <p>
+      The section layers real 3D leaf geometry over an autumn landscape. Each
+      leaf falls along its own swaying path, and nearby leaves are pushed away
+      from the mouse before easing back toward that path.
+    </p>
+
+    <h2>Input data</h2>
+    <ul>
+      <li>
+        <code>leaves.glb</code> (9,825,968 bytes) contains the
+        <code>Web Leaf Assets</code> scene. Copper oak, crimson maple, golden
+        birch, olive aspen and russet beech supply the geometry, vertex colours
+        and shared normal map. Each selected mesh has 157 vertices.
+      </li>
+      <li>
+        <code>oboinastol.com_2301.jpg</code> (1920×1080) was selected from the
+        project for its still lake and amber woodland. It fills the section with
+        a proportional cover crop.
+      </li>
+      <li>
+        The brief supplies the full-screen layout, recycling behaviour,
+        variation, pointer falloff and responsiveness requirements.
+      </li>
+    </ul>
+
+    <h2>Solution architecture</h2>
+    <p>
+      <code>src/pages/gsap-animations.njk</code> provides the section and
+      controls. <code>leaves.css</code> styles the landscape and transparent
+      canvas. <code>leaves.js</code> exposes
+      <code>mountAnimation(container, options)</code> with <code>play</code>,
+      <code>pause</code> and <code>destroy</code>.
+    </p>
+    <p>
+      Three.js loads the GLB once. It uses one instanced batch per leaf variant,
+      one orthographic camera for the falling effect and a perspective
+      OrbitControls camera for the close-up. A frame-rate-independent timer
+      advances the falling and spring motion in one loop. The desktop runs 44
+      leaves and the mobile layout runs 24.
+    </p>
+    <p>
+      A container observer fits the canvas without distorting the image. The
+      page caps render resolution, stops drawing when hidden or off-screen, and
+      uses a still frame under reduced motion. A keyboard-accessible pause and
+      inspection controls are available.
+    </p>
+
+    <h2>Key code</h2>
+    <h3>Load only the model’s leaf scene</h3>
+    <pre><code>parser.json.scenes = [parser.json.scenes[index]];
+parser.json.scene = 0;
+parser.json.animations = [];</code></pre>
+    <h3>Apply spring return, damping and squared distance falloff</h3>
+    <pre><code>let ax = -leaf.dx * config.returnSpring;
+const force = config.repulsionStrength * (1 - distance / radius) ** 2;
+leaf.vx = (leaf.vx + ax * dt) * friction;
+leaf.dx += leaf.vx * dt;</code></pre>
+    <h3>Update the instance matrix and recycle below the viewport</h3>
+    <pre><code>dummy.updateMatrix();
+mesh.setMatrixAt(index, dummy.matrix);
+if (y + leaf.size &lt; -halfHeight &amp;&amp; leaf.y &lt; -halfHeight) reset(leaf);</code></pre>
+    <h3>Pause rendering independently from the displayed frame</h3>
+    <pre><code>timer.reset();
+renderer.setAnimationLoop(running ? render : null);
+if (!running) draw();</code></pre>
+
+    <h2>Run and customise</h2>
+    <pre><code>npm ci
+npm run build
+python3 -m http.server 8080</code></pre>
+    <p>
+      Open
+      <code>http://localhost:8080/gsap-animations.html#falling-leaves</code>.
+      Edit <code>desktopLeaves</code>, <code>mobileLeaves</code>,
+      <code>fallSpeed</code>, <code>repulsionRadius</code> and
+      <code>repulsionStrength</code> in <code>leaves.js</code>.
+    </p>
+
+    <h2>Verification</h2>
+    <p>
+      The production build and JavaScript syntax check passed. Chrome rendered
+      the section at 1440×900, 768×1024 and 375×667, including live resize. The
+      browser probe confirmed one GLB fetch, five instanced draw calls per
+      frame, visible pointer displacement, keyboard pause, inspection and
+      Escape, reduced motion, and no application console errors.
+    </p>
+    <p id="extra">
+      An accelerated test confirmed that leaves leaving the bottom respawn just
+      above the top. Destroy removed the canvas, hid the controls and stopped
+      subsequent draw calls.
+    </p>
+
+    <div class="screenshots">
+      <div>
+        <figure>
+          <img
+            src="checks/desktop.jpg"
+            alt="Autumn landscape with five varieties of falling leaves"
+          />
+          <figcaption>Falling Leaves on the GSAP Animations page</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="checks/inspection.jpg"
+            alt="A lit crimson maple model and orbit controls"
+          />
+          <figcaption>Keyboard and pointer inspection</figcaption>
+        </figure>
+      </div>
+      <div>
+        <figure>
+          <img
+            src="checks/leaves-375.jpg"
+            alt="Falling leaves above the proportional landscape crop on mobile"
+          />
+          <figcaption>Mobile, 375×667</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <h2>Assumptions and limitations</h2>
+    <ul>
+      <li>
+        The section follows the GSAP Animations page container width and uses
+        the current viewport height.
+      </li>
+      <li>
+        The large woodland scene and baked animation are skipped in favour of
+        procedural, independently recyclable leaves.
+      </li>
+      <li>
+        The instrumented software-WebGL run recorded 51 frames in 1.05 seconds
+        with zero steady-state long tasks. Hardware-accelerated 60 fps was not
+        measured.
+      </li>
+    </ul>
+  </body>
+</html>
