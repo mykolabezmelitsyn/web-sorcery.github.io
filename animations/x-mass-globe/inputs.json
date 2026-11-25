@@ -153,5 +153,23 @@
         "meshes": 2
       }
     ]
+  },
+  "retryRevision": {
+    "brief": "When User see his present, show \"Retry\" button at the top of the screen. White text, white border, opacity 70%. This button should reload the page.",
+    "visibleWhen": "A revealed present is visible"
+  },
+  "finaleTriggerRevision": {
+    "brief": "Let's adjust a bit. Presents should reach the glass ones, not 3 times.",
+    "ceilingHits": 1
+  },
+  "giftRotationRevision": {
+    "brief": "Next, make presents rotate in random directions while shaking and make the final present 50% of viewport.",
+    "inGlobe": "Each gift gets independent pitch, yaw and roll when the globe shakes.",
+    "revealedWidthFraction": 0.5,
+    "revealedHeightLimit": 0.9
+  },
+  "productRotationRevision": {
+    "brief": "Use also should be able to rotate the final opened present in all directions",
+    "controls": "Free mouse or touch drag and four arrow keys"
   }
 }
