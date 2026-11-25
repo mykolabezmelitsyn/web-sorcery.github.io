@@ -1,0 +1,81 @@
+{
+  "brief": {
+    "subject": "Interactive 3D Christmas globe",
+    "sequence": "Continuous falling snow, brief decaying oscillation with snow agitation, return to rest",
+    "triggers": [
+      "click globe",
+      "device shake"
+    ],
+    "requirements": [
+      "shared shake effect",
+      "motion permission",
+      "one trigger per shake",
+      "responsive rendering"
+    ]
+  },
+  "files": {
+    "x-mass-globe.html": {
+      "type": "html",
+      "bytes": 208,
+      "mount": "Existing empty body"
+    },
+    "ChristmasSnowGlobe.glb": {
+      "type": "glb",
+      "bytes": 376456,
+      "nodes": [
+        "SnowGlobe",
+        "ShakePivot",
+        "GlassDome",
+        "LacquerBase",
+        "WinterDiorama",
+        "GiftRibbons",
+        "PolarStar",
+        "SnowMotion",
+        "Snowflakes"
+      ],
+      "glassBounds": [
+        [
+          -1.13,
+          0.685,
+          -1.13
+        ],
+        [
+          1.13,
+          2.72,
+          1.13
+        ]
+      ],
+      "animationClips": []
+    }
+  },
+  "assumptions": {
+    "shakeDurationSeconds": 1.25,
+    "snow": "Replace static snow sprites with continuously falling points.",
+    "background": "Dark pine to complement the existing red and gold model."
+  },
+  "technology": "Three.js with a single renderer loop and a procedural damped shake.",
+  "revision": {
+    "brief": "Remove button controls, move model to the bottom of the page, add snow effect for the whole page",
+    "layout": "Globe anchored to the bottom of the viewport",
+    "effects": "Full-viewport snowfall behind the globe",
+    "permission": "First globe activation requests permission where required"
+  },
+  "rotationRevision": {
+    "brief": "User should be able to rotate globe on desktop and mobile. Only horizontaly.",
+    "axis": "Yaw",
+    "inputs": [
+      "Horizontal mouse drag",
+      "Horizontal touch drag",
+      "Left and Right arrow keys"
+    ]
+  },
+  "lightingRevision": {
+    "brief": "add more realistic light to the globe to improve 3D effect of the glass",
+    "glass": "Angle-dependent rim reflections with warm key and cool fill highlights"
+  },
+  "presentsRevision": {
+    "brief": "When globe shakes, move randomly presents inside.",
+    "geometry": "10 matching box and ribbon vertex ranges in the existing GLB",
+    "motion": "Randomized hops and tilts during each shake, followed by a return to the authored resting positions"
+  }
+}

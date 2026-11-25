@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>X-Mass Globe Implementation Report</title>
+    <style>
+      @page { size: A4; margin: 16mm; }
+      body { color: #172c30; font: 10pt/1.45 system-ui, sans-serif; margin: 0; }
+      h1, h2 { line-height: 1.2; }
+      h2 { break-after: avoid; margin-top: 1.35rem; }
+      blockquote { margin-inline: 0; border-left: 3px solid #71938e; padding-left: 1rem; }
+      pre { padding: 0.65rem; background: #eef3f2; white-space: pre-wrap; }
+      pre, figure, li { break-inside: avoid; }
+      code { font-family: ui-monospace, monospace; overflow-wrap: anywhere; }
+      .screens { display: flex; align-items: start; gap: 2%; }
+      figure { margin: 0; width: 23.5%; }
+      img { display: block; width: 100%; height: 50mm; object-fit: contain; }
+      figcaption { text-align: center; }
+    </style>
+  </head>
+  <body>
+    <h1>X-Mass Globe</h1>
+    <h2>Task description</h2>
+    <blockquote>
+      <p>You are a front-end developer experienced with Three.js and browser-based interactive graphics. Build the interactive 3D Christmas globe on the existing <code>x-mass-globe.html</code> page.</p>
+      <p>Implement the following in <code>x-mass-globe.html</code>:</p>
+      <ul>
+        <li><strong>Interactive 3D globe</strong> rendered with Three.js, displaying a Christmas-themed globe as the centerpiece of the page. Use the page's existing structure and styling; add the Three.js setup (scene, camera, lighting, renderer) within it.</li>
+        <li><strong>Snow animation</strong> inside the globe, with particles falling continuously and looping smoothly, so the scene feels like a classic snow globe.</li>
+        <li><strong>Desktop interaction:</strong> when the user clicks the globe, it shakes. The shake should read as a physical snow-globe motion: a brief, decaying oscillation of the globe with the snow particles reacting to it, settling back to rest.</li>
+        <li><strong>Mobile and tablet interaction:</strong> when the user shakes the device, the globe shakes the same way. Use the device motion (accelerometer) events, request permission where the browser requires it (such as iOS Safari), and throttle so one physical shake triggers a single shake animation rather than many.</li>
+      </ul>
+      <p>Keep the implementation self-contained in this page unless a dependency is clearly needed; load Three.js from a standard CDN import or the library the page already uses. Ensure the scene resizes correctly with the window and that the animation runs smoothly on both desktop and mobile without leaking memory from repeated shakes or resizes.</p>
+      <p>The page should work on desktop, tablet, and mobile, and the click shake and motion shake should produce the same visual effect.</p>
+    </blockquote>
+    <blockquote><p>Remove button controls, move model to the bottom of the page, add snow effect for the whole page</p></blockquote>
+    <blockquote><p>User should be able to rotate globe on desktop and mobile. Only horizontaly.</p></blockquote>
+    <blockquote><p>add more realistic light to the globe to improve 3D effect of the glass</p></blockquote>
+    <blockquote><p>When globe shakes, move randomly presents inside.</p></blockquote>
+    <p>The scene places the Christmas diorama at the bottom and adds snowfall across the viewport. Click, keyboard and device motion share the rocking and snow-agitation routine. Horizontal drag and arrow keys rotate the globe about its vertical axis.</p>
+    <h2>Input data</h2>
+    <ul>
+      <li>The brief defines the triggers, playback behavior and supported layouts.</li>
+      <li>The 208-byte page provided the title and an empty body for the mount.</li>
+      <li>The 376,456-byte GLB supplies the glass, base, tree, presents, star and shake pivot. The glass bounds are approximately ±1.13 horizontally and 0.685–2.72 vertically. The GLB contains no animation clips. Live points replace the authored static snow.</li>
+    </ul>
+    <h2>Solution architecture</h2>
+    <p>Three.js 0.187.0 renders the model and a dynamic point cloud. A fixed 2D canvas draws ambient snow using the same clock. Both entry points contain the same inline implementation. <code>mountAnimation</code> resolves to an object with <code>play</code>, <code>pause</code> and <code>destroy</code> methods. <code>CONFIG</code> holds camera, performance, shake and sensor settings.</p>
+    <p>The glass material uses its surface normals and viewing direction to reflect warm and cool studio lights. Reflection strengthens at grazing angles while the center stays clear. The model root owns the horizontal rotation, and its child pivot handles the shake. Pointer movement locks to the dominant axis after a short threshold, which separates drags from tap and shake gestures. The ten presents get individual hop height, timing, direction and tilt on each shake. Each box and ribbon set shares the same transform while the two original meshes keep their draw calls. The presents return to the authored layout when the shake ends. Snow recycles at the dome boundaries. During the 1.25-second shake, a decaying envelope rocks the pivot and increases the fall and swirl of the snow. The camera frames the model from container bounds. Reduced motion gets a still frame, and hidden, off-screen and paused scenes stop their render loop.</p>
+    <h2>Key code</h2>
+    <p>All activation routes enter the same shake function.</p>
+    <pre><code>if (!running || shakeTime &lt; settings.shakeDuration) return;
+shakeTime = 0;</code></pre>
+    <p>The remaining shake time controls both rocking and snow agitation.</p>
+    <pre><code>const remaining = 1 - shakeTime / settings.shakeDuration;
+const envelope = remaining * remaining;</code></pre>
+    <p>Drawing buffer resolution follows the stage with a capped pixel ratio.</p>
+    <pre><code>const pixelRatio = Math.min(window.devicePixelRatio || 1, settings.maxDpr);
+renderer.setDrawingBufferSize(width, height, pixelRatio);</code></pre>
+    <p>Horizontal drag changes only the model root’s yaw.</p>
+    <pre><code>rotateGlobe((event.clientX - drag.lastX) * settings.dragRotationSpeed);</code></pre>
+    <p>Reflection increases toward the glass silhouette.</p>
+    <pre><code>float facing = clamp(dot(normal, viewDirection), 0.0, 1.0);
+float fresnel = pow(1.0 - facing, 5.0);</code></pre>
+    <p>Cleanup aborts the event listeners and disconnects container observers.</p>
+    <pre><code>events.abort();
+sizeObserver.disconnect();
+visibilityObserver.disconnect();</code></pre>
+    <h2>Run and customise</h2>
+    <p>From the repository root, run <code>python3 -m http.server 8080</code> and open <code>http://localhost:8080/x-mass-globe.html</code>. Use HTTPS for mobile motion access. Adjust <code>fallSpeed</code>, <code>shakeAngle</code>, <code>shakeDuration</code>, <code>desktopSnowCount</code> and <code>motionThreshold</code> in the inline configuration. The README lists every configurable setting.</p>
+    <h2>Verification</h2>
+    <p>Chromium rendered the model at all three viewport sizes and responded to a container-only resize. The globe stage reached the bottom of the viewport, ambient snowfall animated, and the page had no separate buttons. Click hit testing, keyboard activation, reduced motion, a simulated permission request on first activation, motion debouncing and canvas teardown passed. Mouse and emulated touch drags changed only yaw, vertical mouse movement left yaw unchanged, and drag release did not shake the globe. A subsequent tap still shook it, and arrow-key rotation worked under reduced motion. The revised glass shader compiled without console errors. Screenshots show the warmer left reflection, cooler right reflection and a more visible rim at each viewport. Click and simulated device shakes produced different present poses. A sampled box and ribbon maintained their relative distance through the hop. The geometry returned to its original positions at rest and when reduced motion was enabled during a shake. The desktop shake sample used six draw calls, 5,307 triangles and 260 points, with zero observed long tasks. Geometry and texture counts stayed at six and five across repeated shakes and resizes. Browser testing used the installed copy of the pinned Three.js package, and the CDN module URL returned HTTP 200 separately. The Vite production build emitted the globe page and its GLB.</p>
+    <div class="screens">
+      <figure><img src="checks/375x667.png" alt="Mobile globe layout"><figcaption>375 × 667</figcaption></figure>
+      <figure><img src="checks/768x1024.png" alt="Tablet globe layout"><figcaption>768 × 1024</figcaption></figure>
+      <figure><img src="checks/1440x900.png" alt="Desktop globe layout"><figcaption>1440 × 900</figcaption></figure>
+      <figure><img src="checks/presents-shake.png" alt="Presents bouncing during a shake"><figcaption>During a shake</figcaption></figure>
+    </div>
+    <h2>Assumptions and limitations</h2>
+    <p>The palette complements the supplied model. The reaction is tuned for a brief hand-held shake with fewer snow points on narrow displays. The browser checks used synthetic sensor events. Permission and hardware sensitivity on physical iPhones, tablets and Android devices remain unverified.</p>
+  </body>
+</html>

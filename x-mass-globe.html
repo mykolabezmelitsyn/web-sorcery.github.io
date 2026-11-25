@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>X-Mass Globe</title>
+    <link id="globe-model" rel="preload" as="fetch" href="./ChristmasSnowGlobe.glb" crossorigin>
+    <style>
+      body {
+        margin: 0;
+        background: #101f22;
+        color: #f8f2df;
+        font: 1rem/1.5 system-ui, sans-serif;
+      }
+
+      main {
+        position: relative;
+        display: grid;
+        min-height: 100svh;
+        align-content: end;
+        background: radial-gradient(ellipse at 50% 40%, #385655, #101f22 72%);
+      }
+
+      #animation-root {
+        position: relative;
+        height: 58svh;
+        min-height: min(14rem, 100svh);
+      }
+
+      canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      #globe-status {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      #page-snow {
+        position: fixed;
+        pointer-events: none;
+      }
+
+      #animation-root canvas {
+        touch-action: pan-y pinch-zoom;
+      }
+
+      #animation-root canvas:focus-visible {
+        outline: 2px solid #ffe8a0;
+        outline-offset: -4px;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main aria-label="X-Mass Globe">
+      <canvas id="page-snow" aria-hidden="true"></canvas>
+      <div id="animation-root">
+        <p id="globe-status" role="status">Loading Christmas snow globe…</p>
+      </div>
+    </main>
+    <script>
+      (() => {
+        const CONFIG = {
+          // Existing Christmas globe model.
+          modelUrl: document.querySelector("#globe-model").href,
+          // Vertical camera field of view in degrees.
+          fieldOfView: 34,
+          // Drawing buffer pixel ratio cap.
+          maxDpr: 2,
+          // Strength of the reflected softboxes and the glass silhouette.
+          glassReflectionStrength: 0.76,
+          glassEdgeStrength: 0.64,
+          // Snow density for narrow and wide screens.
+          mobileSnowCount: 150,
+          desktopSnowCount: 260,
+          // Ambient snowfall density per 10,000 CSS pixels and upper count.
+          pageSnowDensity: 1.2,
+          pageSnowLimit: 180,
+          // Switch to the higher snow density at this width.
+          desktopBreakpoint: 768,
+          // Base fall speed in model units per second.
+          fallSpeed: 0.34,
+          // Wide-screen rocking angle in radians.
+          shakeAngle: 0.17,
+          // Horizontal turn in radians per CSS pixel of dragging.
+          dragRotationSpeed: 0.012,
+          // Minimum pointer travel that separates a drag from a click.
+          dragThreshold: 7,
+          // Horizontal turn in radians per arrow-key press.
+          keyboardRotationStep: Math.PI / 12,
+          // Time before the globe returns to its resting position.
+          shakeDuration: 1.25,
+          // Oscillation frequency in hertz.
+          shakeFrequency: 3.6,
+          // Maximum hop, lateral travel and tilt for a present during a shake.
+          presentHop: 0.22,
+          presentSlide: 0.075,
+          presentTilt: 0.48,
+          // Peak acceleration required to trigger, in m/s².
+          motionThreshold: 12,
+          // Acceleration below which the device counts as quiet, in m/s².
+          motionQuietThreshold: 4,
+          // Quiet period required before another physical shake, in ms.
+          motionQuietTime: 280
+        };
+
+        // Resolve browser import-map entries when Vite builds the static page.
+        const importFromMap = (specifier) => import(specifier);
+
+        function lightGlass(material, settings) {
+          // Keep the dome transparent so it composites over the interior snow.
+          material.depthWrite = false;
+          material.onBeforeCompile = (shader) => {
+            shader.uniforms.glassReflectionStrength = { value: settings.glassReflectionStrength };
+            shader.uniforms.glassEdgeStrength = { value: settings.glassEdgeStrength };
+            shader.fragmentShader = `
+              uniform float glassReflectionStrength;
+              uniform float glassEdgeStrength;
+
+              // Evaluate the reflected ray against the width and height of a softbox.
+              float softbox(vec3 ray, vec3 center, vec2 sharpness) {
+                vec3 right = normalize(cross(vec3(0.0, 1.0, 0.0), center));
+                vec3 up = cross(center, right);
+                vec2 offset = vec2(dot(ray, right), dot(ray, up)) * sharpness;
+                return exp(-dot(offset, offset)) * smoothstep(0.0, 0.85, dot(ray, center));
+              }
+            ` + shader.fragmentShader;
+
+            shader.fragmentShader = shader.fragmentShader.replace("#include <opaque_fragment>", `
+              vec3 viewDirection = normalize(vViewPosition);
+              vec3 reflected = reflect(-viewDirection, normal);
+              float facing = clamp(dot(normal, viewDirection), 0.0, 1.0);
+              float fresnel = pow(1.0 - facing, 5.0);
+              float edge = glassEdgeStrength * fresnel * (0.68 + 0.32 * abs(normal.x));
+
+              // A warm key panel and a narrower cool fill curve across the dome.
+              float keyPanel = softbox(reflected, normalize(vec3(-0.88, 0.44, -0.10)), vec2(5.5, 1.9));
+              float keyBloom = softbox(reflected, normalize(vec3(-0.80, 0.48, 0.10)), vec2(2.8, 1.6));
+              float fillPanel = softbox(reflected, normalize(vec3(0.94, 0.05, -0.43)), vec2(8.5, 2.5));
+              float warm = glassReflectionStrength * (0.51 * keyPanel + 0.13 * keyBloom);
+              float cool = glassReflectionStrength * 0.52 * fillPanel;
+
+              float tint = 0.024;
+              vec3 glassColor = tint * mix(vec3(0.53, 0.74, 0.76), outgoingLight, 0.30);
+              glassColor += warm * vec3(1.0, 0.93, 0.82);
+              glassColor += (edge + cool) * vec3(0.64, 0.88, 1.0);
+              float cover = tint + warm + cool + edge;
+
+              outgoingLight = glassColor / cover;
+              diffuseColor.a = min(cover, 0.88);
+              #include <opaque_fragment>
+            `);
+          };
+        }
+
+        function preparePresents(THREE, model, settings) {
+          const boxes = model.getObjectByName("WinterDiorama")?.geometry;
+          const ribbons = model.getObjectByName("GiftRibbons")?.geometry;
+
+          // In the supplied GLB, each box has 24 vertices and each matching ribbon set has 112.
+          const count = 10;
+          const firstBox = 1821;
+          const boxSize = 24;
+          const ribbonSize = 112;
+          if (boxes?.attributes.position.count !== firstBox + count * boxSize
+            || ribbons?.attributes.position.count !== count * ribbonSize) return null;
+
+          function prepareGeometry(geometry) {
+            const { position, normal } = geometry.attributes;
+            position.setUsage(THREE.DynamicDrawUsage);
+            normal.setUsage(THREE.DynamicDrawUsage);
+            return {
+              position,
+              normal,
+              restPositions: position.array.slice(),
+              restNormals: normal.array.slice()
+            };
+          }
+
+          const boxMesh = prepareGeometry(boxes);
+          const ribbonMesh = prepareGeometry(ribbons);
+          const meshes = [boxMesh, ribbonMesh];
+          const sample = new THREE.Vector3();
+          const bounds = new THREE.Box3();
+          const turn = new THREE.Quaternion();
+          const angles = new THREE.Euler();
+          const presents = Array.from({ length: count }, (_, index) => {
+            const first = firstBox + index * boxSize;
+            bounds.makeEmpty();
+            for (let vertex = first; vertex < first + boxSize; vertex++) {
+              bounds.expandByPoint(sample.fromArray(boxMesh.restPositions, vertex * 3));
+            }
+            const base = bounds.getCenter(new THREE.Vector3());
+            base.y = bounds.min.y;
+            return { base, first, ribbonFirst: index * ribbonSize };
+          });
+
+          function randomize() {
+            for (const gift of presents) {
+              // Bias travel outward so the boxes hop into the open space around the trees.
+              const direction = Math.atan2(gift.base.z, gift.base.x) + (Math.random() - 0.5) * 1.8;
+              const distance = settings.presentSlide * (0.45 + 0.55 * Math.random());
+              gift.slideX = Math.cos(direction) * distance;
+              gift.slideZ = Math.sin(direction) * distance;
+              gift.lift = settings.presentHop * (0.52 + 0.48 * Math.random());
+              gift.tiltX = settings.presentTilt * (2 * Math.random() - 1);
+              gift.tiltZ = settings.presentTilt * (2 * Math.random() - 1);
+              gift.delay = Math.random() * 0.14;
+              gift.duration = 0.57 + Math.random() * 0.25;
+            }
+          }
+
+          function transform(mesh, start, size, base, x, y, z) {
+            for (let index = start; index < start + size; index++) {
+              const offset = index * 3;
+              sample.fromArray(mesh.restPositions, offset).sub(base).applyQuaternion(turn).add(base);
+              mesh.position.setXYZ(index, sample.x + x, sample.y + y, sample.z + z);
+              sample.fromArray(mesh.restNormals, offset).applyQuaternion(turn);
+              mesh.normal.setXYZ(index, sample.x, sample.y, sample.z);
+            }
+          }
+
+          function update(progress) {
+            for (const gift of presents) {
+              const t = THREE.MathUtils.clamp((progress - gift.delay) / gift.duration, 0, 1);
+              const hop = t === 1 ? 0 : Math.abs(Math.sin(t * Math.PI * 2)) * (1 - 0.78 * t);
+              const rock = hop * Math.cos(t * Math.PI * 2);
+              turn.setFromEuler(angles.set(gift.tiltX * rock, 0, gift.tiltZ * rock));
+              const x = gift.slideX * hop;
+              const y = gift.lift * hop;
+              const z = gift.slideZ * hop;
+              transform(boxMesh, gift.first, boxSize, gift.base, x, y, z);
+              transform(ribbonMesh, gift.ribbonFirst, ribbonSize, gift.base, x, y, z);
+            }
+            for (const mesh of meshes) {
+              mesh.position.needsUpdate = true;
+              mesh.normal.needsUpdate = true;
+            }
+          }
+
+          return { randomize, update };
+        }
+
+        async function mountAnimation(container, options) {
+          const settings = { ...CONFIG, ...options };
+          const status = container.querySelector("#globe-status");
+          const pageSnow = document.querySelector("#page-snow");
+          const snowContext = pageSnow.getContext("2d");
+          const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+          const desktop = matchMedia(`(min-width: ${settings.desktopBreakpoint}px)`);
+          const events = new AbortController();
+          const { signal } = events;
+          const [THREE, { GLTFLoader }] = await Promise.all([
+            importFromMap("three"),
+            importFromMap("three/addons/loaders/GLTFLoader.js")
+          ]);
+          const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+          });
+          renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+          let model;
+          try {
+            ({ scene: model } = await new GLTFLoader().loadAsync(settings.modelUrl));
+          } catch (error) {
+            renderer.dispose();
+            throw error;
+          }
+
+          const canvas = renderer.domElement;
+          canvas.setAttribute("aria-label", "Christmas snow globe with a decorated evergreen and presents");
+          container.append(canvas);
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(settings.fieldOfView, 1, 0.1, 100);
+          scene.add(model, new THREE.HemisphereLight(0xe5f5ff, 0x84736d, 2.1));
+          const key = new THREE.DirectionalLight(0xffedcf, 2.9);
+          key.position.set(-3, 5, 5);
+          const rim = new THREE.DirectionalLight(0xc3eeff, 1.7);
+          rim.position.set(3, 3, -4);
+          scene.add(key, rim);
+
+          const pivot = model.getObjectByName("ShakePivot");
+          const glass = model.getObjectByName("GlassDome");
+          const base = model.getObjectByName("LacquerBase");
+          const presents = preparePresents(THREE, model, settings);
+          model.getObjectByName("Snowflakes").visible = false;
+          lightGlass(glass.material, settings);
+          glass.renderOrder = 2;
+
+          // The GLB's sphere is centered on ShakePivot and truncated at its base.
+          glass.geometry.computeBoundingBox();
+          const glassBounds = glass.geometry.boundingBox;
+          const radius = glassBounds.max.x - 0.045;
+          const floor = glassBounds.min.y + glass.position.y + 0.035;
+          const bounds = new THREE.Box3().setFromObject(model).getBoundingSphere(new THREE.Sphere());
+          const raycaster = new THREE.Raycaster();
+          const pointer = new THREE.Vector2();
+          const hitTargets = [glass, base];
+          const hits = [];
+
+          const count = Math.max(settings.mobileSnowCount, settings.desktopSnowCount);
+          const positions = new Float32Array(count * 3);
+          const fades = new Float32Array(count);
+          const flakes = Array.from({ length: count }, () => ({
+            x: 0, y: 0, z: 0, top: 0, bottom: 0,
+            speed: 0.6 + Math.random() * 0.8
+          }));
+
+          function resetFlake(flake, spreadThroughGlobe) {
+            const angle = Math.random() * Math.PI * 2;
+            const radial = Math.sqrt(Math.random()) * radius * 0.97;
+            flake.x = Math.cos(angle) * radial;
+            flake.z = Math.sin(angle) * radial;
+            flake.top = Math.sqrt(radius * radius - radial * radial);
+            flake.bottom = Math.max(floor, -flake.top);
+            flake.y = spreadThroughGlobe
+              ? THREE.MathUtils.lerp(flake.bottom, flake.top, Math.random())
+              : flake.top;
+          }
+
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage));
+          geometry.setAttribute("fade", new THREE.BufferAttribute(fades, 1).setUsage(THREE.DynamicDrawUsage));
+          const snowMaterial = new THREE.ShaderMaterial({
+            transparent: true,
+            depthWrite: false,
+            uniforms: { pixelRatio: { value: 1 }, pointScale: { value: 1 } },
+            vertexShader: `
+              attribute float fade;
+              uniform float pixelRatio;
+              uniform float pointScale;
+              varying float opacity;
+
+              void main() {
+                vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_Position = projectionMatrix * viewPosition;
+                gl_PointSize = clamp(pointScale / -viewPosition.z, 1.0, 5.0) * pixelRatio;
+                opacity = fade;
+              }
+            `,
+            fragmentShader: `
+              varying float opacity;
+
+              void main() {
+                float edge = smoothstep(0.15, 0.5, length(gl_PointCoord - 0.5));
+                gl_FragColor = vec4(0.95, 0.99, 1.0, opacity * (1.0 - edge));
+              }
+            `
+          });
+          const snow = new THREE.Points(geometry, snowMaterial);
+          snow.frustumCulled = false;
+          snow.renderOrder = 1;
+          pivot.add(snow);
+          for (const flake of flakes) resetFlake(flake, true);
+
+          // The same render loop drives ambient snow behind the WebGL stage.
+          const pageFlakes = Array.from({ length: settings.pageSnowLimit }, () => ({
+            x: Math.random(),
+            phase: Math.random(),
+            speed: 14 + Math.random() * 38,
+            drift: 8 + Math.random() * 22,
+            radius: 0.6 + Math.random() * 1.7,
+            opacity: 0.24 + Math.random() * 0.53
+          }));
+          let pageWidth = 0;
+          let pageHeight = 0;
+          let pageFlakeCount = 0;
+
+          function drawPageSnow(time) {
+            if (!snowContext) return;
+            snowContext.clearRect(0, 0, pageWidth, pageHeight);
+            if (reducedMotion.matches || !pageFlakeCount) return;
+            snowContext.fillStyle = "#f3faff";
+
+            for (let index = 0; index < pageFlakeCount; index++) {
+              const flake = pageFlakes[index];
+              const track = pageHeight + 16;
+              const y = (flake.phase * track + time * flake.speed) % track - 8;
+              const x = flake.x * pageWidth + flake.drift * Math.sin(flake.phase * 12 + time * 0.7);
+              snowContext.globalAlpha = flake.opacity;
+              snowContext.beginPath();
+              snowContext.arc(x, y, flake.radius, 0, Math.PI * 2);
+              snowContext.fill();
+            }
+          }
+
+          function resizePageSnow(pixelRatio) {
+            if (!snowContext) return;
+            const width = pageSnow.clientWidth;
+            const height = pageSnow.clientHeight;
+            const bufferWidth = Math.round(width * pixelRatio);
+            const bufferHeight = Math.round(height * pixelRatio);
+            if (pageSnow.width !== bufferWidth) pageSnow.width = bufferWidth;
+            if (pageSnow.height !== bufferHeight) pageSnow.height = bufferHeight;
+            snowContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+            pageWidth = width;
+            pageHeight = height;
+            pageFlakeCount = Math.min(settings.pageSnowLimit, Math.round(width * height * settings.pageSnowDensity / 10000));
+            drawPageSnow(elapsed);
+          }
+
+          let paused = false;
+          let visible = true;
+          let destroyed = false;
+          let running = false;
+          let lastFrame;
+          let resizeFrame;
+          let shakeTime = settings.shakeDuration;
+          let elapsed = 0;
+
+          function updateSnow(delta, agitation) {
+            const activeCount = desktop.matches ? settings.desktopSnowCount : settings.mobileSnowCount;
+            geometry.setDrawRange(0, activeCount);
+            for (let index = 0; index < activeCount; index++) {
+              const flake = flakes[index];
+              flake.y -= delta * settings.fallSpeed * flake.speed * (1 + 2.8 * agitation);
+              if (flake.y < flake.bottom) resetFlake(flake, false);
+
+              // Agitation adds inertial swirling while the glass rocks around it.
+              const swirl = agitation * 0.23 * Math.sin(elapsed * 11 + index * 2.4);
+              const angle = swirl + 0.08 * Math.sin(elapsed * 1.2 + index);
+              const offset = index * 3;
+              positions[offset] = flake.x * Math.cos(angle) - flake.z * Math.sin(angle);
+              positions[offset + 1] = flake.y;
+              positions[offset + 2] = flake.x * Math.sin(angle) + flake.z * Math.cos(angle);
+              fades[index] = 0.85 * Math.min(
+                1, (flake.y - flake.bottom) / 0.12, (flake.top - flake.y) / 0.12
+              );
+            }
+            geometry.attributes.position.needsUpdate = true;
+            geometry.attributes.fade.needsUpdate = true;
+          }
+
+          function render(timestamp) {
+            const delta = lastFrame === undefined ? 0 : Math.min((timestamp - lastFrame) / 1000, 0.05);
+            lastFrame = timestamp;
+            elapsed += delta;
+            drawPageSnow(elapsed);
+            if (shakeTime < settings.shakeDuration) {
+              shakeTime = Math.min(shakeTime + delta, settings.shakeDuration);
+              presents?.update(shakeTime / settings.shakeDuration);
+            }
+            const remaining = 1 - shakeTime / settings.shakeDuration;
+            const envelope = remaining * remaining;
+            const phase = 2 * Math.PI * settings.shakeFrequency * shakeTime;
+            const angle = settings.shakeAngle * (desktop.matches ? 1 : 0.85);
+            pivot.rotation.set(0.35 * angle * envelope * Math.sin(phase * 0.75), 0, angle * envelope * Math.sin(phase));
+            updateSnow(delta, envelope);
+            renderer.render(scene, camera);
+          }
+
+          function resize() {
+            resizeFrame = undefined;
+            const pixelRatio = Math.min(window.devicePixelRatio || 1, settings.maxDpr);
+            resizePageSnow(pixelRatio);
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            if (!width || !height) return;
+
+            camera.aspect = width / height;
+            const halfVertical = THREE.MathUtils.degToRad(camera.fov / 2);
+            const halfHorizontal = Math.atan(Math.tan(halfVertical) * camera.aspect);
+            const distance = (bounds.radius + 0.14) / Math.sin(Math.min(halfVertical, halfHorizontal));
+            camera.position.copy(bounds.center).addScaledVector(viewDirection, distance);
+            target.copy(bounds.center);
+            target.y += 0.12;
+            camera.lookAt(target);
+            camera.updateProjectionMatrix();
+
+            renderer.setDrawingBufferSize(width, height, pixelRatio);
+            snowMaterial.uniforms.pixelRatio.value = pixelRatio;
+            snowMaterial.uniforms.pointScale.value = Math.min(width, height) * 0.043;
+            if (!running) {
+              updateSnow(0, 0);
+              renderer.render(scene, camera);
+            }
+          }
+
+          function scheduleResize() {
+            if (resizeFrame === undefined) resizeFrame = requestAnimationFrame(resize);
+          }
+
+          function syncPlayback() {
+            const shouldRun = !destroyed && !paused && visible && !document.hidden && !reducedMotion.matches;
+            if (shouldRun !== running) {
+              running = shouldRun;
+              lastFrame = undefined;
+              renderer.setAnimationLoop(running ? render : null);
+            }
+          }
+
+          function shake() {
+            if (!running || shakeTime < settings.shakeDuration) return;
+            presents?.randomize();
+            shakeTime = 0;
+          }
+
+          function hitGlobe(event) {
+            const rect = canvas.getBoundingClientRect();
+            pointer.set(
+              2 * (event.clientX - rect.left) / rect.width - 1,
+              1 - 2 * (event.clientY - rect.top) / rect.height
+            );
+            raycaster.setFromCamera(pointer, camera);
+            hits.length = 0;
+            raycaster.intersectObjects(hitTargets, false, hits);
+            const hit = hits.length > 0;
+            hits.length = 0;
+            return hit;
+          }
+
+          let drag;
+          let suppressClick = false;
+
+          function rotateGlobe(angle) {
+            // Yaw lives on the model root so the shake can rock the child pivot independently.
+            model.rotation.y = (model.rotation.y + angle) % (2 * Math.PI);
+            if (!running) renderer.render(scene, camera);
+          }
+
+          function startDrag(event) {
+            if (!event.isPrimary || event.button !== 0) return;
+            suppressClick = false;
+            if (!hitGlobe(event)) return;
+
+            drag = {
+              id: event.pointerId,
+              startX: event.clientX,
+              startY: event.clientY,
+              lastX: event.clientX,
+              axis: null
+            };
+          }
+
+          function moveDrag(event) {
+            if (drag?.id !== event.pointerId) return;
+            if (!drag.axis) {
+              const x = Math.abs(event.clientX - drag.startX);
+              const y = Math.abs(event.clientY - drag.startY);
+              if (Math.max(x, y) < settings.dragThreshold) return;
+
+              suppressClick = true;
+              drag.axis = x > y ? "horizontal" : "vertical";
+              if (drag.axis === "horizontal") canvas.setPointerCapture(event.pointerId);
+            }
+
+            if (drag.axis === "horizontal") {
+              rotateGlobe((event.clientX - drag.lastX) * settings.dragRotationSpeed);
+              drag.lastX = event.clientX;
+            }
+          }
+
+          function finishDrag(event) {
+            if (drag?.id !== event.pointerId) return;
+            if (event.type === "pointercancel") suppressClick = true;
+            drag = undefined;
+          }
+
+          let armed = true;
+          let quietSince;
+          let gravityReady = false;
+          const gravity = new THREE.Vector3();
+
+          function onMotion(event) {
+            if (!running) {
+              gravityReady = false;
+              armed = true;
+              quietSince = undefined;
+              return;
+            }
+            const linear = event.acceleration;
+            const hasAxes = (sample) => sample && Number.isFinite(sample.x)
+              && Number.isFinite(sample.y) && Number.isFinite(sample.z);
+            let magnitude;
+            if (hasAxes(linear)) {
+              magnitude = Math.hypot(linear.x, linear.y, linear.z);
+            } else {
+              const raw = event.accelerationIncludingGravity;
+              if (!hasAxes(raw)) return;
+              if (!gravityReady) {
+                gravity.set(raw.x, raw.y, raw.z);
+                gravityReady = true;
+                return;
+              }
+              magnitude = Math.hypot(raw.x - gravity.x, raw.y - gravity.y, raw.z - gravity.z);
+              const blend = 1 - Math.exp(-(event.interval || 16) / 220);
+              gravity.x += (raw.x - gravity.x) * blend;
+              gravity.y += (raw.y - gravity.y) * blend;
+              gravity.z += (raw.z - gravity.z) * blend;
+            }
+
+            const now = performance.now();
+            if (magnitude < settings.motionQuietThreshold) {
+              quietSince ??= now;
+              if (now - quietSince >= settings.motionQuietTime) armed = true;
+              return;
+            }
+
+            quietSince = undefined;
+            if (armed && magnitude >= settings.motionThreshold) {
+              armed = false;
+              shake();
+            }
+          }
+
+          function listenForMotion() {
+            window.addEventListener("devicemotion", onMotion, { passive: true, signal });
+          }
+
+          const motion = window.DeviceMotionEvent;
+          const requiresMotionPermission = typeof motion?.requestPermission === "function";
+          let permissionRequested = false;
+
+          if (motion && !requiresMotionPermission) listenForMotion();
+
+          async function activateGlobe() {
+            shake();
+            if (reducedMotion.matches || !requiresMotionPermission || permissionRequested) return;
+            permissionRequested = true;
+            try {
+              const permission = await motion.requestPermission();
+              if (!destroyed && permission === "granted") listenForMotion();
+            } catch {
+              // Click and keyboard activation stay available without sensor access.
+            }
+          }
+
+          function setPaused(value) {
+            paused = value;
+            syncPlayback();
+          }
+
+          function syncPreference() {
+            canvas.tabIndex = 0;
+            canvas.setAttribute("aria-keyshortcuts", reducedMotion.matches ? "ArrowLeft ArrowRight" : "ArrowLeft ArrowRight Enter Space");
+            canvas.setAttribute("aria-description", "Drag horizontally or use the left and right arrow keys to rotate.");
+            canvas.setAttribute("role", reducedMotion.matches ? "img" : "button");
+            canvas.setAttribute("aria-label", reducedMotion.matches ? "Christmas snow globe" : "Shake Christmas snow globe");
+            syncPlayback();
+            if (reducedMotion.matches) {
+              if (shakeTime < settings.shakeDuration) presents?.update(1);
+              shakeTime = settings.shakeDuration;
+              pivot.rotation.set(0, 0, 0);
+              updateSnow(0, 0);
+              drawPageSnow(elapsed);
+              renderer.render(scene, camera);
+            }
+          }
+
+          const viewDirection = new THREE.Vector3(0.15, 0.12, 1).normalize();
+          const target = new THREE.Vector3();
+          const sizeObserver = new ResizeObserver(scheduleResize);
+          const visibilityObserver = new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            syncPlayback();
+          });
+          sizeObserver.observe(container);
+          visibilityObserver.observe(container);
+          desktop.addEventListener("change", scheduleResize, { signal });
+          window.addEventListener("resize", scheduleResize, { signal });
+          document.addEventListener("visibilitychange", syncPlayback, { signal });
+          reducedMotion.addEventListener("change", syncPreference, { signal });
+          canvas.addEventListener("pointerdown", startDrag, { signal });
+          canvas.addEventListener("pointermove", moveDrag, { signal });
+          canvas.addEventListener("pointerup", finishDrag, { signal });
+          canvas.addEventListener("pointercancel", finishDrag, { signal });
+          canvas.addEventListener("lostpointercapture", finishDrag, { signal });
+          canvas.addEventListener("pointerleave", (event) => {
+            if (!canvas.hasPointerCapture(event.pointerId)) finishDrag(event);
+          }, { signal });
+          canvas.addEventListener("click", (event) => {
+            if (!suppressClick && hitGlobe(event)) activateGlobe();
+          }, { signal });
+          canvas.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              const direction = event.key === "ArrowRight" ? 1 : -1;
+              rotateGlobe(direction * settings.keyboardRotationStep);
+              return;
+            }
+
+            if (reducedMotion.matches || (event.key !== "Enter" && event.key !== " ")) return;
+            event.preventDefault();
+            if (!event.repeat) activateGlobe();
+          }, { signal });
+
+          resize();
+          status.hidden = true;
+          syncPreference();
+
+          function destroy() {
+            if (destroyed) return;
+            destroyed = true;
+            syncPlayback();
+            events.abort();
+            sizeObserver.disconnect();
+            visibilityObserver.disconnect();
+            cancelAnimationFrame(resizeFrame);
+            model.traverse((node) => {
+              node.geometry?.dispose();
+              if (!node.material) return;
+              for (const material of [node.material].flat()) {
+                for (const value of Object.values(material)) {
+                  if (value?.isTexture) value.dispose();
+                }
+                material.dispose();
+              }
+            });
+            renderer.dispose();
+            canvas.remove();
+            snowContext?.clearRect(0, 0, pageWidth, pageHeight);
+            status.hidden = false;
+          }
+
+          return {
+            play: () => setPaused(false),
+            pause: () => setPaused(true),
+            destroy
+          };
+        }
+
+        const container = document.querySelector("#animation-root");
+        mountAnimation(container).then((animation) => {
+          window.addEventListener("pagehide", (event) => {
+            if (!event.persisted) animation.destroy();
+          });
+        }).catch(() => {
+          container.querySelector("#globe-status").textContent = "The Christmas snow globe could not load.";
+        });
+      })();
+    </script>
+  </body>
+</html>
