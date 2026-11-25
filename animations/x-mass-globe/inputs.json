@@ -77,5 +77,81 @@
     "brief": "When globe shakes, move randomly presents inside.",
     "geometry": "10 matching box and ribbon vertex ranges in the existing GLB",
     "motion": "Randomized hops and tilts during each shake, followed by a return to the authored resting positions"
+  },
+  "mobileWidthRevision": {
+    "brief": "On mobile devices make globe 90% of viewport vidth",
+    "mobileWidthFraction": 0.9,
+    "heightLimitedFallback": "Reduce width on short viewports to keep the complete globe and base in frame."
+  },
+  "presentHeightRevision": {
+    "brief": "With each next shake presents should move higher, but not out of glass.",
+    "initialHop": 0.22,
+    "hopGainPerShake": 0.18,
+    "glassClearance": 0.025,
+    "units": "Model units"
+  },
+  "presentDriftRevision": {
+    "brief": "Presents should move like in vacuum, slowly.",
+    "durationSeconds": 4.8,
+    "motion": "One gradual rise and descent with a gentle tilt. New shakes blend from the current position."
+  },
+  "waterRevision": {
+    "brief": "Synchronize gloab shaking and presents movement. Assume there is a water insie",
+    "motion": "Globe rocking drives a damped sideways current while present lift peaks near the end of the shake."
+  },
+  "landingRevision": {
+    "brief": "Presents should fall in random places after shaking, not the initial ones",
+    "motion": "Each gift searches for a different landing spot in its region of the snow platform.",
+    "constraints": [
+      "Glass clearance",
+      "Supported box footprint",
+      "No overlap with other selected footprints"
+    ]
+  },
+  "finaleRevision": {
+    "brief": "when presents reach the top of the glob 3 times, the random present goes through the glass, scaled (3x), and slowly rotate. Shaking is not available for globe at this state.",
+    "trigger": "Third distinct shake where at least one present reaches the glass ceiling",
+    "result": "One randomly chosen present leaves through the top, grows to 3\u00d7 and rotates. Shake input is disabled until reload."
+  },
+  "showcaseRevision": {
+    "brief": "After 3 seconds of selected product rotating, move the globe out off screen (down) and move this present to the center of the screen and scale it so it's 90% of screen width.",
+    "holdSeconds": 3,
+    "transitionSeconds": 1.6,
+    "screenWidthFraction": 0.9,
+    "framing": "Center the rotating silhouette and prioritize width on short viewports."
+  },
+  "showcaseWidthRevision": {
+    "brief": "Make selected 50% of the viewport width on last step.",
+    "screenWidthFraction": 0.5
+  },
+  "productRevealRevision": {
+    "brief": "If user cliks or tap on selected present, scale it down to 0 and show one random model from x-mass-presents directory instead. Then add confetti effect to the page instead of snow. Use should be able to rotate the final present model",
+    "models": [
+      {
+        "file": "x-mass-presents/box-of-chocolates.glb",
+        "bytes": 945312,
+        "meshes": 2
+      },
+      {
+        "file": "x-mass-presents/champagne-bottle.glb",
+        "bytes": 408340,
+        "meshes": 2
+      },
+      {
+        "file": "x-mass-presents/perfume.glb",
+        "bytes": 295892,
+        "meshes": 3
+      },
+      {
+        "file": "x-mass-presents/scented-candle.glb",
+        "bytes": 548596,
+        "meshes": 4
+      },
+      {
+        "file": "x-mass-presents/wristwatch-gift-box.glb",
+        "bytes": 661784,
+        "meshes": 2
+      }
+    ]
   }
 }

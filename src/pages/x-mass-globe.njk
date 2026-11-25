@@ -27,6 +27,12 @@
         min-height: min(14rem, 100svh);
       }
 
+      @media (max-width: 767px) {
+        #animation-root {
+          height: min(100svh, max(58svh, 140vw));
+        }
+      }
+
       canvas {
         position: absolute;
         inset: 0;
@@ -49,6 +55,13 @@
         display: none !important;
       }
 
+      #globe-status.present-status {
+        position: fixed;
+        inset: auto 0 max(1rem, env(safe-area-inset-bottom));
+        z-index: 1;
+        pointer-events: none;
+      }
+
       #page-snow {
         position: fixed;
         pointer-events: none;
@@ -56,6 +69,10 @@
 
       #animation-root canvas {
         touch-action: pan-y pinch-zoom;
+      }
+
+      #animation-root canvas.finale-canvas {
+        position: fixed;
       }
 
       #animation-root canvas:focus-visible {
@@ -79,6 +96,13 @@
         <p id="globe-status" role="status">Loading Christmas snow globe…</p>
       </div>
     </main>
+    <template id="present-models">
+      <object data="/x-mass-presents/box-of-chocolates.glb" data-name="Box of chocolates"></object>
+      <object data="/x-mass-presents/champagne-bottle.glb" data-name="Champagne bottle"></object>
+      <object data="/x-mass-presents/perfume.glb" data-name="Perfume"></object>
+      <object data="/x-mass-presents/scented-candle.glb" data-name="Scented candle"></object>
+      <object data="/x-mass-presents/wristwatch-gift-box.glb" data-name="Wristwatch gift box"></object>
+    </template>
     <script>
       (() => {
         const CONFIG = {
@@ -99,6 +123,10 @@
           pageSnowLimit: 180,
           // Switch to the higher snow density at this width.
           desktopBreakpoint: 768,
+          // Target width of the visible globe on narrow viewports.
+          mobileGlobeWidth: 0.90,
+          // Vertical space reserved for rocking and edge clearance.
+          mobileFramePadding: 0.10,
           // Base fall speed in model units per second.
           fallSpeed: 0.34,
           // Wide-screen rocking angle in radians.
@@ -113,10 +141,45 @@
           shakeDuration: 1.25,
           // Oscillation frequency in hertz.
           shakeFrequency: 3.6,
-          // Maximum hop, lateral travel and tilt for a present during a shake.
+          // Initial hop and additional lift on each successive shake.
           presentHop: 0.22,
+          presentHopStep: 0.18,
+          // Duration of the present drift in seconds.
+          presentDriftDuration: 4.8,
+          // Portion of the drift spent rising while the globe rocks.
+          presentRiseFraction: 0.28,
+          // Water response rate and strength of the resulting sideways drift.
+          waterResponse: 12,
+          waterTravel: 0.19,
+          // Keep the presents clear of the glass surface.
+          presentGlassClearance: 0.025,
+          // Maximum lateral travel and tilt during a hop.
           presentSlide: 0.075,
           presentTilt: 0.48,
+          // Radius of the search around each present's original spot.
+          presentLandingRange: 0.14,
+          // Usable radius of the snow-covered platform.
+          presentPlatformRadius: 0.69,
+          // Ceiling-reaching shakes required to release a present.
+          presentCeilingHits: 3,
+          // Finale scale, travel time in seconds and spin in radians per second.
+          presentFinalScale: 3,
+          presentEscapeDuration: 2.8,
+          presentSpinSpeed: 0.52,
+          // Let the fully enlarged present spin before it takes over the screen.
+          presentShowcaseHold: 3,
+          // Duration of the globe exit and the present's move to center.
+          presentShowcaseDuration: 1.6,
+          // Final projected width as a fraction of the viewport.
+          presentShowcaseWidth: 0.50,
+          // Seconds for the wrapping to shrink and for the revealed model to grow.
+          presentUnwrapDuration: 0.55,
+          presentRevealDuration: 0.72,
+          // Maximum viewport fractions used to frame the revealed model.
+          revealedModelWidth: 0.56,
+          revealedModelHeight: 0.76,
+          // Colors for the paper confetti.
+          confettiColors: ["#ff626d", "#ffd261", "#64e5c1", "#8cc6ff", "#f7a9e2"],
           // Peak acceleration required to trigger, in m/s².
           motionThreshold: 12,
           // Acceleration below which the device counts as quiet, in m/s².
@@ -174,9 +237,11 @@
           };
         }
 
-        function preparePresents(THREE, model, settings) {
-          const boxes = model.getObjectByName("WinterDiorama")?.geometry;
-          const ribbons = model.getObjectByName("GiftRibbons")?.geometry;
+        function preparePresents(THREE, model, glassBounds, settings) {
+          const boxSource = model.getObjectByName("WinterDiorama");
+          const ribbonSource = model.getObjectByName("GiftRibbons");
+          const boxes = boxSource?.geometry;
+          const ribbons = ribbonSource?.geometry;
 
           // In the supplied GLB, each box has 24 vertices and each matching ribbon set has 112.
           const count = 10;
@@ -205,6 +270,20 @@
           const bounds = new THREE.Box3();
           const turn = new THREE.Quaternion();
           const angles = new THREE.Euler();
+          // The glass, boxes and ribbons share the GLB's original mesh coordinates.
+          const glassRadius = glassBounds.max.x;
+          const centerY = glassBounds.max.y - glassRadius;
+          const insideRadius = glassRadius - settings.presentGlassClearance;
+          const insideRadiusSquared = insideRadius * insideRadius;
+          let hopHeight = settings.presentHop;
+          let activeHeight = hopHeight;
+          let minimumLift;
+          let maximumLift;
+          let releasedGift;
+          function restPose() {
+            return { x: 0, z: 0, lift: 0, tiltX: 0, tiltZ: 0 };
+          }
+
           const presents = Array.from({ length: count }, (_, index) => {
             const first = firstBox + index * boxSize;
             bounds.makeEmpty();
@@ -213,53 +292,205 @@
             }
             const base = bounds.getCenter(new THREE.Vector3());
             base.y = bounds.min.y;
-            return { base, first, ribbonFirst: index * ribbonSize };
+
+            // The two side axes describe the box footprint even when its baked yaw differs.
+            let face = first;
+            while (Math.abs(boxMesh.normal.getY(face)) > 0.5) face++;
+            const sideX = boxMesh.normal.getX(face);
+            const sideZ = boxMesh.normal.getZ(face);
+            let halfWidth = 0;
+            let halfDepth = 0;
+            for (let vertex = first; vertex < first + boxSize; vertex++) {
+              sample.fromArray(boxMesh.restPositions, vertex * 3).sub(base);
+              halfWidth = Math.max(halfWidth, Math.abs(sample.x * sideX + sample.z * sideZ));
+              halfDepth = Math.max(halfDepth, Math.abs(-sample.x * sideZ + sample.z * sideX));
+            }
+            return {
+              base, first, ribbonFirst: index * ribbonSize,
+              sideX, sideZ, halfWidth, halfDepth,
+              landingX: 0,
+              landingZ: 0,
+              liftScale: 0.66 + 0.34 * Math.random(),
+              pose: restPose(),
+              start: restPose()
+            };
           });
 
+          function fitsSurface(mesh, start, size, x, z, onPlatform) {
+            for (let vertex = start; vertex < start + size; vertex++) {
+              sample.fromArray(mesh.restPositions, vertex * 3);
+              const radialSquared = (sample.x + x) ** 2 + (sample.z + z) ** 2;
+              if (radialSquared + (sample.y - centerY) ** 2 > insideRadiusSquared
+                || (onPlatform && radialSquared > settings.presentPlatformRadius ** 2)) return false;
+            }
+            return true;
+          }
+
+          function projectionRadius(gift, axisX, axisZ) {
+            return gift.halfWidth * Math.abs(axisX * gift.sideX + axisZ * gift.sideZ)
+              + gift.halfDepth * Math.abs(-axisX * gift.sideZ + axisZ * gift.sideX);
+          }
+
+          function overlapsLanding(gift, other, x, z) {
+            const dx = other.base.x + other.landingX - gift.base.x - x;
+            const dz = other.base.z + other.landingZ - gift.base.z - z;
+            // An axis that separates the oriented footprints leaves room for both boxes.
+            const axes = [[gift.sideX, gift.sideZ], [-gift.sideZ, gift.sideX],
+              [other.sideX, other.sideZ], [-other.sideZ, other.sideX]];
+            return axes.every(([axisX, axisZ]) => Math.abs(dx * axisX + dz * axisZ)
+              < projectionRadius(gift, axisX, axisZ) + projectionRadius(other, axisX, axisZ));
+          }
+
+          function chooseLanding(gift, minimumTravel) {
+            const innerRadius = Math.hypot(gift.base.x, gift.base.z) - 0.035;
+            for (let attempt = 0; attempt < 40; attempt++) {
+              const angle = Math.random() * Math.PI * 2;
+              const distance = Math.sqrt(Math.random()) * settings.presentLandingRange;
+              const x = Math.cos(angle) * distance;
+              const z = Math.sin(angle) * distance;
+              if (Math.hypot(x - gift.landingX, z - gift.landingZ) < minimumTravel
+                || Math.hypot(gift.base.x + x, gift.base.z + z) < innerRadius
+                || !fitsSurface(boxMesh, gift.first, boxSize, x, z, true)
+                || !fitsSurface(ribbonMesh, gift.ribbonFirst, ribbonSize, x, z, false)
+                || presents.some((other) => other !== gift && overlapsLanding(gift, other, x, z))) continue;
+
+              gift.landingX = x;
+              gift.landingZ = z;
+              return true;
+            }
+            return false;
+          }
+
           function randomize() {
+            activeHeight = hopHeight;
+            hopHeight = Math.min(hopHeight + settings.presentHopStep, insideRadius * 2);
             for (const gift of presents) {
-              // Bias travel outward so the boxes hop into the open space around the trees.
+              // Retarget from the current pose if another shake interrupts a drift.
+              Object.assign(gift.start, gift.pose);
+              gift.hasNewLanding = false;
+              // Bias travel outward into the open space around the trees.
               const direction = Math.atan2(gift.base.z, gift.base.x) + (Math.random() - 0.5) * 1.8;
               const distance = settings.presentSlide * (0.45 + 0.55 * Math.random());
               gift.slideX = Math.cos(direction) * distance;
               gift.slideZ = Math.sin(direction) * distance;
-              gift.lift = settings.presentHop * (0.52 + 0.48 * Math.random());
               gift.tiltX = settings.presentTilt * (2 * Math.random() - 1);
               gift.tiltZ = settings.presentTilt * (2 * Math.random() - 1);
-              gift.delay = Math.random() * 0.14;
-              gift.duration = 0.57 + Math.random() * 0.25;
+              gift.delay = Math.random() * 0.06;
+              gift.duration = 0.88 + Math.random() * 0.06;
+            }
+
+            // Try again after neighbors have moved, with smaller steps in crowded areas.
+            for (const minimumTravel of [0.035, 0.025, 0.012]) {
+              for (const gift of presents) {
+                if (!gift.hasNewLanding) gift.hasNewLanding = chooseLanding(gift, minimumTravel);
+              }
             }
           }
 
-          function transform(mesh, start, size, base, x, y, z) {
+          function transform(mesh, start, size, base, x, z) {
             for (let index = start; index < start + size; index++) {
               const offset = index * 3;
               sample.fromArray(mesh.restPositions, offset).sub(base).applyQuaternion(turn).add(base);
-              mesh.position.setXYZ(index, sample.x + x, sample.y + y, sample.z + z);
+              sample.x += x;
+              sample.z += z;
+              const radialSquared = sample.x * sample.x + sample.z * sample.z;
+              const glassHalfHeight = Math.sqrt(Math.max(0, insideRadiusSquared - radialSquared));
+              minimumLift = Math.max(minimumLift, centerY - glassHalfHeight - sample.y);
+              maximumLift = Math.min(maximumLift, centerY + glassHalfHeight - sample.y);
+              mesh.position.setXYZ(index, sample.x, sample.y, sample.z);
               sample.fromArray(mesh.restNormals, offset).applyQuaternion(turn);
               mesh.normal.setXYZ(index, sample.x, sample.y, sample.z);
             }
           }
 
-          function update(progress) {
+          function applyLift(mesh, start, size, lift) {
+            for (let index = start; index < start + size; index++) {
+              mesh.position.setY(index, mesh.position.getY(index) + lift);
+            }
+          }
+
+          function update(progress, waterX = 0, waterZ = 0) {
+            let touchedCeiling = false;
             for (const gift of presents) {
+              if (gift === releasedGift) continue;
               const t = THREE.MathUtils.clamp((progress - gift.delay) / gift.duration, 0, 1);
-              const hop = t === 1 ? 0 : Math.abs(Math.sin(t * Math.PI * 2)) * (1 - 0.78 * t);
-              const rock = hop * Math.cos(t * Math.PI * 2);
-              turn.setFromEuler(angles.set(gift.tiltX * rock, 0, gift.tiltZ * rock));
-              const x = gift.slideX * hop;
-              const y = gift.lift * hop;
-              const z = gift.slideZ * hop;
-              transform(boxMesh, gift.first, boxSize, gift.base, x, y, z);
-              transform(ribbonMesh, gift.ribbonFirst, ribbonSize, gift.base, x, y, z);
+              const apex = settings.presentRiseFraction;
+              // The shake lifts the gift. Settling through the water takes longer.
+              const float = THREE.MathUtils.smoothstep(t, 0, apex)
+                * (1 - THREE.MathUtils.smoothstep(t, apex, 1));
+              const rock = float * (1 - 2 * t);
+              const sway = float * (1 - float) * 4;
+              const current = THREE.MathUtils.smoothstep(t, 0, 0.08) * (1 - float) * (1 - t);
+              const carry = 1 - THREE.MathUtils.smoothstep(t, 0, 0.15);
+              const { pose, start } = gift;
+              const landing = THREE.MathUtils.smoothstep(t, apex, 1);
+              const driftX = gift.slideX * sway + waterX * current * settings.waterTravel;
+              const driftZ = gift.slideZ * sway + waterZ * current * settings.waterTravel;
+              pose.x = THREE.MathUtils.lerp(start.x, gift.landingX, landing) + driftX * (1 - carry);
+              pose.z = THREE.MathUtils.lerp(start.z, gift.landingZ, landing) + driftZ * (1 - carry);
+              pose.tiltX = THREE.MathUtils.lerp(gift.tiltX * rock + waterZ * current, start.tiltX, carry);
+              pose.tiltZ = THREE.MathUtils.lerp(gift.tiltZ * rock - waterX * current, start.tiltZ, carry);
+              turn.setFromEuler(angles.set(pose.tiltX, 0, pose.tiltZ));
+
+              // Find the vertical space shared by every corner of the box and its bow.
+              minimumLift = 0;
+              maximumLift = Infinity;
+              transform(boxMesh, gift.first, boxSize, gift.base, pose.x, pose.z);
+              transform(ribbonMesh, gift.ribbonFirst, ribbonSize, gift.base, pose.x, pose.z);
+              const lift = THREE.MathUtils.lerp(activeHeight * gift.liftScale * float, start.lift, carry);
+              if (float > 0.65 && lift >= maximumLift) touchedCeiling = true;
+              pose.lift = THREE.MathUtils.clamp(lift, minimumLift, maximumLift);
+              applyLift(boxMesh, gift.first, boxSize, pose.lift);
+              applyLift(ribbonMesh, gift.ribbonFirst, ribbonSize, pose.lift);
             }
             for (const mesh of meshes) {
               mesh.position.needsUpdate = true;
               mesh.normal.needsUpdate = true;
             }
+            return touchedCeiling;
           }
 
-          return { randomize, update };
+          function liftPart(source, start, size) {
+            const geometry = new THREE.BufferGeometry();
+            for (const [key, attribute] of Object.entries(source.geometry.attributes)) {
+              const { array, itemSize, normalized } = attribute;
+              geometry.setAttribute(key, new THREE.BufferAttribute(
+                array.slice(start * itemSize, (start + size) * itemSize), itemSize, normalized
+              ));
+            }
+
+            // The box and bow each occupy a contiguous vertex range in the GLB.
+            const indices = source.geometry.index.array;
+            const selected = [];
+            for (let i = 0; i < indices.length; i += 3) {
+              if (indices[i] >= start && indices[i] < start + size) {
+                selected.push(indices[i] - start, indices[i + 1] - start, indices[i + 2] - start);
+              }
+            }
+            geometry.setIndex(selected);
+            const mesh = new THREE.Mesh(geometry, source.material);
+            mesh.applyMatrix4(source.matrixWorld);
+
+            const positions = source.geometry.attributes.position;
+            for (let i = start; i < start + size; i++) positions.setXYZ(i, 0, 0, 0);
+            positions.needsUpdate = true;
+            return mesh;
+          }
+
+          function release() {
+            releasedGift = presents[Math.floor(Math.random() * presents.length)];
+            const gift = new THREE.Group();
+            gift.add(
+              liftPart(boxSource, releasedGift.first, boxSize),
+              liftPart(ribbonSource, releasedGift.ribbonFirst, ribbonSize)
+            );
+            const center = new THREE.Box3().setFromObject(gift).getCenter(new THREE.Vector3());
+            for (const part of gift.children) part.position.sub(center);
+            gift.position.copy(center);
+            return gift;
+          }
+
+          return { randomize, update, release };
         }
 
         async function mountAnimation(container, options) {
@@ -282,9 +513,11 @@
           });
           renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+          const loader = new GLTFLoader();
+          const catalog = [...document.querySelector("#present-models").content.querySelectorAll("object")];
           let model;
           try {
-            ({ scene: model } = await new GLTFLoader().loadAsync(settings.modelUrl));
+            ({ scene: model } = await loader.loadAsync(settings.modelUrl));
           } catch (error) {
             renderer.dispose();
             throw error;
@@ -306,7 +539,6 @@
           const pivot = model.getObjectByName("ShakePivot");
           const glass = model.getObjectByName("GlassDome");
           const base = model.getObjectByName("LacquerBase");
-          const presents = preparePresents(THREE, model, settings);
           model.getObjectByName("Snowflakes").visible = false;
           lightGlass(glass.material, settings);
           glass.renderOrder = 2;
@@ -314,6 +546,7 @@
           // The GLB's sphere is centered on ShakePivot and truncated at its base.
           glass.geometry.computeBoundingBox();
           const glassBounds = glass.geometry.boundingBox;
+          const presents = preparePresents(THREE, model, glassBounds, settings);
           const radius = glassBounds.max.x - 0.045;
           const floor = glassBounds.min.y + glass.position.y + 0.035;
           const bounds = new THREE.Box3().setFromObject(model).getBoundingSphere(new THREE.Sphere());
@@ -321,6 +554,20 @@
           const pointer = new THREE.Vector2();
           const hitTargets = [glass, base];
           const hits = [];
+          const frameSample = new THREE.Vector3();
+          const framePoints = new Float32Array(
+            (glass.geometry.attributes.position.count + base.geometry.attributes.position.count) * 3
+          );
+          let frameOffset = 0;
+          // Capture the outer silhouette at rest so dragging and shaking cannot change the fit.
+          for (const mesh of hitTargets) {
+            const vertices = mesh.geometry.attributes.position;
+            for (let index = 0; index < vertices.count; index++) {
+              frameSample.fromBufferAttribute(vertices, index).applyMatrix4(mesh.matrixWorld);
+              frameSample.toArray(framePoints, frameOffset);
+              frameOffset += 3;
+            }
+          }
 
           const count = Math.max(settings.mobileSnowCount, settings.desktopSnowCount);
           const positions = new Float32Array(count * 3);
@@ -377,34 +624,49 @@
           pivot.add(snow);
           for (const flake of flakes) resetFlake(flake, true);
 
-          // The same render loop drives ambient snow behind the WebGL stage.
+          // Snow and confetti share the same canvas and particle seeds.
           const pageFlakes = Array.from({ length: settings.pageSnowLimit }, () => ({
             x: Math.random(),
             phase: Math.random(),
             speed: 14 + Math.random() * 38,
             drift: 8 + Math.random() * 22,
             radius: 0.6 + Math.random() * 1.7,
-            opacity: 0.24 + Math.random() * 0.53
+            opacity: 0.24 + Math.random() * 0.53,
+            spin: (0.8 + Math.random() * 2.4) * (Math.random() < 0.5 ? -1 : 1)
           }));
           let pageWidth = 0;
           let pageHeight = 0;
           let pageFlakeCount = 0;
 
-          function drawPageSnow(time) {
+          function drawAtmosphere(time) {
             if (!snowContext) return;
             snowContext.clearRect(0, 0, pageWidth, pageHeight);
             if (reducedMotion.matches || !pageFlakeCount) return;
+            const confetti = product?.root.visible;
+            const age = confetti ? time - product.revealedAt : time;
+            const density = confetti ? 2.4 : 1;
             snowContext.fillStyle = "#f3faff";
 
             for (let index = 0; index < pageFlakeCount; index++) {
               const flake = pageFlakes[index];
-              const track = pageHeight + 16;
-              const y = (flake.phase * track + time * flake.speed) % track - 8;
-              const x = flake.x * pageWidth + flake.drift * Math.sin(flake.phase * 12 + time * 0.7);
-              snowContext.globalAlpha = flake.opacity;
-              snowContext.beginPath();
-              snowContext.arc(x, y, flake.radius, 0, Math.PI * 2);
-              snowContext.fill();
+              const track = pageHeight + 24;
+              const y = (flake.phase * track + age * flake.speed * density) % track - 12;
+              const x = flake.x * pageWidth + flake.drift * density * Math.sin(flake.phase * 12 + age * 0.7);
+              if (confetti) {
+                snowContext.save();
+                snowContext.globalAlpha = 0.48 + flake.opacity * 0.5;
+                snowContext.translate(x, y);
+                snowContext.rotate(flake.phase * 6 + age * flake.spin);
+                snowContext.scale(0.28 + 0.72 * Math.abs(Math.cos(age * flake.spin + index)), 1);
+                snowContext.fillStyle = settings.confettiColors[index % settings.confettiColors.length];
+                snowContext.fillRect(-flake.radius * 1.3, -flake.radius * 2, flake.radius * 2.6, flake.radius * 4);
+                snowContext.restore();
+              } else {
+                snowContext.globalAlpha = flake.opacity;
+                snowContext.beginPath();
+                snowContext.arc(x, y, flake.radius, 0, Math.PI * 2);
+                snowContext.fill();
+              }
             }
           }
 
@@ -420,7 +682,7 @@
             pageWidth = width;
             pageHeight = height;
             pageFlakeCount = Math.min(settings.pageSnowLimit, Math.round(width * height * settings.pageSnowDensity / 10000));
-            drawPageSnow(elapsed);
+            drawAtmosphere(elapsed);
           }
 
           let paused = false;
@@ -430,6 +692,24 @@
           let lastFrame;
           let resizeFrame;
           let shakeTime = settings.shakeDuration;
+          let presentTime = settings.presentDriftDuration;
+          let waterX = 0;
+          let waterZ = 0;
+          let ceilingHits = 0;
+          let reachedCeilingThisShake = false;
+          let finale;
+          let product;
+          let productLoading = false;
+          const finaleProjection = new THREE.Matrix4();
+          const screenProjection = new THREE.Matrix4();
+          const departure = new THREE.Vector3();
+          const exit = new THREE.Vector3(0, glassBounds.max.y + 0.18, 0);
+          const destination = new THREE.Vector3();
+          const showcasePosition = new THREE.Vector3();
+          const showcaseVertex = new THREE.Vector3();
+          const showcaseView = new THREE.Quaternion();
+          const showcaseStart = settings.presentEscapeDuration + settings.presentShowcaseHold;
+          const showcaseEnd = showcaseStart + settings.presentShowcaseDuration;
           let elapsed = 0;
 
           function updateSnow(delta, agitation) {
@@ -455,22 +735,287 @@
             geometry.attributes.fade.needsUpdate = true;
           }
 
+          function launchFinale() {
+            model.updateWorldMatrix(true, true);
+            const gift = presents.release();
+            departure.copy(gift.position);
+            scene.add(gift);
+            const vertices = [];
+            for (const part of gift.children) {
+              part.updateMatrix();
+              const position = part.geometry.attributes.position;
+              for (let index = 0; index < position.count; index++) {
+                showcaseVertex.fromBufferAttribute(position, index).applyMatrix4(part.matrix);
+                vertices.push(showcaseVertex.x, showcaseVertex.y, showcaseVertex.z);
+              }
+            }
+            finale = {
+              gift, time: 0, spin: 0, stageRatio: 1, zoom: 1,
+              vertices: new Float32Array(vertices),
+              viewVertices: new Float32Array(vertices.length)
+            };
+            canvas.classList.add("finale-canvas");
+            shakeTime = settings.shakeDuration;
+            pivot.rotation.set(0, 0, 0);
+            window.removeEventListener("devicemotion", onMotion);
+            resize();
+            syncPreference();
+          }
+
+          function fitShowcaseGift() {
+            const { gift, vertices, viewVertices } = finale;
+            camera.getWorldQuaternion(showcaseView).invert().multiply(gift.quaternion);
+            let nearest = 0;
+            for (let i = 0; i < vertices.length; i += 3) {
+              showcaseVertex.fromArray(vertices, i).applyQuaternion(showcaseView);
+              showcaseVertex.toArray(viewVertices, i);
+              nearest = Math.max(nearest, showcaseVertex.z);
+            }
+
+            const depth = -showcaseVertex.copy(exit).applyMatrix4(camera.matrixWorldInverse).z;
+            const lens = camera.projectionMatrix.elements;
+            let low = 0;
+            let high = (depth - camera.near) / nearest;
+            let centerX = 0;
+            const leftSlope = (lens[8] - settings.presentShowcaseWidth) / lens[0];
+            const rightSlope = (lens[8] + settings.presentShowcaseWidth) / lens[0];
+            // Fit the actual rotating silhouette between the two screen-width limits.
+            for (let step = 0; step < 16; step++) {
+              const scale = (low + high) / 2;
+              let leftLimit = -Infinity;
+              let rightLimit = Infinity;
+              for (let i = 0; i < viewVertices.length; i += 3) {
+                const z = depth - viewVertices[i + 2] * scale;
+                const x = viewVertices[i] * scale;
+                leftLimit = Math.max(leftLimit, leftSlope * z - x);
+                rightLimit = Math.min(rightLimit, rightSlope * z - x);
+              }
+              if (leftLimit <= rightLimit) {
+                low = scale;
+                centerX = (leftLimit + rightLimit) / 2;
+              } else {
+                high = scale;
+              }
+            }
+
+            let bottom = Infinity;
+            let top = -Infinity;
+            for (let i = 0; i < viewVertices.length; i += 3) {
+              const z = depth - viewVertices[i + 2] * low;
+              const centeredY = lens[9] * z / lens[5] - viewVertices[i + 1] * low;
+              bottom = Math.min(bottom, centeredY);
+              top = Math.max(top, centeredY);
+            }
+            // Center the silhouette vertically at its fitted scale.
+            for (let step = 0; step < 12; step++) {
+              const centerY = (bottom + top) / 2;
+              let minY = Infinity;
+              let maxY = -Infinity;
+              for (let i = 0; i < viewVertices.length; i += 3) {
+                const z = depth - viewVertices[i + 2] * low;
+                const y = lens[5] * (viewVertices[i + 1] * low + centerY) / z - lens[9];
+                minY = Math.min(minY, y);
+                maxY = Math.max(maxY, y);
+              }
+              if (minY + maxY < 0) bottom = centerY;
+              else top = centerY;
+            }
+
+            showcasePosition.set(centerX, (bottom + top) / 2, -depth).applyMatrix4(camera.matrixWorld);
+            return low;
+          }
+
+          function moveFinale(delta) {
+            finale.time = Math.min(finale.time + delta, showcaseEnd);
+            const t = Math.min(1, finale.time / settings.presentEscapeDuration);
+            const frame = THREE.MathUtils.smoothstep(t, 0, 0.7);
+            const ratio = finale.stageRatio * THREE.MathUtils.lerp(1, finale.zoom, frame);
+            // Extend the stage upward and keep the globe anchored to the bottom.
+            screenProjection.set(
+              1, 0, 0, 0,
+              0, ratio, 0, ratio - 1,
+              0, 0, 1, 0,
+              0, 0, 0, 1
+            );
+            const zoom = THREE.MathUtils.lerp(1, finale.zoom, frame);
+            screenProjection.elements[0] = zoom;
+            camera.projectionMatrix.multiplyMatrices(screenProjection, finaleProjection);
+            camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+
+            const gift = finale.gift;
+            if (!gift.visible) return;
+
+            const exitTime = 0.45;
+            if (t < exitTime) {
+              gift.position.lerpVectors(departure, exit, THREE.MathUtils.smoothstep(t, 0, exitTime));
+            } else {
+              destination.copy(exit).project(camera);
+              destination.set(0, 0.65, destination.z).unproject(camera);
+              gift.position.lerpVectors(exit, destination, THREE.MathUtils.smoothstep(t, exitTime, 1));
+            }
+
+            const reveal = THREE.MathUtils.smoothstep(t, exitTime, 1);
+            gift.scale.setScalar(THREE.MathUtils.lerp(1, settings.presentFinalScale, reveal));
+            finale.spin = (finale.spin + delta * settings.presentSpinSpeed * reveal) % (2 * Math.PI);
+            gift.rotation.set(0.17 * reveal, finale.spin, 0);
+
+            if (finale.time > showcaseStart) {
+              const focus = THREE.MathUtils.smoothstep(finale.time, showcaseStart, showcaseEnd);
+              const fittedScale = fitShowcaseGift();
+              gift.position.lerp(showcasePosition, focus);
+              gift.scale.setScalar(THREE.MathUtils.lerp(settings.presentFinalScale, fittedScale, focus));
+              model.position.y = -bounds.radius * 5 * focus;
+              if (focus === 1 && model.visible) {
+                model.visible = false;
+                syncCanvasDescription();
+              }
+            }
+          }
+
+          async function unwrapPresent() {
+            if (model.visible || product || productLoading || !catalog.length) return;
+            productLoading = true;
+            const entry = catalog[Math.floor(Math.random() * catalog.length)];
+            status.classList.add("present-status");
+            status.textContent = "Opening your present…";
+            status.hidden = false;
+
+            let asset;
+            try {
+              ({ scene: asset } = await loader.loadAsync(new URL(entry.getAttribute("data"), document.baseURI).href));
+              if (destroyed) {
+                disposeModel(asset);
+                return;
+              }
+
+              const sphere = new THREE.Box3().setFromObject(asset).getBoundingSphere(new THREE.Sphere());
+              if (!(sphere.radius > 0)) throw new Error("The present model has empty bounds.");
+              const root = new THREE.Group();
+              const normalized = new THREE.Group();
+              normalized.scale.setScalar(1 / sphere.radius);
+              normalized.position.copy(sphere.center).multiplyScalar(-1 / sphere.radius);
+              normalized.add(asset);
+              root.add(normalized);
+              root.visible = false;
+              scene.add(root);
+              product = { root, hitTargets: [root], name: entry.dataset.name, time: 0, revealedAt: 0 };
+              status.hidden = true;
+              syncCanvasDescription();
+
+              if (reducedMotion.matches) {
+                moveProduct(0);
+                renderer.render(scene, camera);
+              }
+            } catch {
+              if (asset) disposeModel(asset);
+              if (!destroyed) status.textContent = "The present couldn’t open. Tap or click it to try again.";
+            } finally {
+              productLoading = false;
+            }
+          }
+
+          function moveProduct(delta) {
+            if (!product) return;
+            const unwrap = settings.presentUnwrapDuration;
+            const end = unwrap + settings.presentRevealDuration;
+            product.time = reducedMotion.matches ? end : Math.min(product.time + delta, end);
+            if (product.time < unwrap) {
+              const shrink = 1 - THREE.MathUtils.smoothstep(product.time, 0, unwrap);
+              finale.gift.scale.multiplyScalar(shrink);
+              return;
+            }
+
+            if (!product.root.visible) {
+              finale.gift.scale.setScalar(0);
+              finale.gift.visible = false;
+              product.root.visible = true;
+              product.revealedAt = elapsed;
+              syncCanvasDescription();
+            }
+
+            // Keep the entire model in view, including tall bottles and wide boxes.
+            destination.copy(exit).project(camera);
+            product.root.position.set(0, 0, destination.z).unproject(camera);
+            const depth = -showcaseVertex.copy(product.root.position).applyMatrix4(camera.matrixWorldInverse).z;
+            const lens = camera.projectionMatrix.elements;
+            const halfAngle = Math.atan(Math.min(settings.revealedModelWidth / lens[0],
+              settings.revealedModelHeight / lens[5]));
+            const growth = THREE.MathUtils.smoothstep(product.time, unwrap, end);
+            product.root.scale.setScalar(Math.sin(halfAngle) * depth * growth);
+          }
+
           function render(timestamp) {
             const delta = lastFrame === undefined ? 0 : Math.min((timestamp - lastFrame) / 1000, 0.05);
             lastFrame = timestamp;
             elapsed += delta;
-            drawPageSnow(elapsed);
-            if (shakeTime < settings.shakeDuration) {
-              shakeTime = Math.min(shakeTime + delta, settings.shakeDuration);
-              presents?.update(shakeTime / settings.shakeDuration);
-            }
+            shakeTime = Math.min(shakeTime + delta, settings.shakeDuration);
             const remaining = 1 - shakeTime / settings.shakeDuration;
             const envelope = remaining * remaining;
             const phase = 2 * Math.PI * settings.shakeFrequency * shakeTime;
             const angle = settings.shakeAngle * (desktop.matches ? 1 : 0.85);
-            pivot.rotation.set(0.35 * angle * envelope * Math.sin(phase * 0.75), 0, angle * envelope * Math.sin(phase));
-            updateSnow(delta, envelope);
+            const rockX = 0.35 * envelope * Math.sin(phase * 0.75);
+            const rockZ = envelope * Math.sin(phase);
+            pivot.rotation.set(angle * rockX, 0, angle * rockZ);
+
+            // The rocking pushes the water in the opposite direction, with a short lag.
+            if (presentTime < settings.presentDriftDuration) {
+              waterX = THREE.MathUtils.damp(waterX, -rockZ, settings.waterResponse, delta);
+              waterZ = THREE.MathUtils.damp(waterZ, rockX, settings.waterResponse, delta);
+              presentTime = Math.min(presentTime + delta, settings.presentDriftDuration);
+              const touchedCeiling = presents?.update(presentTime / settings.presentDriftDuration, waterX, waterZ);
+              if (!finale && touchedCeiling && !reachedCeilingThisShake) {
+                reachedCeilingThisShake = true;
+                ceilingHits++;
+                if (ceilingHits >= settings.presentCeilingHits) launchFinale();
+              }
+            }
+            if (finale) moveFinale(delta);
+            moveProduct(delta);
+            drawAtmosphere(elapsed);
+            if (model.visible) updateSnow(delta, envelope);
             renderer.render(scene, camera);
+          }
+
+          const footprint = new THREE.Box2();
+          const framePoint = new THREE.Vector2();
+          const projection = new THREE.Matrix4();
+
+          function placeCamera(distance) {
+            camera.position.copy(bounds.center).addScaledVector(viewDirection, distance);
+            camera.lookAt(target);
+            camera.updateMatrixWorld();
+          }
+
+          function measureFootprint(distance) {
+            placeCamera(distance);
+            projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+            footprint.makeEmpty();
+            for (let offset = 0; offset < framePoints.length; offset += 3) {
+              frameSample.fromArray(framePoints, offset).applyMatrix4(projection);
+              footprint.expandByPoint(framePoint.set(frameSample.x, frameSample.y));
+            }
+          }
+
+          function fitMobileGlobe(distance, width, height) {
+            let near = bounds.radius + camera.near;
+            let far = distance;
+            const widthLimit = settings.mobileGlobeWidth * 2;
+            const heightLimit = (1 - settings.mobileFramePadding) * 2;
+            for (let step = 0; step < 14; step++) {
+              const mid = (near + far) / 2;
+              measureFootprint(mid);
+              const fits = footprint.max.x - footprint.min.x <= widthLimit
+                && footprint.max.y - footprint.min.y <= heightLimit;
+              if (fits) far = mid;
+              else near = mid;
+            }
+
+            measureFootprint(far);
+            const centerX = (footprint.min.x + footprint.max.x) / 2;
+            const bottomY = -1 + settings.mobileFramePadding;
+            // Use the lens offset to center the silhouette and keep it near the bottom.
+            camera.setViewOffset(width, height, centerX * width / 2,
+              (bottomY - footprint.min.y) * height / 2, width, height);
           }
 
           function resize() {
@@ -486,13 +1031,24 @@
             const halfVertical = THREE.MathUtils.degToRad(camera.fov / 2);
             const halfHorizontal = Math.atan(Math.tan(halfVertical) * camera.aspect);
             const distance = (bounds.radius + 0.14) / Math.sin(Math.min(halfVertical, halfHorizontal));
-            camera.position.copy(bounds.center).addScaledVector(viewDirection, distance);
             target.copy(bounds.center);
             target.y += 0.12;
-            camera.lookAt(target);
-            camera.updateProjectionMatrix();
+            camera.clearViewOffset();
+            if (desktop.matches) placeCamera(distance);
+            else fitMobileGlobe(distance, width, height);
 
-            renderer.setDrawingBufferSize(width, height, pixelRatio);
+            let drawingHeight = height;
+            if (finale) {
+              drawingHeight = canvas.clientHeight;
+              finale.stageRatio = height / drawingHeight;
+              finaleProjection.copy(camera.projectionMatrix);
+              measureFootprint(camera.position.distanceTo(bounds.center));
+              finale.zoom = Math.min(1, 1.28 / ((footprint.max.y + 1) * finale.stageRatio));
+              moveFinale(0);
+              moveProduct(0);
+            }
+
+            renderer.setDrawingBufferSize(width, drawingHeight, pixelRatio);
             snowMaterial.uniforms.pixelRatio.value = pixelRatio;
             snowMaterial.uniforms.pointScale.value = Math.min(width, height) * 0.043;
             if (!running) {
@@ -515,12 +1071,14 @@
           }
 
           function shake() {
-            if (!running || shakeTime < settings.shakeDuration) return;
+            if (finale || !running || shakeTime < settings.shakeDuration) return;
+            reachedCeilingThisShake = false;
             presents?.randomize();
+            presentTime = 0;
             shakeTime = 0;
           }
 
-          function hitGlobe(event) {
+          function hitMeshes(event, targets, recursive = false) {
             const rect = canvas.getBoundingClientRect();
             pointer.set(
               2 * (event.clientX - rect.left) / rect.width - 1,
@@ -528,7 +1086,7 @@
             );
             raycaster.setFromCamera(pointer, camera);
             hits.length = 0;
-            raycaster.intersectObjects(hitTargets, false, hits);
+            raycaster.intersectObjects(targets, recursive, hits);
             const hit = hits.length > 0;
             hits.length = 0;
             return hit;
@@ -543,10 +1101,23 @@
             if (!running) renderer.render(scene, camera);
           }
 
+          function rotateCurrent(angle) {
+            if (product?.root.visible) {
+              const root = product.root;
+              root.rotation.y = (root.rotation.y + angle) % (2 * Math.PI);
+              if (!running) renderer.render(scene, camera);
+            } else {
+              rotateGlobe(angle);
+            }
+          }
+
           function startDrag(event) {
             if (!event.isPrimary || event.button !== 0) return;
             suppressClick = false;
-            if (!hitGlobe(event)) return;
+            const onModel = product?.root.visible
+              ? hitMeshes(event, product.hitTargets, true)
+              : model.visible && hitMeshes(event, hitTargets);
+            if (!onModel) return;
 
             drag = {
               id: event.pointerId,
@@ -570,7 +1141,7 @@
             }
 
             if (drag.axis === "horizontal") {
-              rotateGlobe((event.clientX - drag.lastX) * settings.dragRotationSpeed);
+              rotateCurrent((event.clientX - drag.lastX) * settings.dragRotationSpeed);
               drag.lastX = event.clientX;
             }
           }
@@ -639,12 +1210,13 @@
           if (motion && !requiresMotionPermission) listenForMotion();
 
           async function activateGlobe() {
+            if (finale) return;
             shake();
             if (reducedMotion.matches || !requiresMotionPermission || permissionRequested) return;
             permissionRequested = true;
             try {
               const permission = await motion.requestPermission();
-              if (!destroyed && permission === "granted") listenForMotion();
+              if (!destroyed && !finale && permission === "granted") listenForMotion();
             } catch {
               // Click and keyboard activation stay available without sensor access.
             }
@@ -655,19 +1227,48 @@
             syncPlayback();
           }
 
-          function syncPreference() {
+          function syncCanvasDescription() {
             canvas.tabIndex = 0;
-            canvas.setAttribute("aria-keyshortcuts", reducedMotion.matches ? "ArrowLeft ArrowRight" : "ArrowLeft ArrowRight Enter Space");
+            if (!model.visible) {
+              if (product?.root.visible) {
+                canvas.setAttribute("role", "img");
+                canvas.setAttribute("aria-label", product.name);
+                canvas.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight");
+                canvas.setAttribute("aria-description", "Drag horizontally or use the left and right arrow keys to rotate.");
+              } else {
+                canvas.setAttribute("role", "button");
+                canvas.setAttribute("aria-label", "Open Christmas present");
+                canvas.setAttribute("aria-keyshortcuts", "Enter Space");
+                canvas.removeAttribute("aria-description");
+              }
+              return;
+            }
+
+            const canShake = !finale && !reducedMotion.matches;
+            canvas.setAttribute("aria-keyshortcuts", canShake ? "ArrowLeft ArrowRight Enter Space" : "ArrowLeft ArrowRight");
             canvas.setAttribute("aria-description", "Drag horizontally or use the left and right arrow keys to rotate.");
-            canvas.setAttribute("role", reducedMotion.matches ? "img" : "button");
-            canvas.setAttribute("aria-label", reducedMotion.matches ? "Christmas snow globe" : "Shake Christmas snow globe");
+            canvas.setAttribute("role", canShake ? "button" : "img");
+            canvas.setAttribute("aria-label", finale ? "Christmas snow globe with a floating present"
+              : canShake ? "Shake Christmas snow globe" : "Christmas snow globe");
+          }
+
+          function syncPreference() {
+            syncCanvasDescription();
             syncPlayback();
             if (reducedMotion.matches) {
-              if (shakeTime < settings.shakeDuration) presents?.update(1);
+              if (presentTime < settings.presentDriftDuration) presents?.update(1);
+              presentTime = settings.presentDriftDuration;
               shakeTime = settings.shakeDuration;
+              waterX = 0;
+              waterZ = 0;
               pivot.rotation.set(0, 0, 0);
               updateSnow(0, 0);
-              drawPageSnow(elapsed);
+              drawAtmosphere(elapsed);
+              if (finale) {
+                finale.time = showcaseEnd;
+                moveFinale(0);
+                moveProduct(0);
+              }
               renderer.render(scene, camera);
             }
           }
@@ -694,34 +1295,36 @@
             if (!canvas.hasPointerCapture(event.pointerId)) finishDrag(event);
           }, { signal });
           canvas.addEventListener("click", (event) => {
-            if (!suppressClick && hitGlobe(event)) activateGlobe();
+            if (suppressClick) return;
+            if (!model.visible) {
+              if (!product && hitMeshes(event, finale.gift.children)) unwrapPresent();
+            } else if (hitMeshes(event, hitTargets)) {
+              activateGlobe();
+            }
           }, { signal });
           canvas.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            if ((model.visible || product?.root.visible) && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
               event.preventDefault();
               const direction = event.key === "ArrowRight" ? 1 : -1;
-              rotateGlobe(direction * settings.keyboardRotationStep);
+              rotateCurrent(direction * settings.keyboardRotationStep);
               return;
             }
 
-            if (reducedMotion.matches || (event.key !== "Enter" && event.key !== " ")) return;
+            if (event.key !== "Enter" && event.key !== " ") return;
+            if ((!model.visible && product) || (model.visible && reducedMotion.matches)) return;
+
             event.preventDefault();
-            if (!event.repeat) activateGlobe();
+            if (event.repeat) return;
+            if (!model.visible) unwrapPresent();
+            else activateGlobe();
           }, { signal });
 
           resize();
           status.hidden = true;
           syncPreference();
 
-          function destroy() {
-            if (destroyed) return;
-            destroyed = true;
-            syncPlayback();
-            events.abort();
-            sizeObserver.disconnect();
-            visibilityObserver.disconnect();
-            cancelAnimationFrame(resizeFrame);
-            model.traverse((node) => {
+          function disposeModel(root) {
+            root.traverse((node) => {
               node.geometry?.dispose();
               if (!node.material) return;
               for (const material of [node.material].flat()) {
@@ -731,6 +1334,21 @@
                 material.dispose();
               }
             });
+          }
+
+          function destroy() {
+            if (destroyed) return;
+            destroyed = true;
+            syncPlayback();
+            events.abort();
+            sizeObserver.disconnect();
+            visibilityObserver.disconnect();
+            cancelAnimationFrame(resizeFrame);
+            disposeModel(model);
+            if (product) disposeModel(product.root);
+            if (finale) {
+              for (const part of finale.gift.children) part.geometry.dispose();
+            }
             renderer.dispose();
             canvas.remove();
             snowContext?.clearRect(0, 0, pageWidth, pageHeight);
