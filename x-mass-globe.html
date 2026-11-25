@@ -204,14 +204,12 @@
           presentShowcaseHold: 3,
           // Duration of the globe exit and the present's move to center.
           presentShowcaseDuration: 1.6,
-          // Final projected width as a fraction of the viewport.
+          // Projected width and height limits for both close-up states.
           presentShowcaseWidth: 0.50,
+          presentShowcaseHeight: 0.80,
           // Seconds for the wrapping to shrink and for the revealed model to grow.
           presentUnwrapDuration: 0.55,
           presentRevealDuration: 0.72,
-          // Maximum viewport fractions used to frame the revealed model.
-          revealedModelWidth: 0.50,
-          revealedModelHeight: 0.90,
           // Trackball radius as a fraction of the shorter screen dimension.
           productTrackballRadius: 0.34,
           // Colors for the paper confetti.
@@ -801,7 +799,8 @@
             syncPreference();
           }
 
-          function fitObject(gift, vertices, viewVertices, width, height = Infinity) {
+          function fitObject(gift, vertices, viewVertices) {
+            const { presentShowcaseWidth: width, presentShowcaseHeight: height } = settings;
             camera.getWorldQuaternion(showcaseView).invert().multiply(gift.quaternion);
             let nearest = 0;
             for (let i = 0; i < vertices.length; i += 3) {
@@ -838,6 +837,8 @@
               else high = scale;
             }
 
+            // Leave a subpixel margin for the numerical centering step.
+            low *= 0.9995;
             const centerX = centerAxis(viewVertices, 0, low, depth, lens[0], lens[8]);
             const centerY = centerAxis(viewVertices, 1, low, depth, lens[5], lens[9]);
             showcasePosition.set(centerX, centerY, -depth).applyMatrix4(camera.matrixWorld);
@@ -905,7 +906,7 @@
 
             if (finale.time > showcaseStart) {
               const focus = THREE.MathUtils.smoothstep(finale.time, showcaseStart, showcaseEnd);
-              const fittedScale = fitObject(gift, finale.vertices, finale.viewVertices, settings.presentShowcaseWidth);
+              const fittedScale = fitObject(gift, finale.vertices, finale.viewVertices);
               gift.position.lerp(showcasePosition, focus);
               gift.scale.setScalar(THREE.MathUtils.lerp(settings.presentFinalScale, fittedScale, focus));
               model.position.y = -bounds.radius * 5 * focus;
@@ -1000,8 +1001,7 @@
 
             const { root } = product;
             if (!product.frameScale) {
-              product.frameScale = fitObject(root, product.vertices, product.viewVertices,
-                settings.revealedModelWidth, settings.revealedModelHeight);
+              product.frameScale = fitObject(root, product.vertices, product.viewVertices);
               root.position.copy(showcasePosition);
             }
 

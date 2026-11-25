@@ -6,10 +6,10 @@ Click, tap, or press Enter or Space to shake it. The rocking sends the presents
 swaying, turning independently in three axes, and rising with the simulated water current. They drift down to randomized spots on the snow over about five seconds. Successive shakes send them higher until
 the glass limits their rise. On the first shake that reaches the ceiling, one present
 passes through the top, grows to three times its size and rotates slowly. After three seconds
-at that size, the globe slides down and the rotating present fills 50% of the screen width.
+at that size, the globe slides down and the rotating present moves to the center.
 Click or tap the centered present to open it. The wrapping shrinks away, one of five
-models appears, and confetti replaces the page snow. The revealed model targets 50% of
-the viewport width, with a 90% height limit for tall models. Drag in any direction or use any of the four arrow keys
+models appears, and confetti replaces the page snow. Both close-up states fit within 50% of the
+viewport width and 80% of its height. Drag in any direction or use any of the four arrow keys
 to turn the revealed model. Select Retry at the top to reload the page
 and start again.
 A supported mobile device can also trigger the same effect through its motion sensor.
@@ -30,7 +30,7 @@ and warm and cool studio highlights.
 | Product rotation revision | Rotate the opened model in any direction | Screen-space trackball for mouse and touch, four arrow keys for keyboard |
 | Product reveal revision | Open the centered present and replace snow with confetti | A random model loads on demand and becomes horizontally rotatable |
 | `x-mass-presents/*.glb` | Five self-contained glTF models | Box of chocolates, champagne, perfume, scented candle and wristwatch gift box |
-| Showcase revision | Three-second rotation hold, then globe exits and present centers | A lens-space calculation fits the rotating present to 50% viewport width |
+| Showcase revision | Three-second rotation hold, then globe exits and present centers | Both selected and opened presents fit the shared viewport limits |
 | Finale revision | A present escapes on the first ceiling-reaching shake | The box and bow are detached together, enlarged and rotated while shake input is disabled |
 | Landing revision | Presents settle at new spots | Candidate positions are checked against the glass, platform and other gifts |
 | Water revision | Synchronize glass and presents as if submerged | The rocking signal drives a damped current and the gifts rise during the shake |
@@ -48,7 +48,7 @@ and warm and cool studio highlights.
 - A 1.25-second damped oscillation approximates the movement of a hand-held snow globe.
 - A dark pine background complements the red and gold in the supplied model.
 - Snow continuously respawns within the dome, with fewer active flakes on narrow screens.
-- On short viewports, vertical fit keeps the globe and base visible before the finale. The product close-up prioritizes the requested width and may extend vertically beyond a short screen.
+- On short viewports, vertical fit keeps the globe and base visible before the finale.
 - Sensor detection uses a 12 m/s² threshold and requires a quiet period before rearming.
 
 ## Run
@@ -101,10 +101,10 @@ testing on a phone or tablet.
 | `presentSpinSpeed` | 0.52 rad/s | Sets the finale rotation speed |
 | `presentShowcaseHold` | 3 s | Sets the rotation hold at the first enlarged size |
 | `presentShowcaseDuration` | 1.6 s | Sets the globe’s exit and the present’s move to center |
-| `presentShowcaseWidth` | 50% | Targets the centered present’s projected width |
+| `presentShowcaseWidth` | 50% | Caps both close-up states’ projected width |
+| `presentShowcaseHeight` | 80% | Caps both close-up states’ projected height |
 | `presentUnwrapDuration` | 0.55 s | Sets how quickly the wrapping shrinks away |
 | `presentRevealDuration` | 0.72 s | Sets how quickly the revealed model grows |
-| `revealedModelWidth`, `revealedModelHeight` | 50%, 90% | Set the revealed model framing limits |
 | `productTrackballRadius` | 34% of the shorter viewport dimension | Sets drag rotation sensitivity |
 | `confettiColors` | Red, gold, green, blue and pink | Sets the confetti palette |
 | `presentPlatformRadius` | 0.69 model units | Keeps box footprints on the snow-covered platform |

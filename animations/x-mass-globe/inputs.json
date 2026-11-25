@@ -171,5 +171,10 @@
   "productRotationRevision": {
     "brief": "Use also should be able to rotate the final opened present in all directions",
     "controls": "Free mouse or touch drag and four arrow keys"
+  },
+  "viewportFitRevision": {
+    "brief": "Let's adjust again. Selected and opened presents should fit viewport, not more than 80% of viewport height and not more than 50% of viewport width.",
+    "widthLimit": 0.5,
+    "heightLimit": 0.8
   }
 }
